@@ -4,6 +4,8 @@
 # isort: skip_file
 """Contains all the data models used in inputs/outputs"""
 
+from __future__ import annotations
+
 from .allocate_external_party_request import AllocateExternalPartyRequest
 from .allocate_external_party_response import AllocateExternalPartyResponse
 from .allocate_party_request import AllocatePartyRequest
@@ -16,12 +18,15 @@ from .command_type_3 import CommandType3
 from .completion_stream_request import CompletionStreamRequest
 from .connected_synchronizer import ConnectedSynchronizer
 from .connected_synchronizer_permission import ConnectedSynchronizerPermission
+from .cost_estimation import CostEstimation
+from .cost_estimation_hints import CostEstimationHints
+from .cost_estimation_hints_expected_signatures_item import (
+    CostEstimationHintsExpectedSignaturesItem,
+)
 from .create_and_exercise_command import CreateAndExerciseCommand
 from .create_command import CreateCommand
 from .create_identity_provider_config_request import CreateIdentityProviderConfigRequest
-from .create_identity_provider_config_response import (
-    CreateIdentityProviderConfigResponse,
-)
+from .create_identity_provider_config_response import CreateIdentityProviderConfigResponse
 from .create_user_response import CreateUserResponse
 from .created_event import CreatedEvent
 from .created_tree_event import CreatedTreeEvent
@@ -30,9 +35,7 @@ from .deduplication_offset import DeduplicationOffset
 from .deduplication_period_type_0 import DeduplicationPeriodType0
 from .deduplication_period_type_1 import DeduplicationPeriodType1
 from .deduplication_period_type_2 import DeduplicationPeriodType2
-from .delete_identity_provider_config_response import (
-    DeleteIdentityProviderConfigResponse,
-)
+from .delete_identity_provider_config_response import DeleteIdentityProviderConfigResponse
 from .delete_v2_users_user_id_response_200 import DeleteV2UsersUserIdResponse200
 from .disclosed_contract import DisclosedContract
 from .duration import Duration
@@ -46,29 +49,21 @@ from .exercise_by_key_command import ExerciseByKeyCommand
 from .exercise_command import ExerciseCommand
 from .exercised_event import ExercisedEvent
 from .exercised_tree_event import ExercisedTreeEvent
-from .experimental_command_inspection_service import (
-    ExperimentalCommandInspectionService,
-)
+from .experimental_command_inspection_service import ExperimentalCommandInspectionService
 from .experimental_features import ExperimentalFeatures
 from .experimental_static_time import ExperimentalStaticTime
 from .features_descriptor import FeaturesDescriptor
 from .field import Field
 from .field_mask import FieldMask
-from .generate_external_party_topology_request import (
-    GenerateExternalPartyTopologyRequest,
-)
-from .generate_external_party_topology_response import (
-    GenerateExternalPartyTopologyResponse,
-)
+from .generate_external_party_topology_request import GenerateExternalPartyTopologyRequest
+from .generate_external_party_topology_response import GenerateExternalPartyTopologyResponse
 from .get_connected_synchronizers_response import GetConnectedSynchronizersResponse
 from .get_identity_provider_config_response import GetIdentityProviderConfigResponse
 from .get_latest_pruned_offsets_response import GetLatestPrunedOffsetsResponse
 from .get_ledger_api_version_response import GetLedgerApiVersionResponse
 from .get_ledger_end_response import GetLedgerEndResponse
 from .get_package_status_response import GetPackageStatusResponse
-from .get_package_status_response_package_status import (
-    GetPackageStatusResponsePackageStatus,
-)
+from .get_package_status_response_package_status import GetPackageStatusResponsePackageStatus
 from .get_participant_id_response import GetParticipantIdResponse
 from .get_parties_response import GetPartiesResponse
 from .get_preferred_package_version_response import GetPreferredPackageVersionResponse
@@ -107,12 +102,8 @@ from .js_reassignment import JsReassignment
 from .js_reassignment_event_type_0 import JsReassignmentEventType0
 from .js_reassignment_event_type_1 import JsReassignmentEventType1
 from .js_status import JsStatus
-from .js_submit_and_wait_for_reassignment_response import (
-    JsSubmitAndWaitForReassignmentResponse,
-)
-from .js_submit_and_wait_for_transaction_response import (
-    JsSubmitAndWaitForTransactionResponse,
-)
+from .js_submit_and_wait_for_reassignment_response import JsSubmitAndWaitForReassignmentResponse
+from .js_submit_and_wait_for_transaction_response import JsSubmitAndWaitForTransactionResponse
 from .js_submit_and_wait_for_transaction_tree_response import (
     JsSubmitAndWaitForTransactionTreeResponse,
 )
@@ -138,9 +129,7 @@ from .package_metadata_filter import PackageMetadataFilter
 from .package_preference import PackagePreference
 from .package_reference import PackageReference
 from .package_vetting_requirement import PackageVettingRequirement
-from .participant_authorization_topology_format import (
-    ParticipantAuthorizationTopologyFormat,
-)
+from .participant_authorization_topology_format import ParticipantAuthorizationTopologyFormat
 from .party_details import PartyDetails
 from .party_management_feature import PartyManagementFeature
 from .party_signatures import PartySignatures
@@ -167,23 +156,22 @@ from .tree_event_type_1 import TreeEventType1
 from .unassigned_event import UnassignedEvent
 from .unknown_field_set import UnknownFieldSet
 from .update_identity_provider_config_request import UpdateIdentityProviderConfigRequest
-from .update_identity_provider_config_response import (
-    UpdateIdentityProviderConfigResponse,
-)
+from .update_identity_provider_config_response import UpdateIdentityProviderConfigResponse
 from .update_party_details_request import UpdatePartyDetailsRequest
 from .update_party_details_response import UpdatePartyDetailsResponse
-from .update_user_identity_provider_id_request import (
-    UpdateUserIdentityProviderIdRequest,
-)
-from .update_user_identity_provider_id_response import (
-    UpdateUserIdentityProviderIdResponse,
-)
+from .update_user_identity_provider_id_request import UpdateUserIdentityProviderIdRequest
+from .update_user_identity_provider_id_response import UpdateUserIdentityProviderIdResponse
 from .update_user_request import UpdateUserRequest
 from .update_user_response import UpdateUserResponse
+from .update_vetted_packages_request_update_vetted_packages_force_flags_item import (
+    UpdateVettedPackagesRequestUpdateVettedPackagesForceFlagsItem,
+)
+from .update_vetted_packages_response import UpdateVettedPackagesResponse
 from .upload_dar_file_response import UploadDarFileResponse
 from .user import User
 from .user_management_feature import UserManagementFeature
 from .vetted_package import VettedPackage
+from .vetted_packages import VettedPackages
 from .vetted_packages_ref import VettedPackagesRef
 
 __all__ = (
@@ -199,6 +187,9 @@ __all__ = (
     "CompletionStreamRequest",
     "ConnectedSynchronizer",
     "ConnectedSynchronizerPermission",
+    "CostEstimation",
+    "CostEstimationHints",
+    "CostEstimationHintsExpectedSignaturesItem",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "CreatedEvent",
@@ -333,9 +324,12 @@ __all__ = (
     "UpdateUserIdentityProviderIdResponse",
     "UpdateUserRequest",
     "UpdateUserResponse",
+    "UpdateVettedPackagesRequestUpdateVettedPackagesForceFlagsItem",
+    "UpdateVettedPackagesResponse",
     "UploadDarFileResponse",
     "User",
     "UserManagementFeature",
     "VettedPackage",
+    "VettedPackages",
     "VettedPackagesRef",
 )

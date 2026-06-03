@@ -2,19 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
-from ...models.update_user_identity_provider_id_request import (
-    UpdateUserIdentityProviderIdRequest,
-)
-from ...models.update_user_identity_provider_id_response import (
-    UpdateUserIdentityProviderIdResponse,
-)
+from ...models.update_user_identity_provider_id_request import UpdateUserIdentityProviderIdRequest
+from ...models.update_user_identity_provider_id_response import UpdateUserIdentityProviderIdResponse
 from ...types import Response
 
 
@@ -28,7 +27,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "patch",
         "url": "/v2/users/{user_id}/identity-provider-id".format(
-            user_id=user_id,
+            user_id=quote(str(user_id), safe=""),
         ),
     }
 

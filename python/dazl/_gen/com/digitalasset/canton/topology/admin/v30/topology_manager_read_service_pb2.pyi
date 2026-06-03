@@ -4,6 +4,7 @@
 # isort: skip_file
 import datetime
 
+from ....protocol.v30 import sequencing_parameters_pb2 as _sequencing_parameters_pb2
 from ....protocol.v30 import synchronizer_parameters_pb2 as _synchronizer_parameters_pb2
 from ....protocol.v30 import topology_pb2 as _topology_pb2
 from . import common_pb2 as _common_pb2
@@ -278,6 +279,27 @@ class ListSynchronizerParametersStateResponse(_message.Message):
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListSynchronizerParametersStateResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListSynchronizerParametersStateResponse.Result, _Mapping]]] = ...) -> None: ...
+
+class ListSequencingParametersStateRequest(_message.Message):
+    __slots__ = ("base_query", "filter_synchronizer_id")
+    BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
+    FILTER_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    base_query: BaseQuery
+    filter_synchronizer_id: str
+    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., filter_synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class ListSequencingParametersStateResponse(_message.Message):
+    __slots__ = ("results",)
+    class Result(_message.Message):
+        __slots__ = ("context", "item")
+        CONTEXT_FIELD_NUMBER: _ClassVar[int]
+        ITEM_FIELD_NUMBER: _ClassVar[int]
+        context: BaseResult
+        item: _sequencing_parameters_pb2.DynamicSequencingParameters
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_sequencing_parameters_pb2.DynamicSequencingParameters, _Mapping]] = ...) -> None: ...
+    RESULTS_FIELD_NUMBER: _ClassVar[int]
+    results: _containers.RepeatedCompositeFieldContainer[ListSequencingParametersStateResponse.Result]
+    def __init__(self, results: _Optional[_Iterable[_Union[ListSequencingParametersStateResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class ListMediatorSynchronizerStateRequest(_message.Message):
     __slots__ = ("base_query", "filter_synchronizer_id")

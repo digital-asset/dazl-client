@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
-from ....synchronizer.sequencing.sequencer.bftordering.v30 import dynamic_sequencing_parameters_pb2 as _dynamic_sequencing_parameters_pb2
+from ....synchronizer.sequencing.sequencer.bftordering.v30 import bft_ordering_sequencing_parameters_pb2 as _bft_ordering_sequencing_parameters_pb2
+from ....synchronizer.sequencing.sequencer.bftordering.v31 import bft_ordering_sequencing_parameters_pb2 as _bft_ordering_sequencing_parameters_pb2_1
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -176,14 +177,16 @@ class GetOrderingTopologyRequest(_message.Message):
     def __init__(self) -> None: ...
 
 class GetOrderingTopologyResponse(_message.Message):
-    __slots__ = ("current_epoch", "sequencer_ids", "dynamic_sequencing_parameters_payload")
+    __slots__ = ("current_epoch", "sequencer_ids", "dynamic_sequencing_parameters_payload", "dynamic_sequencing_parameters_payload31")
     CURRENT_EPOCH_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_IDS_FIELD_NUMBER: _ClassVar[int]
     DYNAMIC_SEQUENCING_PARAMETERS_PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    DYNAMIC_SEQUENCING_PARAMETERS_PAYLOAD31_FIELD_NUMBER: _ClassVar[int]
     current_epoch: int
     sequencer_ids: _containers.RepeatedScalarFieldContainer[str]
-    dynamic_sequencing_parameters_payload: _dynamic_sequencing_parameters_pb2.DynamicSequencingParametersPayload
-    def __init__(self, current_epoch: _Optional[int] = ..., sequencer_ids: _Optional[_Iterable[str]] = ..., dynamic_sequencing_parameters_payload: _Optional[_Union[_dynamic_sequencing_parameters_pb2.DynamicSequencingParametersPayload, _Mapping]] = ...) -> None: ...
+    dynamic_sequencing_parameters_payload: _bft_ordering_sequencing_parameters_pb2.DynamicSequencingParametersPayload
+    dynamic_sequencing_parameters_payload31: _bft_ordering_sequencing_parameters_pb2_1.DynamicSequencingParametersPayload
+    def __init__(self, current_epoch: _Optional[int] = ..., sequencer_ids: _Optional[_Iterable[str]] = ..., dynamic_sequencing_parameters_payload: _Optional[_Union[_bft_ordering_sequencing_parameters_pb2.DynamicSequencingParametersPayload, _Mapping]] = ..., dynamic_sequencing_parameters_payload31: _Optional[_Union[_bft_ordering_sequencing_parameters_pb2_1.DynamicSequencingParametersPayload, _Mapping]] = ...) -> None: ...
 
 class SetPerformanceMetricsEnabledRequest(_message.Message):
     __slots__ = ("enabled",)

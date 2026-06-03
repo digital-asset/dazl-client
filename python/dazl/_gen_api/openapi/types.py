@@ -4,6 +4,8 @@
 # isort: skip_file
 """Contains some shared types for properties"""
 
+from __future__ import annotations
+
 from collections.abc import Mapping, MutableMapping
 from http import HTTPStatus
 from typing import IO, BinaryIO, Generic, Literal, TypeVar

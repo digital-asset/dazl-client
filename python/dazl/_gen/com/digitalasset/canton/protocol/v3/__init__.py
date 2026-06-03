@@ -3,10 +3,10 @@
 # fmt: off
 # isort: skip_file
 
-from .participant_transaction_pb2 import ActionDescription, ViewParticipantData
 from .mediator_pb2 import TransactionResultMessage, TransferResult, Verdict
-from .topology_pb2 import TopologyTransaction
+from .participant_transaction_pb2 import ActionDescription, ViewParticipantData
 from .synchronization_pb2 import EnvelopeContent
+from .topology_pb2 import TopologyTransaction
 
 __all__ = [
     "ActionDescription",

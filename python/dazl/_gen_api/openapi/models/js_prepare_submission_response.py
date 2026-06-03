@@ -5,15 +5,18 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..models.js_prepare_submission_response_hashing_scheme_version import (
     JsPrepareSubmissionResponseHashingSchemeVersion,
 )
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.cost_estimation import CostEstimation
+
 
 T = TypeVar("T", bound="JsPrepareSubmissionResponse")
 
@@ -38,12 +41,17 @@ class JsPrepareSubmissionResponse:
             set if verbose_hashing = true in the request
             Note that there are no guarantees on the stability of the format or content of this field.
             Its content should NOT be parsed and should only be used for troubleshooting purposes.
+        cost_estimation (CostEstimation | Unset): Estimation of the cost of submitting the prepared transaction
+            The estimation is done against the synchronizer chosen during preparation of the transaction
+            (or the one explicitly requested).
+            The cost of re-assigning contracts to another synchronizer when necessary is not included in the estimation.
     """
 
     prepared_transaction_hash: str
     hashing_scheme_version: JsPrepareSubmissionResponseHashingSchemeVersion
     prepared_transaction: str | Unset = UNSET
     hashing_details: str | Unset = UNSET
+    cost_estimation: CostEstimation | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -54,6 +62,10 @@ class JsPrepareSubmissionResponse:
         prepared_transaction = self.prepared_transaction
 
         hashing_details = self.hashing_details
+
+        cost_estimation: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.cost_estimation, Unset):
+            cost_estimation = self.cost_estimation.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -67,11 +79,15 @@ class JsPrepareSubmissionResponse:
             field_dict["preparedTransaction"] = prepared_transaction
         if hashing_details is not UNSET:
             field_dict["hashingDetails"] = hashing_details
+        if cost_estimation is not UNSET:
+            field_dict["costEstimation"] = cost_estimation
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.cost_estimation import CostEstimation
+
         d = dict(src_dict)
         prepared_transaction_hash = d.pop("preparedTransactionHash")
 
@@ -83,11 +99,19 @@ class JsPrepareSubmissionResponse:
 
         hashing_details = d.pop("hashingDetails", UNSET)
 
+        _cost_estimation = d.pop("costEstimation", UNSET)
+        cost_estimation: CostEstimation | Unset
+        if isinstance(_cost_estimation, Unset):
+            cost_estimation = UNSET
+        else:
+            cost_estimation = CostEstimation.from_dict(_cost_estimation)
+
         js_prepare_submission_response = cls(
             prepared_transaction_hash=prepared_transaction_hash,
             hashing_scheme_version=hashing_scheme_version,
             prepared_transaction=prepared_transaction,
             hashing_details=hashing_details,
+            cost_estimation=cost_estimation,
         )
 
         js_prepare_submission_response.additional_properties = d

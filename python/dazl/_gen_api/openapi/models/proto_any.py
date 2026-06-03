@@ -7,8 +7,9 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
+
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.unknown_field_set import UnknownFieldSet
@@ -24,11 +25,13 @@ class ProtoAny:
         type_url (str):
         value (str):
         unknown_fields (UnknownFieldSet):
+        value_decoded (str | Unset):
     """
 
     type_url: str
     value: str
     unknown_fields: UnknownFieldSet
+    value_decoded: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,6 +40,8 @@ class ProtoAny:
         value = self.value
 
         unknown_fields = self.unknown_fields.to_dict()
+
+        value_decoded = self.value_decoded
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -47,6 +52,8 @@ class ProtoAny:
                 "unknownFields": unknown_fields,
             }
         )
+        if value_decoded is not UNSET:
+            field_dict["valueDecoded"] = value_decoded
 
         return field_dict
 
@@ -61,10 +68,13 @@ class ProtoAny:
 
         unknown_fields = UnknownFieldSet.from_dict(d.pop("unknownFields"))
 
+        value_decoded = d.pop("valueDecoded", UNSET)
+
         proto_any = cls(
             type_url=type_url,
             value=value,
             unknown_fields=unknown_fields,
+            value_decoded=value_decoded,
         )
 
         proto_any.additional_properties = d

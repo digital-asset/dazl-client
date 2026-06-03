@@ -3,12 +3,13 @@
 # fmt: off
 # isort: skip_file
 
-from .interactive_submission_data_pb2 import Create, Exercise, Fetch, Node, Rollback
+from .interactive_submission_data_pb2 import Create, Exercise, Fetch, Node, QueryByKey, Rollback
 
 __all__ = [
     "Create",
     "Exercise",
     "Fetch",
     "Node",
+    "QueryByKey",
     "Rollback",
 ]

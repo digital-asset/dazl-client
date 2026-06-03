@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.js_incomplete_assigned import JsIncompleteAssigned
@@ -45,9 +44,7 @@ class JsContractEntryType2:
         from ..models.js_incomplete_assigned import JsIncompleteAssigned
 
         d = dict(src_dict)
-        js_incomplete_assigned = JsIncompleteAssigned.from_dict(
-            d.pop("JsIncompleteAssigned")
-        )
+        js_incomplete_assigned = JsIncompleteAssigned.from_dict(d.pop("JsIncompleteAssigned"))
 
         js_contract_entry_type_2 = cls(
             js_incomplete_assigned=js_incomplete_assigned,

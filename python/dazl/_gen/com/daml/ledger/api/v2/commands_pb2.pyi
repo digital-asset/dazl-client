@@ -120,9 +120,11 @@ class Commands(_message.Message):
     def __init__(self, workflow_id: _Optional[str] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[Command, _Mapping]]] = ..., deduplication_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., deduplication_offset: _Optional[int] = ..., min_ledger_time_abs: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., min_ledger_time_rel: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., submission_id: _Optional[str] = ..., disclosed_contracts: _Optional[_Iterable[_Union[DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[PrefetchContractKey, _Mapping]]] = ..., taps_max_passes: _Optional[int] = ...) -> None: ...
 
 class PrefetchContractKey(_message.Message):
-    __slots__ = ("template_id", "contract_key")
+    __slots__ = ("template_id", "contract_key", "limit")
     TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_KEY_FIELD_NUMBER: _ClassVar[int]
+    LIMIT_FIELD_NUMBER: _ClassVar[int]
     template_id: _value_pb2.Identifier
     contract_key: _value_pb2.Value
-    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ...) -> None: ...
+    limit: int
+    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., contract_key: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., limit: _Optional[int] = ...) -> None: ...

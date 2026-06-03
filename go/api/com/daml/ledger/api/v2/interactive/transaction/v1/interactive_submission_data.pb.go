@@ -10,6 +10,7 @@ package v1
 
 import (
 	v2 "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2"
+	interactive "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,15 +26,17 @@ const (
 )
 
 type Fetch struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	LfVersion     string                 `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	ContractId    string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	PackageName   string                 `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId    *v2.Identifier         `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Signatories   []string               `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Stakeholders  []string               `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
-	ActingParties []string               `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
-	InterfaceId   *v2.Identifier         `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	state         protoimpl.MessageState                `protogen:"open.v1"`
+	LfVersion     string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	ContractId    string                                `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	PackageName   string                                `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId    *v2.Identifier                        `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Signatories   []string                              `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Stakeholders  []string                              `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	ActingParties []string                              `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
+	InterfaceId   *v2.Identifier                        `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	Key           *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,9,opt,name=key,proto3,oneof" json:"key,omitempty"`
+	ByKey         bool                                  `protobuf:"varint,10,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -124,22 +127,38 @@ func (x *Fetch) GetInterfaceId() *v2.Identifier {
 	return nil
 }
 
+func (x *Fetch) GetKey() *interactive.GlobalKeyWithMaintainers {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
+func (x *Fetch) GetByKey() bool {
+	if x != nil {
+		return x.ByKey
+	}
+	return false
+}
+
 type Exercise struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	LfVersion       string                 `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	ContractId      string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	PackageName     string                 `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId      *v2.Identifier         `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Signatories     []string               `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Stakeholders    []string               `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
-	ActingParties   []string               `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
-	InterfaceId     *v2.Identifier         `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
-	ChoiceId        string                 `protobuf:"bytes,9,opt,name=choice_id,json=choiceId,proto3" json:"choice_id,omitempty"`
-	ChosenValue     *v2.Value              `protobuf:"bytes,10,opt,name=chosen_value,json=chosenValue,proto3" json:"chosen_value,omitempty"`
-	Consuming       bool                   `protobuf:"varint,11,opt,name=consuming,proto3" json:"consuming,omitempty"`
-	Children        []string               `protobuf:"bytes,12,rep,name=children,proto3" json:"children,omitempty"`
-	ExerciseResult  *v2.Value              `protobuf:"bytes,13,opt,name=exercise_result,json=exerciseResult,proto3" json:"exercise_result,omitempty"`
-	ChoiceObservers []string               `protobuf:"bytes,14,rep,name=choice_observers,json=choiceObservers,proto3" json:"choice_observers,omitempty"`
+	state           protoimpl.MessageState                `protogen:"open.v1"`
+	LfVersion       string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	ContractId      string                                `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	PackageName     string                                `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId      *v2.Identifier                        `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Signatories     []string                              `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Stakeholders    []string                              `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	ActingParties   []string                              `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
+	InterfaceId     *v2.Identifier                        `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	ChoiceId        string                                `protobuf:"bytes,9,opt,name=choice_id,json=choiceId,proto3" json:"choice_id,omitempty"`
+	ChosenValue     *v2.Value                             `protobuf:"bytes,10,opt,name=chosen_value,json=chosenValue,proto3" json:"chosen_value,omitempty"`
+	Consuming       bool                                  `protobuf:"varint,11,opt,name=consuming,proto3" json:"consuming,omitempty"`
+	Children        []string                              `protobuf:"bytes,12,rep,name=children,proto3" json:"children,omitempty"`
+	ExerciseResult  *v2.Value                             `protobuf:"bytes,13,opt,name=exercise_result,json=exerciseResult,proto3" json:"exercise_result,omitempty"`
+	ChoiceObservers []string                              `protobuf:"bytes,14,rep,name=choice_observers,json=choiceObservers,proto3" json:"choice_observers,omitempty"`
+	Key             *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,15,opt,name=key,proto3,oneof" json:"key,omitempty"`
+	ByKey           bool                                  `protobuf:"varint,16,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -272,15 +291,30 @@ func (x *Exercise) GetChoiceObservers() []string {
 	return nil
 }
 
+func (x *Exercise) GetKey() *interactive.GlobalKeyWithMaintainers {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
+func (x *Exercise) GetByKey() bool {
+	if x != nil {
+		return x.ByKey
+	}
+	return false
+}
+
 type Create struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	LfVersion     string                 `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	ContractId    string                 `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	PackageName   string                 `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId    *v2.Identifier         `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Argument      *v2.Value              `protobuf:"bytes,5,opt,name=argument,proto3" json:"argument,omitempty"`
-	Signatories   []string               `protobuf:"bytes,6,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Stakeholders  []string               `protobuf:"bytes,7,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	state         protoimpl.MessageState                `protogen:"open.v1"`
+	LfVersion     string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	ContractId    string                                `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	PackageName   string                                `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId    *v2.Identifier                        `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Argument      *v2.Value                             `protobuf:"bytes,5,opt,name=argument,proto3" json:"argument,omitempty"`
+	Signatories   []string                              `protobuf:"bytes,6,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Stakeholders  []string                              `protobuf:"bytes,7,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	Key           *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,8,opt,name=key,proto3,oneof" json:"key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -364,6 +398,13 @@ func (x *Create) GetStakeholders() []string {
 	return nil
 }
 
+func (x *Create) GetKey() *interactive.GlobalKeyWithMaintainers {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
 type Rollback struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Children      []string               `protobuf:"bytes,1,rep,name=children,proto3" json:"children,omitempty"`
@@ -408,6 +449,90 @@ func (x *Rollback) GetChildren() []string {
 	return nil
 }
 
+type QueryByKey struct {
+	state         protoimpl.MessageState                `protogen:"open.v1"`
+	LfVersion     string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	PackageName   string                                `protobuf:"bytes,2,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId    *v2.Identifier                        `protobuf:"bytes,3,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Exhaustive    bool                                  `protobuf:"varint,4,opt,name=exhaustive,proto3" json:"exhaustive,omitempty"`
+	Key           *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,5,opt,name=key,proto3" json:"key,omitempty"`
+	Result        []string                              `protobuf:"bytes,6,rep,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QueryByKey) Reset() {
+	*x = QueryByKey{}
+	mi := &file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QueryByKey) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryByKey) ProtoMessage() {}
+
+func (x *QueryByKey) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryByKey.ProtoReflect.Descriptor instead.
+func (*QueryByKey) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *QueryByKey) GetLfVersion() string {
+	if x != nil {
+		return x.LfVersion
+	}
+	return ""
+}
+
+func (x *QueryByKey) GetPackageName() string {
+	if x != nil {
+		return x.PackageName
+	}
+	return ""
+}
+
+func (x *QueryByKey) GetTemplateId() *v2.Identifier {
+	if x != nil {
+		return x.TemplateId
+	}
+	return nil
+}
+
+func (x *QueryByKey) GetExhaustive() bool {
+	if x != nil {
+		return x.Exhaustive
+	}
+	return false
+}
+
+func (x *QueryByKey) GetKey() *interactive.GlobalKeyWithMaintainers {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
+func (x *QueryByKey) GetResult() []string {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
 type Node struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to NodeType:
@@ -416,6 +541,7 @@ type Node struct {
 	//	*Node_Fetch
 	//	*Node_Exercise
 	//	*Node_Rollback
+	//	*Node_QueryByKey
 	NodeType      isNode_NodeType `protobuf_oneof:"node_type"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -423,7 +549,7 @@ type Node struct {
 
 func (x *Node) Reset() {
 	*x = Node{}
-	mi := &file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -435,7 +561,7 @@ func (x *Node) String() string {
 func (*Node) ProtoMessage() {}
 
 func (x *Node) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -448,7 +574,7 @@ func (x *Node) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Node.ProtoReflect.Descriptor instead.
 func (*Node) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDescGZIP(), []int{4}
+	return file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Node) GetNodeType() isNode_NodeType {
@@ -494,6 +620,15 @@ func (x *Node) GetRollback() *Rollback {
 	return nil
 }
 
+func (x *Node) GetQueryByKey() *QueryByKey {
+	if x != nil {
+		if x, ok := x.NodeType.(*Node_QueryByKey); ok {
+			return x.QueryByKey
+		}
+	}
+	return nil
+}
+
 type isNode_NodeType interface {
 	isNode_NodeType()
 }
@@ -514,6 +649,10 @@ type Node_Rollback struct {
 	Rollback *Rollback `protobuf:"bytes,4,opt,name=rollback,proto3,oneof"`
 }
 
+type Node_QueryByKey struct {
+	QueryByKey *QueryByKey `protobuf:"bytes,5,opt,name=query_by_key,json=queryByKey,proto3,oneof"`
+}
+
 func (*Node_Create) isNode_NodeType() {}
 
 func (*Node_Fetch) isNode_NodeType() {}
@@ -522,11 +661,13 @@ func (*Node_Exercise) isNode_NodeType() {}
 
 func (*Node_Rollback) isNode_NodeType() {}
 
+func (*Node_QueryByKey) isNode_NodeType() {}
+
 var File_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDesc = "" +
 	"\n" +
-	"Scom/daml/ledger/api/v2/interactive/transaction/v1/interactive_submission_data.proto\x121com.daml.ledger.api.v2.interactive.transaction.v1\x1a\"com/daml/ledger/api/v2/value.proto\"\xe3\x02\n" +
+	"Scom/daml/ledger/api/v2/interactive/transaction/v1/interactive_submission_data.proto\x121com.daml.ledger.api.v2.interactive.transaction.v1\x1aKcom/daml/ledger/api/v2/interactive/interactive_submission_common_data.proto\x1a\"com/daml/ledger/api/v2/value.proto\"\xd7\x03\n" +
 	"\x05Fetch\x12\x1d\n" +
 	"\n" +
 	"lf_version\x18\x01 \x01(\tR\tlfVersion\x12\x1f\n" +
@@ -538,7 +679,11 @@ const file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submiss
 	"\vsignatories\x18\x05 \x03(\tR\vsignatories\x12\"\n" +
 	"\fstakeholders\x18\x06 \x03(\tR\fstakeholders\x12%\n" +
 	"\x0eacting_parties\x18\a \x03(\tR\ractingParties\x12E\n" +
-	"\finterface_id\x18\b \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\vinterfaceId\"\xf2\x04\n" +
+	"\finterface_id\x18\b \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\vinterfaceId\x12S\n" +
+	"\x03key\x18\t \x01(\v2<.com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainersH\x00R\x03key\x88\x01\x01\x12\x15\n" +
+	"\x06by_key\x18\n" +
+	" \x01(\bR\x05byKeyB\x06\n" +
+	"\x04_key\"\xe6\x05\n" +
 	"\bExercise\x12\x1d\n" +
 	"\n" +
 	"lf_version\x18\x01 \x01(\tR\tlfVersion\x12\x1f\n" +
@@ -557,7 +702,10 @@ const file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submiss
 	"\tconsuming\x18\v \x01(\bR\tconsuming\x12\x1a\n" +
 	"\bchildren\x18\f \x03(\tR\bchildren\x12F\n" +
 	"\x0fexercise_result\x18\r \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\x0eexerciseResult\x12)\n" +
-	"\x10choice_observers\x18\x0e \x03(\tR\x0fchoiceObservers\"\xb1\x02\n" +
+	"\x10choice_observers\x18\x0e \x03(\tR\x0fchoiceObservers\x12S\n" +
+	"\x03key\x18\x0f \x01(\v2<.com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainersH\x00R\x03key\x88\x01\x01\x12\x15\n" +
+	"\x06by_key\x18\x10 \x01(\bR\x05byKeyB\x06\n" +
+	"\x04_key\"\x8e\x03\n" +
 	"\x06Create\x12\x1d\n" +
 	"\n" +
 	"lf_version\x18\x01 \x01(\tR\tlfVersion\x12\x1f\n" +
@@ -568,14 +716,30 @@ const file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submiss
 	"templateId\x129\n" +
 	"\bargument\x18\x05 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\bargument\x12 \n" +
 	"\vsignatories\x18\x06 \x03(\tR\vsignatories\x12\"\n" +
-	"\fstakeholders\x18\a \x03(\tR\fstakeholders\"&\n" +
+	"\fstakeholders\x18\a \x03(\tR\fstakeholders\x12S\n" +
+	"\x03key\x18\b \x01(\v2<.com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainersH\x00R\x03key\x88\x01\x01B\x06\n" +
+	"\x04_key\"&\n" +
 	"\bRollback\x12\x1a\n" +
-	"\bchildren\x18\x01 \x03(\tR\bchildren\"\xf0\x02\n" +
+	"\bchildren\x18\x01 \x03(\tR\bchildren\"\x9b\x02\n" +
+	"\n" +
+	"QueryByKey\x12\x1d\n" +
+	"\n" +
+	"lf_version\x18\x01 \x01(\tR\tlfVersion\x12!\n" +
+	"\fpackage_name\x18\x02 \x01(\tR\vpackageName\x12C\n" +
+	"\vtemplate_id\x18\x03 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
+	"templateId\x12\x1e\n" +
+	"\n" +
+	"exhaustive\x18\x04 \x01(\bR\n" +
+	"exhaustive\x12N\n" +
+	"\x03key\x18\x05 \x01(\v2<.com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainersR\x03key\x12\x16\n" +
+	"\x06result\x18\x06 \x03(\tR\x06result\"\xd3\x03\n" +
 	"\x04Node\x12S\n" +
 	"\x06create\x18\x01 \x01(\v29.com.daml.ledger.api.v2.interactive.transaction.v1.CreateH\x00R\x06create\x12P\n" +
 	"\x05fetch\x18\x02 \x01(\v28.com.daml.ledger.api.v2.interactive.transaction.v1.FetchH\x00R\x05fetch\x12Y\n" +
 	"\bexercise\x18\x03 \x01(\v2;.com.daml.ledger.api.v2.interactive.transaction.v1.ExerciseH\x00R\bexercise\x12Y\n" +
-	"\brollback\x18\x04 \x01(\v2;.com.daml.ledger.api.v2.interactive.transaction.v1.RollbackH\x00R\brollbackB\v\n" +
+	"\brollback\x18\x04 \x01(\v2;.com.daml.ledger.api.v2.interactive.transaction.v1.RollbackH\x00R\brollback\x12a\n" +
+	"\fquery_by_key\x18\x05 \x01(\v2=.com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKeyH\x00R\n" +
+	"queryByKeyB\v\n" +
 	"\tnode_typeB\xee\x01\n" +
 	"1com.daml.ledger.api.v2.interactive.transaction.v1B#InteractiveSubmissionDataOuterClassZ`github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/transaction/v1\xaa\x021Com.Daml.Ledger.Api.V2.Interactive.Transaction.V1b\x06proto3"
 
@@ -591,34 +755,42 @@ func file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submissi
 	return file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_goTypes = []any{
 	(*Fetch)(nil),         // 0: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch
 	(*Exercise)(nil),      // 1: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise
 	(*Create)(nil),        // 2: com.daml.ledger.api.v2.interactive.transaction.v1.Create
 	(*Rollback)(nil),      // 3: com.daml.ledger.api.v2.interactive.transaction.v1.Rollback
-	(*Node)(nil),          // 4: com.daml.ledger.api.v2.interactive.transaction.v1.Node
-	(*v2.Identifier)(nil), // 5: com.daml.ledger.api.v2.Identifier
-	(*v2.Value)(nil),      // 6: com.daml.ledger.api.v2.Value
+	(*QueryByKey)(nil),    // 4: com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKey
+	(*Node)(nil),          // 5: com.daml.ledger.api.v2.interactive.transaction.v1.Node
+	(*v2.Identifier)(nil), // 6: com.daml.ledger.api.v2.Identifier
+	(*interactive.GlobalKeyWithMaintainers)(nil), // 7: com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
+	(*v2.Value)(nil), // 8: com.daml.ledger.api.v2.Value
 }
 var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_depIdxs = []int32{
-	5,  // 0: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	5,  // 1: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
-	5,  // 2: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	5,  // 3: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
-	6,  // 4: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.chosen_value:type_name -> com.daml.ledger.api.v2.Value
-	6,  // 5: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.exercise_result:type_name -> com.daml.ledger.api.v2.Value
-	5,  // 6: com.daml.ledger.api.v2.interactive.transaction.v1.Create.template_id:type_name -> com.daml.ledger.api.v2.Identifier
-	6,  // 7: com.daml.ledger.api.v2.interactive.transaction.v1.Create.argument:type_name -> com.daml.ledger.api.v2.Value
-	2,  // 8: com.daml.ledger.api.v2.interactive.transaction.v1.Node.create:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Create
-	0,  // 9: com.daml.ledger.api.v2.interactive.transaction.v1.Node.fetch:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Fetch
-	1,  // 10: com.daml.ledger.api.v2.interactive.transaction.v1.Node.exercise:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Exercise
-	3,  // 11: com.daml.ledger.api.v2.interactive.transaction.v1.Node.rollback:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Rollback
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	6,  // 0: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	6,  // 1: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
+	7,  // 2: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
+	6,  // 3: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	6,  // 4: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.interface_id:type_name -> com.daml.ledger.api.v2.Identifier
+	8,  // 5: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.chosen_value:type_name -> com.daml.ledger.api.v2.Value
+	8,  // 6: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.exercise_result:type_name -> com.daml.ledger.api.v2.Value
+	7,  // 7: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
+	6,  // 8: com.daml.ledger.api.v2.interactive.transaction.v1.Create.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	8,  // 9: com.daml.ledger.api.v2.interactive.transaction.v1.Create.argument:type_name -> com.daml.ledger.api.v2.Value
+	7,  // 10: com.daml.ledger.api.v2.interactive.transaction.v1.Create.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
+	6,  // 11: com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKey.template_id:type_name -> com.daml.ledger.api.v2.Identifier
+	7,  // 12: com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKey.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
+	2,  // 13: com.daml.ledger.api.v2.interactive.transaction.v1.Node.create:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Create
+	0,  // 14: com.daml.ledger.api.v2.interactive.transaction.v1.Node.fetch:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Fetch
+	1,  // 15: com.daml.ledger.api.v2.interactive.transaction.v1.Node.exercise:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Exercise
+	3,  // 16: com.daml.ledger.api.v2.interactive.transaction.v1.Node.rollback:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Rollback
+	4,  // 17: com.daml.ledger.api.v2.interactive.transaction.v1.Node.query_by_key:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKey
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() {
@@ -628,11 +800,15 @@ func file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submissi
 	if File_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto != nil {
 		return
 	}
-	file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[4].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[0].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[1].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[2].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes[5].OneofWrappers = []any{
 		(*Node_Create)(nil),
 		(*Node_Fetch)(nil),
 		(*Node_Exercise)(nil),
 		(*Node_Rollback)(nil),
+		(*Node_QueryByKey)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -640,7 +816,7 @@ func file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submissi
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDesc), len(file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

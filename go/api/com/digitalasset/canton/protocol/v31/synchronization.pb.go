@@ -29,7 +29,7 @@ type EnvelopeContent struct {
 	// Types that are valid to be assigned to SomeEnvelopeContent:
 	//
 	//	*EnvelopeContent_InformeeMessage
-	//	*EnvelopeContent_EncryptedViewMessage
+	//	*EnvelopeContent_EncryptedMultipleViewsMessage
 	//	*EnvelopeContent_UnassignmentMediatorMessage
 	//	*EnvelopeContent_AssignmentMediatorMessage
 	//	*EnvelopeContent_RootHashMessage
@@ -87,10 +87,10 @@ func (x *EnvelopeContent) GetInformeeMessage() *v30.InformeeMessage {
 	return nil
 }
 
-func (x *EnvelopeContent) GetEncryptedViewMessage() *v30.EncryptedViewMessage {
+func (x *EnvelopeContent) GetEncryptedMultipleViewsMessage() *EncryptedMultipleViewsMessage {
 	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_EncryptedViewMessage); ok {
-			return x.EncryptedViewMessage
+		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_EncryptedMultipleViewsMessage); ok {
+			return x.EncryptedMultipleViewsMessage
 		}
 	}
 	return nil
@@ -158,8 +158,8 @@ type EnvelopeContent_InformeeMessage struct {
 	InformeeMessage *v30.InformeeMessage `protobuf:"bytes,1,opt,name=informee_message,json=informeeMessage,proto3,oneof"`
 }
 
-type EnvelopeContent_EncryptedViewMessage struct {
-	EncryptedViewMessage *v30.EncryptedViewMessage `protobuf:"bytes,2,opt,name=encrypted_view_message,json=encryptedViewMessage,proto3,oneof"`
+type EnvelopeContent_EncryptedMultipleViewsMessage struct {
+	EncryptedMultipleViewsMessage *EncryptedMultipleViewsMessage `protobuf:"bytes,2,opt,name=encrypted_multiple_views_message,json=encryptedMultipleViewsMessage,proto3,oneof"`
 }
 
 type EnvelopeContent_UnassignmentMediatorMessage struct {
@@ -188,7 +188,7 @@ type EnvelopeContent_LsuSequencingTestMessage struct {
 
 func (*EnvelopeContent_InformeeMessage) isEnvelopeContent_SomeEnvelopeContent() {}
 
-func (*EnvelopeContent_EncryptedViewMessage) isEnvelopeContent_SomeEnvelopeContent() {}
+func (*EnvelopeContent_EncryptedMultipleViewsMessage) isEnvelopeContent_SomeEnvelopeContent() {}
 
 func (*EnvelopeContent_UnassignmentMediatorMessage) isEnvelopeContent_SomeEnvelopeContent() {}
 
@@ -206,10 +206,10 @@ var File_com_digitalasset_canton_protocol_v31_synchronization_proto protoreflect
 
 const file_com_digitalasset_canton_protocol_v31_synchronization_proto_rawDesc = "" +
 	"\n" +
-	":com/digitalasset/canton/protocol/v31/synchronization.proto\x12$com.digitalasset.canton.protocol.v31\x1a:com/digitalasset/canton/protocol/v30/acs_commitments.proto\x1aCcom/digitalasset/canton/protocol/v30/participant_reassignment.proto\x1aBcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x1a:com/digitalasset/canton/protocol/v30/synchronization.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\x94\b\n" +
+	":com/digitalasset/canton/protocol/v31/synchronization.proto\x12$com.digitalasset.canton.protocol.v31\x1a:com/digitalasset/canton/protocol/v30/acs_commitments.proto\x1aCcom/digitalasset/canton/protocol/v30/participant_reassignment.proto\x1aBcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x1a:com/digitalasset/canton/protocol/v30/synchronization.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1aBcom/digitalasset/canton/protocol/v31/participant_transaction.proto\"\xb1\b\n" +
 	"\x0fEnvelopeContent\x12b\n" +
-	"\x10informee_message\x18\x01 \x01(\v25.com.digitalasset.canton.protocol.v30.InformeeMessageH\x00R\x0finformeeMessage\x12r\n" +
-	"\x16encrypted_view_message\x18\x02 \x01(\v2:.com.digitalasset.canton.protocol.v30.EncryptedViewMessageH\x00R\x14encryptedViewMessage\x12\x87\x01\n" +
+	"\x10informee_message\x18\x01 \x01(\v25.com.digitalasset.canton.protocol.v30.InformeeMessageH\x00R\x0finformeeMessage\x12\x8e\x01\n" +
+	" encrypted_multiple_views_message\x18\x02 \x01(\v2C.com.digitalasset.canton.protocol.v31.EncryptedMultipleViewsMessageH\x00R\x1dencryptedMultipleViewsMessage\x12\x87\x01\n" +
 	"\x1dunassignment_mediator_message\x18\x03 \x01(\v2A.com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessageH\x00R\x1bunassignmentMediatorMessage\x12\x81\x01\n" +
 	"\x1bassignment_mediator_message\x18\x04 \x01(\v2?.com.digitalasset.canton.protocol.v30.AssignmentMediatorMessageH\x00R\x19assignmentMediatorMessage\x12c\n" +
 	"\x11root_hash_message\x18\x05 \x01(\v25.com.digitalasset.canton.protocol.v30.RootHashMessageH\x00R\x0frootHashMessage\x12\x8d\x01\n" +
@@ -234,7 +234,7 @@ var file_com_digitalasset_canton_protocol_v31_synchronization_proto_msgTypes = m
 var file_com_digitalasset_canton_protocol_v31_synchronization_proto_goTypes = []any{
 	(*EnvelopeContent)(nil),                   // 0: com.digitalasset.canton.protocol.v31.EnvelopeContent
 	(*v30.InformeeMessage)(nil),               // 1: com.digitalasset.canton.protocol.v30.InformeeMessage
-	(*v30.EncryptedViewMessage)(nil),          // 2: com.digitalasset.canton.protocol.v30.EncryptedViewMessage
+	(*EncryptedMultipleViewsMessage)(nil),     // 2: com.digitalasset.canton.protocol.v31.EncryptedMultipleViewsMessage
 	(*v30.UnassignmentMediatorMessage)(nil),   // 3: com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessage
 	(*v30.AssignmentMediatorMessage)(nil),     // 4: com.digitalasset.canton.protocol.v30.AssignmentMediatorMessage
 	(*v30.RootHashMessage)(nil),               // 5: com.digitalasset.canton.protocol.v30.RootHashMessage
@@ -244,7 +244,7 @@ var file_com_digitalasset_canton_protocol_v31_synchronization_proto_goTypes = []
 }
 var file_com_digitalasset_canton_protocol_v31_synchronization_proto_depIdxs = []int32{
 	1, // 0: com.digitalasset.canton.protocol.v31.EnvelopeContent.informee_message:type_name -> com.digitalasset.canton.protocol.v30.InformeeMessage
-	2, // 1: com.digitalasset.canton.protocol.v31.EnvelopeContent.encrypted_view_message:type_name -> com.digitalasset.canton.protocol.v30.EncryptedViewMessage
+	2, // 1: com.digitalasset.canton.protocol.v31.EnvelopeContent.encrypted_multiple_views_message:type_name -> com.digitalasset.canton.protocol.v31.EncryptedMultipleViewsMessage
 	3, // 2: com.digitalasset.canton.protocol.v31.EnvelopeContent.unassignment_mediator_message:type_name -> com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessage
 	4, // 3: com.digitalasset.canton.protocol.v31.EnvelopeContent.assignment_mediator_message:type_name -> com.digitalasset.canton.protocol.v30.AssignmentMediatorMessage
 	5, // 4: com.digitalasset.canton.protocol.v31.EnvelopeContent.root_hash_message:type_name -> com.digitalasset.canton.protocol.v30.RootHashMessage
@@ -263,9 +263,10 @@ func file_com_digitalasset_canton_protocol_v31_synchronization_proto_init() {
 	if File_com_digitalasset_canton_protocol_v31_synchronization_proto != nil {
 		return
 	}
+	file_com_digitalasset_canton_protocol_v31_participant_transaction_proto_init()
 	file_com_digitalasset_canton_protocol_v31_synchronization_proto_msgTypes[0].OneofWrappers = []any{
 		(*EnvelopeContent_InformeeMessage)(nil),
-		(*EnvelopeContent_EncryptedViewMessage)(nil),
+		(*EnvelopeContent_EncryptedMultipleViewsMessage)(nil),
 		(*EnvelopeContent_UnassignmentMediatorMessage)(nil),
 		(*EnvelopeContent_AssignmentMediatorMessage)(nil),
 		(*EnvelopeContent_RootHashMessage)(nil),

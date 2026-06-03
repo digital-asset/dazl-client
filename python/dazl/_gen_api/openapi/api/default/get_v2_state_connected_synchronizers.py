@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.get_connected_synchronizers_response import (
-    GetConnectedSynchronizersResponse,
-)
+from ...models.get_connected_synchronizers_response import GetConnectedSynchronizersResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import UNSET, Response, Unset
 
@@ -21,6 +21,7 @@ def _get_kwargs(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["party"] = party

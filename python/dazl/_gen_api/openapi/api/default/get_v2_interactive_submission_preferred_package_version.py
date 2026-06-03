@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 import datetime
 from http import HTTPStatus
 from typing import Any
@@ -9,9 +11,7 @@ from typing import Any
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.get_preferred_package_version_response import (
-    GetPreferredPackageVersionResponse,
-)
+from ...models.get_preferred_package_version_response import GetPreferredPackageVersionResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import UNSET, Response, Unset
 
@@ -23,6 +23,7 @@ def _get_kwargs(
     vetting_valid_at: datetime.datetime | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     json_parties: list[str] | Unset = UNSET

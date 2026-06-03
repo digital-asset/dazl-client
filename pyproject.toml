@@ -34,8 +34,10 @@ tls-testing = ["pyOpenSSL"]
 dazl = 'dazl.cli:main'
 
 [tool.poetry.group.dev.dependencies]
+black = "*"
 grpc-stubs = "*"
 grpcio-tools = "^1.72.0"
+isort = "*"
 jinja2 = "^3"
 mypy = "*"
 openapi-python-client = "*"
@@ -44,6 +46,7 @@ pytest = "*"
 pytest-asyncio = "*"
 pyyaml = "^6.0.2"
 rich = "^13.7.0"
+ruff = "*"
 sphinx = "*"
 sphinx-autobuild = "*"
 sphinx-markdown-builder = "*"

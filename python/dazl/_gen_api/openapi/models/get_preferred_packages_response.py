@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -75,9 +74,7 @@ class GetPreferredPackagesResponse:
         if _package_references is not UNSET:
             package_references = []
             for package_references_item_data in _package_references:
-                package_references_item = PackageReference.from_dict(
-                    package_references_item_data
-                )
+                package_references_item = PackageReference.from_dict(package_references_item_data)
 
                 package_references.append(package_references_item)
 

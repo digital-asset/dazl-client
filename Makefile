@@ -5,7 +5,7 @@ cache_dir=.cache
 
 proto_dir := $(cache_dir)/protos
 openapi_dir := $(cache_dir)/openapi
-splice_version := 0.5.1
+splice_version := 0.5.18
 splice_tarball := $(cache_dir)/splice-$(splice_version).tar.gz
 python := poetry run python3
 
@@ -82,14 +82,14 @@ python-deps: .venv/poetry.lock
 # python: reformat all of our files
 .PHONY: python-format
 python-format:
-	ruff check --select I --fix _fixtures python $(protos)
-	ruff format _fixtures python $(protos)
+	poetry run ruff check --select I --fix _fixtures python $(protos)
+	poetry run ruff format _fixtures python $(protos)
 
 # python: check if files are formatted properly
 .PHONY: python-format-test
 python-format-test: .venv/poetry.lock
-	ruff check --select I _fixtures python $(protos)
-	ruff format --check _fixtures python $(protos)
+	poetry run ruff check --select I _fixtures python $(protos)
+	poetry run ruff format --check _fixtures python $(protos)
 
 # python: run mypy
 .PHONY: python-typecheck

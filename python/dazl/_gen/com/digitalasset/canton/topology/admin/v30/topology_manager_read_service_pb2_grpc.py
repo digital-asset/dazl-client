@@ -88,6 +88,11 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerParametersStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerParametersStateResponse.FromString,
                 _registered_method=True)
+        self.ListSequencingParametersState = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencingParametersState',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencingParametersStateRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencingParametersStateResponse.FromString,
+                _registered_method=True)
         self.ListMediatorSynchronizerState = channel.unary_unary(
                 '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListMediatorSynchronizerState',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListMediatorSynchronizerStateRequest.SerializeToString,
@@ -203,6 +208,12 @@ class TopologyManagerReadServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ListSynchronizerParametersState(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListSequencingParametersState(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -326,6 +337,11 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     servicer.ListSynchronizerParametersState,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerParametersStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerParametersStateResponse.SerializeToString,
+            ),
+            'ListSequencingParametersState': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSequencingParametersState,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencingParametersStateRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencingParametersStateResponse.SerializeToString,
             ),
             'ListMediatorSynchronizerState': grpc.unary_unary_rpc_method_handler(
                     servicer.ListMediatorSynchronizerState,
@@ -653,6 +669,33 @@ class TopologyManagerReadService(object):
             '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerParametersState',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerParametersStateRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSynchronizerParametersStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListSequencingParametersState(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencingParametersState',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencingParametersStateRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListSequencingParametersStateResponse.FromString,
             options,
             channel_credentials,
             insecure,

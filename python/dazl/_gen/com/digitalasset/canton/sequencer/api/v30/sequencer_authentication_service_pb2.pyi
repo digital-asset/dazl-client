@@ -17,12 +17,14 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class SequencerAuthentication(_message.Message):
     __slots__ = ()
     class ChallengeRequest(_message.Message):
-        __slots__ = ("member", "member_protocol_versions")
+        __slots__ = ("member", "member_protocol_versions", "client_version")
         MEMBER_FIELD_NUMBER: _ClassVar[int]
         MEMBER_PROTOCOL_VERSIONS_FIELD_NUMBER: _ClassVar[int]
+        CLIENT_VERSION_FIELD_NUMBER: _ClassVar[int]
         member: str
         member_protocol_versions: _containers.RepeatedScalarFieldContainer[int]
-        def __init__(self, member: _Optional[str] = ..., member_protocol_versions: _Optional[_Iterable[int]] = ...) -> None: ...
+        client_version: str
+        def __init__(self, member: _Optional[str] = ..., member_protocol_versions: _Optional[_Iterable[int]] = ..., client_version: _Optional[str] = ...) -> None: ...
     class ChallengeResponse(_message.Message):
         __slots__ = ("nonce", "fingerprints")
         NONCE_FIELD_NUMBER: _ClassVar[int]

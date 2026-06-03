@@ -48,6 +48,7 @@ type SequencerAdministrationServiceClient interface {
 	SetThroughputCap(ctx context.Context, in *SetThroughputCapRequest, opts ...grpc.CallOption) (*SetThroughputCapResponse, error)
 	GetThroughputCap(ctx context.Context, in *GetThroughputCapRequest, opts ...grpc.CallOption) (*GetThroughputCapResponse, error)
 	Snapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error)
+	// Deprecated: Do not use.
 	OnboardingState(ctx context.Context, in *OnboardingStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateResponse], error)
 	OnboardingStateV2(ctx context.Context, in *OnboardingStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateV2Response], error)
 	DisableMember(ctx context.Context, in *DisableMemberRequest, opts ...grpc.CallOption) (*DisableMemberResponse, error)
@@ -143,6 +144,7 @@ func (c *sequencerAdministrationServiceClient) Snapshot(ctx context.Context, in 
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *sequencerAdministrationServiceClient) OnboardingState(ctx context.Context, in *OnboardingStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &SequencerAdministrationService_ServiceDesc.Streams[0], SequencerAdministrationService_OnboardingState_FullMethodName, cOpts...)
@@ -223,6 +225,7 @@ type SequencerAdministrationServiceServer interface {
 	SetThroughputCap(context.Context, *SetThroughputCapRequest) (*SetThroughputCapResponse, error)
 	GetThroughputCap(context.Context, *GetThroughputCapRequest) (*GetThroughputCapResponse, error)
 	Snapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error)
+	// Deprecated: Do not use.
 	OnboardingState(*OnboardingStateRequest, grpc.ServerStreamingServer[OnboardingStateResponse]) error
 	OnboardingStateV2(*OnboardingStateV2Request, grpc.ServerStreamingServer[OnboardingStateV2Response]) error
 	DisableMember(context.Context, *DisableMemberRequest) (*DisableMemberResponse, error)

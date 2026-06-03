@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -16,10 +19,11 @@ from ...types import Response
 def _get_kwargs(
     package_id: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/packages/{package_id}/status".format(
-            package_id=package_id,
+            package_id=quote(str(package_id), safe=""),
         ),
     }
 

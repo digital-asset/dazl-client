@@ -37,6 +37,7 @@ const (
 type TopologyManagerWriteServiceClient interface {
 	Authorize(ctx context.Context, in *AuthorizeRequest, opts ...grpc.CallOption) (*AuthorizeResponse, error)
 	AddTransactions(ctx context.Context, in *AddTransactionsRequest, opts ...grpc.CallOption) (*AddTransactionsResponse, error)
+	// Deprecated: Do not use.
 	ImportTopologySnapshot(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportTopologySnapshotRequest, ImportTopologySnapshotResponse], error)
 	ImportTopologySnapshotV2(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response], error)
 	SignTransactions(ctx context.Context, in *SignTransactionsRequest, opts ...grpc.CallOption) (*SignTransactionsResponse, error)
@@ -73,6 +74,7 @@ func (c *topologyManagerWriteServiceClient) AddTransactions(ctx context.Context,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *topologyManagerWriteServiceClient) ImportTopologySnapshot(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportTopologySnapshotRequest, ImportTopologySnapshotResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &TopologyManagerWriteService_ServiceDesc.Streams[0], TopologyManagerWriteService_ImportTopologySnapshot_FullMethodName, cOpts...)
@@ -145,6 +147,7 @@ func (c *topologyManagerWriteServiceClient) DropTemporaryTopologyStore(ctx conte
 type TopologyManagerWriteServiceServer interface {
 	Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error)
 	AddTransactions(context.Context, *AddTransactionsRequest) (*AddTransactionsResponse, error)
+	// Deprecated: Do not use.
 	ImportTopologySnapshot(grpc.ClientStreamingServer[ImportTopologySnapshotRequest, ImportTopologySnapshotResponse]) error
 	ImportTopologySnapshotV2(grpc.ClientStreamingServer[ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response]) error
 	SignTransactions(context.Context, *SignTransactionsRequest) (*SignTransactionsResponse, error)

@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -73,11 +72,11 @@ class VettedPackage:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        package_id = d.pop("packageId", "")
+        package_id = d.pop("packageId")
 
-        package_name = d.pop("packageName", "")
+        package_name = d.pop("packageName")
 
-        package_version = d.pop("packageVersion", "")
+        package_version = d.pop("packageVersion")
 
         valid_from_inclusive = d.pop("validFromInclusive", UNSET)
 

@@ -48,6 +48,7 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/protocol/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/standalone/v1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v30"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v31"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/v30"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/time/admin/v0"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/time/admin/v30"

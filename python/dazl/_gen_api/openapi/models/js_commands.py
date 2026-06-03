@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -101,18 +100,13 @@ class JsCommands:
     """
 
     command_id: str
-    commands: (
-        list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset
-    ) = UNSET
+    commands: list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset = UNSET
     act_as: list[str] | Unset = UNSET
     user_id: str | Unset = UNSET
     read_as: list[str] | Unset = UNSET
     workflow_id: str | Unset = UNSET
     deduplication_period: (
-        DeduplicationPeriodType0
-        | DeduplicationPeriodType1
-        | DeduplicationPeriodType2
-        | Unset
+        DeduplicationPeriodType0 | DeduplicationPeriodType1 | DeduplicationPeriodType2 | Unset
     ) = UNSET
     min_ledger_time_abs: str | Unset = UNSET
     min_ledger_time_rel: Duration | Unset = UNSET
@@ -251,9 +245,7 @@ class JsCommands:
         command_id = d.pop("commandId")
 
         _commands = d.pop("commands", UNSET)
-        commands: (
-            list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset
-        ) = UNSET
+        commands: list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset = UNSET
         if _commands is not UNSET:
             commands = []
             for commands_item_data in _commands:
@@ -305,19 +297,14 @@ class JsCommands:
 
         def _parse_deduplication_period(
             data: object,
-        ) -> (
-            DeduplicationPeriodType0
-            | DeduplicationPeriodType1
-            | DeduplicationPeriodType2
-            | Unset
-        ):
+        ) -> DeduplicationPeriodType0 | DeduplicationPeriodType1 | DeduplicationPeriodType2 | Unset:
             if isinstance(data, Unset):
                 return data
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_deduplication_period_type_0 = (
-                    DeduplicationPeriodType0.from_dict(data)
+                componentsschemas_deduplication_period_type_0 = DeduplicationPeriodType0.from_dict(
+                    data
                 )
 
                 return componentsschemas_deduplication_period_type_0
@@ -326,8 +313,8 @@ class JsCommands:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_deduplication_period_type_1 = (
-                    DeduplicationPeriodType1.from_dict(data)
+                componentsschemas_deduplication_period_type_1 = DeduplicationPeriodType1.from_dict(
+                    data
                 )
 
                 return componentsschemas_deduplication_period_type_1
@@ -335,15 +322,11 @@ class JsCommands:
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
-            componentsschemas_deduplication_period_type_2 = (
-                DeduplicationPeriodType2.from_dict(data)
-            )
+            componentsschemas_deduplication_period_type_2 = DeduplicationPeriodType2.from_dict(data)
 
             return componentsschemas_deduplication_period_type_2
 
-        deduplication_period = _parse_deduplication_period(
-            d.pop("deduplicationPeriod", UNSET)
-        )
+        deduplication_period = _parse_deduplication_period(d.pop("deduplicationPeriod", UNSET))
 
         min_ledger_time_abs = d.pop("minLedgerTimeAbs", UNSET)
 

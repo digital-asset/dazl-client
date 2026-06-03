@@ -196,7 +196,7 @@ class LogoutResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class PerformManualLsuRequest(_message.Message):
-    __slots__ = ("physical_synchronizer_id", "successor_physical_synchronizer_id", "upgrade_time", "sequencer_successors")
+    __slots__ = ("physical_synchronizer_id", "successor_physical_synchronizer_id", "upgrade_time", "sequencer_successors", "config")
     class SequencerConnection(_message.Message):
         __slots__ = ("endpoints", "custom_trust_certificates")
         ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
@@ -204,22 +204,29 @@ class PerformManualLsuRequest(_message.Message):
         endpoints: _containers.RepeatedScalarFieldContainer[str]
         custom_trust_certificates: bytes
         def __init__(self, endpoints: _Optional[_Iterable[str]] = ..., custom_trust_certificates: _Optional[bytes] = ...) -> None: ...
-    class SequencerSuccessorsEntry(_message.Message):
-        __slots__ = ("key", "value")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: PerformManualLsuRequest.SequencerConnection
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[PerformManualLsuRequest.SequencerConnection, _Mapping]] = ...) -> None: ...
+    class SequencerSuccessors(_message.Message):
+        __slots__ = ("successors",)
+        class SuccessorsEntry(_message.Message):
+            __slots__ = ("key", "value")
+            KEY_FIELD_NUMBER: _ClassVar[int]
+            VALUE_FIELD_NUMBER: _ClassVar[int]
+            key: str
+            value: PerformManualLsuRequest.SequencerConnection
+            def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[PerformManualLsuRequest.SequencerConnection, _Mapping]] = ...) -> None: ...
+        SUCCESSORS_FIELD_NUMBER: _ClassVar[int]
+        successors: _containers.MessageMap[str, PerformManualLsuRequest.SequencerConnection]
+        def __init__(self, successors: _Optional[_Mapping[str, PerformManualLsuRequest.SequencerConnection]] = ...) -> None: ...
     PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     SUCCESSOR_PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     UPGRADE_TIME_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_SUCCESSORS_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
     physical_synchronizer_id: str
     successor_physical_synchronizer_id: str
     upgrade_time: _timestamp_pb2.Timestamp
-    sequencer_successors: _containers.MessageMap[str, PerformManualLsuRequest.SequencerConnection]
-    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., successor_physical_synchronizer_id: _Optional[str] = ..., upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sequencer_successors: _Optional[_Mapping[str, PerformManualLsuRequest.SequencerConnection]] = ...) -> None: ...
+    sequencer_successors: PerformManualLsuRequest.SequencerSuccessors
+    config: SynchronizerConnectionConfig
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., successor_physical_synchronizer_id: _Optional[str] = ..., upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sequencer_successors: _Optional[_Union[PerformManualLsuRequest.SequencerSuccessors, _Mapping]] = ..., config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ...) -> None: ...
 
 class PerformManualLsuResponse(_message.Message):
     __slots__ = ()

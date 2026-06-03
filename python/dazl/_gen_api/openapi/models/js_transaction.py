@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -162,9 +161,7 @@ class JsTransaction:
             events = []
             for events_item_data in _events:
 
-                def _parse_events_item(
-                    data: object,
-                ) -> EventType0 | EventType1 | EventType2:
+                def _parse_events_item(data: object) -> EventType0 | EventType1 | EventType2:
                     try:
                         if not isinstance(data, dict):
                             raise TypeError()

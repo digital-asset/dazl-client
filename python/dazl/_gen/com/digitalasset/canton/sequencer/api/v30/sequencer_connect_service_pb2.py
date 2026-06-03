@@ -30,7 +30,7 @@ from ....protocol.v30 import sequencing_pb2 as com_dot_digitalasset_dot_canton_d
 from ....protocol.v30 import topology_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_topology__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nIcom/digitalasset/canton/sequencer/api/v30/sequencer_connect_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a\x35\x63om/digitalasset/canton/protocol/v30/sequencing.proto\x1a\x33\x63om/digitalasset/canton/protocol/v30/topology.proto\"\xbc\t\n\x10SequencerConnect\x1a\xa8\x01\n\x10HandshakeRequest\x12\x38\n\x18\x63lient_protocol_versions\x18\x01 \x03(\x05R\x16\x63lientProtocolVersions\x12=\n\x18minimum_protocol_version\x18\x02 \x01(\x05H\x00R\x16minimumProtocolVersion\x88\x01\x01\x42\x1b\n\x19_minimum_protocol_version\x1a\xe1\x01\n\x11HandshakeResponse\x12\x36\n\x17server_protocol_version\x18\x01 \x01(\x05R\x15serverProtocolVersion\x12q\n\x07success\x18\x02 \x01(\x0b\x32U.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.SuccessH\x00R\x07success\x1a\t\n\x07SuccessB\x07\n\x05valueJ\x04\x08\x03\x10\x04R\x07\x66\x61ilure\x1a\x1a\n\x18GetSynchronizerIdRequest\x1az\n\x19GetSynchronizerIdResponse\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12#\n\rsequencer_uid\x18\x02 \x01(\tR\x0csequencerUid\x1a\"\n GetSynchronizerParametersRequest\x1a\x9c\x01\n!GetSynchronizerParametersResponse\x12i\n\rparameters_v1\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\x0cparametersV1B\x0c\n\nparameters\x1a\x15\n\x13VerifyActiveRequest\x1a\xcc\x01\n\x14VerifyActiveResponse\x12t\n\x07success\x18\x01 \x01(\x0b\x32X.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.SuccessH\x00R\x07success\x1a&\n\x07Success\x12\x1b\n\tis_active\x18\x01 \x01(\x08R\x08isActiveB\x07\n\x05valueJ\x04\x08\x02\x10\x03R\x07\x66\x61ilure\x1a\xa5\x01\n-RegisterOnboardingTopologyTransactionsRequest\x12t\n\x15topology_transactions\x18\x01 \x03(\x0b\x32?.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionR\x14topologyTransactions\x1a\x30\n.RegisterOnboardingTopologyTransactionsResponse2\x98\x08\n\x17SequencerConnectService\x12\xa8\x01\n\tHandshake\x12L.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeRequest\x1aM.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse\x12\xc0\x01\n\x11GetSynchronizerId\x12T.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdRequest\x1aU.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdResponse\x12\xd8\x01\n\x19GetSynchronizerParameters\x12\\.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersRequest\x1a].com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersResponse\x12\xb1\x01\n\x0cVerifyActive\x12O.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveRequest\x1aP.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse\x12\xff\x01\n&RegisterOnboardingTopologyTransactions\x12i.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest\x1aj.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsResponseBZZXgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/api/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nIcom/digitalasset/canton/sequencer/api/v30/sequencer_connect_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a\x35\x63om/digitalasset/canton/protocol/v30/sequencing.proto\x1a\x33\x63om/digitalasset/canton/protocol/v30/topology.proto\"\xe3\t\n\x10SequencerConnect\x1a\xcf\x01\n\x10HandshakeRequest\x12\x38\n\x18\x63lient_protocol_versions\x18\x01 \x03(\x05R\x16\x63lientProtocolVersions\x12=\n\x18minimum_protocol_version\x18\x02 \x01(\x05H\x00R\x16minimumProtocolVersion\x88\x01\x01\x12%\n\x0e\x63lient_version\x18\x03 \x01(\tR\rclientVersionB\x1b\n\x19_minimum_protocol_version\x1a\xe1\x01\n\x11HandshakeResponse\x12\x36\n\x17server_protocol_version\x18\x01 \x01(\x05R\x15serverProtocolVersion\x12q\n\x07success\x18\x02 \x01(\x0b\x32U.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse.SuccessH\x00R\x07success\x1a\t\n\x07SuccessB\x07\n\x05valueJ\x04\x08\x03\x10\x04R\x07\x66\x61ilure\x1a\x1a\n\x18GetSynchronizerIdRequest\x1az\n\x19GetSynchronizerIdResponse\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12#\n\rsequencer_uid\x18\x02 \x01(\tR\x0csequencerUid\x1a\"\n GetSynchronizerParametersRequest\x1a\x9c\x01\n!GetSynchronizerParametersResponse\x12i\n\rparameters_v1\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\x0cparametersV1B\x0c\n\nparameters\x1a\x15\n\x13VerifyActiveRequest\x1a\xcc\x01\n\x14VerifyActiveResponse\x12t\n\x07success\x18\x01 \x01(\x0b\x32X.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse.SuccessH\x00R\x07success\x1a&\n\x07Success\x12\x1b\n\tis_active\x18\x01 \x01(\x08R\x08isActiveB\x07\n\x05valueJ\x04\x08\x02\x10\x03R\x07\x66\x61ilure\x1a\xa5\x01\n-RegisterOnboardingTopologyTransactionsRequest\x12t\n\x15topology_transactions\x18\x01 \x03(\x0b\x32?.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionR\x14topologyTransactions\x1a\x30\n.RegisterOnboardingTopologyTransactionsResponse2\x98\x08\n\x17SequencerConnectService\x12\xa8\x01\n\tHandshake\x12L.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeRequest\x1aM.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.HandshakeResponse\x12\xc0\x01\n\x11GetSynchronizerId\x12T.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdRequest\x1aU.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerIdResponse\x12\xd8\x01\n\x19GetSynchronizerParameters\x12\\.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersRequest\x1a].com.digitalasset.canton.sequencer.api.v30.SequencerConnect.GetSynchronizerParametersResponse\x12\xb1\x01\n\x0cVerifyActive\x12O.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveRequest\x1aP.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.VerifyActiveResponse\x12\xff\x01\n&RegisterOnboardingTopologyTransactions\x12i.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsRequest\x1aj.com.digitalasset.canton.sequencer.api.v30.SequencerConnect.RegisterOnboardingTopologyTransactionsResponseBZZXgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/api/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,31 +39,31 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'ZXgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/api/v30'
   _globals['_SEQUENCERCONNECT']._serialized_start=229
-  _globals['_SEQUENCERCONNECT']._serialized_end=1441
+  _globals['_SEQUENCERCONNECT']._serialized_end=1480
   _globals['_SEQUENCERCONNECT_HANDSHAKEREQUEST']._serialized_start=250
-  _globals['_SEQUENCERCONNECT_HANDSHAKEREQUEST']._serialized_end=418
-  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE']._serialized_start=421
-  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE']._serialized_end=646
-  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE_SUCCESS']._serialized_start=613
-  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE_SUCCESS']._serialized_end=622
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDREQUEST']._serialized_start=648
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDREQUEST']._serialized_end=674
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDRESPONSE']._serialized_start=676
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDRESPONSE']._serialized_end=798
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSREQUEST']._serialized_start=800
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSREQUEST']._serialized_end=834
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSRESPONSE']._serialized_start=837
-  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSRESPONSE']._serialized_end=993
-  _globals['_SEQUENCERCONNECT_VERIFYACTIVEREQUEST']._serialized_start=995
-  _globals['_SEQUENCERCONNECT_VERIFYACTIVEREQUEST']._serialized_end=1016
-  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE']._serialized_start=1019
-  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE']._serialized_end=1223
-  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE_SUCCESS']._serialized_start=1161
-  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE_SUCCESS']._serialized_end=1199
-  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSREQUEST']._serialized_start=1226
-  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSREQUEST']._serialized_end=1391
-  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSRESPONSE']._serialized_start=1393
-  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSRESPONSE']._serialized_end=1441
-  _globals['_SEQUENCERCONNECTSERVICE']._serialized_start=1444
-  _globals['_SEQUENCERCONNECTSERVICE']._serialized_end=2492
+  _globals['_SEQUENCERCONNECT_HANDSHAKEREQUEST']._serialized_end=457
+  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE']._serialized_start=460
+  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE']._serialized_end=685
+  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE_SUCCESS']._serialized_start=652
+  _globals['_SEQUENCERCONNECT_HANDSHAKERESPONSE_SUCCESS']._serialized_end=661
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDREQUEST']._serialized_start=687
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDREQUEST']._serialized_end=713
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDRESPONSE']._serialized_start=715
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERIDRESPONSE']._serialized_end=837
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSREQUEST']._serialized_start=839
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSREQUEST']._serialized_end=873
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSRESPONSE']._serialized_start=876
+  _globals['_SEQUENCERCONNECT_GETSYNCHRONIZERPARAMETERSRESPONSE']._serialized_end=1032
+  _globals['_SEQUENCERCONNECT_VERIFYACTIVEREQUEST']._serialized_start=1034
+  _globals['_SEQUENCERCONNECT_VERIFYACTIVEREQUEST']._serialized_end=1055
+  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE']._serialized_start=1058
+  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE']._serialized_end=1262
+  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE_SUCCESS']._serialized_start=1200
+  _globals['_SEQUENCERCONNECT_VERIFYACTIVERESPONSE_SUCCESS']._serialized_end=1238
+  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSREQUEST']._serialized_start=1265
+  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSREQUEST']._serialized_end=1430
+  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSRESPONSE']._serialized_start=1432
+  _globals['_SEQUENCERCONNECT_REGISTERONBOARDINGTOPOLOGYTRANSACTIONSRESPONSE']._serialized_end=1480
+  _globals['_SEQUENCERCONNECTSERVICE']._serialized_start=1483
+  _globals['_SEQUENCERCONNECTSERVICE']._serialized_end=2531
 # @@protoc_insertion_point(module_scope)

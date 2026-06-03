@@ -211,7 +211,7 @@ class PreparedTransaction(_message.Message):
     def __init__(self, transaction: _Optional[_Union[DamlTransaction, _Mapping]] = ..., metadata: _Optional[_Union[Metadata, _Mapping]] = ...) -> None: ...
 
 class Metadata(_message.Message):
-    __slots__ = ("submitter_info", "synchronizer_id", "mediator_group", "transaction_uuid", "preparation_time", "input_contracts", "min_ledger_effective_time", "max_ledger_effective_time", "global_key_mapping", "max_record_time")
+    __slots__ = ("submitter_info", "synchronizer_id", "mediator_group", "transaction_uuid", "preparation_time", "input_contracts", "min_ledger_effective_time", "max_ledger_effective_time", "max_record_time", "global_key_mapping")
     class SubmitterInfo(_message.Message):
         __slots__ = ("act_as", "command_id")
         ACT_AS_FIELD_NUMBER: _ClassVar[int]
@@ -243,8 +243,8 @@ class Metadata(_message.Message):
     INPUT_CONTRACTS_FIELD_NUMBER: _ClassVar[int]
     MIN_LEDGER_EFFECTIVE_TIME_FIELD_NUMBER: _ClassVar[int]
     MAX_LEDGER_EFFECTIVE_TIME_FIELD_NUMBER: _ClassVar[int]
-    GLOBAL_KEY_MAPPING_FIELD_NUMBER: _ClassVar[int]
     MAX_RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
+    GLOBAL_KEY_MAPPING_FIELD_NUMBER: _ClassVar[int]
     submitter_info: Metadata.SubmitterInfo
     synchronizer_id: str
     mediator_group: int
@@ -253,9 +253,9 @@ class Metadata(_message.Message):
     input_contracts: _containers.RepeatedCompositeFieldContainer[Metadata.InputContract]
     min_ledger_effective_time: int
     max_ledger_effective_time: int
-    global_key_mapping: _containers.RepeatedCompositeFieldContainer[Metadata.GlobalKeyMappingEntry]
     max_record_time: int
-    def __init__(self, submitter_info: _Optional[_Union[Metadata.SubmitterInfo, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., mediator_group: _Optional[int] = ..., transaction_uuid: _Optional[str] = ..., preparation_time: _Optional[int] = ..., input_contracts: _Optional[_Iterable[_Union[Metadata.InputContract, _Mapping]]] = ..., min_ledger_effective_time: _Optional[int] = ..., max_ledger_effective_time: _Optional[int] = ..., global_key_mapping: _Optional[_Iterable[_Union[Metadata.GlobalKeyMappingEntry, _Mapping]]] = ..., max_record_time: _Optional[int] = ...) -> None: ...
+    global_key_mapping: _containers.RepeatedCompositeFieldContainer[Metadata.GlobalKeyMappingEntry]
+    def __init__(self, submitter_info: _Optional[_Union[Metadata.SubmitterInfo, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., mediator_group: _Optional[int] = ..., transaction_uuid: _Optional[str] = ..., preparation_time: _Optional[int] = ..., input_contracts: _Optional[_Iterable[_Union[Metadata.InputContract, _Mapping]]] = ..., min_ledger_effective_time: _Optional[int] = ..., max_ledger_effective_time: _Optional[int] = ..., max_record_time: _Optional[int] = ..., global_key_mapping: _Optional[_Iterable[_Union[Metadata.GlobalKeyMappingEntry, _Mapping]]] = ...) -> None: ...
 
 class DamlTransaction(_message.Message):
     __slots__ = ("version", "roots", "nodes", "node_seeds")
