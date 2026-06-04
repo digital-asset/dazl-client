@@ -123,6 +123,11 @@ class TopologyManagerReadServiceStub(object):
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllResponse.FromString,
                 _registered_method=True)
+        self.ListAllV2 = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAllV2',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllV2Request.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllV2Response.FromString,
+                _registered_method=True)
         self.ExportTopologySnapshot = channel.unary_stream(
                 '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshot',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ExportTopologySnapshotRequest.SerializeToString,
@@ -255,6 +260,12 @@ class TopologyManagerReadServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListAllV2(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def ExportTopologySnapshot(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -372,6 +383,11 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     servicer.ListAll,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllResponse.SerializeToString,
+            ),
+            'ListAllV2': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListAllV2,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllV2Request.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllV2Response.SerializeToString,
             ),
             'ExportTopologySnapshot': grpc.unary_stream_rpc_method_handler(
                     servicer.ExportTopologySnapshot,
@@ -858,6 +874,33 @@ class TopologyManagerReadService(object):
             '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAll',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListAllV2(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAllV2',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllV2Request.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.ListAllV2Response.FromString,
             options,
             channel_credentials,
             insecure,

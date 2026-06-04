@@ -68,7 +68,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> Response[JsCantonError | SubmitAndWaitResponse | str]:
-    """Submit a batch of commands and wait for the completion details
+    """Submits a single composite command and waits for its result.
+    Propagates the gRPC error of failed submissions including Daml interpretation errors.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.
@@ -97,7 +98,8 @@ def sync(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> JsCantonError | SubmitAndWaitResponse | str | None:
-    """Submit a batch of commands and wait for the completion details
+    """Submits a single composite command and waits for its result.
+    Propagates the gRPC error of failed submissions including Daml interpretation errors.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.
@@ -121,7 +123,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> Response[JsCantonError | SubmitAndWaitResponse | str]:
-    """Submit a batch of commands and wait for the completion details
+    """Submits a single composite command and waits for its result.
+    Propagates the gRPC error of failed submissions including Daml interpretation errors.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.
@@ -148,7 +151,8 @@ async def asyncio(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> JsCantonError | SubmitAndWaitResponse | str | None:
-    """Submit a batch of commands and wait for the completion details
+    """Submits a single composite command and waits for its result.
+    Propagates the gRPC error of failed submissions including Daml interpretation errors.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.

@@ -73,7 +73,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> Response[JsCantonError | UpdatePartyDetailsResponse | str]:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):
@@ -106,7 +107,8 @@ def sync(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> JsCantonError | UpdatePartyDetailsResponse | str | None:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):
@@ -134,7 +136,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> Response[JsCantonError | UpdatePartyDetailsResponse | str]:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):
@@ -165,7 +168,8 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> JsCantonError | UpdatePartyDetailsResponse | str | None:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):

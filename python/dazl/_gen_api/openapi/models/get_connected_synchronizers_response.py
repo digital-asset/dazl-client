@@ -22,7 +22,7 @@ T = TypeVar("T", bound="GetConnectedSynchronizersResponse")
 class GetConnectedSynchronizersResponse:
     """
     Attributes:
-        connected_synchronizers (list[ConnectedSynchronizer] | Unset):
+        connected_synchronizers (list[ConnectedSynchronizer] | Unset): Optional: can be empty
     """
 
     connected_synchronizers: list[ConnectedSynchronizer] | Unset = UNSET

@@ -17,7 +17,7 @@ class ExperimentalStaticTime:
     """Ledger is in the static time mode and exposes a time service.
 
     Attributes:
-        supported (bool):
+        supported (bool): Required
     """
 
     supported: bool

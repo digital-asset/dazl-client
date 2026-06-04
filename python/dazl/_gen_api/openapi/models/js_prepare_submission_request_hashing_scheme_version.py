@@ -7,7 +7,7 @@ from __future__ import annotations
 from enum import Enum
 
 
-class JsPrepareSubmissionResponseHashingSchemeVersion(str, Enum):
+class JsPrepareSubmissionRequestHashingSchemeVersion(str, Enum):
     HASHING_SCHEME_VERSION_UNSPECIFIED = "HASHING_SCHEME_VERSION_UNSPECIFIED"
     HASHING_SCHEME_VERSION_V2 = "HASHING_SCHEME_VERSION_V2"
     HASHING_SCHEME_VERSION_V3 = "HASHING_SCHEME_VERSION_V3"

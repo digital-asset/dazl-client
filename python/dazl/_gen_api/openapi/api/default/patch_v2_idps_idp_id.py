@@ -73,7 +73,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdateIdentityProviderConfigRequest,
 ) -> Response[JsCantonError | UpdateIdentityProviderConfigResponse | str]:
-    """Update identity provider config
+    """Update selected modifiable attribute of an identity provider config resource described
+    by the ``IdentityProviderConfig`` message.
 
     Args:
         idp_id (str):
@@ -105,7 +106,8 @@ def sync(
     client: AuthenticatedClient,
     body: UpdateIdentityProviderConfigRequest,
 ) -> JsCantonError | UpdateIdentityProviderConfigResponse | str | None:
-    """Update identity provider config
+    """Update selected modifiable attribute of an identity provider config resource described
+    by the ``IdentityProviderConfig`` message.
 
     Args:
         idp_id (str):
@@ -132,7 +134,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdateIdentityProviderConfigRequest,
 ) -> Response[JsCantonError | UpdateIdentityProviderConfigResponse | str]:
-    """Update identity provider config
+    """Update selected modifiable attribute of an identity provider config resource described
+    by the ``IdentityProviderConfig`` message.
 
     Args:
         idp_id (str):
@@ -162,7 +165,8 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdateIdentityProviderConfigRequest,
 ) -> JsCantonError | UpdateIdentityProviderConfigResponse | str | None:
-    """Update identity provider config
+    """Update selected modifiable attribute of an identity provider config resource described
+    by the ``IdentityProviderConfig`` message.
 
     Args:
         idp_id (str):

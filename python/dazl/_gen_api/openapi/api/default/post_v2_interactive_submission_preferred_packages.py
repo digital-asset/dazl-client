@@ -68,7 +68,24 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: GetPreferredPackagesRequest,
 ) -> Response[GetPreferredPackagesResponse | JsCantonError | str]:
-    """Get the version of preferred packages for constructing a command submission
+    """Compute the preferred packages for the vetting requirements in the request.
+    A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred packages, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    If the package preferences could not be computed due to no selection satisfying the requirements,
+    a `FAILED_PRECONDITION` error will be returned.
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Experimental API: this endpoint is not guaranteed to provide backwards compatibility in future
+    releases
 
     Args:
         body (GetPreferredPackagesRequest):
@@ -97,7 +114,24 @@ def sync(
     client: AuthenticatedClient,
     body: GetPreferredPackagesRequest,
 ) -> GetPreferredPackagesResponse | JsCantonError | str | None:
-    """Get the version of preferred packages for constructing a command submission
+    """Compute the preferred packages for the vetting requirements in the request.
+    A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred packages, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    If the package preferences could not be computed due to no selection satisfying the requirements,
+    a `FAILED_PRECONDITION` error will be returned.
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Experimental API: this endpoint is not guaranteed to provide backwards compatibility in future
+    releases
 
     Args:
         body (GetPreferredPackagesRequest):
@@ -121,7 +155,24 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: GetPreferredPackagesRequest,
 ) -> Response[GetPreferredPackagesResponse | JsCantonError | str]:
-    """Get the version of preferred packages for constructing a command submission
+    """Compute the preferred packages for the vetting requirements in the request.
+    A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred packages, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    If the package preferences could not be computed due to no selection satisfying the requirements,
+    a `FAILED_PRECONDITION` error will be returned.
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Experimental API: this endpoint is not guaranteed to provide backwards compatibility in future
+    releases
 
     Args:
         body (GetPreferredPackagesRequest):
@@ -148,7 +199,24 @@ async def asyncio(
     client: AuthenticatedClient,
     body: GetPreferredPackagesRequest,
 ) -> GetPreferredPackagesResponse | JsCantonError | str | None:
-    """Get the version of preferred packages for constructing a command submission
+    """Compute the preferred packages for the vetting requirements in the request.
+    A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred packages, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    If the package preferences could not be computed due to no selection satisfying the requirements,
+    a `FAILED_PRECONDITION` error will be returned.
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Experimental API: this endpoint is not guaranteed to provide backwards compatibility in future
+    releases
 
     Args:
         body (GetPreferredPackagesRequest):

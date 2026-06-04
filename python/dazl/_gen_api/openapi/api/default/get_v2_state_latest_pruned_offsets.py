@@ -57,7 +57,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetLatestPrunedOffsetsResponse | JsCantonError | str]:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -80,7 +80,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetLatestPrunedOffsetsResponse | JsCantonError | str | None:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -99,7 +99,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetLatestPrunedOffsetsResponse | JsCantonError | str]:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -120,7 +120,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetLatestPrunedOffsetsResponse | JsCantonError | str | None:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

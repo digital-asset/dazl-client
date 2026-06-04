@@ -76,6 +76,8 @@ def sync_detailed(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> Response[JsCantonError | str]:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.
@@ -116,6 +118,8 @@ def sync(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> JsCantonError | str | None:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.
@@ -151,6 +155,8 @@ async def asyncio_detailed(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> Response[JsCantonError | str]:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.
@@ -189,6 +195,8 @@ async def asyncio(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> JsCantonError | str | None:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.

@@ -21,6 +21,8 @@ class GetPackageStatusResponse:
     """
     Attributes:
         package_status (GetPackageStatusResponsePackageStatus): The status of the package.
+
+            Required
     """
 
     package_status: GetPackageStatusResponsePackageStatus

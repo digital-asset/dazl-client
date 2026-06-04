@@ -5,9 +5,9 @@
 
 from .common_stable_pb2 import GlobalKey, SerializableContract
 from .participant_transaction_pb2 import ActionDescription, EncryptedMultipleViewsMessage, ExternalAuthorization, SubmitterMetadata, ViewParticipantData
+from .sequencing_pb2 import CompressedBatch, EnvelopeWithoutRecipients, SequencedEvent, SubmissionRequest
 from .synchronization_pb2 import EnvelopeContent
 from .common_pb2 import ContractAuthenticationData
-from .sequencing_pb2 import CompressedBatch, EnvelopeWithoutRecipients, SequencedEvent, SubmissionRequest
 
 __all__ = [
     "ActionDescription",

@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..types import UNSET, Unset
-
 if TYPE_CHECKING:
     from ..models.features_descriptor import FeaturesDescriptor
 
@@ -23,29 +21,28 @@ class GetLedgerApiVersionResponse:
     """
     Attributes:
         version (str): The version of the ledger API.
-        features (FeaturesDescriptor | Unset):
+
+            Required
+        features (FeaturesDescriptor):
     """
 
     version: str
-    features: FeaturesDescriptor | Unset = UNSET
+    features: FeaturesDescriptor
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         version = self.version
 
-        features: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.features, Unset):
-            features = self.features.to_dict()
+        features = self.features.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "version": version,
+                "features": features,
             }
         )
-        if features is not UNSET:
-            field_dict["features"] = features
 
         return field_dict
 
@@ -56,12 +53,7 @@ class GetLedgerApiVersionResponse:
         d = dict(src_dict)
         version = d.pop("version")
 
-        _features = d.pop("features", UNSET)
-        features: FeaturesDescriptor | Unset
-        if isinstance(_features, Unset):
-            features = UNSET
-        else:
-            features = FeaturesDescriptor.from_dict(_features)
+        features = FeaturesDescriptor.from_dict(d.pop("features"))
 
         get_ledger_api_version_response = cls(
             version=version,

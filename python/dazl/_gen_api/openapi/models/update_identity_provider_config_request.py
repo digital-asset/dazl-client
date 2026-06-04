@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..types import UNSET, Unset
-
 if TYPE_CHECKING:
     from ..models.field_mask import FieldMask
     from ..models.identity_provider_config import IdentityProviderConfig
@@ -23,30 +21,27 @@ T = TypeVar("T", bound="UpdateIdentityProviderConfigRequest")
 class UpdateIdentityProviderConfigRequest:
     """
     Attributes:
-        identity_provider_config (IdentityProviderConfig | Unset):
-        update_mask (FieldMask | Unset):
+        identity_provider_config (IdentityProviderConfig):
+        update_mask (FieldMask):
     """
 
-    identity_provider_config: IdentityProviderConfig | Unset = UNSET
-    update_mask: FieldMask | Unset = UNSET
+    identity_provider_config: IdentityProviderConfig
+    update_mask: FieldMask
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        identity_provider_config: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.identity_provider_config, Unset):
-            identity_provider_config = self.identity_provider_config.to_dict()
+        identity_provider_config = self.identity_provider_config.to_dict()
 
-        update_mask: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.update_mask, Unset):
-            update_mask = self.update_mask.to_dict()
+        update_mask = self.update_mask.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if identity_provider_config is not UNSET:
-            field_dict["identityProviderConfig"] = identity_provider_config
-        if update_mask is not UNSET:
-            field_dict["updateMask"] = update_mask
+        field_dict.update(
+            {
+                "identityProviderConfig": identity_provider_config,
+                "updateMask": update_mask,
+            }
+        )
 
         return field_dict
 
@@ -56,19 +51,9 @@ class UpdateIdentityProviderConfigRequest:
         from ..models.identity_provider_config import IdentityProviderConfig
 
         d = dict(src_dict)
-        _identity_provider_config = d.pop("identityProviderConfig", UNSET)
-        identity_provider_config: IdentityProviderConfig | Unset
-        if isinstance(_identity_provider_config, Unset):
-            identity_provider_config = UNSET
-        else:
-            identity_provider_config = IdentityProviderConfig.from_dict(_identity_provider_config)
+        identity_provider_config = IdentityProviderConfig.from_dict(d.pop("identityProviderConfig"))
 
-        _update_mask = d.pop("updateMask", UNSET)
-        update_mask: FieldMask | Unset
-        if isinstance(_update_mask, Unset):
-            update_mask = UNSET
-        else:
-            update_mask = FieldMask.from_dict(_update_mask)
+        update_mask = FieldMask.from_dict(d.pop("updateMask"))
 
         update_identity_provider_config_request = cls(
             identity_provider_config=identity_provider_config,

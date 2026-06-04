@@ -44,7 +44,7 @@ class ComponentStatus(_message.Message):
     def __init__(self, name: _Optional[str] = ..., ok: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., degraded: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., failed: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., fatal: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ...) -> None: ...
 
 class NotInitialized(_message.Message):
-    __slots__ = ("active", "waiting_for_external_input")
+    __slots__ = ("active", "waiting_for_external_input", "version")
     class WaitingForExternalInput(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         WAITING_FOR_EXTERNAL_INPUT_UNSPECIFIED: _ClassVar[NotInitialized.WaitingForExternalInput]
@@ -57,9 +57,11 @@ class NotInitialized(_message.Message):
     WAITING_FOR_EXTERNAL_INPUT_INITIALIZATION: NotInitialized.WaitingForExternalInput
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     WAITING_FOR_EXTERNAL_INPUT_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
     active: bool
     waiting_for_external_input: NotInitialized.WaitingForExternalInput
-    def __init__(self, active: bool = ..., waiting_for_external_input: _Optional[_Union[NotInitialized.WaitingForExternalInput, str]] = ...) -> None: ...
+    version: str
+    def __init__(self, active: bool = ..., waiting_for_external_input: _Optional[_Union[NotInitialized.WaitingForExternalInput, str]] = ..., version: _Optional[str] = ...) -> None: ...
 
 class Status(_message.Message):
     __slots__ = ("uid", "uptime", "ports", "active", "topology_queues", "components", "version")

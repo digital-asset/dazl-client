@@ -74,8 +74,12 @@ def sync_detailed(
     body: File,
     synchronizer_id: str | Unset = UNSET,
 ) -> Response[Any | JsCantonError | str]:
-    """Validates a DAR for upgrade-compatibility against the current vetting state on the target
-    synchronizer
+    """Validates the DAR and checks the upgrade compatibility of the DAR's packages
+    with the set of the already vetted packages on the target vetting synchronizer.
+    See ValidateDarFileRequest for details regarding the target vetting synchronizer.
+
+    The operation has no effect on the state of the participant or the Canton ledger:
+    the DAR payload and its packages are not persisted neither are the packages vetted.
 
     Args:
         synchronizer_id (str | Unset):
@@ -107,8 +111,12 @@ def sync(
     body: File,
     synchronizer_id: str | Unset = UNSET,
 ) -> Any | JsCantonError | str | None:
-    """Validates a DAR for upgrade-compatibility against the current vetting state on the target
-    synchronizer
+    """Validates the DAR and checks the upgrade compatibility of the DAR's packages
+    with the set of the already vetted packages on the target vetting synchronizer.
+    See ValidateDarFileRequest for details regarding the target vetting synchronizer.
+
+    The operation has no effect on the state of the participant or the Canton ledger:
+    the DAR payload and its packages are not persisted neither are the packages vetted.
 
     Args:
         synchronizer_id (str | Unset):
@@ -135,8 +143,12 @@ async def asyncio_detailed(
     body: File,
     synchronizer_id: str | Unset = UNSET,
 ) -> Response[Any | JsCantonError | str]:
-    """Validates a DAR for upgrade-compatibility against the current vetting state on the target
-    synchronizer
+    """Validates the DAR and checks the upgrade compatibility of the DAR's packages
+    with the set of the already vetted packages on the target vetting synchronizer.
+    See ValidateDarFileRequest for details regarding the target vetting synchronizer.
+
+    The operation has no effect on the state of the participant or the Canton ledger:
+    the DAR payload and its packages are not persisted neither are the packages vetted.
 
     Args:
         synchronizer_id (str | Unset):
@@ -166,8 +178,12 @@ async def asyncio(
     body: File,
     synchronizer_id: str | Unset = UNSET,
 ) -> Any | JsCantonError | str | None:
-    """Validates a DAR for upgrade-compatibility against the current vetting state on the target
-    synchronizer
+    """Validates the DAR and checks the upgrade compatibility of the DAR's packages
+    with the set of the already vetted packages on the target vetting synchronizer.
+    See ValidateDarFileRequest for details regarding the target vetting synchronizer.
+
+    The operation has no effect on the state of the participant or the Canton ledger:
+    the DAR payload and its packages are not persisted neither are the packages vetted.
 
     Args:
         synchronizer_id (str | Unset):

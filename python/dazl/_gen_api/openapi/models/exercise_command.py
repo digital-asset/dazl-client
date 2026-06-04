@@ -26,11 +26,14 @@ class ExerciseCommand:
             Required
         contract_id (str): The ID of the contract the client wants to exercise upon.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
         choice (str): The name of the choice the client wants to exercise.
             Must be a valid NameString (as described in ``value.proto``)
+
             Required
         choice_argument (Any): The argument for this choice.
+
             Required
     """
 

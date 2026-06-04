@@ -68,7 +68,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> Response[CreateIdentityProviderConfigResponse | JsCantonError | str]:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):
@@ -97,7 +98,8 @@ def sync(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> CreateIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):
@@ -121,7 +123,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> Response[CreateIdentityProviderConfigResponse | JsCantonError | str]:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):
@@ -148,7 +151,8 @@ async def asyncio(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> CreateIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):

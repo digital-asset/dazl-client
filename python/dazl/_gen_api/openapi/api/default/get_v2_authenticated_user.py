@@ -68,7 +68,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetUserResponse | JsCantonError | str]:
-    """Get current user details (uses user for JWT).
+    """Get the user data of the current authenticated user.
 
     Args:
         identity_provider_id (str | Unset):
@@ -97,7 +97,7 @@ def sync(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetUserResponse | JsCantonError | str | None:
-    """Get current user details (uses user for JWT).
+    """Get the user data of the current authenticated user.
 
     Args:
         identity_provider_id (str | Unset):
@@ -121,7 +121,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetUserResponse | JsCantonError | str]:
-    """Get current user details (uses user for JWT).
+    """Get the user data of the current authenticated user.
 
     Args:
         identity_provider_id (str | Unset):
@@ -148,7 +148,7 @@ async def asyncio(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetUserResponse | JsCantonError | str | None:
-    """Get current user details (uses user for JWT).
+    """Get the user data of the current authenticated user.
 
     Args:
         identity_provider_id (str | Unset):

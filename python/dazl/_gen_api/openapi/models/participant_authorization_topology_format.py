@@ -21,6 +21,8 @@ class ParticipantAuthorizationTopologyFormat:
     Attributes:
         parties (list[str] | Unset): List of parties for which the topology transactions should be sent.
             Empty means: for all parties.
+
+            Optional: can be empty
     """
 
     parties: list[str] | Unset = UNSET

@@ -11,38 +11,35 @@ import httpx
 
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
-from ...models.list_users_response import ListUsersResponse
-from ...types import UNSET, Response, Unset
+from ...models.list_vetted_packages_request import ListVettedPackagesRequest
+from ...models.list_vetted_packages_response import ListVettedPackagesResponse
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
+    body: ListVettedPackagesRequest,
 ) -> dict[str, Any]:
-
-    params: dict[str, Any] = {}
-
-    params["pageSize"] = page_size
-
-    params["pageToken"] = page_token
-
-    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+    headers: dict[str, Any] = {}
 
     _kwargs: dict[str, Any] = {
-        "method": "get",
-        "url": "/v2/users",
-        "params": params,
+        "method": "post",
+        "url": "/v2/package-vetting/list",
     }
 
+    _kwargs["json"] = body.to_dict()
+
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> JsCantonError | ListUsersResponse | str:
+) -> JsCantonError | ListVettedPackagesResponse | str:
     if response.status_code == 200:
-        response_200 = ListUsersResponse.from_dict(response.json())
+        response_200 = ListVettedPackagesResponse.from_dict(response.json())
 
         return response_200
 
@@ -57,7 +54,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[JsCantonError | ListUsersResponse | str]:
+) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -69,26 +66,24 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> Response[JsCantonError | ListUsersResponse | str]:
-    """List all existing users.
+    body: ListVettedPackagesRequest,
+) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
+    """Lists which participant node vetted what packages on which synchronizer.
+    Can be called by any authenticated user.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (ListVettedPackagesRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[JsCantonError | ListUsersResponse | str]
+        Response[JsCantonError | ListVettedPackagesResponse | str]
     """
 
     kwargs = _get_kwargs(
-        page_size=page_size,
-        page_token=page_token,
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -101,53 +96,49 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> JsCantonError | ListUsersResponse | str | None:
-    """List all existing users.
+    body: ListVettedPackagesRequest,
+) -> JsCantonError | ListVettedPackagesResponse | str | None:
+    """Lists which participant node vetted what packages on which synchronizer.
+    Can be called by any authenticated user.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (ListVettedPackagesRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        JsCantonError | ListUsersResponse | str
+        JsCantonError | ListVettedPackagesResponse | str
     """
 
     return sync_detailed(
         client=client,
-        page_size=page_size,
-        page_token=page_token,
+        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> Response[JsCantonError | ListUsersResponse | str]:
-    """List all existing users.
+    body: ListVettedPackagesRequest,
+) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
+    """Lists which participant node vetted what packages on which synchronizer.
+    Can be called by any authenticated user.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (ListVettedPackagesRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[JsCantonError | ListUsersResponse | str]
+        Response[JsCantonError | ListVettedPackagesResponse | str]
     """
 
     kwargs = _get_kwargs(
-        page_size=page_size,
-        page_token=page_token,
+        body=body,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -158,27 +149,25 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> JsCantonError | ListUsersResponse | str | None:
-    """List all existing users.
+    body: ListVettedPackagesRequest,
+) -> JsCantonError | ListVettedPackagesResponse | str | None:
+    """Lists which participant node vetted what packages on which synchronizer.
+    Can be called by any authenticated user.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (ListVettedPackagesRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        JsCantonError | ListUsersResponse | str
+        JsCantonError | ListVettedPackagesResponse | str
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            page_size=page_size,
-            page_token=page_token,
+            body=body,
         )
     ).parsed

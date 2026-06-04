@@ -17,6 +17,8 @@ class PartyManagementFeature:
     """
     Attributes:
         max_parties_page_size (int): The maximum number of parties the server can return in a single response (page).
+
+            Required
     """
 
     max_parties_page_size: int

@@ -57,7 +57,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[JsCantonError | str]:
-    """List user rights.
+    """List the set of all rights granted to a user.
 
     Args:
         user_id (str):
@@ -86,7 +86,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> JsCantonError | str | None:
-    """List user rights.
+    """List the set of all rights granted to a user.
 
     Args:
         user_id (str):
@@ -110,7 +110,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[JsCantonError | str]:
-    """List user rights.
+    """List the set of all rights granted to a user.
 
     Args:
         user_id (str):
@@ -137,7 +137,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> JsCantonError | str | None:
-    """List user rights.
+    """List the set of all rights granted to a user.
 
     Args:
         user_id (str):

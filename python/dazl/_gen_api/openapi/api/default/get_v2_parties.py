@@ -17,11 +17,17 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
+    identity_provider_id: str | Unset = UNSET,
+    filter_party: str | Unset = UNSET,
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
     params: dict[str, Any] = {}
+
+    params["identity-provider-id"] = identity_provider_id
+
+    params["filter-party"] = filter_party
 
     params["pageSize"] = page_size
 
@@ -69,12 +75,18 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
+    identity_provider_id: str | Unset = UNSET,
+    filter_party: str | Unset = UNSET,
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> Response[JsCantonError | ListKnownPartiesResponse | str]:
-    """List all known parties.
+    """List the parties known by the participant.
+    The list returned contains parties whose ledger access is facilitated by
+    the participant and the ones maintained elsewhere.
 
     Args:
+        identity_provider_id (str | Unset):
+        filter_party (str | Unset):
         page_size (int | Unset):
         page_token (str | Unset):
 
@@ -87,6 +99,8 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
+        identity_provider_id=identity_provider_id,
+        filter_party=filter_party,
         page_size=page_size,
         page_token=page_token,
     )
@@ -101,12 +115,18 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
+    identity_provider_id: str | Unset = UNSET,
+    filter_party: str | Unset = UNSET,
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> JsCantonError | ListKnownPartiesResponse | str | None:
-    """List all known parties.
+    """List the parties known by the participant.
+    The list returned contains parties whose ledger access is facilitated by
+    the participant and the ones maintained elsewhere.
 
     Args:
+        identity_provider_id (str | Unset):
+        filter_party (str | Unset):
         page_size (int | Unset):
         page_token (str | Unset):
 
@@ -120,6 +140,8 @@ def sync(
 
     return sync_detailed(
         client=client,
+        identity_provider_id=identity_provider_id,
+        filter_party=filter_party,
         page_size=page_size,
         page_token=page_token,
     ).parsed
@@ -128,12 +150,18 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
+    identity_provider_id: str | Unset = UNSET,
+    filter_party: str | Unset = UNSET,
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> Response[JsCantonError | ListKnownPartiesResponse | str]:
-    """List all known parties.
+    """List the parties known by the participant.
+    The list returned contains parties whose ledger access is facilitated by
+    the participant and the ones maintained elsewhere.
 
     Args:
+        identity_provider_id (str | Unset):
+        filter_party (str | Unset):
         page_size (int | Unset):
         page_token (str | Unset):
 
@@ -146,6 +174,8 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
+        identity_provider_id=identity_provider_id,
+        filter_party=filter_party,
         page_size=page_size,
         page_token=page_token,
     )
@@ -158,12 +188,18 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
+    identity_provider_id: str | Unset = UNSET,
+    filter_party: str | Unset = UNSET,
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> JsCantonError | ListKnownPartiesResponse | str | None:
-    """List all known parties.
+    """List the parties known by the participant.
+    The list returned contains parties whose ledger access is facilitated by
+    the participant and the ones maintained elsewhere.
 
     Args:
+        identity_provider_id (str | Unset):
+        filter_party (str | Unset):
         page_size (int | Unset):
         page_token (str | Unset):
 
@@ -178,6 +214,8 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
+            identity_provider_id=identity_provider_id,
+            filter_party=filter_party,
             page_size=page_size,
             page_token=page_token,
         )

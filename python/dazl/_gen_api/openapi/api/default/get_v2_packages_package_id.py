@@ -63,7 +63,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[File | JsCantonError | str]:
-    """Download the package for the requested package-id
+    """Returns the contents of a single package.
 
     Args:
         package_id (str):
@@ -92,7 +92,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> File | JsCantonError | str | None:
-    """Download the package for the requested package-id
+    """Returns the contents of a single package.
 
     Args:
         package_id (str):
@@ -116,7 +116,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[File | JsCantonError | str]:
-    """Download the package for the requested package-id
+    """Returns the contents of a single package.
 
     Args:
         package_id (str):
@@ -143,7 +143,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> File | JsCantonError | str | None:
-    """Download the package for the requested package-id
+    """Returns the contents of a single package.
 
     Args:
         package_id (str):

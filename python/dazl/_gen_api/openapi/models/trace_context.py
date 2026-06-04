@@ -19,7 +19,9 @@ class TraceContext:
     """
     Attributes:
         traceparent (str | Unset): https://www.w3.org/TR/trace-context/
-        tracestate (str | Unset):
+
+            Optional
+        tracestate (str | Unset): Optional
     """
 
     traceparent: str | Unset = UNSET

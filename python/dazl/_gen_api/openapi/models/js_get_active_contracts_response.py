@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..types import UNSET, Unset
+
 if TYPE_CHECKING:
     from ..models.js_contract_entry_type_0 import JsContractEntryType0
     from ..models.js_contract_entry_type_1 import JsContractEntryType1
@@ -23,24 +25,38 @@ T = TypeVar("T", bound="JsGetActiveContractsResponse")
 class JsGetActiveContractsResponse:
     """
     Attributes:
-        workflow_id (str): The workflow ID used in command submission which corresponds to the contract_entry. Only set
-            if
+        workflow_id (str | Unset): The workflow ID used in command submission which corresponds to the contract_entry.
+            Only set if
             the ``workflow_id`` for the command was set.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Optional
-        contract_entry (JsContractEntryType0 | JsContractEntryType1 | JsContractEntryType2 | JsContractEntryType3): For
-            a contract there could be multiple contract_entry-s in the entire snapshot. These together define
+        contract_entry (JsContractEntryType0 | JsContractEntryType1 | JsContractEntryType2 | JsContractEntryType3 |
+            Unset): For a contract there could be multiple contract_entry-s in the entire snapshot. These together define
             the state of one contract in the snapshot.
             A contract_entry is included in the result, if and only if there is at least one stakeholder party of the
             contract
             that is hosted on the synchronizer at the time of the event and the party satisfies the
             ``TransactionFilter`` in the query.
+
+            Required
+        stream_continuation_token (str | Unset): Opaque representation of a continuation token which can be used in the
+            request to bypass the already processed part
+            of the active contracts snapshot.
+            Only populated for the streaming ``GetActiveContracts`` rpc call.
+
+            Optional: can be empty
     """
 
-    workflow_id: str
+    workflow_id: str | Unset = UNSET
     contract_entry: (
-        JsContractEntryType0 | JsContractEntryType1 | JsContractEntryType2 | JsContractEntryType3
-    )
+        JsContractEntryType0
+        | JsContractEntryType1
+        | JsContractEntryType2
+        | JsContractEntryType3
+        | Unset
+    ) = UNSET
+    stream_continuation_token: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -50,8 +66,10 @@ class JsGetActiveContractsResponse:
 
         workflow_id = self.workflow_id
 
-        contract_entry: dict[str, Any]
-        if isinstance(self.contract_entry, JsContractEntryType0):
+        contract_entry: dict[str, Any] | Unset
+        if isinstance(self.contract_entry, Unset):
+            contract_entry = UNSET
+        elif isinstance(self.contract_entry, JsContractEntryType0):
             contract_entry = self.contract_entry.to_dict()
         elif isinstance(self.contract_entry, JsContractEntryType1):
             contract_entry = self.contract_entry.to_dict()
@@ -60,14 +78,17 @@ class JsGetActiveContractsResponse:
         else:
             contract_entry = self.contract_entry.to_dict()
 
+        stream_continuation_token = self.stream_continuation_token
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "workflowId": workflow_id,
-                "contractEntry": contract_entry,
-            }
-        )
+        field_dict.update({})
+        if workflow_id is not UNSET:
+            field_dict["workflowId"] = workflow_id
+        if contract_entry is not UNSET:
+            field_dict["contractEntry"] = contract_entry
+        if stream_continuation_token is not UNSET:
+            field_dict["streamContinuationToken"] = stream_continuation_token
 
         return field_dict
 
@@ -79,7 +100,7 @@ class JsGetActiveContractsResponse:
         from ..models.js_contract_entry_type_3 import JsContractEntryType3
 
         d = dict(src_dict)
-        workflow_id = d.pop("workflowId")
+        workflow_id = d.pop("workflowId", UNSET)
 
         def _parse_contract_entry(
             data: object,
@@ -88,7 +109,10 @@ class JsGetActiveContractsResponse:
             | JsContractEntryType1
             | JsContractEntryType2
             | JsContractEntryType3
+            | Unset
         ):
+            if isinstance(data, Unset):
+                return data
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
@@ -119,11 +143,14 @@ class JsGetActiveContractsResponse:
 
             return componentsschemas_js_contract_entry_type_3
 
-        contract_entry = _parse_contract_entry(d.pop("contractEntry"))
+        contract_entry = _parse_contract_entry(d.pop("contractEntry", UNSET))
+
+        stream_continuation_token = d.pop("streamContinuationToken", UNSET)
 
         js_get_active_contracts_response = cls(
             workflow_id=workflow_id,
             contract_entry=contract_entry,
+            stream_continuation_token=stream_continuation_token,
         )
 
         js_get_active_contracts_response.additional_properties = d

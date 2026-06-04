@@ -22,8 +22,14 @@ T = TypeVar("T", bound="SignedTransaction")
 class SignedTransaction:
     """
     Attributes:
-        transaction (str):
-        signatures (list[Signature] | Unset):
+        transaction (str): The serialized TopologyTransaction
+
+            Required: must be non-empty
+        signatures (list[Signature] | Unset): Additional signatures for this transaction specifically
+            Use for transactions that require additional signatures beyond the namespace key signatures
+            e.g: PartyToParticipant must be signed by all registered keys
+
+            Optional: can be empty
     """
 
     transaction: str

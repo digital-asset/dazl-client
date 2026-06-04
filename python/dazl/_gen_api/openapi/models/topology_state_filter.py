@@ -32,8 +32,12 @@ class TopologyStateFilter:
                 listed in this field match the filter.
                 Query the current Ledger API's participant's ID via the public
                 ``GetParticipantId`` command in ``PartyManagementService``.
+
+                Optional: can be empty
             synchronizer_ids (list[str] | Unset): If this list is non-empty, only vetted packages from the topology state of
                 the synchronizers in this list match the filter.
+
+                Optional: can be empty
     """
 
     participant_ids: list[str] | Unset = UNSET

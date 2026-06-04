@@ -22,6 +22,7 @@ class JsCreated:
     Attributes:
         created_event (CreatedEvent): Records that a contract has been created, and choices may now be exercised on it.
         synchronizer_id (str): The synchronizer which sequenced the creation of the contract
+
             Required
     """
 

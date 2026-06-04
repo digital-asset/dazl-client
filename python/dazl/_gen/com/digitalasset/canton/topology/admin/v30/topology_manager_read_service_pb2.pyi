@@ -413,6 +413,22 @@ class ListAllResponse(_message.Message):
     result: _common_pb2.TopologyTransactions
     def __init__(self, result: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ...) -> None: ...
 
+class ListAllV2Request(_message.Message):
+    __slots__ = ("base_query", "include_mappings", "filter_namespace")
+    BASE_QUERY_FIELD_NUMBER: _ClassVar[int]
+    INCLUDE_MAPPINGS_FIELD_NUMBER: _ClassVar[int]
+    FILTER_NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    base_query: BaseQuery
+    include_mappings: _containers.RepeatedScalarFieldContainer[str]
+    filter_namespace: str
+    def __init__(self, base_query: _Optional[_Union[BaseQuery, _Mapping]] = ..., include_mappings: _Optional[_Iterable[str]] = ..., filter_namespace: _Optional[str] = ...) -> None: ...
+
+class ListAllV2Response(_message.Message):
+    __slots__ = ("result",)
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: _common_pb2.TopologyTransactions
+    def __init__(self, result: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ...) -> None: ...
+
 class ExportTopologySnapshotRequest(_message.Message):
     __slots__ = ("base_query", "exclude_mappings", "filter_namespace")
     BASE_QUERY_FIELD_NUMBER: _ClassVar[int]

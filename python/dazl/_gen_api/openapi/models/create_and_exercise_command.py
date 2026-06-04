@@ -24,11 +24,14 @@ class CreateAndExerciseCommand:
 
             Required
         create_arguments (Any): The arguments required for creating a contract from this template.
+
             Required
         choice (str): The name of the choice the client wants to exercise.
             Must be a valid NameString (as described in ``value.proto``).
+
             Required
         choice_argument (Any): The argument for this choice.
+
             Required
     """
 

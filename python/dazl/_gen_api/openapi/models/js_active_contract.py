@@ -22,6 +22,7 @@ class JsActiveContract:
     Attributes:
         created_event (CreatedEvent): Records that a contract has been created, and choices may now be exercised on it.
         synchronizer_id (str): A valid synchronizer id
+
             Required
         reassignment_counter (int): Each corresponding assigned and unassigned event has the same reassignment_counter.
             This strictly increases
@@ -30,6 +31,7 @@ class JsActiveContract:
             This field will be the reassignment_counter of the latest observable activation event on this synchronizer,
             which is
             before the active_at_offset.
+
             Required
     """
 

@@ -22,17 +22,21 @@ class CostEstimationHints:
     """Hints to improve cost estimation precision of a prepared transaction
 
     Attributes:
-        disabled (bool): Disable cost estimation
+        disabled (bool | Unset): Disable cost estimation
             Default (not set) is false
+
+            Optional
         expected_signatures (list[CostEstimationHintsExpectedSignaturesItem] | Unset): Details on the keys that will be
             used to sign the transaction (how many and of which type).
             Signature size impacts the cost of the transaction.
             If empty, the signature sizes will be approximated with threshold-many signatures (where threshold is defined
-            in the PartyToKeyMapping of the external party), using keys in the order they are registered.
-            Optional (empty list is equivalent to not providing this field)
+            in the PartyToParticipant of the external party), using keys in the order they are registered.
+            Empty list is equivalent to not providing this field
+
+            Optional: can be empty
     """
 
-    disabled: bool
+    disabled: bool | Unset = UNSET
     expected_signatures: list[CostEstimationHintsExpectedSignaturesItem] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -48,11 +52,9 @@ class CostEstimationHints:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "disabled": disabled,
-            }
-        )
+        field_dict.update({})
+        if disabled is not UNSET:
+            field_dict["disabled"] = disabled
         if expected_signatures is not UNSET:
             field_dict["expectedSignatures"] = expected_signatures
 
@@ -61,7 +63,7 @@ class CostEstimationHints:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        disabled = d.pop("disabled")
+        disabled = d.pop("disabled", UNSET)
 
         _expected_signatures = d.pop("expectedSignatures", UNSET)
         expected_signatures: list[CostEstimationHintsExpectedSignaturesItem] | Unset = UNSET

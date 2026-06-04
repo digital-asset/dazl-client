@@ -73,7 +73,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetUserResponse | JsCantonError | str]:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):
@@ -105,7 +105,7 @@ def sync(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetUserResponse | JsCantonError | str | None:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):
@@ -132,7 +132,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetUserResponse | JsCantonError | str]:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):
@@ -162,7 +162,7 @@ async def asyncio(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetUserResponse | JsCantonError | str | None:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):

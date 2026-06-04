@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..types import UNSET, Unset
-
 if TYPE_CHECKING:
     from ..models.identity_provider_config import IdentityProviderConfig
 
@@ -22,22 +20,22 @@ T = TypeVar("T", bound="UpdateIdentityProviderConfigResponse")
 class UpdateIdentityProviderConfigResponse:
     """
     Attributes:
-        identity_provider_config (IdentityProviderConfig | Unset):
+        identity_provider_config (IdentityProviderConfig):
     """
 
-    identity_provider_config: IdentityProviderConfig | Unset = UNSET
+    identity_provider_config: IdentityProviderConfig
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        identity_provider_config: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.identity_provider_config, Unset):
-            identity_provider_config = self.identity_provider_config.to_dict()
+        identity_provider_config = self.identity_provider_config.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if identity_provider_config is not UNSET:
-            field_dict["identityProviderConfig"] = identity_provider_config
+        field_dict.update(
+            {
+                "identityProviderConfig": identity_provider_config,
+            }
+        )
 
         return field_dict
 
@@ -46,12 +44,7 @@ class UpdateIdentityProviderConfigResponse:
         from ..models.identity_provider_config import IdentityProviderConfig
 
         d = dict(src_dict)
-        _identity_provider_config = d.pop("identityProviderConfig", UNSET)
-        identity_provider_config: IdentityProviderConfig | Unset
-        if isinstance(_identity_provider_config, Unset):
-            identity_provider_config = UNSET
-        else:
-            identity_provider_config = IdentityProviderConfig.from_dict(_identity_provider_config)
+        identity_provider_config = IdentityProviderConfig.from_dict(d.pop("identityProviderConfig"))
 
         update_identity_provider_config_response = cls(
             identity_provider_config=identity_provider_config,

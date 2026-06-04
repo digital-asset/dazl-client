@@ -24,6 +24,7 @@ class CreateCommand:
 
             Required
         create_arguments (Any): The arguments required for creating a contract from this template.
+
             Required
     """
 

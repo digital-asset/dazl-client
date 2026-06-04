@@ -57,7 +57,10 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetParticipantIdResponse | JsCantonError | str]:
-    """Get participant id
+    """Return the identifier of the participant.
+    All horizontally scaled replicas should return the same id.
+    daml-on-kv-ledger: returns an identifier supplied on command line at launch time
+    canton: returns globally unique identifier of the participant
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -80,7 +83,10 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetParticipantIdResponse | JsCantonError | str | None:
-    """Get participant id
+    """Return the identifier of the participant.
+    All horizontally scaled replicas should return the same id.
+    daml-on-kv-ledger: returns an identifier supplied on command line at launch time
+    canton: returns globally unique identifier of the participant
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -99,7 +105,10 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetParticipantIdResponse | JsCantonError | str]:
-    """Get participant id
+    """Return the identifier of the participant.
+    All horizontally scaled replicas should return the same id.
+    daml-on-kv-ledger: returns an identifier supplied on command line at launch time
+    canton: returns globally unique identifier of the participant
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -120,7 +129,10 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetParticipantIdResponse | JsCantonError | str | None:
-    """Get participant id
+    """Return the identifier of the participant.
+    All horizontally scaled replicas should return the same id.
+    daml-on-kv-ledger: returns an identifier supplied on command line at launch time
+    canton: returns globally unique identifier of the participant
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

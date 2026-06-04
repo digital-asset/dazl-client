@@ -18,8 +18,10 @@ class SubmitAndWaitResponse:
     Attributes:
         update_id (str): The id of the transaction that resulted from the submitted command.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
         completion_offset (int): The details of the offset field are described in ``community/ledger-api/README.md``.
+
             Required
     """
 

@@ -16,7 +16,9 @@ T = TypeVar("T", bound="AllocateExternalPartyResponse")
 class AllocateExternalPartyResponse:
     """
     Attributes:
-        party_id (str):
+        party_id (str): The allocated party id
+
+            Required
     """
 
     party_id: str

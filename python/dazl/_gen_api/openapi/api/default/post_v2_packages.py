@@ -78,8 +78,12 @@ def sync_detailed(
     vet_all_packages: bool | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> Response[JsCantonError | UploadDarFileResponse | str]:
-    """Upload a DAR to the participant node. Behaves the same as /dars. This endpoint will be deprecated
-    and removed in a future release.
+    """Behaves the same as /dars. This endpoint will be deprecated and removed in a future release.
+    Upload a DAR file to the participant.
+
+    If vetting is enabled in the request, the DAR is checked for upgrade compatibility
+    with the set of the already vetted packages on the target vetting synchronizer
+    See UploadDarFileRequest for details regarding vetting and the target vetting synchronizer.
 
     Args:
         vet_all_packages (bool | Unset):
@@ -114,8 +118,12 @@ def sync(
     vet_all_packages: bool | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> JsCantonError | UploadDarFileResponse | str | None:
-    """Upload a DAR to the participant node. Behaves the same as /dars. This endpoint will be deprecated
-    and removed in a future release.
+    """Behaves the same as /dars. This endpoint will be deprecated and removed in a future release.
+    Upload a DAR file to the participant.
+
+    If vetting is enabled in the request, the DAR is checked for upgrade compatibility
+    with the set of the already vetted packages on the target vetting synchronizer
+    See UploadDarFileRequest for details regarding vetting and the target vetting synchronizer.
 
     Args:
         vet_all_packages (bool | Unset):
@@ -145,8 +153,12 @@ async def asyncio_detailed(
     vet_all_packages: bool | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> Response[JsCantonError | UploadDarFileResponse | str]:
-    """Upload a DAR to the participant node. Behaves the same as /dars. This endpoint will be deprecated
-    and removed in a future release.
+    """Behaves the same as /dars. This endpoint will be deprecated and removed in a future release.
+    Upload a DAR file to the participant.
+
+    If vetting is enabled in the request, the DAR is checked for upgrade compatibility
+    with the set of the already vetted packages on the target vetting synchronizer
+    See UploadDarFileRequest for details regarding vetting and the target vetting synchronizer.
 
     Args:
         vet_all_packages (bool | Unset):
@@ -179,8 +191,12 @@ async def asyncio(
     vet_all_packages: bool | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> JsCantonError | UploadDarFileResponse | str | None:
-    """Upload a DAR to the participant node. Behaves the same as /dars. This endpoint will be deprecated
-    and removed in a future release.
+    """Behaves the same as /dars. This endpoint will be deprecated and removed in a future release.
+    Upload a DAR file to the participant.
+
+    If vetting is enabled in the request, the DAR is checked for upgrade compatibility
+    with the set of the already vetted packages on the target vetting synchronizer
+    See UploadDarFileRequest for details regarding vetting and the target vetting synchronizer.
 
     Args:
         vet_all_packages (bool | Unset):

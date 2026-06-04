@@ -10,39 +10,36 @@ from typing import Any
 import httpx
 
 from ...client import AuthenticatedClient, Client
+from ...models.get_contract_request import GetContractRequest
+from ...models.get_contract_response import GetContractResponse
 from ...models.js_canton_error import JsCantonError
-from ...models.list_users_response import ListUsersResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
+    body: GetContractRequest,
 ) -> dict[str, Any]:
-
-    params: dict[str, Any] = {}
-
-    params["pageSize"] = page_size
-
-    params["pageToken"] = page_token
-
-    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+    headers: dict[str, Any] = {}
 
     _kwargs: dict[str, Any] = {
-        "method": "get",
-        "url": "/v2/users",
-        "params": params,
+        "method": "post",
+        "url": "/v2/contracts/contract-by-id",
     }
 
+    _kwargs["json"] = body.to_dict()
+
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> JsCantonError | ListUsersResponse | str:
+) -> GetContractResponse | JsCantonError | str:
     if response.status_code == 200:
-        response_200 = ListUsersResponse.from_dict(response.json())
+        response_200 = GetContractResponse.from_dict(response.json())
 
         return response_200
 
@@ -57,7 +54,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[JsCantonError | ListUsersResponse | str]:
+) -> Response[GetContractResponse | JsCantonError | str]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -69,26 +66,27 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> Response[JsCantonError | ListUsersResponse | str]:
-    """List all existing users.
+    body: GetContractRequest,
+) -> Response[GetContractResponse | JsCantonError | str]:
+    """Looking up contract data by contract ID.
+    This endpoint is experimental / alpha, therefore no backwards compatibility is guaranteed.
+    This endpoint must not be used to look up contracts which entered the participant via party
+    replication
+    or repair service.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (GetContractRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[JsCantonError | ListUsersResponse | str]
+        Response[GetContractResponse | JsCantonError | str]
     """
 
     kwargs = _get_kwargs(
-        page_size=page_size,
-        page_token=page_token,
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -101,53 +99,55 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> JsCantonError | ListUsersResponse | str | None:
-    """List all existing users.
+    body: GetContractRequest,
+) -> GetContractResponse | JsCantonError | str | None:
+    """Looking up contract data by contract ID.
+    This endpoint is experimental / alpha, therefore no backwards compatibility is guaranteed.
+    This endpoint must not be used to look up contracts which entered the participant via party
+    replication
+    or repair service.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (GetContractRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        JsCantonError | ListUsersResponse | str
+        GetContractResponse | JsCantonError | str
     """
 
     return sync_detailed(
         client=client,
-        page_size=page_size,
-        page_token=page_token,
+        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> Response[JsCantonError | ListUsersResponse | str]:
-    """List all existing users.
+    body: GetContractRequest,
+) -> Response[GetContractResponse | JsCantonError | str]:
+    """Looking up contract data by contract ID.
+    This endpoint is experimental / alpha, therefore no backwards compatibility is guaranteed.
+    This endpoint must not be used to look up contracts which entered the participant via party
+    replication
+    or repair service.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (GetContractRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[JsCantonError | ListUsersResponse | str]
+        Response[GetContractResponse | JsCantonError | str]
     """
 
     kwargs = _get_kwargs(
-        page_size=page_size,
-        page_token=page_token,
+        body=body,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -158,27 +158,28 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    page_size: int | Unset = UNSET,
-    page_token: str | Unset = UNSET,
-) -> JsCantonError | ListUsersResponse | str | None:
-    """List all existing users.
+    body: GetContractRequest,
+) -> GetContractResponse | JsCantonError | str | None:
+    """Looking up contract data by contract ID.
+    This endpoint is experimental / alpha, therefore no backwards compatibility is guaranteed.
+    This endpoint must not be used to look up contracts which entered the participant via party
+    replication
+    or repair service.
 
     Args:
-        page_size (int | Unset):
-        page_token (str | Unset):
+        body (GetContractRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        JsCantonError | ListUsersResponse | str
+        GetContractResponse | JsCantonError | str
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            page_size=page_size,
-            page_token=page_token,
+            body=body,
         )
     ).parsed

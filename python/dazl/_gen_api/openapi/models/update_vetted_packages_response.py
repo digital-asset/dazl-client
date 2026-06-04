@@ -22,13 +22,13 @@ T = TypeVar("T", bound="UpdateVettedPackagesResponse")
 class UpdateVettedPackagesResponse:
     """
     Attributes:
-        past_vetted_packages (VettedPackages | Unset): The list of packages vetted on a given participant and
-            synchronizer, modelled
+        new_vetted_packages (VettedPackages): The list of packages vetted on a given participant and synchronizer,
+            modelled
             after ``VettedPackages`` in `topology.proto <https://github.com/digital-asset/canton/blob/main/community/base/sr
             c/main/protobuf/com/digitalasset/canton/protocol/v30/topology.proto#L206>`_.
             The list only contains packages that matched a filter in the query that
             originated it.
-        new_vetted_packages (VettedPackages | Unset): The list of packages vetted on a given participant and
+        past_vetted_packages (VettedPackages | Unset): The list of packages vetted on a given participant and
             synchronizer, modelled
             after ``VettedPackages`` in `topology.proto <https://github.com/digital-asset/canton/blob/main/community/base/sr
             c/main/protobuf/com/digitalasset/canton/protocol/v30/topology.proto#L206>`_.
@@ -36,26 +36,26 @@ class UpdateVettedPackagesResponse:
             originated it.
     """
 
+    new_vetted_packages: VettedPackages
     past_vetted_packages: VettedPackages | Unset = UNSET
-    new_vetted_packages: VettedPackages | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        new_vetted_packages = self.new_vetted_packages.to_dict()
+
         past_vetted_packages: dict[str, Any] | Unset = UNSET
         if not isinstance(self.past_vetted_packages, Unset):
             past_vetted_packages = self.past_vetted_packages.to_dict()
 
-        new_vetted_packages: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.new_vetted_packages, Unset):
-            new_vetted_packages = self.new_vetted_packages.to_dict()
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "newVettedPackages": new_vetted_packages,
+            }
+        )
         if past_vetted_packages is not UNSET:
             field_dict["pastVettedPackages"] = past_vetted_packages
-        if new_vetted_packages is not UNSET:
-            field_dict["newVettedPackages"] = new_vetted_packages
 
         return field_dict
 
@@ -64,6 +64,8 @@ class UpdateVettedPackagesResponse:
         from ..models.vetted_packages import VettedPackages
 
         d = dict(src_dict)
+        new_vetted_packages = VettedPackages.from_dict(d.pop("newVettedPackages"))
+
         _past_vetted_packages = d.pop("pastVettedPackages", UNSET)
         past_vetted_packages: VettedPackages | Unset
         if isinstance(_past_vetted_packages, Unset):
@@ -71,16 +73,9 @@ class UpdateVettedPackagesResponse:
         else:
             past_vetted_packages = VettedPackages.from_dict(_past_vetted_packages)
 
-        _new_vetted_packages = d.pop("newVettedPackages", UNSET)
-        new_vetted_packages: VettedPackages | Unset
-        if isinstance(_new_vetted_packages, Unset):
-            new_vetted_packages = UNSET
-        else:
-            new_vetted_packages = VettedPackages.from_dict(_new_vetted_packages)
-
         update_vetted_packages_response = cls(
-            past_vetted_packages=past_vetted_packages,
             new_vetted_packages=new_vetted_packages,
+            past_vetted_packages=past_vetted_packages,
         )
 
         update_vetted_packages_response.additional_properties = d

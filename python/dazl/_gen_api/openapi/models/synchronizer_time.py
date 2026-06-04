@@ -9,8 +9,6 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="SynchronizerTime")
 
 
@@ -19,14 +17,16 @@ class SynchronizerTime:
     """
     Attributes:
         synchronizer_id (str): The id of the synchronizer.
+
             Required
-        record_time (str | Unset): All commands with a maximum record time below this value MUST be considered lost if
-            their completion has not arrived before this checkpoint.
+        record_time (str): All commands with a maximum record time below this value MUST be considered lost if their
+            completion has not arrived before this checkpoint.
+
             Required
     """
 
     synchronizer_id: str
-    record_time: str | Unset = UNSET
+    record_time: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -39,10 +39,9 @@ class SynchronizerTime:
         field_dict.update(
             {
                 "synchronizerId": synchronizer_id,
+                "recordTime": record_time,
             }
         )
-        if record_time is not UNSET:
-            field_dict["recordTime"] = record_time
 
         return field_dict
 
@@ -51,7 +50,7 @@ class SynchronizerTime:
         d = dict(src_dict)
         synchronizer_id = d.pop("synchronizerId")
 
-        record_time = d.pop("recordTime", UNSET)
+        record_time = d.pop("recordTime")
 
         synchronizer_time = cls(
             synchronizer_id=synchronizer_id,

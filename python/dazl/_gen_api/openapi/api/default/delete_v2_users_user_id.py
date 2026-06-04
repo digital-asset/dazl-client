@@ -63,7 +63,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[DeleteV2UsersUserIdResponse200 | JsCantonError | str]:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):
@@ -92,7 +92,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> DeleteV2UsersUserIdResponse200 | JsCantonError | str | None:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):
@@ -116,7 +116,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[DeleteV2UsersUserIdResponse200 | JsCantonError | str]:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):
@@ -143,7 +143,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> DeleteV2UsersUserIdResponse200 | JsCantonError | str | None:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):

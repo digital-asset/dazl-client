@@ -63,7 +63,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetIdentityProviderConfigResponse | JsCantonError | str]:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):
@@ -92,7 +92,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):
@@ -116,7 +116,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetIdentityProviderConfigResponse | JsCantonError | str]:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):
@@ -143,7 +143,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):

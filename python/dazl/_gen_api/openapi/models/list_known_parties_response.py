@@ -22,35 +22,36 @@ T = TypeVar("T", bound="ListKnownPartiesResponse")
 class ListKnownPartiesResponse:
     """
     Attributes:
-        next_page_token (str): Pagination token to retrieve the next page.
+        party_details (list[PartyDetails]): The details of all Daml parties known by the participant.
+
+            Required: must be non-empty
+        next_page_token (str | Unset): Pagination token to retrieve the next page.
             Empty, if there are no further results.
-        party_details (list[PartyDetails] | Unset): The details of all Daml parties known by the participant.
-            Required
+
+            Optional
     """
 
-    next_page_token: str
-    party_details: list[PartyDetails] | Unset = UNSET
+    party_details: list[PartyDetails]
+    next_page_token: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        next_page_token = self.next_page_token
+        party_details = []
+        for party_details_item_data in self.party_details:
+            party_details_item = party_details_item_data.to_dict()
+            party_details.append(party_details_item)
 
-        party_details: list[dict[str, Any]] | Unset = UNSET
-        if not isinstance(self.party_details, Unset):
-            party_details = []
-            for party_details_item_data in self.party_details:
-                party_details_item = party_details_item_data.to_dict()
-                party_details.append(party_details_item)
+        next_page_token = self.next_page_token
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "nextPageToken": next_page_token,
+                "partyDetails": party_details,
             }
         )
-        if party_details is not UNSET:
-            field_dict["partyDetails"] = party_details
+        if next_page_token is not UNSET:
+            field_dict["nextPageToken"] = next_page_token
 
         return field_dict
 
@@ -59,20 +60,18 @@ class ListKnownPartiesResponse:
         from ..models.party_details import PartyDetails
 
         d = dict(src_dict)
-        next_page_token = d.pop("nextPageToken")
+        party_details = []
+        _party_details = d.pop("partyDetails")
+        for party_details_item_data in _party_details:
+            party_details_item = PartyDetails.from_dict(party_details_item_data)
 
-        _party_details = d.pop("partyDetails", UNSET)
-        party_details: list[PartyDetails] | Unset = UNSET
-        if _party_details is not UNSET:
-            party_details = []
-            for party_details_item_data in _party_details:
-                party_details_item = PartyDetails.from_dict(party_details_item_data)
+            party_details.append(party_details_item)
 
-                party_details.append(party_details_item)
+        next_page_token = d.pop("nextPageToken", UNSET)
 
         list_known_parties_response = cls(
-            next_page_token=next_page_token,
             party_details=party_details,
+            next_page_token=next_page_token,
         )
 
         list_known_parties_response.additional_properties = d

@@ -17,7 +17,7 @@ class ExperimentalCommandInspectionService:
     """Whether the Ledger API supports command inspection service
 
     Attributes:
-        supported (bool):
+        supported (bool): Required
     """
 
     supported: bool

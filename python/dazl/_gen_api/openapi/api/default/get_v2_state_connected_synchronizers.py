@@ -76,7 +76,7 @@ def sync_detailed(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetConnectedSynchronizersResponse | JsCantonError | str]:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):
@@ -111,7 +111,7 @@ def sync(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetConnectedSynchronizersResponse | JsCantonError | str | None:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):
@@ -141,7 +141,7 @@ async def asyncio_detailed(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetConnectedSynchronizersResponse | JsCantonError | str]:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):
@@ -174,7 +174,7 @@ async def asyncio(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetConnectedSynchronizersResponse | JsCantonError | str | None:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):

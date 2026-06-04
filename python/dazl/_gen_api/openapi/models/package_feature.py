@@ -18,6 +18,8 @@ class PackageFeature:
     Attributes:
         max_vetted_packages_page_size (int): The maximum number of vetted packages the server can return in a single
             response (page) when listing them.
+
+            Required
     """
 
     max_vetted_packages_page_size: int

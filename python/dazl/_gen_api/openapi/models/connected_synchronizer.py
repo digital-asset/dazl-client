@@ -10,6 +10,7 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define, field as _attrs_field
 
 from ..models.connected_synchronizer_permission import ConnectedSynchronizerPermission
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ConnectedSynchronizer")
 
@@ -18,14 +19,21 @@ T = TypeVar("T", bound="ConnectedSynchronizer")
 class ConnectedSynchronizer:
     """
     Attributes:
-        synchronizer_alias (str):
-        synchronizer_id (str):
-        permission (ConnectedSynchronizerPermission):
+        synchronizer_alias (str): The alias of the synchronizer
+
+            Required
+        synchronizer_id (str): The ID of the synchronizer
+
+            Required
+        permission (ConnectedSynchronizerPermission | Unset): The permission on the synchronizer
+            Set if a party was used in the request, otherwise unspecified.
+
+            Optional
     """
 
     synchronizer_alias: str
     synchronizer_id: str
-    permission: ConnectedSynchronizerPermission
+    permission: ConnectedSynchronizerPermission | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -33,7 +41,9 @@ class ConnectedSynchronizer:
 
         synchronizer_id = self.synchronizer_id
 
-        permission = self.permission.value
+        permission: str | Unset = UNSET
+        if not isinstance(self.permission, Unset):
+            permission = self.permission.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -41,9 +51,10 @@ class ConnectedSynchronizer:
             {
                 "synchronizerAlias": synchronizer_alias,
                 "synchronizerId": synchronizer_id,
-                "permission": permission,
             }
         )
+        if permission is not UNSET:
+            field_dict["permission"] = permission
 
         return field_dict
 
@@ -54,7 +65,12 @@ class ConnectedSynchronizer:
 
         synchronizer_id = d.pop("synchronizerId")
 
-        permission = ConnectedSynchronizerPermission(d.pop("permission"))
+        _permission = d.pop("permission", UNSET)
+        permission: ConnectedSynchronizerPermission | Unset
+        if isinstance(_permission, Unset):
+            permission = UNSET
+        else:
+            permission = ConnectedSynchronizerPermission(_permission)
 
         connected_synchronizer = cls(
             synchronizer_alias=synchronizer_alias,

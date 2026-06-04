@@ -3,9 +3,9 @@
 # fmt: off
 # isort: skip_file
 
+from .submission_tracking_pb2 import CommandRejected, CompletionInfo, SubmissionTrackingData, TransactionSubmissionTrackingData
 from .party_replication_pb2 import PartyReplicationSourceParticipantMessage, PartyReplicationStatus, PartyReplicationTargetParticipantMessage
 from .onboarding_clearance_pb2 import OnboardingClearanceOperation
-from .submission_tracking_pb2 import CommandRejected, CompletionInfo, SubmissionTrackingData, TransactionSubmissionTrackingData
 
 __all__ = [
     "CommandRejected",

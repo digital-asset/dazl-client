@@ -31,12 +31,22 @@ class JsInterfaceView:
         view_value (Any | Unset): The value of the interface's view method on this event.
             Set if it was requested in the ``InterfaceFilter`` and it could be
             successfully computed.
+
+            Optional
+        implementation_package_id (str | Unset): The package defining the interface implementation used to compute the
+            view.
+            Can be different from the package that was used to create the contract itself,
+            as the contract arguments can be upgraded or downgraded using smart-contract upgrading
+            as part of computing the interface view.
+            Populated if the view computation is successful, otherwise empty.
+
             Optional
     """
 
     interface_id: str
     view_status: JsStatus
     view_value: Any | Unset = UNSET
+    implementation_package_id: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -45,6 +55,8 @@ class JsInterfaceView:
         view_status = self.view_status.to_dict()
 
         view_value = self.view_value
+
+        implementation_package_id = self.implementation_package_id
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -56,6 +68,8 @@ class JsInterfaceView:
         )
         if view_value is not UNSET:
             field_dict["viewValue"] = view_value
+        if implementation_package_id is not UNSET:
+            field_dict["implementationPackageId"] = implementation_package_id
 
         return field_dict
 
@@ -70,10 +84,13 @@ class JsInterfaceView:
 
         view_value = d.pop("viewValue", UNSET)
 
+        implementation_package_id = d.pop("implementationPackageId", UNSET)
+
         js_interface_view = cls(
             interface_id=interface_id,
             view_status=view_status,
             view_value=view_value,
+            implementation_package_id=implementation_package_id,
         )
 
         js_interface_view.additional_properties = d

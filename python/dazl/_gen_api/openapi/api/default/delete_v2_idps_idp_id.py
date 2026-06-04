@@ -63,7 +63,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[DeleteIdentityProviderConfigResponse | JsCantonError | str]:
-    """Delete identity provider config
+    """Delete an existing identity provider configuration.
 
     Args:
         idp_id (str):
@@ -92,7 +92,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> DeleteIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Delete identity provider config
+    """Delete an existing identity provider configuration.
 
     Args:
         idp_id (str):
@@ -116,7 +116,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[DeleteIdentityProviderConfigResponse | JsCantonError | str]:
-    """Delete identity provider config
+    """Delete an existing identity provider configuration.
 
     Args:
         idp_id (str):
@@ -143,7 +143,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> DeleteIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Delete identity provider config
+    """Delete an existing identity provider configuration.
 
     Args:
         idp_id (str):

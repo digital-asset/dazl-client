@@ -9,6 +9,8 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..types import UNSET, Unset
+
 T = TypeVar("T", bound="GetLedgerEndResponse")
 
 
@@ -16,12 +18,14 @@ T = TypeVar("T", bound="GetLedgerEndResponse")
 class GetLedgerEndResponse:
     """
     Attributes:
-        offset (int): It will always be a non-negative integer.
+        offset (int | Unset): It will always be a non-negative integer.
             If zero, the participant view of the ledger is empty.
             If positive, the absolute offset of the ledger as viewed by the participant.
+
+            Optional
     """
 
-    offset: int
+    offset: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -29,18 +33,16 @@ class GetLedgerEndResponse:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "offset": offset,
-            }
-        )
+        field_dict.update({})
+        if offset is not UNSET:
+            field_dict["offset"] = offset
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        offset = d.pop("offset")
+        offset = d.pop("offset", UNSET)
 
         get_ledger_end_response = cls(
             offset=offset,

@@ -57,7 +57,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[JsCantonError | ListPackagesResponse | str]:
-    """List all packages uploaded on the participant node
+    """Returns the identifiers of all supported packages.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -80,7 +80,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> JsCantonError | ListPackagesResponse | str | None:
-    """List all packages uploaded on the participant node
+    """Returns the identifiers of all supported packages.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -99,7 +99,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[JsCantonError | ListPackagesResponse | str]:
-    """List all packages uploaded on the participant node
+    """Returns the identifiers of all supported packages.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -120,7 +120,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> JsCantonError | ListPackagesResponse | str | None:
-    """List all packages uploaded on the participant node
+    """Returns the identifiers of all supported packages.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

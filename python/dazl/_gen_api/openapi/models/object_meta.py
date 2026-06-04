@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..types import UNSET, Unset
+
 if TYPE_CHECKING:
     from ..models.map_string import MapString
 
@@ -25,8 +27,8 @@ class ObjectMeta:
     See https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/generated.proto#L640
 
         Attributes:
-            resource_version (str): An opaque, non-empty value, populated by a participant server which represents the
-                internal version of the resource
+            resource_version (str | Unset): An opaque, non-empty value, populated by a participant server which represents
+                the internal version of the resource
                 this ``ObjectMeta`` message is attached to. The participant server will change it to a unique value each time
                 the corresponding resource is updated.
                 You must not rely on the format of resource version. The participant server might change it without notice.
@@ -42,27 +44,29 @@ class ObjectMeta:
                 request.
                 When creating a new instance of a resource you must leave the resource version empty.
                 Its value will be populated by the participant server upon successful resource creation.
+
                 Optional
-            annotations (MapString):
+            annotations (MapString | Unset):
     """
 
-    resource_version: str
-    annotations: MapString
+    resource_version: str | Unset = UNSET
+    annotations: MapString | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         resource_version = self.resource_version
 
-        annotations = self.annotations.to_dict()
+        annotations: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.annotations, Unset):
+            annotations = self.annotations.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "resourceVersion": resource_version,
-                "annotations": annotations,
-            }
-        )
+        field_dict.update({})
+        if resource_version is not UNSET:
+            field_dict["resourceVersion"] = resource_version
+        if annotations is not UNSET:
+            field_dict["annotations"] = annotations
 
         return field_dict
 
@@ -71,9 +75,14 @@ class ObjectMeta:
         from ..models.map_string import MapString
 
         d = dict(src_dict)
-        resource_version = d.pop("resourceVersion")
+        resource_version = d.pop("resourceVersion", UNSET)
 
-        annotations = MapString.from_dict(d.pop("annotations"))
+        _annotations = d.pop("annotations", UNSET)
+        annotations: MapString | Unset
+        if isinstance(_annotations, Unset):
+            annotations = UNSET
+        else:
+            annotations = MapString.from_dict(_annotations)
 
         object_meta = cls(
             resource_version=resource_version,

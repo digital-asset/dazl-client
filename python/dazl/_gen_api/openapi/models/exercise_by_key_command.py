@@ -24,11 +24,14 @@ class ExerciseByKeyCommand:
 
             Required
         contract_key (Any): The key of the contract the client wants to exercise upon.
+
             Required
         choice (str): The name of the choice the client wants to exercise.
             Must be a valid NameString (as described in ``value.proto``)
+
             Required
         choice_argument (Any): The argument for this choice.
+
             Required
     """
 

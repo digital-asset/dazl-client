@@ -22,13 +22,18 @@ class ExercisedEvent:
         offset (int): The offset of origin.
             Offsets are managed by the participant nodes.
             Transactions can thus NOT be assumed to have the same offsets on different participant nodes.
-            Required, it is a valid absolute offset (positive integer)
+            It is a valid absolute offset (positive integer)
+
+            Required
         node_id (int): The position of this event in the originating transaction or reassignment.
             Node IDs are not necessarily equal across participants,
             as these may see different projections/parts of transactions.
-            Required, must be valid node ID (non-negative integer)
+            Must be valid node ID (non-negative integer)
+
+            Required
         contract_id (str): The ID of the target contract.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
         template_id (str): Identifies the template that defines the executed choice.
             This template's package-id may differ from the target contract's package-id
@@ -39,33 +44,19 @@ class ExercisedEvent:
             Required
         choice (str): The choice that was exercised on the target contract.
             Must be a valid NameString (as described in ``value.proto``).
+
             Required
         choice_argument (Any): The argument of the exercised choice.
-            Required
-        consuming (bool): If true, the target contract may no longer be exercised.
-            Required
-        last_descendant_node_id (int): Specifies the upper boundary of the node ids of the events in the same
-            transaction that appeared as a result of
-            this ``ExercisedEvent``. This allows unambiguous identification of all the members of the subtree rooted at this
-            node. A full subtree can be constructed when all descendant nodes are present in the stream. If nodes are
-            heavily
-            filtered, it is only possible to determine if a node is in a consequent subtree or not.
-            Required
-        exercise_result (Any): The result of exercising the choice.
-            Required
-        package_name (str): The package name of the contract.
-            Required
-        acs_delta (bool): Whether this event would be part of respective ACS_DELTA shaped stream,
-            and should therefore considered when tracking contract activeness on the client-side.
-            Required
-        interface_id (str | Unset): The interface where the choice is defined, if inherited.
-            If defined, the identifier uses the package-id reference format.
 
-            Optional
-        acting_parties (list[str] | Unset): The parties that exercised the choice.
-            Each element must be a valid PartyIdString (as described in ``value.proto``).
             Required
-        witness_parties (list[str] | Unset): The parties that are notified of this event. The witnesses of an exercise
+        acting_parties (list[str]): The parties that exercised the choice.
+            Each element must be a valid PartyIdString (as described in ``value.proto``).
+
+            Required: must be non-empty
+        consuming (bool): If true, the target contract may no longer be exercised.
+
+            Required
+        witness_parties (list[str]): The parties that are notified of this event. The witnesses of an exercise
             node will depend on whether the exercise was consuming or not.
             If consuming, the witnesses are the union of the stakeholders,
             the actors and all informees of all the ancestors of this event this
@@ -81,7 +72,30 @@ class ExercisedEvent:
             ``choice ... controller`` syntax, and said controllers are not
             explicitly marked as observers.
             Each element must be a valid PartyIdString (as described in ``value.proto``).
+
+            Required: must be non-empty
+        last_descendant_node_id (int): Specifies the upper boundary of the node ids of the events in the same
+            transaction that appeared as a result of
+            this ``ExercisedEvent``. This allows unambiguous identification of all the members of the subtree rooted at this
+            node. A full subtree can be constructed when all descendant nodes are present in the stream. If nodes are
+            heavily
+            filtered, it is only possible to determine if a node is in a consequent subtree or not.
+
             Required
+        package_name (str): The package name of the contract.
+
+            Required
+        acs_delta (bool): Whether this event would be part of respective ACS_DELTA shaped stream,
+            and should therefore considered when tracking contract activeness on the client-side.
+
+            Required
+        interface_id (str | Unset): The interface where the choice is defined, if inherited.
+            If defined, the identifier uses the package-id reference format.
+
+            Optional
+        exercise_result (Any | Unset): The result of exercising the choice.
+
+            Optional
         implemented_interfaces (list[str] | Unset): If the event is consuming, the interfaces implemented by the target
             template that have been
             matched from the interface filter query.
@@ -89,7 +103,7 @@ class ExercisedEvent:
 
             The identifier uses the package-id reference format.
 
-            Optional
+            Optional: can be empty
     """
 
     offset: int
@@ -98,14 +112,14 @@ class ExercisedEvent:
     template_id: str
     choice: str
     choice_argument: Any
+    acting_parties: list[str]
     consuming: bool
+    witness_parties: list[str]
     last_descendant_node_id: int
-    exercise_result: Any
     package_name: str
     acs_delta: bool
     interface_id: str | Unset = UNSET
-    acting_parties: list[str] | Unset = UNSET
-    witness_parties: list[str] | Unset = UNSET
+    exercise_result: Any | Unset = UNSET
     implemented_interfaces: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -122,11 +136,13 @@ class ExercisedEvent:
 
         choice_argument = self.choice_argument
 
+        acting_parties = self.acting_parties
+
         consuming = self.consuming
 
-        last_descendant_node_id = self.last_descendant_node_id
+        witness_parties = self.witness_parties
 
-        exercise_result = self.exercise_result
+        last_descendant_node_id = self.last_descendant_node_id
 
         package_name = self.package_name
 
@@ -134,13 +150,7 @@ class ExercisedEvent:
 
         interface_id = self.interface_id
 
-        acting_parties: list[str] | Unset = UNSET
-        if not isinstance(self.acting_parties, Unset):
-            acting_parties = self.acting_parties
-
-        witness_parties: list[str] | Unset = UNSET
-        if not isinstance(self.witness_parties, Unset):
-            witness_parties = self.witness_parties
+        exercise_result = self.exercise_result
 
         implemented_interfaces: list[str] | Unset = UNSET
         if not isinstance(self.implemented_interfaces, Unset):
@@ -156,19 +166,18 @@ class ExercisedEvent:
                 "templateId": template_id,
                 "choice": choice,
                 "choiceArgument": choice_argument,
+                "actingParties": acting_parties,
                 "consuming": consuming,
+                "witnessParties": witness_parties,
                 "lastDescendantNodeId": last_descendant_node_id,
-                "exerciseResult": exercise_result,
                 "packageName": package_name,
                 "acsDelta": acs_delta,
             }
         )
         if interface_id is not UNSET:
             field_dict["interfaceId"] = interface_id
-        if acting_parties is not UNSET:
-            field_dict["actingParties"] = acting_parties
-        if witness_parties is not UNSET:
-            field_dict["witnessParties"] = witness_parties
+        if exercise_result is not UNSET:
+            field_dict["exerciseResult"] = exercise_result
         if implemented_interfaces is not UNSET:
             field_dict["implementedInterfaces"] = implemented_interfaces
 
@@ -189,11 +198,13 @@ class ExercisedEvent:
 
         choice_argument = d.pop("choiceArgument")
 
+        acting_parties = cast(list[str], d.pop("actingParties"))
+
         consuming = d.pop("consuming")
 
-        last_descendant_node_id = d.pop("lastDescendantNodeId")
+        witness_parties = cast(list[str], d.pop("witnessParties"))
 
-        exercise_result = d.pop("exerciseResult")
+        last_descendant_node_id = d.pop("lastDescendantNodeId")
 
         package_name = d.pop("packageName")
 
@@ -201,9 +212,7 @@ class ExercisedEvent:
 
         interface_id = d.pop("interfaceId", UNSET)
 
-        acting_parties = cast(list[str], d.pop("actingParties", UNSET))
-
-        witness_parties = cast(list[str], d.pop("witnessParties", UNSET))
+        exercise_result = d.pop("exerciseResult", UNSET)
 
         implemented_interfaces = cast(list[str], d.pop("implementedInterfaces", UNSET))
 
@@ -214,14 +223,14 @@ class ExercisedEvent:
             template_id=template_id,
             choice=choice,
             choice_argument=choice_argument,
+            acting_parties=acting_parties,
             consuming=consuming,
+            witness_parties=witness_parties,
             last_descendant_node_id=last_descendant_node_id,
-            exercise_result=exercise_result,
             package_name=package_name,
             acs_delta=acs_delta,
             interface_id=interface_id,
-            acting_parties=acting_parties,
-            witness_parties=witness_parties,
+            exercise_result=exercise_result,
             implemented_interfaces=implemented_interfaces,
         )
 

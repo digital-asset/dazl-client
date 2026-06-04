@@ -5,41 +5,35 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-T = TypeVar("T", bound="Identifier")
+if TYPE_CHECKING:
+    from ..models.created_event import CreatedEvent
+
+
+T = TypeVar("T", bound="GetContractResponse")
 
 
 @_attrs_define
-class Identifier:
+class GetContractResponse:
     """
     Attributes:
-        package_id (str):
-        module_name (str):
-        entity_name (str):
+        created_event (CreatedEvent): Records that a contract has been created, and choices may now be exercised on it.
     """
 
-    package_id: str
-    module_name: str
-    entity_name: str
+    created_event: CreatedEvent
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        package_id = self.package_id
-
-        module_name = self.module_name
-
-        entity_name = self.entity_name
+        created_event = self.created_event.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "packageId": package_id,
-                "moduleName": module_name,
-                "entityName": entity_name,
+                "createdEvent": created_event,
             }
         )
 
@@ -47,21 +41,17 @@ class Identifier:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.created_event import CreatedEvent
+
         d = dict(src_dict)
-        package_id = d.pop("packageId")
+        created_event = CreatedEvent.from_dict(d.pop("createdEvent"))
 
-        module_name = d.pop("moduleName")
-
-        entity_name = d.pop("entityName")
-
-        identifier = cls(
-            package_id=package_id,
-            module_name=module_name,
-            entity_name=entity_name,
+        get_contract_response = cls(
+            created_event=created_event,
         )
 
-        identifier.additional_properties = d
-        return identifier
+        get_contract_response.additional_properties = d
+        return get_contract_response
 
     @property
     def additional_keys(self) -> list[str]:

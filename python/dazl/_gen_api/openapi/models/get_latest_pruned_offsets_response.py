@@ -9,6 +9,8 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..types import UNSET, Unset
+
 T = TypeVar("T", bound="GetLatestPrunedOffsetsResponse")
 
 
@@ -16,20 +18,24 @@ T = TypeVar("T", bound="GetLatestPrunedOffsetsResponse")
 class GetLatestPrunedOffsetsResponse:
     """
     Attributes:
-        participant_pruned_up_to_inclusive (int): It will always be a non-negative integer.
+        participant_pruned_up_to_inclusive (int | Unset): It will always be a non-negative integer.
             If positive, the absolute offset up to which the ledger has been pruned,
             disregarding the state of all divulged contracts pruning.
             If zero, the ledger has not been pruned yet.
-        all_divulged_contracts_pruned_up_to_inclusive (int): It will always be a non-negative integer.
+
+            Optional
+        all_divulged_contracts_pruned_up_to_inclusive (int | Unset): It will always be a non-negative integer.
             If positive, the absolute offset up to which all divulged events have been pruned on the ledger.
             It can be at or before the ``participant_pruned_up_to_inclusive`` offset.
             For more details about all divulged events pruning,
             see ``PruneRequest.prune_all_divulged_contracts`` in ``participant_pruning_service.proto``.
             If zero, the divulged events have not been pruned yet.
+
+            Optional
     """
 
-    participant_pruned_up_to_inclusive: int
-    all_divulged_contracts_pruned_up_to_inclusive: int
+    participant_pruned_up_to_inclusive: int | Unset = UNSET
+    all_divulged_contracts_pruned_up_to_inclusive: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -41,22 +47,23 @@ class GetLatestPrunedOffsetsResponse:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "participantPrunedUpToInclusive": participant_pruned_up_to_inclusive,
-                "allDivulgedContractsPrunedUpToInclusive": all_divulged_contracts_pruned_up_to_inclusive,
-            }
-        )
+        field_dict.update({})
+        if participant_pruned_up_to_inclusive is not UNSET:
+            field_dict["participantPrunedUpToInclusive"] = participant_pruned_up_to_inclusive
+        if all_divulged_contracts_pruned_up_to_inclusive is not UNSET:
+            field_dict["allDivulgedContractsPrunedUpToInclusive"] = (
+                all_divulged_contracts_pruned_up_to_inclusive
+            )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        participant_pruned_up_to_inclusive = d.pop("participantPrunedUpToInclusive")
+        participant_pruned_up_to_inclusive = d.pop("participantPrunedUpToInclusive", UNSET)
 
         all_divulged_contracts_pruned_up_to_inclusive = d.pop(
-            "allDivulgedContractsPrunedUpToInclusive"
+            "allDivulgedContractsPrunedUpToInclusive", UNSET
         )
 
         get_latest_pruned_offsets_response = cls(

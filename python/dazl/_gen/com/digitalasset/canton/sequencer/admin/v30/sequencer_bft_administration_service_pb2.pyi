@@ -177,16 +177,20 @@ class GetOrderingTopologyRequest(_message.Message):
     def __init__(self) -> None: ...
 
 class GetOrderingTopologyResponse(_message.Message):
-    __slots__ = ("current_epoch", "sequencer_ids", "dynamic_sequencing_parameters_payload", "dynamic_sequencing_parameters_payload31")
+    __slots__ = ("current_epoch", "sequencer_ids", "dynamic_sequencing_parameters_payload", "dynamic_sequencing_parameters_payload31", "leader_sequencer_ids", "blacklisted_sequencer_ids")
     CURRENT_EPOCH_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_IDS_FIELD_NUMBER: _ClassVar[int]
     DYNAMIC_SEQUENCING_PARAMETERS_PAYLOAD_FIELD_NUMBER: _ClassVar[int]
     DYNAMIC_SEQUENCING_PARAMETERS_PAYLOAD31_FIELD_NUMBER: _ClassVar[int]
+    LEADER_SEQUENCER_IDS_FIELD_NUMBER: _ClassVar[int]
+    BLACKLISTED_SEQUENCER_IDS_FIELD_NUMBER: _ClassVar[int]
     current_epoch: int
     sequencer_ids: _containers.RepeatedScalarFieldContainer[str]
     dynamic_sequencing_parameters_payload: _bft_ordering_sequencing_parameters_pb2.DynamicSequencingParametersPayload
     dynamic_sequencing_parameters_payload31: _bft_ordering_sequencing_parameters_pb2_1.DynamicSequencingParametersPayload
-    def __init__(self, current_epoch: _Optional[int] = ..., sequencer_ids: _Optional[_Iterable[str]] = ..., dynamic_sequencing_parameters_payload: _Optional[_Union[_bft_ordering_sequencing_parameters_pb2.DynamicSequencingParametersPayload, _Mapping]] = ..., dynamic_sequencing_parameters_payload31: _Optional[_Union[_bft_ordering_sequencing_parameters_pb2_1.DynamicSequencingParametersPayload, _Mapping]] = ...) -> None: ...
+    leader_sequencer_ids: _containers.RepeatedScalarFieldContainer[str]
+    blacklisted_sequencer_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, current_epoch: _Optional[int] = ..., sequencer_ids: _Optional[_Iterable[str]] = ..., dynamic_sequencing_parameters_payload: _Optional[_Union[_bft_ordering_sequencing_parameters_pb2.DynamicSequencingParametersPayload, _Mapping]] = ..., dynamic_sequencing_parameters_payload31: _Optional[_Union[_bft_ordering_sequencing_parameters_pb2_1.DynamicSequencingParametersPayload, _Mapping]] = ..., leader_sequencer_ids: _Optional[_Iterable[str]] = ..., blacklisted_sequencer_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class SetPerformanceMetricsEnabledRequest(_message.Message):
     __slots__ = ("enabled",)

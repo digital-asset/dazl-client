@@ -9,8 +9,6 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="CostEstimation")
 
 
@@ -22,23 +20,33 @@ class CostEstimation:
     The cost of re-assigning contracts to another synchronizer when necessary is not included in the estimation.
 
         Attributes:
+            estimation_timestamp (str): Timestamp at which the estimation was made
+
+                Required
             confirmation_request_traffic_cost_estimation (int): Estimated traffic cost of the confirmation request
                 associated with the transaction
+
+                Required
             confirmation_response_traffic_cost_estimation (int): Estimated traffic cost of the confirmation response
                 associated with the transaction
                 This field can also be used as an indication of the cost that other potential confirming nodes
                 of the party will incur to approve or reject the transaction
+
+                Required
             total_traffic_cost_estimation (int): Sum of the fields above
-            estimation_timestamp (str | Unset): Timestamp at which the estimation was made
+
+                Required
     """
 
+    estimation_timestamp: str
     confirmation_request_traffic_cost_estimation: int
     confirmation_response_traffic_cost_estimation: int
     total_traffic_cost_estimation: int
-    estimation_timestamp: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        estimation_timestamp = self.estimation_timestamp
+
         confirmation_request_traffic_cost_estimation = (
             self.confirmation_request_traffic_cost_estimation
         )
@@ -49,25 +57,24 @@ class CostEstimation:
 
         total_traffic_cost_estimation = self.total_traffic_cost_estimation
 
-        estimation_timestamp = self.estimation_timestamp
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "estimationTimestamp": estimation_timestamp,
                 "confirmationRequestTrafficCostEstimation": confirmation_request_traffic_cost_estimation,
                 "confirmationResponseTrafficCostEstimation": confirmation_response_traffic_cost_estimation,
                 "totalTrafficCostEstimation": total_traffic_cost_estimation,
             }
         )
-        if estimation_timestamp is not UNSET:
-            field_dict["estimationTimestamp"] = estimation_timestamp
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        estimation_timestamp = d.pop("estimationTimestamp")
+
         confirmation_request_traffic_cost_estimation = d.pop(
             "confirmationRequestTrafficCostEstimation"
         )
@@ -78,13 +85,11 @@ class CostEstimation:
 
         total_traffic_cost_estimation = d.pop("totalTrafficCostEstimation")
 
-        estimation_timestamp = d.pop("estimationTimestamp", UNSET)
-
         cost_estimation = cls(
+            estimation_timestamp=estimation_timestamp,
             confirmation_request_traffic_cost_estimation=confirmation_request_traffic_cost_estimation,
             confirmation_response_traffic_cost_estimation=confirmation_response_traffic_cost_estimation,
             total_traffic_cost_estimation=total_traffic_cost_estimation,
-            estimation_timestamp=estimation_timestamp,
         )
 
         cost_estimation.additional_properties = d

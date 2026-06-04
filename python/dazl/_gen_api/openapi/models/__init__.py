@@ -58,6 +58,8 @@ from .field_mask import FieldMask
 from .generate_external_party_topology_request import GenerateExternalPartyTopologyRequest
 from .generate_external_party_topology_response import GenerateExternalPartyTopologyResponse
 from .get_connected_synchronizers_response import GetConnectedSynchronizersResponse
+from .get_contract_request import GetContractRequest
+from .get_contract_response import GetContractResponse
 from .get_identity_provider_config_response import GetIdentityProviderConfigResponse
 from .get_latest_pruned_offsets_response import GetLatestPrunedOffsetsResponse
 from .get_ledger_api_version_response import GetLedgerApiVersionResponse
@@ -70,7 +72,6 @@ from .get_preferred_package_version_response import GetPreferredPackageVersionRe
 from .get_preferred_packages_request import GetPreferredPackagesRequest
 from .get_preferred_packages_response import GetPreferredPackagesResponse
 from .get_user_response import GetUserResponse
-from .identifier import Identifier
 from .identity_provider_config import IdentityProviderConfig
 from .js_active_contract import JsActiveContract
 from .js_archived import JsArchived
@@ -94,6 +95,9 @@ from .js_get_transaction_tree_response import JsGetTransactionTreeResponse
 from .js_incomplete_assigned import JsIncompleteAssigned
 from .js_incomplete_unassigned import JsIncompleteUnassigned
 from .js_interface_view import JsInterfaceView
+from .js_prepare_submission_request_hashing_scheme_version import (
+    JsPrepareSubmissionRequestHashingSchemeVersion,
+)
 from .js_prepare_submission_response import JsPrepareSubmissionResponse
 from .js_prepare_submission_response_hashing_scheme_version import (
     JsPrepareSubmissionResponseHashingSchemeVersion,
@@ -225,6 +229,8 @@ __all__ = (
     "GenerateExternalPartyTopologyRequest",
     "GenerateExternalPartyTopologyResponse",
     "GetConnectedSynchronizersResponse",
+    "GetContractRequest",
+    "GetContractResponse",
     "GetIdentityProviderConfigResponse",
     "GetLatestPrunedOffsetsResponse",
     "GetLedgerApiVersionResponse",
@@ -237,7 +243,6 @@ __all__ = (
     "GetPreferredPackagesResponse",
     "GetPreferredPackageVersionResponse",
     "GetUserResponse",
-    "Identifier",
     "IdentityProviderConfig",
     "JsActiveContract",
     "JsArchived",
@@ -259,6 +264,7 @@ __all__ = (
     "JsIncompleteAssigned",
     "JsIncompleteUnassigned",
     "JsInterfaceView",
+    "JsPrepareSubmissionRequestHashingSchemeVersion",
     "JsPrepareSubmissionResponse",
     "JsPrepareSubmissionResponseHashingSchemeVersion",
     "JsReassignment",

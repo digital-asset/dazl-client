@@ -73,7 +73,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> Response[JsCantonError | UpdateUserResponse | str]:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):
@@ -106,7 +106,7 @@ def sync(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> JsCantonError | UpdateUserResponse | str | None:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):
@@ -134,7 +134,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> Response[JsCantonError | UpdateUserResponse | str]:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):
@@ -165,7 +165,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> JsCantonError | UpdateUserResponse | str | None:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):

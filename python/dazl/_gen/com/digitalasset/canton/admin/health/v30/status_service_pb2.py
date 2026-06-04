@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n=com/digitalasset/canton/admin/health/v30/status_service.proto\x12(com.digitalasset.canton.admin.health.v30\x1a\x1egoogle/protobuf/duration.proto\"i\n\x13TopologyQueueStatus\x12\x18\n\x07manager\x18\x01 \x01(\rR\x07manager\x12\x1e\n\ndispatcher\x18\x02 \x01(\rR\ndispatcher\x12\x18\n\x07\x63lients\x18\x03 \x01(\rR\x07\x63lients\"\xee\x03\n\x0f\x43omponentStatus\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12V\n\x02ok\x18\x02 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x02ok\x12\x62\n\x08\x64\x65graded\x18\x03 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x08\x64\x65graded\x12^\n\x06\x66\x61iled\x18\x04 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x06\x66\x61iled\x12\\\n\x05\x66\x61tal\x18\x05 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x05\x66\x61tal\x1a\x43\n\nStatusData\x12%\n\x0b\x64\x65scription\x18\x01 \x01(\tH\x00R\x0b\x64\x65scription\x88\x01\x01\x42\x0e\n\x0c_descriptionB\x08\n\x06status\"\x80\x03\n\x0eNotInitialized\x12\x16\n\x06\x61\x63tive\x18\x01 \x01(\x08R\x06\x61\x63tive\x12\x8d\x01\n\x1awaiting_for_external_input\x18\x02 \x01(\x0e\x32P.com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInputR\x17waitingForExternalInput\"\xc5\x01\n\x17WaitingForExternalInput\x12*\n&WAITING_FOR_EXTERNAL_INPUT_UNSPECIFIED\x10\x00\x12!\n\x1dWAITING_FOR_EXTERNAL_INPUT_ID\x10\x01\x12,\n(WAITING_FOR_EXTERNAL_INPUT_NODE_TOPOLOGY\x10\x02\x12-\n)WAITING_FOR_EXTERNAL_INPUT_INITIALIZATION\x10\x03\"\xcf\x03\n\x06Status\x12\x10\n\x03uid\x18\x01 \x01(\tR\x03uid\x12\x31\n\x06uptime\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\x06uptime\x12Q\n\x05ports\x18\x03 \x03(\x0b\x32;.com.digitalasset.canton.admin.health.v30.Status.PortsEntryR\x05ports\x12\x16\n\x06\x61\x63tive\x18\x04 \x01(\x08R\x06\x61\x63tive\x12\x66\n\x0ftopology_queues\x18\x05 \x01(\x0b\x32=.com.digitalasset.canton.admin.health.v30.TopologyQueueStatusR\x0etopologyQueues\x12Y\n\ncomponents\x18\x06 \x03(\x0b\x32\x39.com.digitalasset.canton.admin.health.v30.ComponentStatusR\ncomponents\x12\x18\n\x07version\x18\x07 \x01(\tR\x07version\x1a\x38\n\nPortsEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\x05R\x05value:\x02\x38\x01\"F\n\x11HealthDumpRequest\x12\"\n\nchunk_size\x18\x01 \x01(\rH\x00R\tchunkSize\x88\x01\x01\x42\r\n\x0b_chunk_size\"*\n\x12HealthDumpResponse\x12\x14\n\x05\x63hunk\x18\x01 \x01(\x0cR\x05\x63hunk\"*\n\x12SetLogLevelRequest\x12\x14\n\x05level\x18\x01 \x01(\tR\x05level\"\x15\n\x13SetLogLevelResponse2\xa8\x02\n\rStatusService\x12\x89\x01\n\nHealthDump\x12;.com.digitalasset.canton.admin.health.v30.HealthDumpRequest\x1a<.com.digitalasset.canton.admin.health.v30.HealthDumpResponse0\x01\x12\x8a\x01\n\x0bSetLogLevel\x12<.com.digitalasset.canton.admin.health.v30.SetLogLevelRequest\x1a=.com.digitalasset.canton.admin.health.v30.SetLogLevelResponseBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/health/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n=com/digitalasset/canton/admin/health/v30/status_service.proto\x12(com.digitalasset.canton.admin.health.v30\x1a\x1egoogle/protobuf/duration.proto\"i\n\x13TopologyQueueStatus\x12\x18\n\x07manager\x18\x01 \x01(\rR\x07manager\x12\x1e\n\ndispatcher\x18\x02 \x01(\rR\ndispatcher\x12\x18\n\x07\x63lients\x18\x03 \x01(\rR\x07\x63lients\"\xee\x03\n\x0f\x43omponentStatus\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12V\n\x02ok\x18\x02 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x02ok\x12\x62\n\x08\x64\x65graded\x18\x03 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x08\x64\x65graded\x12^\n\x06\x66\x61iled\x18\x04 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x06\x66\x61iled\x12\\\n\x05\x66\x61tal\x18\x05 \x01(\x0b\x32\x44.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x05\x66\x61tal\x1a\x43\n\nStatusData\x12%\n\x0b\x64\x65scription\x18\x01 \x01(\tH\x00R\x0b\x64\x65scription\x88\x01\x01\x42\x0e\n\x0c_descriptionB\x08\n\x06status\"\x9a\x03\n\x0eNotInitialized\x12\x16\n\x06\x61\x63tive\x18\x01 \x01(\x08R\x06\x61\x63tive\x12\x8d\x01\n\x1awaiting_for_external_input\x18\x02 \x01(\x0e\x32P.com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInputR\x17waitingForExternalInput\x12\x18\n\x07version\x18\x03 \x01(\tR\x07version\"\xc5\x01\n\x17WaitingForExternalInput\x12*\n&WAITING_FOR_EXTERNAL_INPUT_UNSPECIFIED\x10\x00\x12!\n\x1dWAITING_FOR_EXTERNAL_INPUT_ID\x10\x01\x12,\n(WAITING_FOR_EXTERNAL_INPUT_NODE_TOPOLOGY\x10\x02\x12-\n)WAITING_FOR_EXTERNAL_INPUT_INITIALIZATION\x10\x03\"\xcf\x03\n\x06Status\x12\x10\n\x03uid\x18\x01 \x01(\tR\x03uid\x12\x31\n\x06uptime\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\x06uptime\x12Q\n\x05ports\x18\x03 \x03(\x0b\x32;.com.digitalasset.canton.admin.health.v30.Status.PortsEntryR\x05ports\x12\x16\n\x06\x61\x63tive\x18\x04 \x01(\x08R\x06\x61\x63tive\x12\x66\n\x0ftopology_queues\x18\x05 \x01(\x0b\x32=.com.digitalasset.canton.admin.health.v30.TopologyQueueStatusR\x0etopologyQueues\x12Y\n\ncomponents\x18\x06 \x03(\x0b\x32\x39.com.digitalasset.canton.admin.health.v30.ComponentStatusR\ncomponents\x12\x18\n\x07version\x18\x07 \x01(\tR\x07version\x1a\x38\n\nPortsEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\x05R\x05value:\x02\x38\x01\"F\n\x11HealthDumpRequest\x12\"\n\nchunk_size\x18\x01 \x01(\rH\x00R\tchunkSize\x88\x01\x01\x42\r\n\x0b_chunk_size\"*\n\x12HealthDumpResponse\x12\x14\n\x05\x63hunk\x18\x01 \x01(\x0cR\x05\x63hunk\"*\n\x12SetLogLevelRequest\x12\x14\n\x05level\x18\x01 \x01(\tR\x05level\"\x15\n\x13SetLogLevelResponse2\xa8\x02\n\rStatusService\x12\x89\x01\n\nHealthDump\x12;.com.digitalasset.canton.admin.health.v30.HealthDumpRequest\x1a<.com.digitalasset.canton.admin.health.v30.HealthDumpResponse0\x01\x12\x8a\x01\n\x0bSetLogLevel\x12<.com.digitalasset.canton.admin.health.v30.SetLogLevelRequest\x1a=.com.digitalasset.canton.admin.health.v30.SetLogLevelResponseBYZWgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/health/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -46,21 +46,21 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_COMPONENTSTATUS_STATUSDATA']._serialized_start=664
   _globals['_COMPONENTSTATUS_STATUSDATA']._serialized_end=731
   _globals['_NOTINITIALIZED']._serialized_start=744
-  _globals['_NOTINITIALIZED']._serialized_end=1128
-  _globals['_NOTINITIALIZED_WAITINGFOREXTERNALINPUT']._serialized_start=931
-  _globals['_NOTINITIALIZED_WAITINGFOREXTERNALINPUT']._serialized_end=1128
-  _globals['_STATUS']._serialized_start=1131
-  _globals['_STATUS']._serialized_end=1594
-  _globals['_STATUS_PORTSENTRY']._serialized_start=1538
-  _globals['_STATUS_PORTSENTRY']._serialized_end=1594
-  _globals['_HEALTHDUMPREQUEST']._serialized_start=1596
-  _globals['_HEALTHDUMPREQUEST']._serialized_end=1666
-  _globals['_HEALTHDUMPRESPONSE']._serialized_start=1668
-  _globals['_HEALTHDUMPRESPONSE']._serialized_end=1710
-  _globals['_SETLOGLEVELREQUEST']._serialized_start=1712
-  _globals['_SETLOGLEVELREQUEST']._serialized_end=1754
-  _globals['_SETLOGLEVELRESPONSE']._serialized_start=1756
-  _globals['_SETLOGLEVELRESPONSE']._serialized_end=1777
-  _globals['_STATUSSERVICE']._serialized_start=1780
-  _globals['_STATUSSERVICE']._serialized_end=2076
+  _globals['_NOTINITIALIZED']._serialized_end=1154
+  _globals['_NOTINITIALIZED_WAITINGFOREXTERNALINPUT']._serialized_start=957
+  _globals['_NOTINITIALIZED_WAITINGFOREXTERNALINPUT']._serialized_end=1154
+  _globals['_STATUS']._serialized_start=1157
+  _globals['_STATUS']._serialized_end=1620
+  _globals['_STATUS_PORTSENTRY']._serialized_start=1564
+  _globals['_STATUS_PORTSENTRY']._serialized_end=1620
+  _globals['_HEALTHDUMPREQUEST']._serialized_start=1622
+  _globals['_HEALTHDUMPREQUEST']._serialized_end=1692
+  _globals['_HEALTHDUMPRESPONSE']._serialized_start=1694
+  _globals['_HEALTHDUMPRESPONSE']._serialized_end=1736
+  _globals['_SETLOGLEVELREQUEST']._serialized_start=1738
+  _globals['_SETLOGLEVELREQUEST']._serialized_end=1780
+  _globals['_SETLOGLEVELRESPONSE']._serialized_start=1782
+  _globals['_SETLOGLEVELRESPONSE']._serialized_end=1803
+  _globals['_STATUSSERVICE']._serialized_start=1806
+  _globals['_STATUSSERVICE']._serialized_end=2102
 # @@protoc_insertion_point(module_scope)

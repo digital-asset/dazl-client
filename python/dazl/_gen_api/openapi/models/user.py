@@ -27,34 +27,39 @@ class User:
 
         Attributes:
             id (str): The user identifier, which must be a non-empty string of at most 128
-                characters that are either alphanumeric ASCII characters or one of the symbols "@^$.!`-#+'~_|:".
+                characters that are either alphanumeric ASCII characters or one of the symbols "@^$.!`-#+'~_|:()".
+
                 Required
-            primary_party (str): The primary party as which this user reads and acts by default on the ledger
+            primary_party (str | Unset): The primary party as which this user reads and acts by default on the ledger
                 *provided* it has the corresponding ``CanReadAs(primary_party)`` or
                 ``CanActAs(primary_party)`` rights.
                 Ledger API clients SHOULD set this field to a non-empty value for all users to
                 enable the users to act on the ledger using their own Daml party.
                 Users for participant administrators MAY have an associated primary party.
-                Optional,
                 Modifiable
-            is_deactivated (bool): When set, then the user is denied all access to the Ledger API.
+
+                Optional
+            is_deactivated (bool | Unset): When set, then the user is denied all access to the Ledger API.
                 Otherwise, the user has access to the Ledger API as per the user's rights.
-                Optional,
                 Modifiable
-            identity_provider_id (str): The ID of the identity provider configured by ``Identity Provider Config``
-                Optional, if not set, assume the user is managed by the default identity provider.
+
+                Optional
             metadata (ObjectMeta | Unset): Represents metadata corresponding to a participant resource (e.g. a participant
                 user or participant local information about a party).
 
                 Based on ``ObjectMeta`` meta used in Kubernetes API.
                 See https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/generated.proto#L640
+            identity_provider_id (str | Unset): The ID of the identity provider configured by ``Identity Provider Config``
+                If not set, assume the user is managed by the default identity provider.
+
+                Optional
     """
 
     id: str
-    primary_party: str
-    is_deactivated: bool
-    identity_provider_id: str
+    primary_party: str | Unset = UNSET
+    is_deactivated: bool | Unset = UNSET
     metadata: ObjectMeta | Unset = UNSET
+    identity_provider_id: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -64,24 +69,27 @@ class User:
 
         is_deactivated = self.is_deactivated
 
-        identity_provider_id = self.identity_provider_id
-
         metadata: dict[str, Any] | Unset = UNSET
         if not isinstance(self.metadata, Unset):
             metadata = self.metadata.to_dict()
+
+        identity_provider_id = self.identity_provider_id
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "id": id,
-                "primaryParty": primary_party,
-                "isDeactivated": is_deactivated,
-                "identityProviderId": identity_provider_id,
             }
         )
+        if primary_party is not UNSET:
+            field_dict["primaryParty"] = primary_party
+        if is_deactivated is not UNSET:
+            field_dict["isDeactivated"] = is_deactivated
         if metadata is not UNSET:
             field_dict["metadata"] = metadata
+        if identity_provider_id is not UNSET:
+            field_dict["identityProviderId"] = identity_provider_id
 
         return field_dict
 
@@ -92,11 +100,9 @@ class User:
         d = dict(src_dict)
         id = d.pop("id")
 
-        primary_party = d.pop("primaryParty")
+        primary_party = d.pop("primaryParty", UNSET)
 
-        is_deactivated = d.pop("isDeactivated")
-
-        identity_provider_id = d.pop("identityProviderId")
+        is_deactivated = d.pop("isDeactivated", UNSET)
 
         _metadata = d.pop("metadata", UNSET)
         metadata: ObjectMeta | Unset
@@ -105,12 +111,14 @@ class User:
         else:
             metadata = ObjectMeta.from_dict(_metadata)
 
+        identity_provider_id = d.pop("identityProviderId", UNSET)
+
         user = cls(
             id=id,
             primary_party=primary_party,
             is_deactivated=is_deactivated,
-            identity_provider_id=identity_provider_id,
             metadata=metadata,
+            identity_provider_id=identity_provider_id,
         )
 
         user.additional_properties = d

@@ -81,7 +81,8 @@ def sync_detailed(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> Response[GetPartiesResponse | JsCantonError | str]:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):
@@ -116,7 +117,8 @@ def sync(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> GetPartiesResponse | JsCantonError | str | None:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):
@@ -146,7 +148,8 @@ async def asyncio_detailed(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> Response[GetPartiesResponse | JsCantonError | str]:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):
@@ -179,7 +182,8 @@ async def asyncio(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> GetPartiesResponse | JsCantonError | str | None:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):

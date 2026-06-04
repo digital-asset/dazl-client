@@ -22,18 +22,21 @@ T = TypeVar("T", bound="ListUsersResponse")
 class ListUsersResponse:
     """
     Attributes:
-        next_page_token (str): Pagination token to retrieve the next page.
-            Empty, if there are no further results.
         users (list[User] | Unset): A subset of users of the participant node that fit into this page.
+            Can be empty if no more users
+
+            Optional: can be empty
+        next_page_token (str | Unset): Pagination token to retrieve the next page.
+            Empty, if there are no further results.
+
+            Optional
     """
 
-    next_page_token: str
     users: list[User] | Unset = UNSET
+    next_page_token: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        next_page_token = self.next_page_token
-
         users: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.users, Unset):
             users = []
@@ -41,15 +44,15 @@ class ListUsersResponse:
                 users_item = users_item_data.to_dict()
                 users.append(users_item)
 
+        next_page_token = self.next_page_token
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "nextPageToken": next_page_token,
-            }
-        )
+        field_dict.update({})
         if users is not UNSET:
             field_dict["users"] = users
+        if next_page_token is not UNSET:
+            field_dict["nextPageToken"] = next_page_token
 
         return field_dict
 
@@ -58,8 +61,6 @@ class ListUsersResponse:
         from ..models.user import User
 
         d = dict(src_dict)
-        next_page_token = d.pop("nextPageToken")
-
         _users = d.pop("users", UNSET)
         users: list[User] | Unset = UNSET
         if _users is not UNSET:
@@ -69,9 +70,11 @@ class ListUsersResponse:
 
                 users.append(users_item)
 
+        next_page_token = d.pop("nextPageToken", UNSET)
+
         list_users_response = cls(
-            next_page_token=next_page_token,
             users=users,
+            next_page_token=next_page_token,
         )
 
         list_users_response.additional_properties = d

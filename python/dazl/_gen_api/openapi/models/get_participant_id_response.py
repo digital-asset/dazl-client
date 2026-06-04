@@ -18,6 +18,8 @@ class GetParticipantIdResponse:
     Attributes:
         participant_id (str): Identifier of the participant, which SHOULD be globally unique.
             Must be a valid LedgerString (as describe in ``value.proto``).
+
+            Required
     """
 
     participant_id: str

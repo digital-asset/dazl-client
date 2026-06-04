@@ -68,7 +68,9 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
 ) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
-    """List vetted packages
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -97,7 +99,9 @@ def sync(
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
 ) -> JsCantonError | ListVettedPackagesResponse | str | None:
-    """List vetted packages
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -121,7 +125,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
 ) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
-    """List vetted packages
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -148,7 +154,9 @@ async def asyncio(
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
 ) -> JsCantonError | ListVettedPackagesResponse | str | None:
-    """List vetted packages
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):

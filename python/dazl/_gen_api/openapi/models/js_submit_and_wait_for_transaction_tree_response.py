@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..types import UNSET, Unset
+
 if TYPE_CHECKING:
     from ..models.js_transaction_tree import JsTransactionTree
 
@@ -21,24 +23,24 @@ class JsSubmitAndWaitForTransactionTreeResponse:
     """Provided for backwards compatibility, it will be removed in the Canton version 3.5.0.
 
     Attributes:
-        transaction_tree (JsTransactionTree): Provided for backwards compatibility, it will be removed in the Canton
-            version 3.5.0.
+        transaction_tree (JsTransactionTree | Unset): Provided for backwards compatibility, it will be removed in the
+            Canton version 3.5.0.
             Complete view of an on-ledger transaction.
     """
 
-    transaction_tree: JsTransactionTree
+    transaction_tree: JsTransactionTree | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        transaction_tree = self.transaction_tree.to_dict()
+        transaction_tree: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.transaction_tree, Unset):
+            transaction_tree = self.transaction_tree.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "transactionTree": transaction_tree,
-            }
-        )
+        field_dict.update({})
+        if transaction_tree is not UNSET:
+            field_dict["transactionTree"] = transaction_tree
 
         return field_dict
 
@@ -47,7 +49,12 @@ class JsSubmitAndWaitForTransactionTreeResponse:
         from ..models.js_transaction_tree import JsTransactionTree
 
         d = dict(src_dict)
-        transaction_tree = JsTransactionTree.from_dict(d.pop("transactionTree"))
+        _transaction_tree = d.pop("transactionTree", UNSET)
+        transaction_tree: JsTransactionTree | Unset
+        if isinstance(_transaction_tree, Unset):
+            transaction_tree = UNSET
+        else:
+            transaction_tree = JsTransactionTree.from_dict(_transaction_tree)
 
         js_submit_and_wait_for_transaction_tree_response = cls(
             transaction_tree=transaction_tree,

@@ -73,7 +73,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> Response[JsCantonError | UpdateUserIdentityProviderIdResponse | str]:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):
@@ -106,7 +106,7 @@ def sync(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> JsCantonError | UpdateUserIdentityProviderIdResponse | str | None:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):
@@ -134,7 +134,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> Response[JsCantonError | UpdateUserIdentityProviderIdResponse | str]:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):
@@ -165,7 +165,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> JsCantonError | UpdateUserIdentityProviderIdResponse | str | None:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):

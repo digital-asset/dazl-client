@@ -22,8 +22,9 @@ class JsArchived:
     Attributes:
         archived_event (ArchivedEvent): Records that a contract has been archived, and choices may no longer be
             exercised on it.
-        synchronizer_id (str): Required
-            The synchronizer which sequenced the archival of the contract
+        synchronizer_id (str): The synchronizer which sequenced the archival of the contract
+
+            Required
     """
 
     archived_event: ArchivedEvent

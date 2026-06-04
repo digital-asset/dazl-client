@@ -9,6 +9,8 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define, field as _attrs_field
 
+from ..types import UNSET, Unset
+
 T = TypeVar("T", bound="UpdateUserIdentityProviderIdRequest")
 
 
@@ -18,13 +20,21 @@ class UpdateUserIdentityProviderIdRequest:
 
     Attributes:
         user_id (str): User to update
-        source_identity_provider_id (str): Current identity provider ID of the user
-        target_identity_provider_id (str): Target identity provider ID of the user
+
+            Required
+        source_identity_provider_id (str | Unset): Current identity provider ID of the user
+            If omitted, the default IDP is assumed
+
+            Optional
+        target_identity_provider_id (str | Unset): Target identity provider ID of the user
+            If omitted, the default IDP is assumed
+
+            Optional
     """
 
     user_id: str
-    source_identity_provider_id: str
-    target_identity_provider_id: str
+    source_identity_provider_id: str | Unset = UNSET
+    target_identity_provider_id: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -39,10 +49,12 @@ class UpdateUserIdentityProviderIdRequest:
         field_dict.update(
             {
                 "userId": user_id,
-                "sourceIdentityProviderId": source_identity_provider_id,
-                "targetIdentityProviderId": target_identity_provider_id,
             }
         )
+        if source_identity_provider_id is not UNSET:
+            field_dict["sourceIdentityProviderId"] = source_identity_provider_id
+        if target_identity_provider_id is not UNSET:
+            field_dict["targetIdentityProviderId"] = target_identity_provider_id
 
         return field_dict
 
@@ -51,9 +63,9 @@ class UpdateUserIdentityProviderIdRequest:
         d = dict(src_dict)
         user_id = d.pop("userId")
 
-        source_identity_provider_id = d.pop("sourceIdentityProviderId")
+        source_identity_provider_id = d.pop("sourceIdentityProviderId", UNSET)
 
-        target_identity_provider_id = d.pop("targetIdentityProviderId")
+        target_identity_provider_id = d.pop("targetIdentityProviderId", UNSET)
 
         update_user_identity_provider_id_request = cls(
             user_id=user_id,

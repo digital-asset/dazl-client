@@ -22,13 +22,18 @@ class ArchivedEvent:
         offset (int): The offset of origin.
             Offsets are managed by the participant nodes.
             Transactions can thus NOT be assumed to have the same offsets on different participant nodes.
-            Required, it is a valid absolute offset (positive integer)
+            It is a valid absolute offset (positive integer)
+
+            Required
         node_id (int): The position of this event in the originating transaction or reassignment.
             Node IDs are not necessarily equal across participants,
             as these may see different projections/parts of transactions.
-            Required, must be valid node ID (non-negative integer)
+            Must be valid node ID (non-negative integer)
+
+            Required
         contract_id (str): The ID of the archived contract.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
         template_id (str): Identifies the template that defines the choice that archived the contract.
             This template's package-id may differ from the target contract's package-id
@@ -37,15 +42,17 @@ class ArchivedEvent:
             The identifier uses the package-id reference format.
 
             Required
-        package_name (str): The package name of the contract.
-            Required
-        witness_parties (list[str] | Unset): The parties that are notified of this event. For an ``ArchivedEvent``,
+        witness_parties (list[str]): The parties that are notified of this event. For an ``ArchivedEvent``,
             these are the intersection of the stakeholders of the contract in
             question and the parties specified in the ``TransactionFilter``. The
             stakeholders are the union of the signatories and the observers of
             the contract.
             Each one of its elements must be a valid PartyIdString (as described
             in ``value.proto``).
+
+            Required: must be non-empty
+        package_name (str): The package name of the contract.
+
             Required
         implemented_interfaces (list[str] | Unset): The interfaces implemented by the target template that have been
             matched from the interface filter query.
@@ -53,15 +60,15 @@ class ArchivedEvent:
 
             If defined, the identifier uses the package-id reference format.
 
-            Optional
+            Optional: can be empty
     """
 
     offset: int
     node_id: int
     contract_id: str
     template_id: str
+    witness_parties: list[str]
     package_name: str
-    witness_parties: list[str] | Unset = UNSET
     implemented_interfaces: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -74,11 +81,9 @@ class ArchivedEvent:
 
         template_id = self.template_id
 
-        package_name = self.package_name
+        witness_parties = self.witness_parties
 
-        witness_parties: list[str] | Unset = UNSET
-        if not isinstance(self.witness_parties, Unset):
-            witness_parties = self.witness_parties
+        package_name = self.package_name
 
         implemented_interfaces: list[str] | Unset = UNSET
         if not isinstance(self.implemented_interfaces, Unset):
@@ -92,11 +97,10 @@ class ArchivedEvent:
                 "nodeId": node_id,
                 "contractId": contract_id,
                 "templateId": template_id,
+                "witnessParties": witness_parties,
                 "packageName": package_name,
             }
         )
-        if witness_parties is not UNSET:
-            field_dict["witnessParties"] = witness_parties
         if implemented_interfaces is not UNSET:
             field_dict["implementedInterfaces"] = implemented_interfaces
 
@@ -113,9 +117,9 @@ class ArchivedEvent:
 
         template_id = d.pop("templateId")
 
-        package_name = d.pop("packageName")
+        witness_parties = cast(list[str], d.pop("witnessParties"))
 
-        witness_parties = cast(list[str], d.pop("witnessParties", UNSET))
+        package_name = d.pop("packageName")
 
         implemented_interfaces = cast(list[str], d.pop("implementedInterfaces", UNSET))
 
@@ -124,8 +128,8 @@ class ArchivedEvent:
             node_id=node_id,
             contract_id=contract_id,
             template_id=template_id,
-            package_name=package_name,
             witness_parties=witness_parties,
+            package_name=package_name,
             implemented_interfaces=implemented_interfaces,
         )
 

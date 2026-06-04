@@ -5,60 +5,68 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define, field as _attrs_field
 
-T = TypeVar("T", bound="ExecuteSubmissionAndWaitResponse")
+from ..types import UNSET, Unset
+
+T = TypeVar("T", bound="GetContractRequest")
 
 
 @_attrs_define
-class ExecuteSubmissionAndWaitResponse:
+class GetContractRequest:
     """
     Attributes:
-        update_id (str): The id of the transaction that resulted from the submitted command.
+        contract_id (str): The ID of the contract.
             Must be a valid LedgerString (as described in ``value.proto``).
 
             Required
-        completion_offset (int): The details of the offset field are described in ``community/ledger-api/README.md``.
+        querying_parties (list[str] | Unset): The list of querying parties
+            The stakeholders of the referenced contract must have an intersection with any of these parties
+            to return the result.
+            If no querying_parties specified, all possible contracts could be returned.
 
-            Required
+            Optional: can be empty
     """
 
-    update_id: str
-    completion_offset: int
+    contract_id: str
+    querying_parties: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        update_id = self.update_id
+        contract_id = self.contract_id
 
-        completion_offset = self.completion_offset
+        querying_parties: list[str] | Unset = UNSET
+        if not isinstance(self.querying_parties, Unset):
+            querying_parties = self.querying_parties
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "updateId": update_id,
-                "completionOffset": completion_offset,
+                "contractId": contract_id,
             }
         )
+        if querying_parties is not UNSET:
+            field_dict["queryingParties"] = querying_parties
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        update_id = d.pop("updateId")
+        contract_id = d.pop("contractId")
 
-        completion_offset = d.pop("completionOffset")
+        querying_parties = cast(list[str], d.pop("queryingParties", UNSET))
 
-        execute_submission_and_wait_response = cls(
-            update_id=update_id,
-            completion_offset=completion_offset,
+        get_contract_request = cls(
+            contract_id=contract_id,
+            querying_parties=querying_parties,
         )
 
-        execute_submission_and_wait_response.additional_properties = d
-        return execute_submission_and_wait_response
+        get_contract_request.additional_properties = d
+        return get_contract_request
 
     @property
     def additional_keys(self) -> list[str]:

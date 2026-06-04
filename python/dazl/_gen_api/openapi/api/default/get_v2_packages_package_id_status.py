@@ -63,7 +63,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetPackageStatusResponse | JsCantonError | str]:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
@@ -92,7 +92,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetPackageStatusResponse | JsCantonError | str | None:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
@@ -116,7 +116,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetPackageStatusResponse | JsCantonError | str]:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
@@ -143,7 +143,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetPackageStatusResponse | JsCantonError | str | None:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
