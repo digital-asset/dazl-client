@@ -1102,6 +1102,8 @@ type GetOrderingTopologyResponse struct {
 	//	*GetOrderingTopologyResponse_DynamicSequencingParametersPayload
 	//	*GetOrderingTopologyResponse_DynamicSequencingParametersPayload31
 	DynamicSequencingParameters isGetOrderingTopologyResponse_DynamicSequencingParameters `protobuf_oneof:"dynamic_sequencing_parameters"`
+	LeaderSequencerIds          []string                                                  `protobuf:"bytes,5,rep,name=leader_sequencer_ids,json=leaderSequencerIds,proto3" json:"leader_sequencer_ids,omitempty"`
+	BlacklistedSequencerIds     []string                                                  `protobuf:"bytes,6,rep,name=blacklisted_sequencer_ids,json=blacklistedSequencerIds,proto3" json:"blacklisted_sequencer_ids,omitempty"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
@@ -1171,6 +1173,20 @@ func (x *GetOrderingTopologyResponse) GetDynamicSequencingParametersPayload31() 
 		if x, ok := x.DynamicSequencingParameters.(*GetOrderingTopologyResponse_DynamicSequencingParametersPayload31); ok {
 			return x.DynamicSequencingParametersPayload31
 		}
+	}
+	return nil
+}
+
+func (x *GetOrderingTopologyResponse) GetLeaderSequencerIds() []string {
+	if x != nil {
+		return x.LeaderSequencerIds
+	}
+	return nil
+}
+
+func (x *GetOrderingTopologyResponse) GetBlacklistedSequencerIds() []string {
+	if x != nil {
+		return x.BlacklistedSequencerIds
 	}
 	return nil
 }
@@ -1595,12 +1611,14 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administrat
 	"\vP2PNotReady\x12\\\n" +
 	"\x03p2p\x18\x01 \x01(\v2J.com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2PR\x03p2pB\v\n" +
 	"\treadiness\"\x1c\n" +
-	"\x1aGetOrderingTopologyRequest\"\x96\x04\n" +
+	"\x1aGetOrderingTopologyRequest\"\x84\x05\n" +
 	"\x1bGetOrderingTopologyResponse\x12#\n" +
 	"\rcurrent_epoch\x18\x01 \x01(\x03R\fcurrentEpoch\x12#\n" +
 	"\rsequencer_ids\x18\x02 \x03(\tR\fsequencerIds\x12\xc2\x01\n" +
 	"%dynamic_sequencing_parameters_payload\x18\x03 \x01(\v2m.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.DynamicSequencingParametersPayloadH\x00R\"dynamicSequencingParametersPayload\x12\xc6\x01\n" +
-	"'dynamic_sequencing_parameters_payload31\x18\x04 \x01(\v2m.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v31.DynamicSequencingParametersPayloadH\x00R$dynamicSequencingParametersPayload31B\x1f\n" +
+	"'dynamic_sequencing_parameters_payload31\x18\x04 \x01(\v2m.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v31.DynamicSequencingParametersPayloadH\x00R$dynamicSequencingParametersPayload31\x120\n" +
+	"\x14leader_sequencer_ids\x18\x05 \x03(\tR\x12leaderSequencerIds\x12:\n" +
+	"\x19blacklisted_sequencer_ids\x18\x06 \x03(\tR\x17blacklistedSequencerIdsB\x1f\n" +
 	"\x1ddynamic_sequencing_parameters\"?\n" +
 	"#SetPerformanceMetricsEnabledRequest\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\"&\n" +

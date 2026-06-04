@@ -5,7 +5,7 @@ cache_dir=.cache
 
 proto_dir := $(cache_dir)/protos
 openapi_dir := $(cache_dir)/openapi
-splice_version := 0.5.18
+splice_version := 0.6.4
 splice_tarball := $(cache_dir)/splice-$(splice_version).tar.gz
 python := poetry run python3
 
