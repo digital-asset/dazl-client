@@ -196,30 +196,25 @@ def _fix_post_packages_multipart(directory: Path) -> None:
 
 def _format_generated_code(directory: Path) -> None:
     venv_bin = Path(sys.executable).parent
-    isort_exe = venv_bin / "isort"
-    black_exe = venv_bin / "black"
+    ruff_exe = venv_bin / "ruff"
 
     try:
         subprocess.run(
-            [str(isort_exe), str(directory)],
+            [str(ruff_exe), "check", "--select", "I", "--fix", str(directory)],
             check=True,
             capture_output=True,
             text=True,
         )
-        logger.debug("Successfully ran isort")
-    except subprocess.CalledProcessError as e:
-        logger.warning(f"isort failed: {e.stderr}")
-
-    try:
         subprocess.run(
-            [str(black_exe), str(directory)],
+            [str(ruff_exe), "format", str(directory)],
             check=True,
             capture_output=True,
             text=True,
         )
-        logger.debug("Successfully ran black")
-    except subprocess.CalledProcessError as e:
-        logger.warning(f"black failed: {e.stderr}")
+        logger.debug("Successfully ran ruff")
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        stderr = getattr(e, "stderr", str(e))
+        logger.warning(f"ruff failed: {stderr}")
 
 
 def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
