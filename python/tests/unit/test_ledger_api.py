@@ -49,7 +49,6 @@ async def test_get_authenticated_user_via_api(sandbox_v3: Any) -> None:
         base_url=sandbox_v3.url, token="test-token", timeout=timeout
     ) as client:
         response = await get_v2_authenticated_user.asyncio(client=client)
-
         if isinstance(response, str):
             logging.info(f"Expected auth failure with test token: {response}")
             assert "authenticated" in response.lower() or "token" in response.lower()
@@ -117,8 +116,13 @@ async def test_update_user_via_api(sandbox_v3: Any) -> None:
         user_id = users_response.users[0].id
         existing_user = users_response.users[0]
 
+        from dazl._gen_api.openapi.models.field_mask import FieldMask
+        from dazl._gen_api.openapi.models.map_int_field import MapIntField
+        from dazl._gen_api.openapi.models.unknown_field_set import UnknownFieldSet
+
         update_request = UpdateUserRequest(
             user=existing_user,
+            update_mask=FieldMask(unknown_fields=UnknownFieldSet(fields=MapIntField())),
         )
 
         response = await patch_v2_users_user_id.asyncio(

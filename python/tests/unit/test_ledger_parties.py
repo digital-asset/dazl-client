@@ -121,7 +121,16 @@ async def test_update_party_details_via_api(sandbox_v3: Any) -> None:
         if len(parties_response.party_details) > 0:
             party_id = parties_response.party_details[0].party
 
-            update_request = UpdatePartyDetailsRequest()
+            from dazl._gen_api.openapi.models.field_mask import FieldMask
+            from dazl._gen_api.openapi.models.map_int_field import MapIntField
+            from dazl._gen_api.openapi.models.unknown_field_set import (
+                UnknownFieldSet,
+            )
+
+            update_request = UpdatePartyDetailsRequest(
+                party_details=parties_response.party_details[0],
+                update_mask=FieldMask(unknown_fields=UnknownFieldSet(fields=MapIntField())),
+            )
 
             response = await patch_v2_parties_party.asyncio(
                 client=client, party=party_id, body=update_request
