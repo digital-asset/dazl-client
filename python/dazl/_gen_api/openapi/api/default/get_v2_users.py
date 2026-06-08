@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -18,6 +20,7 @@ def _get_kwargs(
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["pageSize"] = page_size
@@ -47,7 +50,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -69,7 +75,7 @@ def sync_detailed(
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> Response[JsCantonError | ListUsersResponse | str]:
-    """List all users.
+    """List all existing users.
 
     Args:
         page_size (int | Unset):
@@ -101,7 +107,7 @@ def sync(
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> JsCantonError | ListUsersResponse | str | None:
-    """List all users.
+    """List all existing users.
 
     Args:
         page_size (int | Unset):
@@ -128,7 +134,7 @@ async def asyncio_detailed(
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> Response[JsCantonError | ListUsersResponse | str]:
-    """List all users.
+    """List all existing users.
 
     Args:
         page_size (int | Unset):
@@ -158,7 +164,7 @@ async def asyncio(
     page_size: int | Unset = UNSET,
     page_token: str | Unset = UNSET,
 ) -> JsCantonError | ListUsersResponse | str | None:
-    """List all users.
+    """List all existing users.
 
     Args:
         page_size (int | Unset):

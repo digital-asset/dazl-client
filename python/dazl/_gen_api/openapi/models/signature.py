@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="Signature")
 
@@ -17,10 +16,14 @@ T = TypeVar("T", bound="Signature")
 class Signature:
     """
     Attributes:
-        format_ (str):
-        signature (str):
+        format_ (str): Required
+        signature (str): Required: must be non-empty
         signed_by (str): The fingerprint/id of the keypair used to create this signature and needed to verify.
+
+            Required
         signing_algorithm_spec (str): The signing algorithm specification used to produce this signature
+
+            Required
     """
 
     format_: str

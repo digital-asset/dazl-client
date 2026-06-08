@@ -661,6 +661,7 @@ type PrefetchContractKey struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TemplateId    *Identifier            `protobuf:"bytes,1,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
 	ContractKey   *Value                 `protobuf:"bytes,2,opt,name=contract_key,json=contractKey,proto3" json:"contract_key,omitempty"`
+	Limit         *uint32                `protobuf:"varint,3,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -707,6 +708,13 @@ func (x *PrefetchContractKey) GetContractKey() *Value {
 		return x.ContractKey
 	}
 	return nil
+}
+
+func (x *PrefetchContractKey) GetLimit() uint32 {
+	if x != nil && x.Limit != nil {
+		return *x.Limit
+	}
+	return 0
 }
 
 var File_com_daml_ledger_api_v2_commands_proto protoreflect.FileDescriptor
@@ -771,11 +779,13 @@ const file_com_daml_ledger_api_v2_commands_proto_rawDesc = "" +
 	"\x16prefetch_contract_keys\x18\x0f \x03(\v2+.com.daml.ledger.api.v2.PrefetchContractKeyR\x14prefetchContractKeys\x12+\n" +
 	"\x0ftaps_max_passes\x18\x10 \x01(\rH\x01R\rtapsMaxPasses\x88\x01\x01B\x16\n" +
 	"\x14deduplication_periodB\x12\n" +
-	"\x10_taps_max_passes\"\x9c\x01\n" +
+	"\x10_taps_max_passes\"\xc1\x01\n" +
 	"\x13PrefetchContractKey\x12C\n" +
 	"\vtemplate_id\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.IdentifierR\n" +
 	"templateId\x12@\n" +
-	"\fcontract_key\x18\x02 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKeyB\x8c\x01\n" +
+	"\fcontract_key\x18\x02 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueR\vcontractKey\x12\x19\n" +
+	"\x05limit\x18\x03 \x01(\rH\x00R\x05limit\x88\x01\x01B\b\n" +
+	"\x06_limitB\x8c\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x12CommandsOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -853,6 +863,7 @@ func file_com_daml_ledger_api_v2_commands_proto_init() {
 		(*Commands_DeduplicationDuration)(nil),
 		(*Commands_DeduplicationOffset)(nil),
 	}
+	file_com_daml_ledger_api_v2_commands_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

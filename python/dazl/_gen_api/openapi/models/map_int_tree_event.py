@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.tree_event_type_0 import TreeEventType0
@@ -49,9 +48,7 @@ class MapIntTreeEvent:
         additional_properties = {}
         for prop_name, prop_dict in d.items():
 
-            def _parse_additional_property(
-                data: object,
-            ) -> TreeEventType0 | TreeEventType1:
+            def _parse_additional_property(data: object) -> TreeEventType0 | TreeEventType1:
                 try:
                     if not isinstance(data, dict):
                         raise TypeError()

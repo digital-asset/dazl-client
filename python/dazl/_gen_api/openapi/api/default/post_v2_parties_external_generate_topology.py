@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.generate_external_party_topology_request import (
-    GenerateExternalPartyTopologyRequest,
-)
+from ...models.generate_external_party_topology_request import GenerateExternalPartyTopologyRequest
 from ...models.generate_external_party_topology_response import (
     GenerateExternalPartyTopologyResponse,
 )
@@ -49,7 +49,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -70,7 +73,16 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: GenerateExternalPartyTopologyRequest,
 ) -> Response[GenerateExternalPartyTopologyResponse | JsCantonError | str]:
-    """Generate a topology for an external party
+    """Alpha 3.3: Convenience endpoint to generate topology transactions for external signing
+
+    Expected to be stable in 3.5
+
+    You may use this endpoint to generate the common external topology transactions
+    which can be signed externally and uploaded as part of the allocate party process
+
+    Note that this request will create a normal namespace using the same key for the
+    identity as for signing. More elaborate schemes such as multi-signature
+    or decentralized parties require you to construct the topology transactions yourself.
 
     Args:
         body (GenerateExternalPartyTopologyRequest):
@@ -99,7 +111,16 @@ def sync(
     client: AuthenticatedClient,
     body: GenerateExternalPartyTopologyRequest,
 ) -> GenerateExternalPartyTopologyResponse | JsCantonError | str | None:
-    """Generate a topology for an external party
+    """Alpha 3.3: Convenience endpoint to generate topology transactions for external signing
+
+    Expected to be stable in 3.5
+
+    You may use this endpoint to generate the common external topology transactions
+    which can be signed externally and uploaded as part of the allocate party process
+
+    Note that this request will create a normal namespace using the same key for the
+    identity as for signing. More elaborate schemes such as multi-signature
+    or decentralized parties require you to construct the topology transactions yourself.
 
     Args:
         body (GenerateExternalPartyTopologyRequest):
@@ -123,7 +144,16 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: GenerateExternalPartyTopologyRequest,
 ) -> Response[GenerateExternalPartyTopologyResponse | JsCantonError | str]:
-    """Generate a topology for an external party
+    """Alpha 3.3: Convenience endpoint to generate topology transactions for external signing
+
+    Expected to be stable in 3.5
+
+    You may use this endpoint to generate the common external topology transactions
+    which can be signed externally and uploaded as part of the allocate party process
+
+    Note that this request will create a normal namespace using the same key for the
+    identity as for signing. More elaborate schemes such as multi-signature
+    or decentralized parties require you to construct the topology transactions yourself.
 
     Args:
         body (GenerateExternalPartyTopologyRequest):
@@ -150,7 +180,16 @@ async def asyncio(
     client: AuthenticatedClient,
     body: GenerateExternalPartyTopologyRequest,
 ) -> GenerateExternalPartyTopologyResponse | JsCantonError | str | None:
-    """Generate a topology for an external party
+    """Alpha 3.3: Convenience endpoint to generate topology transactions for external signing
+
+    Expected to be stable in 3.5
+
+    You may use this endpoint to generate the common external topology transactions
+    which can be signed externally and uploaded as part of the allocate party process
+
+    Note that this request will create a normal namespace using the same key for the
+    identity as for signing. More elaborate schemes such as multi-signature
+    or decentralized parties require you to construct the topology transactions yourself.
 
     Args:
         body (GenerateExternalPartyTopologyRequest):

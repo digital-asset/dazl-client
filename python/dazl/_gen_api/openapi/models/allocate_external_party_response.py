@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="AllocateExternalPartyResponse")
 
@@ -17,7 +16,9 @@ T = TypeVar("T", bound="AllocateExternalPartyResponse")
 class AllocateExternalPartyResponse:
     """
     Attributes:
-        party_id (str):
+        party_id (str): The allocated party id
+
+            Required
     """
 
     party_id: str

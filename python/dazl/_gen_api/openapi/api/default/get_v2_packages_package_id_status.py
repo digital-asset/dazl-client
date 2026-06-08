@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -16,10 +19,11 @@ from ...types import Response
 def _get_kwargs(
     package_id: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/packages/{package_id}/status".format(
-            package_id=package_id,
+            package_id=quote(str(package_id), safe=""),
         ),
     }
 
@@ -38,7 +42,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -59,7 +66,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetPackageStatusResponse | JsCantonError | str]:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
@@ -88,7 +95,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetPackageStatusResponse | JsCantonError | str | None:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
@@ -112,7 +119,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetPackageStatusResponse | JsCantonError | str]:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):
@@ -139,7 +146,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetPackageStatusResponse | JsCantonError | str | None:
-    """Get package status
+    """Returns the status of a single package.
 
     Args:
         package_id (str):

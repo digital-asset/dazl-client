@@ -10,6 +10,7 @@ package v30
 
 import (
 	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v30"
+	v31 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v31"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1093,12 +1094,18 @@ func (*GetOrderingTopologyRequest) Descriptor() ([]byte, []int) {
 }
 
 type GetOrderingTopologyResponse struct {
-	state                              protoimpl.MessageState                  `protogen:"open.v1"`
-	CurrentEpoch                       int64                                   `protobuf:"varint,1,opt,name=current_epoch,json=currentEpoch,proto3" json:"current_epoch,omitempty"`
-	SequencerIds                       []string                                `protobuf:"bytes,2,rep,name=sequencer_ids,json=sequencerIds,proto3" json:"sequencer_ids,omitempty"`
-	DynamicSequencingParametersPayload *v30.DynamicSequencingParametersPayload `protobuf:"bytes,3,opt,name=dynamic_sequencing_parameters_payload,json=dynamicSequencingParametersPayload,proto3" json:"dynamic_sequencing_parameters_payload,omitempty"`
-	unknownFields                      protoimpl.UnknownFields
-	sizeCache                          protoimpl.SizeCache
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	CurrentEpoch int64                  `protobuf:"varint,1,opt,name=current_epoch,json=currentEpoch,proto3" json:"current_epoch,omitempty"`
+	SequencerIds []string               `protobuf:"bytes,2,rep,name=sequencer_ids,json=sequencerIds,proto3" json:"sequencer_ids,omitempty"`
+	// Types that are valid to be assigned to DynamicSequencingParameters:
+	//
+	//	*GetOrderingTopologyResponse_DynamicSequencingParametersPayload
+	//	*GetOrderingTopologyResponse_DynamicSequencingParametersPayload31
+	DynamicSequencingParameters isGetOrderingTopologyResponse_DynamicSequencingParameters `protobuf_oneof:"dynamic_sequencing_parameters"`
+	LeaderSequencerIds          []string                                                  `protobuf:"bytes,5,rep,name=leader_sequencer_ids,json=leaderSequencerIds,proto3" json:"leader_sequencer_ids,omitempty"`
+	BlacklistedSequencerIds     []string                                                  `protobuf:"bytes,6,rep,name=blacklisted_sequencer_ids,json=blacklistedSequencerIds,proto3" json:"blacklisted_sequencer_ids,omitempty"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
 }
 
 func (x *GetOrderingTopologyResponse) Reset() {
@@ -1145,11 +1152,61 @@ func (x *GetOrderingTopologyResponse) GetSequencerIds() []string {
 	return nil
 }
 
-func (x *GetOrderingTopologyResponse) GetDynamicSequencingParametersPayload() *v30.DynamicSequencingParametersPayload {
+func (x *GetOrderingTopologyResponse) GetDynamicSequencingParameters() isGetOrderingTopologyResponse_DynamicSequencingParameters {
 	if x != nil {
-		return x.DynamicSequencingParametersPayload
+		return x.DynamicSequencingParameters
 	}
 	return nil
+}
+
+func (x *GetOrderingTopologyResponse) GetDynamicSequencingParametersPayload() *v30.DynamicSequencingParametersPayload {
+	if x != nil {
+		if x, ok := x.DynamicSequencingParameters.(*GetOrderingTopologyResponse_DynamicSequencingParametersPayload); ok {
+			return x.DynamicSequencingParametersPayload
+		}
+	}
+	return nil
+}
+
+func (x *GetOrderingTopologyResponse) GetDynamicSequencingParametersPayload31() *v31.DynamicSequencingParametersPayload {
+	if x != nil {
+		if x, ok := x.DynamicSequencingParameters.(*GetOrderingTopologyResponse_DynamicSequencingParametersPayload31); ok {
+			return x.DynamicSequencingParametersPayload31
+		}
+	}
+	return nil
+}
+
+func (x *GetOrderingTopologyResponse) GetLeaderSequencerIds() []string {
+	if x != nil {
+		return x.LeaderSequencerIds
+	}
+	return nil
+}
+
+func (x *GetOrderingTopologyResponse) GetBlacklistedSequencerIds() []string {
+	if x != nil {
+		return x.BlacklistedSequencerIds
+	}
+	return nil
+}
+
+type isGetOrderingTopologyResponse_DynamicSequencingParameters interface {
+	isGetOrderingTopologyResponse_DynamicSequencingParameters()
+}
+
+type GetOrderingTopologyResponse_DynamicSequencingParametersPayload struct {
+	DynamicSequencingParametersPayload *v30.DynamicSequencingParametersPayload `protobuf:"bytes,3,opt,name=dynamic_sequencing_parameters_payload,json=dynamicSequencingParametersPayload,proto3,oneof"`
+}
+
+type GetOrderingTopologyResponse_DynamicSequencingParametersPayload31 struct {
+	DynamicSequencingParametersPayload31 *v31.DynamicSequencingParametersPayload `protobuf:"bytes,4,opt,name=dynamic_sequencing_parameters_payload31,json=dynamicSequencingParametersPayload31,proto3,oneof"`
+}
+
+func (*GetOrderingTopologyResponse_DynamicSequencingParametersPayload) isGetOrderingTopologyResponse_DynamicSequencingParameters() {
+}
+
+func (*GetOrderingTopologyResponse_DynamicSequencingParametersPayload31) isGetOrderingTopologyResponse_DynamicSequencingParameters() {
 }
 
 type SetPerformanceMetricsEnabledRequest struct {
@@ -1484,7 +1541,7 @@ var File_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administratio
 
 const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administration_service_proto_rawDesc = "" +
 	"\n" +
-	"Vcom/digitalasset/canton/sequencer/admin/v30/sequencer_bft_administration_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1amcom/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v30/dynamic_sequencing_parameters.proto\"o\n" +
+	"Vcom/digitalasset/canton/sequencer/admin/v30/sequencer_bft_administration_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1arcom/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v30/bft_ordering_sequencing_parameters.proto\x1arcom/digitalasset/canton/synchronizer/sequencing/sequencer/bftordering/v31/bft_ordering_sequencing_parameters.proto\"o\n" +
 	"\x16AddPeerEndpointRequest\x12U\n" +
 	"\bendpoint\x18\x01 \x01(\v29.com.digitalasset.canton.sequencer.admin.v30.PeerEndpointR\bendpoint\"y\n" +
 	"\x19RemovePeerEndpointRequest\x12\\\n" +
@@ -1554,11 +1611,15 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administrat
 	"\vP2PNotReady\x12\\\n" +
 	"\x03p2p\x18\x01 \x01(\v2J.com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2PR\x03p2pB\v\n" +
 	"\treadiness\"\x1c\n" +
-	"\x1aGetOrderingTopologyRequest\"\xaa\x02\n" +
+	"\x1aGetOrderingTopologyRequest\"\x84\x05\n" +
 	"\x1bGetOrderingTopologyResponse\x12#\n" +
 	"\rcurrent_epoch\x18\x01 \x01(\x03R\fcurrentEpoch\x12#\n" +
-	"\rsequencer_ids\x18\x02 \x03(\tR\fsequencerIds\x12\xc0\x01\n" +
-	"%dynamic_sequencing_parameters_payload\x18\x03 \x01(\v2m.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.DynamicSequencingParametersPayloadR\"dynamicSequencingParametersPayload\"?\n" +
+	"\rsequencer_ids\x18\x02 \x03(\tR\fsequencerIds\x12\xc2\x01\n" +
+	"%dynamic_sequencing_parameters_payload\x18\x03 \x01(\v2m.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.DynamicSequencingParametersPayloadH\x00R\"dynamicSequencingParametersPayload\x12\xc6\x01\n" +
+	"'dynamic_sequencing_parameters_payload31\x18\x04 \x01(\v2m.com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v31.DynamicSequencingParametersPayloadH\x00R$dynamicSequencingParametersPayload31\x120\n" +
+	"\x14leader_sequencer_ids\x18\x05 \x03(\tR\x12leaderSequencerIds\x12:\n" +
+	"\x19blacklisted_sequencer_ids\x18\x06 \x03(\tR\x17blacklistedSequencerIdsB\x1f\n" +
+	"\x1ddynamic_sequencing_parameters\"?\n" +
 	"#SetPerformanceMetricsEnabledRequest\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\"&\n" +
 	"$SetPerformanceMetricsEnabledResponse2\xae\b\n" +
@@ -1613,6 +1674,7 @@ var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administratio
 	(*GetWriteReadinessResponse_Ready)(nil),          // 26: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.Ready
 	(*GetWriteReadinessResponse_P2PNotReady)(nil),    // 27: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2PNotReady
 	(*v30.DynamicSequencingParametersPayload)(nil),   // 28: com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.DynamicSequencingParametersPayload
+	(*v31.DynamicSequencingParametersPayload)(nil),   // 29: com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v31.DynamicSequencingParametersPayload
 }
 var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administration_service_proto_depIdxs = []int32{
 	2,  // 0: com.digitalasset.canton.sequencer.admin.v30.AddPeerEndpointRequest.endpoint:type_name -> com.digitalasset.canton.sequencer.admin.v30.PeerEndpoint
@@ -1634,25 +1696,26 @@ var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administratio
 	26, // 16: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.ready:type_name -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.Ready
 	27, // 17: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.p2p_not_ready:type_name -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2PNotReady
 	28, // 18: com.digitalasset.canton.sequencer.admin.v30.GetOrderingTopologyResponse.dynamic_sequencing_parameters_payload:type_name -> com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v30.DynamicSequencingParametersPayload
-	25, // 19: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.Ready.p2p:type_name -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2P
-	25, // 20: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2PNotReady.p2p:type_name -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2P
-	0,  // 21: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.AddPeerEndpoint:input_type -> com.digitalasset.canton.sequencer.admin.v30.AddPeerEndpointRequest
-	1,  // 22: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.RemovePeerEndpoint:input_type -> com.digitalasset.canton.sequencer.admin.v30.RemovePeerEndpointRequest
-	14, // 23: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetPeerNetworkStatus:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetPeerNetworkStatusRequest
-	16, // 24: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetWriteReadiness:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessRequest
-	18, // 25: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetOrderingTopology:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetOrderingTopologyRequest
-	20, // 26: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.SetPerformanceMetricsEnabled:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetPerformanceMetricsEnabledRequest
-	7,  // 27: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.AddPeerEndpoint:output_type -> com.digitalasset.canton.sequencer.admin.v30.AddPeerEndpointResponse
-	8,  // 28: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.RemovePeerEndpoint:output_type -> com.digitalasset.canton.sequencer.admin.v30.RemovePeerEndpointResponse
-	15, // 29: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetPeerNetworkStatus:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetPeerNetworkStatusResponse
-	17, // 30: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetWriteReadiness:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse
-	19, // 31: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetOrderingTopology:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetOrderingTopologyResponse
-	21, // 32: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.SetPerformanceMetricsEnabled:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetPerformanceMetricsEnabledResponse
-	27, // [27:33] is the sub-list for method output_type
-	21, // [21:27] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	29, // 19: com.digitalasset.canton.sequencer.admin.v30.GetOrderingTopologyResponse.dynamic_sequencing_parameters_payload31:type_name -> com.digitalasset.canton.synchronizer.sequencing.sequencer.bftordering.v31.DynamicSequencingParametersPayload
+	25, // 20: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.Ready.p2p:type_name -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2P
+	25, // 21: com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2PNotReady.p2p:type_name -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse.P2P
+	0,  // 22: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.AddPeerEndpoint:input_type -> com.digitalasset.canton.sequencer.admin.v30.AddPeerEndpointRequest
+	1,  // 23: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.RemovePeerEndpoint:input_type -> com.digitalasset.canton.sequencer.admin.v30.RemovePeerEndpointRequest
+	14, // 24: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetPeerNetworkStatus:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetPeerNetworkStatusRequest
+	16, // 25: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetWriteReadiness:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessRequest
+	18, // 26: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetOrderingTopology:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetOrderingTopologyRequest
+	20, // 27: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.SetPerformanceMetricsEnabled:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetPerformanceMetricsEnabledRequest
+	7,  // 28: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.AddPeerEndpoint:output_type -> com.digitalasset.canton.sequencer.admin.v30.AddPeerEndpointResponse
+	8,  // 29: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.RemovePeerEndpoint:output_type -> com.digitalasset.canton.sequencer.admin.v30.RemovePeerEndpointResponse
+	15, // 30: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetPeerNetworkStatus:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetPeerNetworkStatusResponse
+	17, // 31: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetWriteReadiness:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetWriteReadinessResponse
+	19, // 32: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.GetOrderingTopology:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetOrderingTopologyResponse
+	21, // 33: com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService.SetPerformanceMetricsEnabled:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetPerformanceMetricsEnabledResponse
+	28, // [28:34] is the sub-list for method output_type
+	22, // [22:28] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() {
@@ -1681,6 +1744,10 @@ func file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administrati
 	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administration_service_proto_msgTypes[17].OneofWrappers = []any{
 		(*GetWriteReadinessResponse_Ready_)(nil),
 		(*GetWriteReadinessResponse_P2PNotReady_)(nil),
+	}
+	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_bft_administration_service_proto_msgTypes[19].OneofWrappers = []any{
+		(*GetOrderingTopologyResponse_DynamicSequencingParametersPayload)(nil),
+		(*GetOrderingTopologyResponse_DynamicSequencingParametersPayload31)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

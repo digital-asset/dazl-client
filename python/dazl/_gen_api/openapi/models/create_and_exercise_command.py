@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="CreateAndExerciseCommand")
 
@@ -25,11 +24,14 @@ class CreateAndExerciseCommand:
 
             Required
         create_arguments (Any): The arguments required for creating a contract from this template.
+
             Required
         choice (str): The name of the choice the client wants to exercise.
             Must be a valid NameString (as described in ``value.proto``).
+
             Required
         choice_argument (Any): The argument for this choice.
+
             Required
     """
 

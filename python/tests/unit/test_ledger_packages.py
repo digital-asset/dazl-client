@@ -12,10 +12,10 @@ from dazl.api import (
     ListPackagesResponse,
     ListVettedPackagesRequest,
     get_v2_interactive_submission_preferred_package_version,
-    get_v2_package_vetting,
     get_v2_packages,
     get_v2_packages_package_id,
     get_v2_packages_package_id_status,
+    post_v2_package_vetting_list,
     post_v2_packages,
 )
 import httpx
@@ -81,10 +81,10 @@ async def test_list_vetted_packages_via_api(sandbox_v3: Any) -> None:
             page_size=100,
         )
 
-        response = await get_v2_package_vetting.asyncio(client=client, body=request_body)
+        response = await post_v2_package_vetting_list.asyncio(client=client, body=request_body)
 
         assert response is not None
-        logging.info(f"Vetted packages response received")
+        logging.info("Vetted packages response received")
 
 
 @pytest.mark.asyncio

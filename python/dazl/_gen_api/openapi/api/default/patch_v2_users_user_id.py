@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -24,7 +27,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "patch",
         "url": "/v2/users/{user_id}".format(
-            user_id=user_id,
+            user_id=quote(str(user_id), safe=""),
         ),
     }
 
@@ -48,7 +51,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -70,7 +76,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> Response[JsCantonError | UpdateUserResponse | str]:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):
@@ -103,7 +109,7 @@ def sync(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> JsCantonError | UpdateUserResponse | str | None:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):
@@ -131,7 +137,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> Response[JsCantonError | UpdateUserResponse | str]:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):
@@ -162,7 +168,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdateUserRequest,
 ) -> JsCantonError | UpdateUserResponse | str | None:
-    """Update  user.
+    """Update selected modifiable attribute of a user resource described by the ``User`` message.
 
     Args:
         user_id (str):

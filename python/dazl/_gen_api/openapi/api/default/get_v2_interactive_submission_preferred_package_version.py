@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 import datetime
 from http import HTTPStatus
 from typing import Any
@@ -9,9 +11,7 @@ from typing import Any
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.get_preferred_package_version_response import (
-    GetPreferredPackageVersionResponse,
-)
+from ...models.get_preferred_package_version_response import GetPreferredPackageVersionResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import UNSET, Response, Unset
 
@@ -23,6 +23,7 @@ def _get_kwargs(
     vetting_valid_at: datetime.datetime | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     json_parties: list[str] | Unset = UNSET
@@ -63,7 +64,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -87,7 +91,19 @@ def sync_detailed(
     vetting_valid_at: datetime.datetime | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> Response[GetPreferredPackageVersionResponse | JsCantonError | str]:
-    """Get the preferred package version for constructing a command submission
+    """A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred package, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Provided for backwards compatibility, it will be removed in the Canton version 3.4.0
 
     Args:
         parties (list[str] | Unset):
@@ -125,7 +141,19 @@ def sync(
     vetting_valid_at: datetime.datetime | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> GetPreferredPackageVersionResponse | JsCantonError | str | None:
-    """Get the preferred package version for constructing a command submission
+    """A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred package, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Provided for backwards compatibility, it will be removed in the Canton version 3.4.0
 
     Args:
         parties (list[str] | Unset):
@@ -158,7 +186,19 @@ async def asyncio_detailed(
     vetting_valid_at: datetime.datetime | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> Response[GetPreferredPackageVersionResponse | JsCantonError | str]:
-    """Get the preferred package version for constructing a command submission
+    """A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred package, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Provided for backwards compatibility, it will be removed in the Canton version 3.4.0
 
     Args:
         parties (list[str] | Unset):
@@ -194,7 +234,19 @@ async def asyncio(
     vetting_valid_at: datetime.datetime | Unset = UNSET,
     synchronizer_id: str | Unset = UNSET,
 ) -> GetPreferredPackageVersionResponse | JsCantonError | str | None:
-    """Get the preferred package version for constructing a command submission
+    """A preferred package is the highest-versioned package for a provided package-name
+    that is vetted by all the participants hosting the provided parties.
+
+    Ledger API clients should use this endpoint for constructing command submissions
+    that are compatible with the provided preferred package, by making informed decisions on:
+    - which are the compatible packages that can be used to create contracts
+    - which contract or exercise choice argument version can be used in the command
+    - which choices can be executed on a template or interface of a contract
+
+    Can be accessed by any Ledger API client with a valid token when Ledger API authorization is
+    enabled.
+
+    Provided for backwards compatibility, it will be removed in the Canton version 3.4.0
 
     Args:
         parties (list[str] | Unset):

@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -23,26 +22,37 @@ T = TypeVar("T", bound="GenerateExternalPartyTopologyRequest")
 class GenerateExternalPartyTopologyRequest:
     """
     Attributes:
-        synchronizer (str): TODO(#27670) support synchronizer aliases
-            Required: synchronizer-id for which we are building this request.
-        party_hint (str): Required: the actual party id will be constructed from this hint and a fingerprint of the
-            public key
-        local_participant_observation_only (bool): Optional: if true, then the local participant will only be observing,
+        synchronizer (str): Synchronizer-id for which we are building this request.
+            TODO(#27670) support synchronizer aliases
+
+            Required
+        party_hint (str): The actual party id will be constructed from this hint and a fingerprint of the public key
+
+            Required
+        public_key (SigningPublicKey):
+        local_participant_observation_only (bool | Unset): If true, then the local participant will only be observing,
             not confirming. Default false.
-        confirmation_threshold (int): Optional: Confirmation threshold >= 1 for the party. Defaults to all available
+
+            Optional
+        other_confirming_participant_uids (list[str] | Unset): Other participant ids which should be confirming for this
+            party
+
+            Optional: can be empty
+        confirmation_threshold (int | Unset): Confirmation threshold >= 1 for the party. Defaults to all available
             confirmers (or if set to 0).
-        public_key (SigningPublicKey | Unset):
-        other_confirming_participant_uids (list[str] | Unset): Optional: other participant ids which should be
-            confirming for this party
-        observing_participant_uids (list[str] | Unset): Optional: other observing participant ids for this party
+
+            Optional
+        observing_participant_uids (list[str] | Unset): Other observing participant ids for this party
+
+            Optional: can be empty
     """
 
     synchronizer: str
     party_hint: str
-    local_participant_observation_only: bool
-    confirmation_threshold: int
-    public_key: SigningPublicKey | Unset = UNSET
+    public_key: SigningPublicKey
+    local_participant_observation_only: bool | Unset = UNSET
     other_confirming_participant_uids: list[str] | Unset = UNSET
+    confirmation_threshold: int | Unset = UNSET
     observing_participant_uids: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -51,17 +61,15 @@ class GenerateExternalPartyTopologyRequest:
 
         party_hint = self.party_hint
 
+        public_key = self.public_key.to_dict()
+
         local_participant_observation_only = self.local_participant_observation_only
-
-        confirmation_threshold = self.confirmation_threshold
-
-        public_key: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.public_key, Unset):
-            public_key = self.public_key.to_dict()
 
         other_confirming_participant_uids: list[str] | Unset = UNSET
         if not isinstance(self.other_confirming_participant_uids, Unset):
             other_confirming_participant_uids = self.other_confirming_participant_uids
+
+        confirmation_threshold = self.confirmation_threshold
 
         observing_participant_uids: list[str] | Unset = UNSET
         if not isinstance(self.observing_participant_uids, Unset):
@@ -73,16 +81,15 @@ class GenerateExternalPartyTopologyRequest:
             {
                 "synchronizer": synchronizer,
                 "partyHint": party_hint,
-                "localParticipantObservationOnly": local_participant_observation_only,
-                "confirmationThreshold": confirmation_threshold,
+                "publicKey": public_key,
             }
         )
-        if public_key is not UNSET:
-            field_dict["publicKey"] = public_key
+        if local_participant_observation_only is not UNSET:
+            field_dict["localParticipantObservationOnly"] = local_participant_observation_only
         if other_confirming_participant_uids is not UNSET:
-            field_dict["otherConfirmingParticipantUids"] = (
-                other_confirming_participant_uids
-            )
+            field_dict["otherConfirmingParticipantUids"] = other_confirming_participant_uids
+        if confirmation_threshold is not UNSET:
+            field_dict["confirmationThreshold"] = confirmation_threshold
         if observing_participant_uids is not UNSET:
             field_dict["observingParticipantUids"] = observing_participant_uids
 
@@ -97,32 +104,25 @@ class GenerateExternalPartyTopologyRequest:
 
         party_hint = d.pop("partyHint")
 
-        local_participant_observation_only = d.pop("localParticipantObservationOnly")
+        public_key = SigningPublicKey.from_dict(d.pop("publicKey"))
 
-        confirmation_threshold = d.pop("confirmationThreshold")
-
-        _public_key = d.pop("publicKey", UNSET)
-        public_key: SigningPublicKey | Unset
-        if isinstance(_public_key, Unset):
-            public_key = UNSET
-        else:
-            public_key = SigningPublicKey.from_dict(_public_key)
+        local_participant_observation_only = d.pop("localParticipantObservationOnly", UNSET)
 
         other_confirming_participant_uids = cast(
             list[str], d.pop("otherConfirmingParticipantUids", UNSET)
         )
 
-        observing_participant_uids = cast(
-            list[str], d.pop("observingParticipantUids", UNSET)
-        )
+        confirmation_threshold = d.pop("confirmationThreshold", UNSET)
+
+        observing_participant_uids = cast(list[str], d.pop("observingParticipantUids", UNSET))
 
         generate_external_party_topology_request = cls(
             synchronizer=synchronizer,
             party_hint=party_hint,
-            local_participant_observation_only=local_participant_observation_only,
-            confirmation_threshold=confirmation_threshold,
             public_key=public_key,
+            local_participant_observation_only=local_participant_observation_only,
             other_confirming_participant_uids=other_confirming_participant_uids,
+            confirmation_threshold=confirmation_threshold,
             observing_participant_uids=observing_participant_uids,
         )
 

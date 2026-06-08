@@ -523,10 +523,10 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_
 	"0InitializeSequencerFromOnboardingStateV2Response\x12\x1e\n" +
 	"\n" +
 	"replicated\x18\x01 \x01(\bR\n" +
-	"replicated2\x95\t\n" +
-	"\x1eSequencerInitializationService\x12\xda\x01\n" +
-	"#InitializeSequencerFromGenesisState\x12W.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest\x1aX.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse(\x01\x12\xe3\x01\n" +
-	"&InitializeSequencerFromOnboardingState\x12Z.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest\x1a[.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse(\x01\x12\xe0\x01\n" +
+	"replicated2\x9f\t\n" +
+	"\x1eSequencerInitializationService\x12\xdf\x01\n" +
+	"#InitializeSequencerFromGenesisState\x12W.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest\x1aX.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse\"\x03\x88\x02\x01(\x01\x12\xe8\x01\n" +
+	"&InitializeSequencerFromOnboardingState\x12Z.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest\x1a[.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse\"\x03\x88\x02\x01(\x01\x12\xe0\x01\n" +
 	"%InitializeSequencerFromLsuPredecessor\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse(\x01\x12\xe0\x01\n" +
 	"%InitializeSequencerFromGenesisStateV2\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response(\x01\x12\xe9\x01\n" +
 	"(InitializeSequencerFromOnboardingStateV2\x12\\.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request\x1a].com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response(\x01B\\ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30b\x06proto3"

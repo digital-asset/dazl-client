@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -45,7 +47,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -66,7 +71,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> Response[JsCantonError | SubmitResponse | str]:
-    """Submit a command asynchronously
+    """Submit a single composite command.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.
@@ -95,7 +100,7 @@ def sync(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> JsCantonError | SubmitResponse | str | None:
-    """Submit a command asynchronously
+    """Submit a single composite command.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.
@@ -119,7 +124,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> Response[JsCantonError | SubmitResponse | str]:
-    """Submit a command asynchronously
+    """Submit a single composite command.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.
@@ -146,7 +151,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: JsCommands,
 ) -> JsCantonError | SubmitResponse | str | None:
-    """Submit a command asynchronously
+    """Submit a single composite command.
 
     Args:
         body (JsCommands): A composite command that groups multiple commands together.

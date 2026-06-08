@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -28,51 +27,28 @@ class CreatedEvent:
             include a CreatedEvent.
             Offsets are managed by the participant nodes.
             Transactions can thus NOT be assumed to have the same offsets on different participant nodes.
-            Required, it is a valid absolute offset (positive integer)
+            It is a valid absolute offset (positive integer)
+
+            Required
         node_id (int): The position of this event in the originating transaction or reassignment.
             The origin has contextual meaning, please see description at messages that include a CreatedEvent.
             Node IDs are not necessarily equal across participants,
             as these may see different projections/parts of transactions.
-            Required, must be valid node ID (non-negative integer)
+            Must be valid node ID (non-negative integer)
+
+            Required
         contract_id (str): The ID of the created contract.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
         template_id (str): The template of the created contract.
             The identifier uses the package-id reference format.
 
             Required
-        created_event_blob (str): Opaque representation of contract create event payload intended for forwarding
-            to an API server as a contract disclosed as part of a command
-            submission.
-            Optional
-        created_at (str): Ledger effective time of the transaction that created the contract.
-            Required
-        package_name (str): The package name of the created contract.
-            Required
-        representative_package_id (str): A package-id present in the participant package store that typechecks the
-            contract's argument.
-            This may differ from the package-id of the template used to create the contract.
-            For contracts created before Canton 3.4, this field matches the contract's creation package-id.
-
-            NOTE: Experimental, server internal concept, not for client consumption. Subject to change without notice.
+        create_argument (Any): The arguments that have been used to create the contract.
 
             Required
-        acs_delta (bool): Whether this event would be part of respective ACS_DELTA shaped stream,
-            and should therefore considered when tracking contract activeness on the client-side.
-            Required
-        contract_key (Any | Unset): The key of the created contract.
-            This will be set if and only if ``template_id`` defines a contract key.
-            Optional
-        create_argument (Any | Unset):
-        interface_views (list[JsInterfaceView] | Unset): Interface views specified in the transaction filter.
-            Includes an ``InterfaceView`` for each interface for which there is a ``InterfaceFilter`` with
-
-            - its party in the ``witness_parties`` of this event,
-            - and which is implemented by the template of this event,
-            - and which has ``include_interface_view`` set.
-
-            Optional
-        witness_parties (list[str] | Unset): The parties that are notified of this event. When a ``CreatedEvent``
+        witness_parties (list[str]): The parties that are notified of this event. When a ``CreatedEvent``
             is returned as part of a transaction tree or ledger-effects transaction, this will include all
             the parties specified in the ``TransactionFilter`` that are witnesses  of the event
             (the stakeholders of the contract and all informees of all the ancestors
@@ -98,29 +74,72 @@ class CreatedEvent:
             ``UpdateFormat``.  Using these events, query the ACS as-of an offset where the
             party is hosted on the participant node, and ignore create events at offsets
             where the party is not hosted on the participant node.
+
+            Required: must be non-empty
+        signatories (list[str]): The signatories for this contract as specified by the template.
+
+            Required: must be non-empty
+        created_at (str): Ledger effective time of the transaction that created the contract.
+
             Required
-        signatories (list[str] | Unset): The signatories for this contract as specified by the template.
+        package_name (str): The package name of the created contract.
+
             Required
+        representative_package_id (str): A package-id present in the participant package store that typechecks the
+            contract's argument.
+            This may differ from the package-id of the template used to create the contract.
+            For contracts created before Canton 3.4, this field matches the contract's creation package-id.
+
+            NOTE: Experimental, server internal concept, not for client consumption. Subject to change without notice.
+
+            Required
+        acs_delta (bool): Whether this event would be part of respective ACS_DELTA shaped stream,
+            and should therefore considered when tracking contract activeness on the client-side.
+
+            Required
+        contract_key (Any | Unset): The key of the created contract.
+            This will be set if and only if ``template_id`` defines a contract key.
+
+            Optional
+        contract_key_hash (str | Unset): The hash of contract_key.
+            This will be set if and only if ``template_id`` defines a contract key.
+
+            Optional: can be empty
+        created_event_blob (str | Unset): Opaque representation of contract create event payload intended for forwarding
+            to an API server as a contract disclosed as part of a command
+            submission.
+
+            Optional: can be empty
+        interface_views (list[JsInterfaceView] | Unset): Interface views specified in the transaction filter.
+            Includes an ``InterfaceView`` for each interface for which there is a ``InterfaceFilter`` with
+
+            - its party in the ``witness_parties`` of this event,
+            - and which is implemented by the template of this event,
+            - and which has ``include_interface_view`` set.
+
+            Optional: can be empty
         observers (list[str] | Unset): The observers for this contract as specified explicitly by the template or
             implicitly as choice controllers.
             This field never contains parties that are signatories.
-            Required
+
+            Optional: can be empty
     """
 
     offset: int
     node_id: int
     contract_id: str
     template_id: str
-    created_event_blob: str
+    create_argument: Any
+    witness_parties: list[str]
+    signatories: list[str]
     created_at: str
     package_name: str
     representative_package_id: str
     acs_delta: bool
     contract_key: Any | Unset = UNSET
-    create_argument: Any | Unset = UNSET
+    contract_key_hash: str | Unset = UNSET
+    created_event_blob: str | Unset = UNSET
     interface_views: list[JsInterfaceView] | Unset = UNSET
-    witness_parties: list[str] | Unset = UNSET
-    signatories: list[str] | Unset = UNSET
     observers: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -133,7 +152,11 @@ class CreatedEvent:
 
         template_id = self.template_id
 
-        created_event_blob = self.created_event_blob
+        create_argument = self.create_argument
+
+        witness_parties = self.witness_parties
+
+        signatories = self.signatories
 
         created_at = self.created_at
 
@@ -145,7 +168,9 @@ class CreatedEvent:
 
         contract_key = self.contract_key
 
-        create_argument = self.create_argument
+        contract_key_hash = self.contract_key_hash
+
+        created_event_blob = self.created_event_blob
 
         interface_views: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.interface_views, Unset):
@@ -153,14 +178,6 @@ class CreatedEvent:
             for interface_views_item_data in self.interface_views:
                 interface_views_item = interface_views_item_data.to_dict()
                 interface_views.append(interface_views_item)
-
-        witness_parties: list[str] | Unset = UNSET
-        if not isinstance(self.witness_parties, Unset):
-            witness_parties = self.witness_parties
-
-        signatories: list[str] | Unset = UNSET
-        if not isinstance(self.signatories, Unset):
-            signatories = self.signatories
 
         observers: list[str] | Unset = UNSET
         if not isinstance(self.observers, Unset):
@@ -174,7 +191,9 @@ class CreatedEvent:
                 "nodeId": node_id,
                 "contractId": contract_id,
                 "templateId": template_id,
-                "createdEventBlob": created_event_blob,
+                "createArgument": create_argument,
+                "witnessParties": witness_parties,
+                "signatories": signatories,
                 "createdAt": created_at,
                 "packageName": package_name,
                 "representativePackageId": representative_package_id,
@@ -183,14 +202,12 @@ class CreatedEvent:
         )
         if contract_key is not UNSET:
             field_dict["contractKey"] = contract_key
-        if create_argument is not UNSET:
-            field_dict["createArgument"] = create_argument
+        if contract_key_hash is not UNSET:
+            field_dict["contractKeyHash"] = contract_key_hash
+        if created_event_blob is not UNSET:
+            field_dict["createdEventBlob"] = created_event_blob
         if interface_views is not UNSET:
             field_dict["interfaceViews"] = interface_views
-        if witness_parties is not UNSET:
-            field_dict["witnessParties"] = witness_parties
-        if signatories is not UNSET:
-            field_dict["signatories"] = signatories
         if observers is not UNSET:
             field_dict["observers"] = observers
 
@@ -209,7 +226,11 @@ class CreatedEvent:
 
         template_id = d.pop("templateId")
 
-        created_event_blob = d.pop("createdEventBlob")
+        create_argument = d.pop("createArgument")
+
+        witness_parties = cast(list[str], d.pop("witnessParties"))
+
+        signatories = cast(list[str], d.pop("signatories"))
 
         created_at = d.pop("createdAt")
 
@@ -221,22 +242,18 @@ class CreatedEvent:
 
         contract_key = d.pop("contractKey", UNSET)
 
-        create_argument = d.pop("createArgument", UNSET)
+        contract_key_hash = d.pop("contractKeyHash", UNSET)
+
+        created_event_blob = d.pop("createdEventBlob", UNSET)
 
         _interface_views = d.pop("interfaceViews", UNSET)
         interface_views: list[JsInterfaceView] | Unset = UNSET
         if _interface_views is not UNSET:
             interface_views = []
             for interface_views_item_data in _interface_views:
-                interface_views_item = JsInterfaceView.from_dict(
-                    interface_views_item_data
-                )
+                interface_views_item = JsInterfaceView.from_dict(interface_views_item_data)
 
                 interface_views.append(interface_views_item)
-
-        witness_parties = cast(list[str], d.pop("witnessParties", UNSET))
-
-        signatories = cast(list[str], d.pop("signatories", UNSET))
 
         observers = cast(list[str], d.pop("observers", UNSET))
 
@@ -245,16 +262,17 @@ class CreatedEvent:
             node_id=node_id,
             contract_id=contract_id,
             template_id=template_id,
-            created_event_blob=created_event_blob,
+            create_argument=create_argument,
+            witness_parties=witness_parties,
+            signatories=signatories,
             created_at=created_at,
             package_name=package_name,
             representative_package_id=representative_package_id,
             acs_delta=acs_delta,
             contract_key=contract_key,
-            create_argument=create_argument,
+            contract_key_hash=contract_key_hash,
+            created_event_blob=created_event_blob,
             interface_views=interface_views,
-            witness_parties=witness_parties,
-            signatories=signatories,
             observers=observers,
         )
 

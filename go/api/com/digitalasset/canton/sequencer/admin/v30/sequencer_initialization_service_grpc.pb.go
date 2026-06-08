@@ -32,7 +32,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SequencerInitializationServiceClient interface {
+	// Deprecated: Do not use.
 	InitializeSequencerFromGenesisState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse], error)
+	// Deprecated: Do not use.
 	InitializeSequencerFromOnboardingState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse], error)
 	InitializeSequencerFromLsuPredecessor(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse], error)
 	InitializeSequencerFromGenesisStateV2(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateV2Request, InitializeSequencerFromGenesisStateV2Response], error)
@@ -47,6 +49,7 @@ func NewSequencerInitializationServiceClient(cc grpc.ClientConnInterface) Sequen
 	return &sequencerInitializationServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *sequencerInitializationServiceClient) InitializeSequencerFromGenesisState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[0], SequencerInitializationService_InitializeSequencerFromGenesisState_FullMethodName, cOpts...)
@@ -60,6 +63,7 @@ func (c *sequencerInitializationServiceClient) InitializeSequencerFromGenesisSta
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type SequencerInitializationService_InitializeSequencerFromGenesisStateClient = grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse]
 
+// Deprecated: Do not use.
 func (c *sequencerInitializationServiceClient) InitializeSequencerFromOnboardingState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[1], SequencerInitializationService_InitializeSequencerFromOnboardingState_FullMethodName, cOpts...)
@@ -116,7 +120,9 @@ type SequencerInitializationService_InitializeSequencerFromOnboardingStateV2Clie
 // All implementations must embed UnimplementedSequencerInitializationServiceServer
 // for forward compatibility.
 type SequencerInitializationServiceServer interface {
+	// Deprecated: Do not use.
 	InitializeSequencerFromGenesisState(grpc.ClientStreamingServer[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse]) error
+	// Deprecated: Do not use.
 	InitializeSequencerFromOnboardingState(grpc.ClientStreamingServer[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]) error
 	InitializeSequencerFromLsuPredecessor(grpc.ClientStreamingServer[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse]) error
 	InitializeSequencerFromGenesisStateV2(grpc.ClientStreamingServer[InitializeSequencerFromGenesisStateV2Request, InitializeSequencerFromGenesisStateV2Response]) error

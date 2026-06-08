@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -18,6 +21,7 @@ def _get_kwargs(
     *,
     identity_provider_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["identity-provider-id"] = identity_provider_id
@@ -27,7 +31,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/users/{user_id}".format(
-            user_id=user_id,
+            user_id=quote(str(user_id), safe=""),
         ),
         "params": params,
     }
@@ -47,7 +51,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -69,7 +76,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetUserResponse | JsCantonError | str]:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):
@@ -101,7 +108,7 @@ def sync(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetUserResponse | JsCantonError | str | None:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):
@@ -128,7 +135,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetUserResponse | JsCantonError | str]:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):
@@ -158,7 +165,7 @@ async def asyncio(
     client: AuthenticatedClient,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetUserResponse | JsCantonError | str | None:
-    """Get user details.
+    """Get the user data of a specific user or the authenticated user.
 
     Args:
         user_id (str):

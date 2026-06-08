@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -19,6 +22,7 @@ def _get_kwargs(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["identity-provider-id"] = identity_provider_id
@@ -34,7 +38,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/parties/{party}".format(
-            party=party,
+            party=quote(str(party), safe=""),
         ),
         "params": params,
     }
@@ -54,7 +58,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -77,7 +84,8 @@ def sync_detailed(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> Response[GetPartiesResponse | JsCantonError | str]:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):
@@ -112,7 +120,8 @@ def sync(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> GetPartiesResponse | JsCantonError | str | None:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):
@@ -142,7 +151,8 @@ async def asyncio_detailed(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> Response[GetPartiesResponse | JsCantonError | str]:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):
@@ -175,7 +185,8 @@ async def asyncio(
     identity_provider_id: str | Unset = UNSET,
     parties: list[str] | Unset = UNSET,
 ) -> GetPartiesResponse | JsCantonError | str | None:
-    """Get party details
+    """Get the party details of the given parties. Only known parties will be
+    returned in the list.
 
     Args:
         party (str):

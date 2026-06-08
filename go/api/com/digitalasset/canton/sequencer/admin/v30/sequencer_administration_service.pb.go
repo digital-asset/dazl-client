@@ -1855,7 +1855,7 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_
 	"\x15DisableMemberResponse\"[\n" +
 	"\x1fPerformLsuSequencingTestRequest\x128\n" +
 	"\x18recipient_mediator_group\x18\x01 \x01(\x05R\x16recipientMediatorGroup\"\"\n" +
-	" PerformLsuSequencingTestResponse2\xb5\x11\n" +
+	" PerformLsuSequencingTestResponse2\xba\x11\n" +
 	"\x1eSequencerAdministrationService\x12\x96\x01\n" +
 	"\rPruningStatus\x12A.com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest\x1aB.com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse\x12\xa8\x01\n" +
 	"\x13TrafficControlState\x12G.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest\x1aH.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse\x12\xa8\x01\n" +
@@ -1864,8 +1864,8 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_
 	"\x19SetLsuTrafficControlState\x12M.com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateRequest\x1aN.com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateResponse\x12\x9f\x01\n" +
 	"\x10SetThroughputCap\x12D.com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapRequest\x1aE.com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapResponse\x12\x9f\x01\n" +
 	"\x10GetThroughputCap\x12D.com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapRequest\x1aE.com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse\x12\x87\x01\n" +
-	"\bSnapshot\x12<.com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest\x1a=.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse\x12\x9e\x01\n" +
-	"\x0fOnboardingState\x12C.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest\x1aD.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse0\x01\x12\xa4\x01\n" +
+	"\bSnapshot\x12<.com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest\x1a=.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse\x12\xa3\x01\n" +
+	"\x0fOnboardingState\x12C.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest\x1aD.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse\"\x03\x88\x02\x010\x01\x12\xa4\x01\n" +
 	"\x11OnboardingStateV2\x12E.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request\x1aF.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response0\x01\x12\x96\x01\n" +
 	"\rDisableMember\x12A.com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest\x1aB.com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse\x12\xc0\x01\n" +
 	"\x1bGenerateAuthenticationToken\x12O.com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest\x1aP.com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse\x12\xb7\x01\n" +

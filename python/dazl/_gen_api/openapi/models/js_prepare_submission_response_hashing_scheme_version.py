@@ -2,12 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from enum import Enum
 
 
 class JsPrepareSubmissionResponseHashingSchemeVersion(str, Enum):
     HASHING_SCHEME_VERSION_UNSPECIFIED = "HASHING_SCHEME_VERSION_UNSPECIFIED"
     HASHING_SCHEME_VERSION_V2 = "HASHING_SCHEME_VERSION_V2"
+    HASHING_SCHEME_VERSION_V3 = "HASHING_SCHEME_VERSION_V3"
 
     def __str__(self) -> str:
         return str(self.value)

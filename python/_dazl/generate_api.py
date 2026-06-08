@@ -169,6 +169,33 @@ class ListVettedPackagesResponse:
         logger.debug(f"Updated {init_file}")
 
 
+def _fix_default_error_parsing(directory: Path) -> None:
+    api_dir = directory / "openapi" / "api" / "default"
+    if not api_dir.is_dir():
+        logger.warning(f"API directory {api_dir} not found, skipping default error fix")
+        return
+
+    old_branch = (
+        "    response_default = JsCantonError.from_dict(response.json())\n"
+        "\n"
+        "    return response_default"
+    )
+    new_branch = (
+        "    try:\n"
+        "        response_default = JsCantonError.from_dict(response.json())\n"
+        "    except (KeyError, ValueError):\n"
+        "        return response.text\n"
+        "\n"
+        "    return response_default"
+    )
+
+    for api_file in api_dir.glob("*.py"):
+        content = api_file.read_text()
+        if old_branch in content:
+            api_file.write_text(content.replace(old_branch, new_branch))
+            logger.debug(f"Made default error parsing tolerant in {api_file}")
+
+
 def _fix_post_packages_multipart(directory: Path) -> None:
     openapi_dir = directory / "openapi"
     api_dir = openapi_dir / "api" / "default"
@@ -196,30 +223,25 @@ def _fix_post_packages_multipart(directory: Path) -> None:
 
 def _format_generated_code(directory: Path) -> None:
     venv_bin = Path(sys.executable).parent
-    isort_exe = venv_bin / "isort"
-    black_exe = venv_bin / "black"
+    ruff_exe = venv_bin / "ruff"
 
     try:
         subprocess.run(
-            [str(isort_exe), str(directory)],
+            [str(ruff_exe), "check", "--select", "I", "--fix", str(directory)],
             check=True,
             capture_output=True,
             text=True,
         )
-        logger.debug("Successfully ran isort")
-    except subprocess.CalledProcessError as e:
-        logger.warning(f"isort failed: {e.stderr}")
-
-    try:
         subprocess.run(
-            [str(black_exe), str(directory)],
+            [str(ruff_exe), "format", str(directory)],
             check=True,
             capture_output=True,
             text=True,
         )
-        logger.debug("Successfully ran black")
-    except subprocess.CalledProcessError as e:
-        logger.warning(f"black failed: {e.stderr}")
+        logger.debug("Successfully ran ruff")
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        stderr = getattr(e, "stderr", str(e))
+        logger.warning(f"ruff failed: {stderr}")
 
 
 def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
@@ -269,6 +291,9 @@ def generate_api_clients(openapi_specs_dir: Path, output_dir: Path) -> None:
 
         _fix_post_packages_multipart(output_dir)
         logger.info("Fixed POST /v2/packages to use multipart/form-data")
+
+        _fix_default_error_parsing(output_dir)
+        logger.info("Made default error response parsing tolerant")
 
         _format_generated_code(output_dir)
         logger.info("Formatted generated files")

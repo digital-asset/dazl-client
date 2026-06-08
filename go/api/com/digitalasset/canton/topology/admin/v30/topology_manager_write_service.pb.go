@@ -1200,11 +1200,11 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_ser
 	"HFORCE_FLAG_ALLOW_INSUFFICIENT_SIGNATORY_ASSIGNING_PARTICIPANTS_FOR_PARTY\x10\v\x12.\n" +
 	"*FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES\x10\f\x12(\n" +
 	"$FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE\x10\r\x127\n" +
-	"3FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET\x10\x0e\"\x04\b\x03\x10\x03\"\x04\b\b\x10\b*\x1eFORCE_FLAG_ALLOW_UNVET_PACKAGE*4FORCE_FLAG_ALLOW_UNVET_PACKAGE_WITH_ACTIVE_CONTRACTS2\x81\v\n" +
+	"3FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET\x10\x0e\"\x04\b\x03\x10\x03\"\x04\b\b\x10\b*\x1eFORCE_FLAG_ALLOW_UNVET_PACKAGE*4FORCE_FLAG_ALLOW_UNVET_PACKAGE_WITH_ACTIVE_CONTRACTS2\x86\v\n" +
 	"\x1bTopologyManagerWriteService\x12\x88\x01\n" +
 	"\tAuthorize\x12<.com.digitalasset.canton.topology.admin.v30.AuthorizeRequest\x1a=.com.digitalasset.canton.topology.admin.v30.AuthorizeResponse\x12\x9a\x01\n" +
-	"\x0fAddTransactions\x12B.com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest\x1aC.com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse\x12\xb1\x01\n" +
-	"\x16ImportTopologySnapshot\x12I.com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest\x1aJ.com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotResponse(\x01\x12\xb7\x01\n" +
+	"\x0fAddTransactions\x12B.com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest\x1aC.com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse\x12\xb6\x01\n" +
+	"\x16ImportTopologySnapshot\x12I.com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest\x1aJ.com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotResponse\"\x03\x88\x02\x01(\x01\x12\xb7\x01\n" +
 	"\x18ImportTopologySnapshotV2\x12K.com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request\x1aL.com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Response(\x01\x12\x9d\x01\n" +
 	"\x10SignTransactions\x12C.com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest\x1aD.com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse\x12\xa9\x01\n" +
 	"\x14GenerateTransactions\x12G.com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest\x1aH.com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse\x12\xc1\x01\n" +

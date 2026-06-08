@@ -3,6 +3,7 @@
 # fmt: off
 # isort: skip_file
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
+from ..v30 import common_pb2 as _common_pb2
 from ..v30 import participant_transaction_pb2 as _participant_transaction_pb2
 from . import common_stable_pb2 as _common_stable_pb2
 from google.protobuf.internal import containers as _containers
@@ -90,3 +91,26 @@ class ViewParticipantData(_message.Message):
     action_description: ActionDescription
     rollback_context: _participant_transaction_pb2.ViewParticipantData.RollbackContext
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., core_inputs: _Optional[_Iterable[_Union[_participant_transaction_pb2.InputContract, _Mapping]]] = ..., created_core: _Optional[_Iterable[_Union[_participant_transaction_pb2.CreatedContract, _Mapping]]] = ..., created_in_subview_archived_in_core: _Optional[_Iterable[str]] = ..., resolved_keys: _Optional[_Iterable[_Union[ViewParticipantData.KeyResolutionWithMaintainers, _Mapping]]] = ..., action_description: _Optional[_Union[ActionDescription, _Mapping]] = ..., rollback_context: _Optional[_Union[_participant_transaction_pb2.ViewParticipantData.RollbackContext, _Mapping]] = ...) -> None: ...
+
+class EncryptedMultipleViewsMessage(_message.Message):
+    __slots__ = ("compressed_view_trees", "view_hashes", "encryption_scheme", "submitting_participant_signature", "session_key_lookup", "physical_synchronizer_id", "view_type")
+    class UncompressedViewTrees(_message.Message):
+        __slots__ = ("view_trees",)
+        VIEW_TREES_FIELD_NUMBER: _ClassVar[int]
+        view_trees: _containers.RepeatedScalarFieldContainer[bytes]
+        def __init__(self, view_trees: _Optional[_Iterable[bytes]] = ...) -> None: ...
+    COMPRESSED_VIEW_TREES_FIELD_NUMBER: _ClassVar[int]
+    VIEW_HASHES_FIELD_NUMBER: _ClassVar[int]
+    ENCRYPTION_SCHEME_FIELD_NUMBER: _ClassVar[int]
+    SUBMITTING_PARTICIPANT_SIGNATURE_FIELD_NUMBER: _ClassVar[int]
+    SESSION_KEY_LOOKUP_FIELD_NUMBER: _ClassVar[int]
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    VIEW_TYPE_FIELD_NUMBER: _ClassVar[int]
+    compressed_view_trees: bytes
+    view_hashes: _containers.RepeatedScalarFieldContainer[bytes]
+    encryption_scheme: _crypto_pb2.SymmetricKeyScheme
+    submitting_participant_signature: _crypto_pb2.Signature
+    session_key_lookup: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.AsymmetricEncrypted]
+    physical_synchronizer_id: str
+    view_type: _common_pb2.ViewType
+    def __init__(self, compressed_view_trees: _Optional[bytes] = ..., view_hashes: _Optional[_Iterable[bytes]] = ..., encryption_scheme: _Optional[_Union[_crypto_pb2.SymmetricKeyScheme, str]] = ..., submitting_participant_signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., session_key_lookup: _Optional[_Iterable[_Union[_crypto_pb2.AsymmetricEncrypted, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ...) -> None: ...

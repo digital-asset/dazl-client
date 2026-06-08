@@ -65,6 +65,7 @@ type SequencerAuthentication_ChallengeRequest struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	Member                 string                 `protobuf:"bytes,1,opt,name=member,proto3" json:"member,omitempty"`
 	MemberProtocolVersions []int32                `protobuf:"varint,2,rep,packed,name=member_protocol_versions,json=memberProtocolVersions,proto3" json:"member_protocol_versions,omitempty"`
+	ClientVersion          string                 `protobuf:"bytes,3,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -111,6 +112,13 @@ func (x *SequencerAuthentication_ChallengeRequest) GetMemberProtocolVersions() [
 		return x.MemberProtocolVersions
 	}
 	return nil
+}
+
+func (x *SequencerAuthentication_ChallengeRequest) GetClientVersion() string {
+	if x != nil {
+		return x.ClientVersion
+	}
+	return ""
 }
 
 type SequencerAuthentication_ChallengeResponse struct {
@@ -361,11 +369,12 @@ var File_com_digitalasset_canton_sequencer_api_v30_sequencer_authentication_serv
 
 const file_com_digitalasset_canton_sequencer_api_v30_sequencer_authentication_service_proto_rawDesc = "" +
 	"\n" +
-	"Pcom/digitalasset/canton/sequencer/api/v30/sequencer_authentication_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x83\x04\n" +
-	"\x17SequencerAuthentication\x1ad\n" +
+	"Pcom/digitalasset/canton/sequencer/api/v30/sequencer_authentication_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xab\x04\n" +
+	"\x17SequencerAuthentication\x1a\x8b\x01\n" +
 	"\x10ChallengeRequest\x12\x16\n" +
 	"\x06member\x18\x01 \x01(\tR\x06member\x128\n" +
-	"\x18member_protocol_versions\x18\x02 \x03(\x05R\x16memberProtocolVersions\x1aM\n" +
+	"\x18member_protocol_versions\x18\x02 \x03(\x05R\x16memberProtocolVersions\x12%\n" +
+	"\x0eclient_version\x18\x03 \x01(\tR\rclientVersion\x1aM\n" +
 	"\x11ChallengeResponse\x12\x14\n" +
 	"\x05nonce\x18\x01 \x01(\fR\x05nonce\x12\"\n" +
 	"\ffingerprints\x18\x02 \x03(\tR\ffingerprints\x1a\x90\x01\n" +

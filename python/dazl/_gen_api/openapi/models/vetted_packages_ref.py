@@ -7,8 +7,9 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="VettedPackagesRef")
 
@@ -28,17 +29,20 @@ class VettedPackagesRef:
     unresolved and the entire update request is rejected.
 
         Attributes:
-            package_id (str): Package's package id must be the same as this field.
+            package_id (str | Unset): Package's package id must be the same as this field.
+
                 Optional
-            package_name (str): Package's name must be the same as this field.
+            package_name (str | Unset): Package's name must be the same as this field.
+
                 Optional
-            package_version (str): Package's version must be the same as this field.
+            package_version (str | Unset): Package's version must be the same as this field.
+
                 Optional
     """
 
-    package_id: str
-    package_name: str
-    package_version: str
+    package_id: str | Unset = UNSET
+    package_name: str | Unset = UNSET
+    package_version: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -50,24 +54,24 @@ class VettedPackagesRef:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "packageId": package_id,
-                "packageName": package_name,
-                "packageVersion": package_version,
-            }
-        )
+        field_dict.update({})
+        if package_id is not UNSET:
+            field_dict["packageId"] = package_id
+        if package_name is not UNSET:
+            field_dict["packageName"] = package_name
+        if package_version is not UNSET:
+            field_dict["packageVersion"] = package_version
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        package_id = d.pop("packageId")
+        package_id = d.pop("packageId", UNSET)
 
-        package_name = d.pop("packageName")
+        package_name = d.pop("packageName", UNSET)
 
-        package_version = d.pop("packageVersion")
+        package_version = d.pop("packageVersion", UNSET)
 
         vetted_packages_ref = cls(
             package_id=package_id,

@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -24,7 +27,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "patch",
         "url": "/v2/parties/{party}".format(
-            party=party,
+            party=quote(str(party), safe=""),
         ),
     }
 
@@ -48,7 +51,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -70,7 +76,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> Response[JsCantonError | UpdatePartyDetailsResponse | str]:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):
@@ -103,7 +110,8 @@ def sync(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> JsCantonError | UpdatePartyDetailsResponse | str | None:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):
@@ -131,7 +139,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> Response[JsCantonError | UpdatePartyDetailsResponse | str]:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):
@@ -162,7 +171,8 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdatePartyDetailsRequest,
 ) -> JsCantonError | UpdatePartyDetailsResponse | str | None:
-    """Allocate a new party to the participant node
+    """Update selected modifiable participant-local attributes of a party details resource.
+    Can update the participant's local information for local parties.
 
     Args:
         party (str):

@@ -2,15 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.get_identity_provider_config_response import (
-    GetIdentityProviderConfigResponse,
-)
+from ...models.get_identity_provider_config_response import GetIdentityProviderConfigResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import Response
 
@@ -18,10 +19,11 @@ from ...types import Response
 def _get_kwargs(
     idp_id: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/idps/{idp_id}".format(
-            idp_id=idp_id,
+            idp_id=quote(str(idp_id), safe=""),
         ),
     }
 
@@ -40,7 +42,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -61,7 +66,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetIdentityProviderConfigResponse | JsCantonError | str]:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):
@@ -90,7 +95,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):
@@ -114,7 +119,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetIdentityProviderConfigResponse | JsCantonError | str]:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):
@@ -141,7 +146,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Get identity provider config
+    """Get the identity provider configuration data by id.
 
     Args:
         idp_id (str):

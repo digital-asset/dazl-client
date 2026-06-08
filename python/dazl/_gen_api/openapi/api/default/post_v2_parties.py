@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -45,7 +47,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -66,11 +71,30 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: AllocatePartyRequest,
 ) -> Response[AllocatePartyResponse | JsCantonError | str]:
-    """Allocate a new party to the participant node
+    """Allocates a new party on a ledger and adds it to the set managed by the participant.
+    Caller specifies a party identifier suggestion, the actual identifier
+    allocated might be different and is implementation specific.
+    Caller can specify party metadata that is stored locally on the participant.
+    This call may:
+
+    - Succeed, in which case the actual allocated identifier is visible in
+      the response.
+    - Respond with a gRPC error
+
+    daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
+    the consensus layer and call rejected if the identifier is already present.
+    canton: completely different globally unique identifier is allocated.
+    Behind the scenes calls to an internal protocol are made. As that protocol
+    is richer than the surface protocol, the arguments take implicit values
+    The party identifier suggestion must be a valid party name. Party names are required to be non-empty
+    US-ASCII strings built from letters, digits, space,
+    colon, minus and underscore limited to 255 chars
 
     Args:
-        body (AllocatePartyRequest): Required authorization: ``HasRight(ParticipantAdmin) OR
-            IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocatePartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -96,11 +120,30 @@ def sync(
     client: AuthenticatedClient,
     body: AllocatePartyRequest,
 ) -> AllocatePartyResponse | JsCantonError | str | None:
-    """Allocate a new party to the participant node
+    """Allocates a new party on a ledger and adds it to the set managed by the participant.
+    Caller specifies a party identifier suggestion, the actual identifier
+    allocated might be different and is implementation specific.
+    Caller can specify party metadata that is stored locally on the participant.
+    This call may:
+
+    - Succeed, in which case the actual allocated identifier is visible in
+      the response.
+    - Respond with a gRPC error
+
+    daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
+    the consensus layer and call rejected if the identifier is already present.
+    canton: completely different globally unique identifier is allocated.
+    Behind the scenes calls to an internal protocol are made. As that protocol
+    is richer than the surface protocol, the arguments take implicit values
+    The party identifier suggestion must be a valid party name. Party names are required to be non-empty
+    US-ASCII strings built from letters, digits, space,
+    colon, minus and underscore limited to 255 chars
 
     Args:
-        body (AllocatePartyRequest): Required authorization: ``HasRight(ParticipantAdmin) OR
-            IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocatePartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -121,11 +164,30 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: AllocatePartyRequest,
 ) -> Response[AllocatePartyResponse | JsCantonError | str]:
-    """Allocate a new party to the participant node
+    """Allocates a new party on a ledger and adds it to the set managed by the participant.
+    Caller specifies a party identifier suggestion, the actual identifier
+    allocated might be different and is implementation specific.
+    Caller can specify party metadata that is stored locally on the participant.
+    This call may:
+
+    - Succeed, in which case the actual allocated identifier is visible in
+      the response.
+    - Respond with a gRPC error
+
+    daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
+    the consensus layer and call rejected if the identifier is already present.
+    canton: completely different globally unique identifier is allocated.
+    Behind the scenes calls to an internal protocol are made. As that protocol
+    is richer than the surface protocol, the arguments take implicit values
+    The party identifier suggestion must be a valid party name. Party names are required to be non-empty
+    US-ASCII strings built from letters, digits, space,
+    colon, minus and underscore limited to 255 chars
 
     Args:
-        body (AllocatePartyRequest): Required authorization: ``HasRight(ParticipantAdmin) OR
-            IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocatePartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -149,11 +211,30 @@ async def asyncio(
     client: AuthenticatedClient,
     body: AllocatePartyRequest,
 ) -> AllocatePartyResponse | JsCantonError | str | None:
-    """Allocate a new party to the participant node
+    """Allocates a new party on a ledger and adds it to the set managed by the participant.
+    Caller specifies a party identifier suggestion, the actual identifier
+    allocated might be different and is implementation specific.
+    Caller can specify party metadata that is stored locally on the participant.
+    This call may:
+
+    - Succeed, in which case the actual allocated identifier is visible in
+      the response.
+    - Respond with a gRPC error
+
+    daml-on-kv-ledger: suggestion's uniqueness is checked by the validators in
+    the consensus layer and call rejected if the identifier is already present.
+    canton: completely different globally unique identifier is allocated.
+    Behind the scenes calls to an internal protocol are made. As that protocol
+    is richer than the surface protocol, the arguments take implicit values
+    The party identifier suggestion must be a valid party name. Party names are required to be non-empty
+    US-ASCII strings built from letters, digits, space,
+    colon, minus and underscore limited to 255 chars
 
     Args:
-        body (AllocatePartyRequest): Required authorization: ``HasRight(ParticipantAdmin) OR
-            IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocatePartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

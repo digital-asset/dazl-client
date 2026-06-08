@@ -64,6 +64,7 @@ type SequencerConnect_HandshakeRequest struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	ClientProtocolVersions []int32                `protobuf:"varint,1,rep,packed,name=client_protocol_versions,json=clientProtocolVersions,proto3" json:"client_protocol_versions,omitempty"`
 	MinimumProtocolVersion *int32                 `protobuf:"varint,2,opt,name=minimum_protocol_version,json=minimumProtocolVersion,proto3,oneof" json:"minimum_protocol_version,omitempty"`
+	ClientVersion          string                 `protobuf:"bytes,3,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -110,6 +111,13 @@ func (x *SequencerConnect_HandshakeRequest) GetMinimumProtocolVersion() int32 {
 		return *x.MinimumProtocolVersion
 	}
 	return 0
+}
+
+func (x *SequencerConnect_HandshakeRequest) GetClientVersion() string {
+	if x != nil {
+		return x.ClientVersion
+	}
+	return ""
 }
 
 type SequencerConnect_HandshakeResponse struct {
@@ -644,11 +652,12 @@ var File_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_pro
 
 const file_com_digitalasset_canton_sequencer_api_v30_sequencer_connect_service_proto_rawDesc = "" +
 	"\n" +
-	"Icom/digitalasset/canton/sequencer/api/v30/sequencer_connect_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xbc\t\n" +
-	"\x10SequencerConnect\x1a\xa8\x01\n" +
+	"Icom/digitalasset/canton/sequencer/api/v30/sequencer_connect_service.proto\x12)com.digitalasset.canton.sequencer.api.v30\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xe3\t\n" +
+	"\x10SequencerConnect\x1a\xcf\x01\n" +
 	"\x10HandshakeRequest\x128\n" +
 	"\x18client_protocol_versions\x18\x01 \x03(\x05R\x16clientProtocolVersions\x12=\n" +
-	"\x18minimum_protocol_version\x18\x02 \x01(\x05H\x00R\x16minimumProtocolVersion\x88\x01\x01B\x1b\n" +
+	"\x18minimum_protocol_version\x18\x02 \x01(\x05H\x00R\x16minimumProtocolVersion\x88\x01\x01\x12%\n" +
+	"\x0eclient_version\x18\x03 \x01(\tR\rclientVersionB\x1b\n" +
 	"\x19_minimum_protocol_version\x1a\xe1\x01\n" +
 	"\x11HandshakeResponse\x126\n" +
 	"\x17server_protocol_version\x18\x01 \x01(\x05R\x15serverProtocolVersion\x12q\n" +

@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="PartyManagementFeature")
 
@@ -18,6 +17,8 @@ class PartyManagementFeature:
     """
     Attributes:
         max_parties_page_size (int): The maximum number of parties the server can return in a single response (page).
+
+            Required
     """
 
     max_parties_page_size: int

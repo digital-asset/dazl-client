@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -50,7 +52,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -74,6 +79,8 @@ def sync_detailed(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> Response[JsCantonError | str]:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.
@@ -114,6 +121,8 @@ def sync(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> JsCantonError | str | None:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.
@@ -149,6 +158,8 @@ async def asyncio_detailed(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> Response[JsCantonError | str]:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.
@@ -187,6 +198,8 @@ async def asyncio(
     stream_idle_timeout_ms: int | Unset = UNSET,
 ) -> JsCantonError | str | None:
     """Query completions list (blocking call)
+
+    Subscribe to command completion events.
     Notice: This endpoint should be used for small results set.
     When number of results exceeded node configuration limit (`http-list-max-elements-limit`)
     there will be an error (`413 Content Too Large`) returned.

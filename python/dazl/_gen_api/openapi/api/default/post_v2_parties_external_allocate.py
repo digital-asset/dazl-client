@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -45,7 +47,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -66,11 +71,30 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: AllocateExternalPartyRequest,
 ) -> Response[AllocateExternalPartyResponse | JsCantonError | str]:
-    """Allocate a new external party
+    """Alpha 3.3: Endpoint to allocate a new external party on a synchronizer
+
+    Expected to be stable in 3.5
+
+    The external party must be hosted (at least) on this node with either confirmation or observation
+    permissions
+    It can optionally be hosted on other nodes (then called a multi-hosted party).
+    If hosted on additional nodes, explicit authorization of the hosting relationship must be performed
+    on those nodes
+    before the party can be used.
+    Decentralized namespaces are supported but must be provided fully authorized by their owners.
+    The individual owner namespace transactions can be submitted in the same call (fully authorized as
+    well).
+    In the simple case of a non-multi hosted, non-decentralized party, the RPC will return once the
+    party is
+    effectively allocated and ready to use, similarly to the AllocateParty behavior.
+    For more complex scenarios applications may need to query the party status explicitly (only through
+    the admin API as of now).
 
     Args:
-        body (AllocateExternalPartyRequest): Required authorization: ``HasRight(ParticipantAdmin)
-            OR IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocateExternalPartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -96,11 +120,30 @@ def sync(
     client: AuthenticatedClient,
     body: AllocateExternalPartyRequest,
 ) -> AllocateExternalPartyResponse | JsCantonError | str | None:
-    """Allocate a new external party
+    """Alpha 3.3: Endpoint to allocate a new external party on a synchronizer
+
+    Expected to be stable in 3.5
+
+    The external party must be hosted (at least) on this node with either confirmation or observation
+    permissions
+    It can optionally be hosted on other nodes (then called a multi-hosted party).
+    If hosted on additional nodes, explicit authorization of the hosting relationship must be performed
+    on those nodes
+    before the party can be used.
+    Decentralized namespaces are supported but must be provided fully authorized by their owners.
+    The individual owner namespace transactions can be submitted in the same call (fully authorized as
+    well).
+    In the simple case of a non-multi hosted, non-decentralized party, the RPC will return once the
+    party is
+    effectively allocated and ready to use, similarly to the AllocateParty behavior.
+    For more complex scenarios applications may need to query the party status explicitly (only through
+    the admin API as of now).
 
     Args:
-        body (AllocateExternalPartyRequest): Required authorization: ``HasRight(ParticipantAdmin)
-            OR IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocateExternalPartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -121,11 +164,30 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: AllocateExternalPartyRequest,
 ) -> Response[AllocateExternalPartyResponse | JsCantonError | str]:
-    """Allocate a new external party
+    """Alpha 3.3: Endpoint to allocate a new external party on a synchronizer
+
+    Expected to be stable in 3.5
+
+    The external party must be hosted (at least) on this node with either confirmation or observation
+    permissions
+    It can optionally be hosted on other nodes (then called a multi-hosted party).
+    If hosted on additional nodes, explicit authorization of the hosting relationship must be performed
+    on those nodes
+    before the party can be used.
+    Decentralized namespaces are supported but must be provided fully authorized by their owners.
+    The individual owner namespace transactions can be submitted in the same call (fully authorized as
+    well).
+    In the simple case of a non-multi hosted, non-decentralized party, the RPC will return once the
+    party is
+    effectively allocated and ready to use, similarly to the AllocateParty behavior.
+    For more complex scenarios applications may need to query the party status explicitly (only through
+    the admin API as of now).
 
     Args:
-        body (AllocateExternalPartyRequest): Required authorization: ``HasRight(ParticipantAdmin)
-            OR IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocateExternalPartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -149,11 +211,30 @@ async def asyncio(
     client: AuthenticatedClient,
     body: AllocateExternalPartyRequest,
 ) -> AllocateExternalPartyResponse | JsCantonError | str | None:
-    """Allocate a new external party
+    """Alpha 3.3: Endpoint to allocate a new external party on a synchronizer
+
+    Expected to be stable in 3.5
+
+    The external party must be hosted (at least) on this node with either confirmation or observation
+    permissions
+    It can optionally be hosted on other nodes (then called a multi-hosted party).
+    If hosted on additional nodes, explicit authorization of the hosting relationship must be performed
+    on those nodes
+    before the party can be used.
+    Decentralized namespaces are supported but must be provided fully authorized by their owners.
+    The individual owner namespace transactions can be submitted in the same call (fully authorized as
+    well).
+    In the simple case of a non-multi hosted, non-decentralized party, the RPC will return once the
+    party is
+    effectively allocated and ready to use, similarly to the AllocateParty behavior.
+    For more complex scenarios applications may need to query the party status explicitly (only through
+    the admin API as of now).
 
     Args:
-        body (AllocateExternalPartyRequest): Required authorization: ``HasRight(ParticipantAdmin)
-            OR IsAuthenticatedIdentityProviderAdmin(identity_provider_id)``
+        body (AllocateExternalPartyRequest): Required authorization:
+              ``HasRight(ParticipantAdmin) OR
+            IsAuthenticatedIdentityProviderAdmin(identity_provider_id) OR
+            IsAuthenticatedUser(user_id)``
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

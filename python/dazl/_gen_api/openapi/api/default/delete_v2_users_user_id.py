@@ -2,15 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.delete_v2_users_user_id_response_200 import (
-    DeleteV2UsersUserIdResponse200,
-)
+from ...models.delete_v2_users_user_id_response_200 import DeleteV2UsersUserIdResponse200
 from ...models.js_canton_error import JsCantonError
 from ...types import Response
 
@@ -18,10 +19,11 @@ from ...types import Response
 def _get_kwargs(
     user_id: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v2/users/{user_id}".format(
-            user_id=user_id,
+            user_id=quote(str(user_id), safe=""),
         ),
     }
 
@@ -40,7 +42,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -61,7 +66,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[DeleteV2UsersUserIdResponse200 | JsCantonError | str]:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):
@@ -90,7 +95,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> DeleteV2UsersUserIdResponse200 | JsCantonError | str | None:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):
@@ -114,7 +119,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[DeleteV2UsersUserIdResponse200 | JsCantonError | str]:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):
@@ -141,7 +146,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> DeleteV2UsersUserIdResponse200 | JsCantonError | str | None:
-    """Delete user.
+    """Delete an existing user and all its rights.
 
     Args:
         user_id (str):

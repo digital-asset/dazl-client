@@ -7,8 +7,9 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
+
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.created_event import CreatedEvent
@@ -24,32 +25,37 @@ class JsAssignedEvent:
     Attributes:
         source (str): The ID of the source synchronizer.
             Must be a valid synchronizer id.
+
             Required
         target (str): The ID of the target synchronizer.
             Must be a valid synchronizer id.
+
             Required
         reassignment_id (str): The ID from the unassigned event.
             For correlation capabilities.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
-        submitter (str): Party on whose behalf the assign command was executed.
-            Empty if the assignment happened offline via the repair service.
-            Must be a valid PartyIdString (as described in ``value.proto``).
-            Optional
         reassignment_counter (int): Each corresponding assigned and unassigned event has the same reassignment_counter.
             This strictly increases
             with each unassign command for the same contract. Creation of the contract corresponds to reassignment_counter
             equals zero.
+
             Required
         created_event (CreatedEvent): Records that a contract has been created, and choices may now be exercised on it.
+        submitter (str | Unset): Party on whose behalf the assign command was executed.
+            Empty if the assignment happened offline via the repair service.
+            Must be a valid PartyIdString (as described in ``value.proto``).
+
+            Optional
     """
 
     source: str
     target: str
     reassignment_id: str
-    submitter: str
     reassignment_counter: int
     created_event: CreatedEvent
+    submitter: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -59,11 +65,11 @@ class JsAssignedEvent:
 
         reassignment_id = self.reassignment_id
 
-        submitter = self.submitter
-
         reassignment_counter = self.reassignment_counter
 
         created_event = self.created_event.to_dict()
+
+        submitter = self.submitter
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -72,11 +78,12 @@ class JsAssignedEvent:
                 "source": source,
                 "target": target,
                 "reassignmentId": reassignment_id,
-                "submitter": submitter,
                 "reassignmentCounter": reassignment_counter,
                 "createdEvent": created_event,
             }
         )
+        if submitter is not UNSET:
+            field_dict["submitter"] = submitter
 
         return field_dict
 
@@ -91,19 +98,19 @@ class JsAssignedEvent:
 
         reassignment_id = d.pop("reassignmentId")
 
-        submitter = d.pop("submitter")
-
         reassignment_counter = d.pop("reassignmentCounter")
 
         created_event = CreatedEvent.from_dict(d.pop("createdEvent"))
+
+        submitter = d.pop("submitter", UNSET)
 
         js_assigned_event = cls(
             source=source,
             target=target,
             reassignment_id=reassignment_id,
-            submitter=submitter,
             reassignment_counter=reassignment_counter,
             created_event=created_event,
+            submitter=submitter,
         )
 
         js_assigned_event.additional_properties = d

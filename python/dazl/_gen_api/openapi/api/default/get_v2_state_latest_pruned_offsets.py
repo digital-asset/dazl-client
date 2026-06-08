@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -14,6 +16,7 @@ from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/state/latest-pruned-offsets",
@@ -34,7 +37,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -54,7 +60,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetLatestPrunedOffsetsResponse | JsCantonError | str]:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -77,7 +83,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> GetLatestPrunedOffsetsResponse | JsCantonError | str | None:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -96,7 +102,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[GetLatestPrunedOffsetsResponse | JsCantonError | str]:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -117,7 +123,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> GetLatestPrunedOffsetsResponse | JsCantonError | str | None:
-    """Get latest pruned offsets
+    """Get the latest successfully pruned ledger offsets
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

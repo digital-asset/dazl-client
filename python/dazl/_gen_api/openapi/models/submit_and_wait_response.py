@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="SubmitAndWaitResponse")
 
@@ -19,8 +18,10 @@ class SubmitAndWaitResponse:
     Attributes:
         update_id (str): The id of the transaction that resulted from the submitted command.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
         completion_offset (int): The details of the offset field are described in ``community/ledger-api/README.md``.
+
             Required
     """
 

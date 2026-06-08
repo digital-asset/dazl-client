@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.get_connected_synchronizers_response import (
-    GetConnectedSynchronizersResponse,
-)
+from ...models.get_connected_synchronizers_response import GetConnectedSynchronizersResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import UNSET, Response, Unset
 
@@ -21,6 +21,7 @@ def _get_kwargs(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["party"] = party
@@ -52,7 +53,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -75,7 +79,7 @@ def sync_detailed(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetConnectedSynchronizersResponse | JsCantonError | str]:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):
@@ -110,7 +114,7 @@ def sync(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetConnectedSynchronizersResponse | JsCantonError | str | None:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):
@@ -140,7 +144,7 @@ async def asyncio_detailed(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> Response[GetConnectedSynchronizersResponse | JsCantonError | str]:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):
@@ -173,7 +177,7 @@ async def asyncio(
     participant_id: str | Unset = UNSET,
     identity_provider_id: str | Unset = UNSET,
 ) -> GetConnectedSynchronizersResponse | JsCantonError | str | None:
-    """Get connected synchronizers
+    """Get the list of connected synchronizers at the time of the query.
 
     Args:
         party (str | Unset):

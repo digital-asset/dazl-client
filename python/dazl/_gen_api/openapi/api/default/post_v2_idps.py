@@ -2,18 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
-from ...models.create_identity_provider_config_request import (
-    CreateIdentityProviderConfigRequest,
-)
-from ...models.create_identity_provider_config_response import (
-    CreateIdentityProviderConfigResponse,
-)
+from ...models.create_identity_provider_config_request import CreateIdentityProviderConfigRequest
+from ...models.create_identity_provider_config_response import CreateIdentityProviderConfigResponse
 from ...models.js_canton_error import JsCantonError
 from ...types import Response
 
@@ -49,7 +47,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -70,7 +71,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> Response[CreateIdentityProviderConfigResponse | JsCantonError | str]:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):
@@ -99,7 +101,8 @@ def sync(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> CreateIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):
@@ -123,7 +126,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> Response[CreateIdentityProviderConfigResponse | JsCantonError | str]:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):
@@ -150,7 +154,8 @@ async def asyncio(
     client: AuthenticatedClient,
     body: CreateIdentityProviderConfigRequest,
 ) -> CreateIdentityProviderConfigResponse | JsCantonError | str | None:
-    """Create identity provider configs
+    """Create a new identity provider configuration.
+    The request will fail if the maximum allowed number of separate configurations is reached.
 
     Args:
         body (CreateIdentityProviderConfigRequest):

@@ -7,10 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.package_reference import PackageReference
@@ -23,10 +20,7 @@ T = TypeVar("T", bound="GetPreferredPackagesResponse")
 class GetPreferredPackagesResponse:
     """
     Attributes:
-        synchronizer_id (str): The synchronizer for which the package preferences are computed.
-            If the synchronizer_id was specified in the request, then it matches the request synchronizer_id.
-            Required
-        package_references (list[PackageReference] | Unset): The package references of the preferred packages.
+        package_references (list[PackageReference]): The package references of the preferred packages.
             Must contain one package reference for each requested package-name.
 
             If you build command submissions whose content depends on the returned
@@ -34,32 +28,33 @@ class GetPreferredPackagesResponse:
             in the ``package_id_selection_preference`` of the command submission to
             avoid race conditions with concurrent changes of the on-ledger package vetting state.
 
+            Required: must be non-empty
+        synchronizer_id (str): The synchronizer for which the package preferences are computed.
+            If the synchronizer_id was specified in the request, then it matches the request synchronizer_id.
+
             Required
     """
 
+    package_references: list[PackageReference]
     synchronizer_id: str
-    package_references: list[PackageReference] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        synchronizer_id = self.synchronizer_id
+        package_references = []
+        for package_references_item_data in self.package_references:
+            package_references_item = package_references_item_data.to_dict()
+            package_references.append(package_references_item)
 
-        package_references: list[dict[str, Any]] | Unset = UNSET
-        if not isinstance(self.package_references, Unset):
-            package_references = []
-            for package_references_item_data in self.package_references:
-                package_references_item = package_references_item_data.to_dict()
-                package_references.append(package_references_item)
+        synchronizer_id = self.synchronizer_id
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "packageReferences": package_references,
                 "synchronizerId": synchronizer_id,
             }
         )
-        if package_references is not UNSET:
-            field_dict["packageReferences"] = package_references
 
         return field_dict
 
@@ -68,22 +63,18 @@ class GetPreferredPackagesResponse:
         from ..models.package_reference import PackageReference
 
         d = dict(src_dict)
+        package_references = []
+        _package_references = d.pop("packageReferences")
+        for package_references_item_data in _package_references:
+            package_references_item = PackageReference.from_dict(package_references_item_data)
+
+            package_references.append(package_references_item)
+
         synchronizer_id = d.pop("synchronizerId")
 
-        _package_references = d.pop("packageReferences", UNSET)
-        package_references: list[PackageReference] | Unset = UNSET
-        if _package_references is not UNSET:
-            package_references = []
-            for package_references_item_data in _package_references:
-                package_references_item = PackageReference.from_dict(
-                    package_references_item_data
-                )
-
-                package_references.append(package_references_item)
-
         get_preferred_packages_response = cls(
-            synchronizer_id=synchronizer_id,
             package_references=package_references,
+            synchronizer_id=synchronizer_id,
         )
 
         get_preferred_packages_response.additional_properties = d

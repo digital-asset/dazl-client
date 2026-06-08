@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -9,13 +11,12 @@ import httpx
 
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
-from ...models.list_identity_provider_configs_response import (
-    ListIdentityProviderConfigsResponse,
-)
+from ...models.list_identity_provider_configs_response import ListIdentityProviderConfigsResponse
 from ...types import Response
 
 
 def _get_kwargs() -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/v2/idps",
@@ -36,7 +37,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -56,7 +60,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[JsCantonError | ListIdentityProviderConfigsResponse | str]:
-    """List all identity provider configs
+    """List all existing identity provider configurations.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -79,7 +83,7 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> JsCantonError | ListIdentityProviderConfigsResponse | str | None:
-    """List all identity provider configs
+    """List all existing identity provider configurations.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -98,7 +102,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[JsCantonError | ListIdentityProviderConfigsResponse | str]:
-    """List all identity provider configs
+    """List all existing identity provider configurations.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -119,7 +123,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> JsCantonError | ListIdentityProviderConfigsResponse | str | None:
-    """List all identity provider configs
+    """List all existing identity provider configurations.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

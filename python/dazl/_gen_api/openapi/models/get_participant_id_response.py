@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="GetParticipantIdResponse")
 
@@ -19,6 +18,8 @@ class GetParticipantIdResponse:
     Attributes:
         participant_id (str): Identifier of the participant, which SHOULD be globally unique.
             Must be a valid LedgerString (as describe in ``value.proto``).
+
+            Required
     """
 
     participant_id: str

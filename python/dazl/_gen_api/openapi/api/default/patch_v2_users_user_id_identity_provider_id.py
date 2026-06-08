@@ -2,19 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
 from ...client import AuthenticatedClient, Client
 from ...models.js_canton_error import JsCantonError
-from ...models.update_user_identity_provider_id_request import (
-    UpdateUserIdentityProviderIdRequest,
-)
-from ...models.update_user_identity_provider_id_response import (
-    UpdateUserIdentityProviderIdResponse,
-)
+from ...models.update_user_identity_provider_id_request import UpdateUserIdentityProviderIdRequest
+from ...models.update_user_identity_provider_id_response import UpdateUserIdentityProviderIdResponse
 from ...types import Response
 
 
@@ -28,7 +27,7 @@ def _get_kwargs(
     _kwargs: dict[str, Any] = {
         "method": "patch",
         "url": "/v2/users/{user_id}/identity-provider-id".format(
-            user_id=user_id,
+            user_id=quote(str(user_id), safe=""),
         ),
     }
 
@@ -52,7 +51,10 @@ def _parse_response(
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
@@ -74,7 +76,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> Response[JsCantonError | UpdateUserIdentityProviderIdResponse | str]:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):
@@ -107,7 +109,7 @@ def sync(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> JsCantonError | UpdateUserIdentityProviderIdResponse | str | None:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):
@@ -135,7 +137,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> Response[JsCantonError | UpdateUserIdentityProviderIdResponse | str]:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):
@@ -166,7 +168,7 @@ async def asyncio(
     client: AuthenticatedClient,
     body: UpdateUserIdentityProviderIdRequest,
 ) -> JsCantonError | UpdateUserIdentityProviderIdResponse | str | None:
-    """Update user identity provider.
+    """Update the assignment of a user from one IDP to another.
 
     Args:
         user_id (str):

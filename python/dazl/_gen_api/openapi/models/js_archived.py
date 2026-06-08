@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.archived_event import ArchivedEvent
@@ -23,8 +22,9 @@ class JsArchived:
     Attributes:
         archived_event (ArchivedEvent): Records that a contract has been archived, and choices may no longer be
             exercised on it.
-        synchronizer_id (str): Required
-            The synchronizer which sequenced the archival of the contract
+        synchronizer_id (str): The synchronizer which sequenced the archival of the contract
+
+            Required
     """
 
     archived_event: ArchivedEvent

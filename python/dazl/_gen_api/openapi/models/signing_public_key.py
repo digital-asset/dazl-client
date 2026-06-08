@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="SigningPublicKey")
 
@@ -17,10 +16,15 @@ T = TypeVar("T", bound="SigningPublicKey")
 class SigningPublicKey:
     """
     Attributes:
-        format_ (str): The serialization format of the public key Example:
-            CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO.
+        format_ (str): The serialization format of the public key
+
+            Required Example: CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO.
         key_data (str): Serialized public key in the format specified above
-        key_spec (str): The key specification Example: SIGNING_KEY_SPEC_EC_CURVE25519.
+
+            Required: must be non-empty
+        key_spec (str): The key specification
+
+            Required Example: SIGNING_KEY_SPEC_EC_CURVE25519.
     """
 
     format_: str

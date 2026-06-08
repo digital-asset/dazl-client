@@ -1195,19 +1195,20 @@ func (x *PreparedTransaction) GetMetadata() *Metadata {
 }
 
 type Metadata struct {
-	state                  protoimpl.MessageState            `protogen:"open.v1"`
-	SubmitterInfo          *Metadata_SubmitterInfo           `protobuf:"bytes,2,opt,name=submitter_info,json=submitterInfo,proto3" json:"submitter_info,omitempty"`
-	SynchronizerId         string                            `protobuf:"bytes,3,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
-	MediatorGroup          uint32                            `protobuf:"varint,4,opt,name=mediator_group,json=mediatorGroup,proto3" json:"mediator_group,omitempty"`
-	TransactionUuid        string                            `protobuf:"bytes,5,opt,name=transaction_uuid,json=transactionUuid,proto3" json:"transaction_uuid,omitempty"`
-	PreparationTime        uint64                            `protobuf:"varint,6,opt,name=preparation_time,json=preparationTime,proto3" json:"preparation_time,omitempty"`
-	InputContracts         []*Metadata_InputContract         `protobuf:"bytes,7,rep,name=input_contracts,json=inputContracts,proto3" json:"input_contracts,omitempty"`
-	MinLedgerEffectiveTime *uint64                           `protobuf:"varint,9,opt,name=min_ledger_effective_time,json=minLedgerEffectiveTime,proto3,oneof" json:"min_ledger_effective_time,omitempty"`
-	MaxLedgerEffectiveTime *uint64                           `protobuf:"varint,10,opt,name=max_ledger_effective_time,json=maxLedgerEffectiveTime,proto3,oneof" json:"max_ledger_effective_time,omitempty"`
-	GlobalKeyMapping       []*Metadata_GlobalKeyMappingEntry `protobuf:"bytes,8,rep,name=global_key_mapping,json=globalKeyMapping,proto3" json:"global_key_mapping,omitempty"`
-	MaxRecordTime          *uint64                           `protobuf:"varint,11,opt,name=max_record_time,json=maxRecordTime,proto3,oneof" json:"max_record_time,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                  protoimpl.MessageState    `protogen:"open.v1"`
+	SubmitterInfo          *Metadata_SubmitterInfo   `protobuf:"bytes,2,opt,name=submitter_info,json=submitterInfo,proto3" json:"submitter_info,omitempty"`
+	SynchronizerId         string                    `protobuf:"bytes,3,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	MediatorGroup          uint32                    `protobuf:"varint,4,opt,name=mediator_group,json=mediatorGroup,proto3" json:"mediator_group,omitempty"`
+	TransactionUuid        string                    `protobuf:"bytes,5,opt,name=transaction_uuid,json=transactionUuid,proto3" json:"transaction_uuid,omitempty"`
+	PreparationTime        uint64                    `protobuf:"varint,6,opt,name=preparation_time,json=preparationTime,proto3" json:"preparation_time,omitempty"`
+	InputContracts         []*Metadata_InputContract `protobuf:"bytes,7,rep,name=input_contracts,json=inputContracts,proto3" json:"input_contracts,omitempty"`
+	MinLedgerEffectiveTime *uint64                   `protobuf:"varint,9,opt,name=min_ledger_effective_time,json=minLedgerEffectiveTime,proto3,oneof" json:"min_ledger_effective_time,omitempty"`
+	MaxLedgerEffectiveTime *uint64                   `protobuf:"varint,10,opt,name=max_ledger_effective_time,json=maxLedgerEffectiveTime,proto3,oneof" json:"max_ledger_effective_time,omitempty"`
+	MaxRecordTime          *uint64                   `protobuf:"varint,11,opt,name=max_record_time,json=maxRecordTime,proto3,oneof" json:"max_record_time,omitempty"`
+	// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
+	GlobalKeyMapping []*Metadata_GlobalKeyMappingEntry `protobuf:"bytes,8,rep,name=global_key_mapping,json=globalKeyMapping,proto3" json:"global_key_mapping,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Metadata) Reset() {
@@ -1296,18 +1297,19 @@ func (x *Metadata) GetMaxLedgerEffectiveTime() uint64 {
 	return 0
 }
 
-func (x *Metadata) GetGlobalKeyMapping() []*Metadata_GlobalKeyMappingEntry {
-	if x != nil {
-		return x.GlobalKeyMapping
-	}
-	return nil
-}
-
 func (x *Metadata) GetMaxRecordTime() uint64 {
 	if x != nil && x.MaxRecordTime != nil {
 		return *x.MaxRecordTime
 	}
 	return 0
+}
+
+// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
+func (x *Metadata) GetGlobalKeyMapping() []*Metadata_GlobalKeyMappingEntry {
+	if x != nil {
+		return x.GlobalKeyMapping
+	}
+	return nil
 }
 
 type DamlTransaction struct {
@@ -1759,9 +1761,11 @@ func (x *Metadata_SubmitterInfo) GetCommandId() string {
 }
 
 type Metadata_GlobalKeyMappingEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Key           *GlobalKey             `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	Value         *v2.Value              `protobuf:"bytes,2,opt,name=value,proto3,oneof" json:"value,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
+	Key *GlobalKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
+	Value         *v2.Value `protobuf:"bytes,2,opt,name=value,proto3,oneof" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1796,6 +1800,7 @@ func (*Metadata_GlobalKeyMappingEntry) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{14, 1}
 }
 
+// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
 func (x *Metadata_GlobalKeyMappingEntry) GetKey() *GlobalKey {
 	if x != nil {
 		return x.Key
@@ -1803,6 +1808,7 @@ func (x *Metadata_GlobalKeyMappingEntry) GetKey() *GlobalKey {
 	return nil
 }
 
+// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
 func (x *Metadata_GlobalKeyMappingEntry) GetValue() *v2.Value {
 	if x != nil {
 		return x.Value
@@ -2113,7 +2119,7 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x04time\"\xb6\x01\n" +
 	"\x13PreparedTransaction\x12U\n" +
 	"\vtransaction\x18\x01 \x01(\v23.com.daml.ledger.api.v2.interactive.DamlTransactionR\vtransaction\x12H\n" +
-	"\bmetadata\x18\x02 \x01(\v2,.com.daml.ledger.api.v2.interactive.MetadataR\bmetadata\"\x86\t\n" +
+	"\bmetadata\x18\x02 \x01(\v2,.com.daml.ledger.api.v2.interactive.MetadataR\bmetadata\"\x92\t\n" +
 	"\bMetadata\x12a\n" +
 	"\x0esubmitter_info\x18\x02 \x01(\v2:.com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfoR\rsubmitterInfo\x12'\n" +
 	"\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x12%\n" +
@@ -2123,16 +2129,16 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x0finput_contracts\x18\a \x03(\v2:.com.daml.ledger.api.v2.interactive.Metadata.InputContractR\x0einputContracts\x12>\n" +
 	"\x19min_ledger_effective_time\x18\t \x01(\x04H\x00R\x16minLedgerEffectiveTime\x88\x01\x01\x12>\n" +
 	"\x19max_ledger_effective_time\x18\n" +
-	" \x01(\x04H\x01R\x16maxLedgerEffectiveTime\x88\x01\x01\x12p\n" +
-	"\x12global_key_mapping\x18\b \x03(\v2B.com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntryR\x10globalKeyMapping\x12+\n" +
-	"\x0fmax_record_time\x18\v \x01(\x04H\x02R\rmaxRecordTime\x88\x01\x01\x1aE\n" +
+	" \x01(\x04H\x01R\x16maxLedgerEffectiveTime\x88\x01\x01\x12+\n" +
+	"\x0fmax_record_time\x18\v \x01(\x04H\x02R\rmaxRecordTime\x88\x01\x01\x12t\n" +
+	"\x12global_key_mapping\x18\b \x03(\v2B.com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntryB\x02\x18\x01R\x10globalKeyMapping\x1aE\n" +
 	"\rSubmitterInfo\x12\x15\n" +
 	"\x06act_as\x18\x01 \x03(\tR\x05actAs\x12\x1d\n" +
 	"\n" +
-	"command_id\x18\x02 \x01(\tR\tcommandId\x1a\x9c\x01\n" +
-	"\x15GlobalKeyMappingEntry\x12?\n" +
-	"\x03key\x18\x01 \x01(\v2-.com.daml.ledger.api.v2.interactive.GlobalKeyR\x03key\x128\n" +
-	"\x05value\x18\x02 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueH\x00R\x05value\x88\x01\x01B\b\n" +
+	"command_id\x18\x02 \x01(\tR\tcommandId\x1a\xa4\x01\n" +
+	"\x15GlobalKeyMappingEntry\x12C\n" +
+	"\x03key\x18\x01 \x01(\v2-.com.daml.ledger.api.v2.interactive.GlobalKeyB\x02\x18\x01R\x03key\x12<\n" +
+	"\x05value\x18\x02 \x01(\v2\x1d.com.daml.ledger.api.v2.ValueB\x02\x18\x01H\x00R\x05value\x88\x01\x01B\b\n" +
 	"\x06_value\x1a\xb0\x01\n" +
 	"\rInputContract\x12K\n" +
 	"\x02v1\x18\x01 \x01(\v29.com.daml.ledger.api.v2.interactive.transaction.v1.CreateH\x00R\x02v1\x12\x1e\n" +

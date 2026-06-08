@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+from __future__ import annotations
+
 from http import HTTPStatus
 from typing import Any
 
@@ -35,23 +37,27 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> ListVettedPackagesResponse | JsCantonError | str:
+) -> JsCantonError | ListVettedPackagesResponse | str:
     if response.status_code == 200:
         response_200 = ListVettedPackagesResponse.from_dict(response.json())
+
         return response_200
 
     if response.status_code == 400:
         response_400 = response.text
         return response_400
 
-    response_default = JsCantonError.from_dict(response.json())
+    try:
+        response_default = JsCantonError.from_dict(response.json())
+    except (KeyError, ValueError):
+        return response.text
 
     return response_default
 
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[ListVettedPackagesResponse | JsCantonError | str]:
+) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -64,8 +70,10 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> Response[ListVettedPackagesResponse | JsCantonError | str]:
-    """List vetted packages
+) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -75,7 +83,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ListVettedPackagesResponse | JsCantonError | str]
+        Response[JsCantonError | ListVettedPackagesResponse | str]
     """
 
     kwargs = _get_kwargs(
@@ -93,8 +101,10 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> ListVettedPackagesResponse | JsCantonError | str | None:
-    """List vetted packages
+) -> JsCantonError | ListVettedPackagesResponse | str | None:
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -104,7 +114,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ListVettedPackagesResponse | JsCantonError | str
+        JsCantonError | ListVettedPackagesResponse | str
     """
 
     return sync_detailed(
@@ -117,8 +127,10 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> Response[ListVettedPackagesResponse | JsCantonError | str]:
-    """List vetted packages
+) -> Response[JsCantonError | ListVettedPackagesResponse | str]:
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -128,7 +140,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ListVettedPackagesResponse | JsCantonError | str]
+        Response[JsCantonError | ListVettedPackagesResponse | str]
     """
 
     kwargs = _get_kwargs(
@@ -144,8 +156,10 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ListVettedPackagesRequest,
-) -> ListVettedPackagesResponse | JsCantonError | str | None:
-    """List vetted packages
+) -> JsCantonError | ListVettedPackagesResponse | str | None:
+    """Lists which participant node vetted what packages on which synchronizer.
+    This endpoint (GET /package-vetting) is deprecated and will be removed in a future release. Please
+    use POST /package-vetting/list instead.
 
     Args:
         body (ListVettedPackagesRequest):
@@ -155,7 +169,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ListVettedPackagesResponse | JsCantonError | str
+        JsCantonError | ListVettedPackagesResponse | str
     """
 
     return (

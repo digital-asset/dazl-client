@@ -7,10 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
+from attrs import define as _attrs_define, field as _attrs_field
 
 T = TypeVar("T", bound="ListPackagesResponse")
 
@@ -19,31 +16,32 @@ T = TypeVar("T", bound="ListPackagesResponse")
 class ListPackagesResponse:
     """
     Attributes:
-        package_ids (list[str] | Unset): The IDs of all Daml-LF packages supported by the server.
+        package_ids (list[str]): The IDs of all Daml-LF packages supported by the server.
             Each element must be a valid PackageIdString (as described in ``value.proto``).
-            Required
+
+            Required: must be non-empty
     """
 
-    package_ids: list[str] | Unset = UNSET
+    package_ids: list[str]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        package_ids: list[str] | Unset = UNSET
-        if not isinstance(self.package_ids, Unset):
-            package_ids = self.package_ids
+        package_ids = self.package_ids
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if package_ids is not UNSET:
-            field_dict["packageIds"] = package_ids
+        field_dict.update(
+            {
+                "packageIds": package_ids,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        package_ids = cast(list[str], d.pop("packageIds", UNSET))
+        package_ids = cast(list[str], d.pop("packageIds"))
 
         list_packages_response = cls(
             package_ids=package_ids,

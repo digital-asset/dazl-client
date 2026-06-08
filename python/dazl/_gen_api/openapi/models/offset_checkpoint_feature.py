@@ -7,10 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.duration import Duration
@@ -23,26 +20,22 @@ T = TypeVar("T", bound="OffsetCheckpointFeature")
 class OffsetCheckpointFeature:
     """
     Attributes:
-        max_offset_checkpoint_emission_delay (Duration | Unset):
+        max_offset_checkpoint_emission_delay (Duration):
     """
 
-    max_offset_checkpoint_emission_delay: Duration | Unset = UNSET
+    max_offset_checkpoint_emission_delay: Duration
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        max_offset_checkpoint_emission_delay: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.max_offset_checkpoint_emission_delay, Unset):
-            max_offset_checkpoint_emission_delay = (
-                self.max_offset_checkpoint_emission_delay.to_dict()
-            )
+        max_offset_checkpoint_emission_delay = self.max_offset_checkpoint_emission_delay.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if max_offset_checkpoint_emission_delay is not UNSET:
-            field_dict["maxOffsetCheckpointEmissionDelay"] = (
-                max_offset_checkpoint_emission_delay
-            )
+        field_dict.update(
+            {
+                "maxOffsetCheckpointEmissionDelay": max_offset_checkpoint_emission_delay,
+            }
+        )
 
         return field_dict
 
@@ -51,16 +44,9 @@ class OffsetCheckpointFeature:
         from ..models.duration import Duration
 
         d = dict(src_dict)
-        _max_offset_checkpoint_emission_delay = d.pop(
-            "maxOffsetCheckpointEmissionDelay", UNSET
+        max_offset_checkpoint_emission_delay = Duration.from_dict(
+            d.pop("maxOffsetCheckpointEmissionDelay")
         )
-        max_offset_checkpoint_emission_delay: Duration | Unset
-        if isinstance(_max_offset_checkpoint_emission_delay, Unset):
-            max_offset_checkpoint_emission_delay = UNSET
-        else:
-            max_offset_checkpoint_emission_delay = Duration.from_dict(
-                _max_offset_checkpoint_emission_delay
-            )
 
         offset_checkpoint_feature = cls(
             max_offset_checkpoint_emission_delay=max_offset_checkpoint_emission_delay,

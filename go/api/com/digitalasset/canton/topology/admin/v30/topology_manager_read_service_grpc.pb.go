@@ -31,12 +31,14 @@ const (
 	TopologyManagerReadService_ListVettedPackages_FullMethodName                    = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListVettedPackages"
 	TopologyManagerReadService_ListPartyToParticipant_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyToParticipant"
 	TopologyManagerReadService_ListSynchronizerParametersState_FullMethodName       = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerParametersState"
+	TopologyManagerReadService_ListSequencingParametersState_FullMethodName         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencingParametersState"
 	TopologyManagerReadService_ListMediatorSynchronizerState_FullMethodName         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListMediatorSynchronizerState"
 	TopologyManagerReadService_ListSequencerSynchronizerState_FullMethodName        = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerSynchronizerState"
 	TopologyManagerReadService_ListLsuAnnouncement_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuAnnouncement"
 	TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_FullMethodName   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuSequencerConnectionSuccessor"
 	TopologyManagerReadService_ListAvailableStores_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAvailableStores"
 	TopologyManagerReadService_ListAll_FullMethodName                               = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAll"
+	TopologyManagerReadService_ListAllV2_FullMethodName                             = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAllV2"
 	TopologyManagerReadService_ExportTopologySnapshot_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshot"
 	TopologyManagerReadService_ExportTopologySnapshotV2_FullMethodName              = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshotV2"
 	TopologyManagerReadService_GenesisState_FullMethodName                          = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisState"
@@ -58,14 +60,19 @@ type TopologyManagerReadServiceClient interface {
 	ListVettedPackages(ctx context.Context, in *ListVettedPackagesRequest, opts ...grpc.CallOption) (*ListVettedPackagesResponse, error)
 	ListPartyToParticipant(ctx context.Context, in *ListPartyToParticipantRequest, opts ...grpc.CallOption) (*ListPartyToParticipantResponse, error)
 	ListSynchronizerParametersState(ctx context.Context, in *ListSynchronizerParametersStateRequest, opts ...grpc.CallOption) (*ListSynchronizerParametersStateResponse, error)
+	ListSequencingParametersState(ctx context.Context, in *ListSequencingParametersStateRequest, opts ...grpc.CallOption) (*ListSequencingParametersStateResponse, error)
 	ListMediatorSynchronizerState(ctx context.Context, in *ListMediatorSynchronizerStateRequest, opts ...grpc.CallOption) (*ListMediatorSynchronizerStateResponse, error)
 	ListSequencerSynchronizerState(ctx context.Context, in *ListSequencerSynchronizerStateRequest, opts ...grpc.CallOption) (*ListSequencerSynchronizerStateResponse, error)
 	ListLsuAnnouncement(ctx context.Context, in *ListLsuAnnouncementRequest, opts ...grpc.CallOption) (*ListLsuAnnouncementResponse, error)
 	ListLsuSequencerConnectionSuccessor(ctx context.Context, in *ListLsuSequencerConnectionSuccessorRequest, opts ...grpc.CallOption) (*ListLsuSequencerConnectionSuccessorResponse, error)
 	ListAvailableStores(ctx context.Context, in *ListAvailableStoresRequest, opts ...grpc.CallOption) (*ListAvailableStoresResponse, error)
+	// Deprecated: Do not use.
 	ListAll(ctx context.Context, in *ListAllRequest, opts ...grpc.CallOption) (*ListAllResponse, error)
+	ListAllV2(ctx context.Context, in *ListAllV2Request, opts ...grpc.CallOption) (*ListAllV2Response, error)
+	// Deprecated: Do not use.
 	ExportTopologySnapshot(ctx context.Context, in *ExportTopologySnapshotRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportTopologySnapshotResponse], error)
 	ExportTopologySnapshotV2(ctx context.Context, in *ExportTopologySnapshotV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportTopologySnapshotV2Response], error)
+	// Deprecated: Do not use.
 	GenesisState(ctx context.Context, in *GenesisStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateResponse], error)
 	GenesisStateV2(ctx context.Context, in *GenesisStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateV2Response], error)
 	SequencerLsuState(ctx context.Context, in *SequencerLsuStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[SequencerLsuStateResponse], error)
@@ -179,6 +186,16 @@ func (c *topologyManagerReadServiceClient) ListSynchronizerParametersState(ctx c
 	return out, nil
 }
 
+func (c *topologyManagerReadServiceClient) ListSequencingParametersState(ctx context.Context, in *ListSequencingParametersStateRequest, opts ...grpc.CallOption) (*ListSequencingParametersStateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSequencingParametersStateResponse)
+	err := c.cc.Invoke(ctx, TopologyManagerReadService_ListSequencingParametersState_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *topologyManagerReadServiceClient) ListMediatorSynchronizerState(ctx context.Context, in *ListMediatorSynchronizerStateRequest, opts ...grpc.CallOption) (*ListMediatorSynchronizerStateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListMediatorSynchronizerStateResponse)
@@ -229,6 +246,7 @@ func (c *topologyManagerReadServiceClient) ListAvailableStores(ctx context.Conte
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *topologyManagerReadServiceClient) ListAll(ctx context.Context, in *ListAllRequest, opts ...grpc.CallOption) (*ListAllResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListAllResponse)
@@ -239,6 +257,17 @@ func (c *topologyManagerReadServiceClient) ListAll(ctx context.Context, in *List
 	return out, nil
 }
 
+func (c *topologyManagerReadServiceClient) ListAllV2(ctx context.Context, in *ListAllV2Request, opts ...grpc.CallOption) (*ListAllV2Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAllV2Response)
+	err := c.cc.Invoke(ctx, TopologyManagerReadService_ListAllV2_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Deprecated: Do not use.
 func (c *topologyManagerReadServiceClient) ExportTopologySnapshot(ctx context.Context, in *ExportTopologySnapshotRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportTopologySnapshotResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &TopologyManagerReadService_ServiceDesc.Streams[0], TopologyManagerReadService_ExportTopologySnapshot_FullMethodName, cOpts...)
@@ -277,6 +306,7 @@ func (c *topologyManagerReadServiceClient) ExportTopologySnapshotV2(ctx context.
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type TopologyManagerReadService_ExportTopologySnapshotV2Client = grpc.ServerStreamingClient[ExportTopologySnapshotV2Response]
 
+// Deprecated: Do not use.
 func (c *topologyManagerReadServiceClient) GenesisState(ctx context.Context, in *GenesisStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &TopologyManagerReadService_ServiceDesc.Streams[2], TopologyManagerReadService_GenesisState_FullMethodName, cOpts...)
@@ -348,14 +378,19 @@ type TopologyManagerReadServiceServer interface {
 	ListVettedPackages(context.Context, *ListVettedPackagesRequest) (*ListVettedPackagesResponse, error)
 	ListPartyToParticipant(context.Context, *ListPartyToParticipantRequest) (*ListPartyToParticipantResponse, error)
 	ListSynchronizerParametersState(context.Context, *ListSynchronizerParametersStateRequest) (*ListSynchronizerParametersStateResponse, error)
+	ListSequencingParametersState(context.Context, *ListSequencingParametersStateRequest) (*ListSequencingParametersStateResponse, error)
 	ListMediatorSynchronizerState(context.Context, *ListMediatorSynchronizerStateRequest) (*ListMediatorSynchronizerStateResponse, error)
 	ListSequencerSynchronizerState(context.Context, *ListSequencerSynchronizerStateRequest) (*ListSequencerSynchronizerStateResponse, error)
 	ListLsuAnnouncement(context.Context, *ListLsuAnnouncementRequest) (*ListLsuAnnouncementResponse, error)
 	ListLsuSequencerConnectionSuccessor(context.Context, *ListLsuSequencerConnectionSuccessorRequest) (*ListLsuSequencerConnectionSuccessorResponse, error)
 	ListAvailableStores(context.Context, *ListAvailableStoresRequest) (*ListAvailableStoresResponse, error)
+	// Deprecated: Do not use.
 	ListAll(context.Context, *ListAllRequest) (*ListAllResponse, error)
+	ListAllV2(context.Context, *ListAllV2Request) (*ListAllV2Response, error)
+	// Deprecated: Do not use.
 	ExportTopologySnapshot(*ExportTopologySnapshotRequest, grpc.ServerStreamingServer[ExportTopologySnapshotResponse]) error
 	ExportTopologySnapshotV2(*ExportTopologySnapshotV2Request, grpc.ServerStreamingServer[ExportTopologySnapshotV2Response]) error
+	// Deprecated: Do not use.
 	GenesisState(*GenesisStateRequest, grpc.ServerStreamingServer[GenesisStateResponse]) error
 	GenesisStateV2(*GenesisStateV2Request, grpc.ServerStreamingServer[GenesisStateV2Response]) error
 	SequencerLsuState(*SequencerLsuStateRequest, grpc.ServerStreamingServer[SequencerLsuStateResponse]) error
@@ -399,6 +434,9 @@ func (UnimplementedTopologyManagerReadServiceServer) ListPartyToParticipant(cont
 func (UnimplementedTopologyManagerReadServiceServer) ListSynchronizerParametersState(context.Context, *ListSynchronizerParametersStateRequest) (*ListSynchronizerParametersStateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSynchronizerParametersState not implemented")
 }
+func (UnimplementedTopologyManagerReadServiceServer) ListSequencingParametersState(context.Context, *ListSequencingParametersStateRequest) (*ListSequencingParametersStateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSequencingParametersState not implemented")
+}
 func (UnimplementedTopologyManagerReadServiceServer) ListMediatorSynchronizerState(context.Context, *ListMediatorSynchronizerStateRequest) (*ListMediatorSynchronizerStateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMediatorSynchronizerState not implemented")
 }
@@ -416,6 +454,9 @@ func (UnimplementedTopologyManagerReadServiceServer) ListAvailableStores(context
 }
 func (UnimplementedTopologyManagerReadServiceServer) ListAll(context.Context, *ListAllRequest) (*ListAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAll not implemented")
+}
+func (UnimplementedTopologyManagerReadServiceServer) ListAllV2(context.Context, *ListAllV2Request) (*ListAllV2Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAllV2 not implemented")
 }
 func (UnimplementedTopologyManagerReadServiceServer) ExportTopologySnapshot(*ExportTopologySnapshotRequest, grpc.ServerStreamingServer[ExportTopologySnapshotResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method ExportTopologySnapshot not implemented")
@@ -634,6 +675,24 @@ func _TopologyManagerReadService_ListSynchronizerParametersState_Handler(srv int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TopologyManagerReadService_ListSequencingParametersState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSequencingParametersStateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TopologyManagerReadServiceServer).ListSequencingParametersState(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TopologyManagerReadService_ListSequencingParametersState_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyManagerReadServiceServer).ListSequencingParametersState(ctx, req.(*ListSequencingParametersStateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TopologyManagerReadService_ListMediatorSynchronizerState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListMediatorSynchronizerStateRequest)
 	if err := dec(in); err != nil {
@@ -742,6 +801,24 @@ func _TopologyManagerReadService_ListAll_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TopologyManagerReadService_ListAllV2_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAllV2Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TopologyManagerReadServiceServer).ListAllV2(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TopologyManagerReadService_ListAllV2_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyManagerReadServiceServer).ListAllV2(ctx, req.(*ListAllV2Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TopologyManagerReadService_ExportTopologySnapshot_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ExportTopologySnapshotRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -845,6 +922,10 @@ var TopologyManagerReadService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TopologyManagerReadService_ListSynchronizerParametersState_Handler,
 		},
 		{
+			MethodName: "ListSequencingParametersState",
+			Handler:    _TopologyManagerReadService_ListSequencingParametersState_Handler,
+		},
+		{
 			MethodName: "ListMediatorSynchronizerState",
 			Handler:    _TopologyManagerReadService_ListMediatorSynchronizerState_Handler,
 		},
@@ -867,6 +948,10 @@ var TopologyManagerReadService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAll",
 			Handler:    _TopologyManagerReadService_ListAll_Handler,
+		},
+		{
+			MethodName: "ListAllV2",
+			Handler:    _TopologyManagerReadService_ListAllV2_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

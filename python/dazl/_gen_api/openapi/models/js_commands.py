@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 from ..types import UNSET, Unset
 
@@ -33,24 +32,29 @@ class JsCommands:
     """A composite command that groups multiple commands together.
 
     Attributes:
+        commands (list[CommandType0 | CommandType1 | CommandType2 | CommandType3]): Individual elements of this atomic
+            command. Must be non-empty.
+
+            Required: must be non-empty
         command_id (str): Uniquely identifies the command.
             The triple (user_id, act_as, command_id) constitutes the change ID for the intended ledger change,
             where act_as is interpreted as a set of party names.
             The change ID can be used for matching the intended ledger changes with all their completions.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Required
-        commands (list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset): Individual elements of this
-            atomic command. Must be non-empty.
-            Required
-        act_as (list[str] | Unset): Set of parties on whose behalf the command should be executed.
+        act_as (list[str]): Set of parties on whose behalf the command should be executed.
             If ledger API authorization is enabled, then the authorization metadata must authorize the sender of the request
             to act on behalf of each of the given parties.
             Each element must be a valid PartyIdString (as described in ``value.proto``).
-            Required, must be non-empty.
+
+            Required: must be non-empty
         user_id (str | Unset): Uniquely identifies the participant user that issued the command.
             Must be a valid UserIdString (as described in ``value.proto``).
             Required unless authentication is used with a user token.
             In that case, the token's user-id will be used for the request's user_id.
+
+            Optional
         read_as (list[str] | Unset): Set of parties on whose behalf (in addition to all parties listed in ``act_as``)
             contracts can be retrieved.
             This affects Daml operations such as ``fetch``, ``fetchByKey``, ``lookupByKey``, ``exercise``, and
@@ -62,18 +66,23 @@ class JsCommands:
             rules for fetch operations.
             If ledger API authorization is enabled, then the authorization metadata must authorize the sender of the request
             to read contract data on behalf of each of the given parties.
-            Optional
+
+            Optional: can be empty
         workflow_id (str | Unset): Identifier of the on-ledger workflow that this command is a part of.
             Must be a valid LedgerString (as described in ``value.proto``).
+
             Optional
         deduplication_period (DeduplicationPeriodType0 | DeduplicationPeriodType1 | DeduplicationPeriodType2 | Unset):
             Specifies the deduplication period for the change ID.
             If omitted, the participant will assume the configured maximum deduplication time.
+
+            Optional
         min_ledger_time_abs (str | Unset): Lower bound for the ledger time assigned to the resulting transaction.
             Note: The ledger time of a transaction is assigned as part of command interpretation.
             Use this property if you expect that command interpretation will take a considerate amount of time, such that by
             the time the resulting transaction is sequenced, its assigned ledger time is not valid anymore.
             Must not be set at the same time as min_ledger_time_rel.
+
             Optional
         min_ledger_time_rel (Duration | Unset):
         submission_id (str | Unset): A unique identifier to distinguish completions for different submissions with the
@@ -83,36 +92,42 @@ class JsCommands:
             Must be a valid LedgerString (as described in ``value.proto``).
 
             If omitted, the participant or the committer may set a value of their choice.
+
             Optional
         disclosed_contracts (list[DisclosedContract] | Unset): Additional contracts used to resolve contract & contract
             key lookups.
-            Optional
+
+            Optional: can be empty
         synchronizer_id (str | Unset): Must be a valid synchronizer id
+
             Optional
         package_id_selection_preference (list[str] | Unset): The package-id selection preference of the client for
             resolving
             package names and interface instances in command submission and interpretation
+
+            Optional: can be empty
         prefetch_contract_keys (list[PrefetchContractKey] | Unset): Fetches the contract keys into the caches to speed
             up the command processing.
             Should only contain contract keys that are expected to be resolved during interpretation of the commands.
             Keys of disclosed contracts do not need prefetching.
 
+            Optional: can be empty
+        taps_max_passes (int | Unset): The maximum number of passes for the Topology-Aware Package Selection (TAPS).
+            Higher values can increase the chance of successful package selection for routing of interpreted transactions.
+            If unset, this defaults to the value defined in the participant configuration.
+            The provided value must not exceed the limit specified in the participant configuration.
+
             Optional
     """
 
+    commands: list[CommandType0 | CommandType1 | CommandType2 | CommandType3]
     command_id: str
-    commands: (
-        list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset
-    ) = UNSET
-    act_as: list[str] | Unset = UNSET
+    act_as: list[str]
     user_id: str | Unset = UNSET
     read_as: list[str] | Unset = UNSET
     workflow_id: str | Unset = UNSET
     deduplication_period: (
-        DeduplicationPeriodType0
-        | DeduplicationPeriodType1
-        | DeduplicationPeriodType2
-        | Unset
+        DeduplicationPeriodType0 | DeduplicationPeriodType1 | DeduplicationPeriodType2 | Unset
     ) = UNSET
     min_ledger_time_abs: str | Unset = UNSET
     min_ledger_time_rel: Duration | Unset = UNSET
@@ -121,6 +136,7 @@ class JsCommands:
     synchronizer_id: str | Unset = UNSET
     package_id_selection_preference: list[str] | Unset = UNSET
     prefetch_contract_keys: list[PrefetchContractKey] | Unset = UNSET
+    taps_max_passes: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -130,27 +146,23 @@ class JsCommands:
         from ..models.deduplication_period_type_0 import DeduplicationPeriodType0
         from ..models.deduplication_period_type_1 import DeduplicationPeriodType1
 
+        commands = []
+        for commands_item_data in self.commands:
+            commands_item: dict[str, Any]
+            if isinstance(commands_item_data, CommandType0):
+                commands_item = commands_item_data.to_dict()
+            elif isinstance(commands_item_data, CommandType1):
+                commands_item = commands_item_data.to_dict()
+            elif isinstance(commands_item_data, CommandType2):
+                commands_item = commands_item_data.to_dict()
+            else:
+                commands_item = commands_item_data.to_dict()
+
+            commands.append(commands_item)
+
         command_id = self.command_id
 
-        commands: list[dict[str, Any]] | Unset = UNSET
-        if not isinstance(self.commands, Unset):
-            commands = []
-            for commands_item_data in self.commands:
-                commands_item: dict[str, Any]
-                if isinstance(commands_item_data, CommandType0):
-                    commands_item = commands_item_data.to_dict()
-                elif isinstance(commands_item_data, CommandType1):
-                    commands_item = commands_item_data.to_dict()
-                elif isinstance(commands_item_data, CommandType2):
-                    commands_item = commands_item_data.to_dict()
-                else:
-                    commands_item = commands_item_data.to_dict()
-
-                commands.append(commands_item)
-
-        act_as: list[str] | Unset = UNSET
-        if not isinstance(self.act_as, Unset):
-            act_as = self.act_as
+        act_as = self.act_as
 
         user_id = self.user_id
 
@@ -198,17 +210,17 @@ class JsCommands:
                 prefetch_contract_keys_item = prefetch_contract_keys_item_data.to_dict()
                 prefetch_contract_keys.append(prefetch_contract_keys_item)
 
+        taps_max_passes = self.taps_max_passes
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "commands": commands,
                 "commandId": command_id,
+                "actAs": act_as,
             }
         )
-        if commands is not UNSET:
-            field_dict["commands"] = commands
-        if act_as is not UNSET:
-            field_dict["actAs"] = act_as
         if user_id is not UNSET:
             field_dict["userId"] = user_id
         if read_as is not UNSET:
@@ -231,6 +243,8 @@ class JsCommands:
             field_dict["packageIdSelectionPreference"] = package_id_selection_preference
         if prefetch_contract_keys is not UNSET:
             field_dict["prefetchContractKeys"] = prefetch_contract_keys
+        if taps_max_passes is not UNSET:
+            field_dict["tapsMaxPasses"] = taps_max_passes
 
         return field_dict
 
@@ -248,54 +262,50 @@ class JsCommands:
         from ..models.prefetch_contract_key import PrefetchContractKey
 
         d = dict(src_dict)
-        command_id = d.pop("commandId")
+        commands = []
+        _commands = d.pop("commands")
+        for commands_item_data in _commands:
 
-        _commands = d.pop("commands", UNSET)
-        commands: (
-            list[CommandType0 | CommandType1 | CommandType2 | CommandType3] | Unset
-        ) = UNSET
-        if _commands is not UNSET:
-            commands = []
-            for commands_item_data in _commands:
-
-                def _parse_commands_item(
-                    data: object,
-                ) -> CommandType0 | CommandType1 | CommandType2 | CommandType3:
-                    try:
-                        if not isinstance(data, dict):
-                            raise TypeError()
-                        componentsschemas_command_type_0 = CommandType0.from_dict(data)
-
-                        return componentsschemas_command_type_0
-                    except (TypeError, ValueError, AttributeError, KeyError):
-                        pass
-                    try:
-                        if not isinstance(data, dict):
-                            raise TypeError()
-                        componentsschemas_command_type_1 = CommandType1.from_dict(data)
-
-                        return componentsschemas_command_type_1
-                    except (TypeError, ValueError, AttributeError, KeyError):
-                        pass
-                    try:
-                        if not isinstance(data, dict):
-                            raise TypeError()
-                        componentsschemas_command_type_2 = CommandType2.from_dict(data)
-
-                        return componentsschemas_command_type_2
-                    except (TypeError, ValueError, AttributeError, KeyError):
-                        pass
+            def _parse_commands_item(
+                data: object,
+            ) -> CommandType0 | CommandType1 | CommandType2 | CommandType3:
+                try:
                     if not isinstance(data, dict):
                         raise TypeError()
-                    componentsschemas_command_type_3 = CommandType3.from_dict(data)
+                    componentsschemas_command_type_0 = CommandType0.from_dict(data)
 
-                    return componentsschemas_command_type_3
+                    return componentsschemas_command_type_0
+                except (TypeError, ValueError, AttributeError, KeyError):
+                    pass
+                try:
+                    if not isinstance(data, dict):
+                        raise TypeError()
+                    componentsschemas_command_type_1 = CommandType1.from_dict(data)
 
-                commands_item = _parse_commands_item(commands_item_data)
+                    return componentsschemas_command_type_1
+                except (TypeError, ValueError, AttributeError, KeyError):
+                    pass
+                try:
+                    if not isinstance(data, dict):
+                        raise TypeError()
+                    componentsschemas_command_type_2 = CommandType2.from_dict(data)
 
-                commands.append(commands_item)
+                    return componentsschemas_command_type_2
+                except (TypeError, ValueError, AttributeError, KeyError):
+                    pass
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemas_command_type_3 = CommandType3.from_dict(data)
 
-        act_as = cast(list[str], d.pop("actAs", UNSET))
+                return componentsschemas_command_type_3
+
+            commands_item = _parse_commands_item(commands_item_data)
+
+            commands.append(commands_item)
+
+        command_id = d.pop("commandId")
+
+        act_as = cast(list[str], d.pop("actAs"))
 
         user_id = d.pop("userId", UNSET)
 
@@ -305,19 +315,14 @@ class JsCommands:
 
         def _parse_deduplication_period(
             data: object,
-        ) -> (
-            DeduplicationPeriodType0
-            | DeduplicationPeriodType1
-            | DeduplicationPeriodType2
-            | Unset
-        ):
+        ) -> DeduplicationPeriodType0 | DeduplicationPeriodType1 | DeduplicationPeriodType2 | Unset:
             if isinstance(data, Unset):
                 return data
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_deduplication_period_type_0 = (
-                    DeduplicationPeriodType0.from_dict(data)
+                componentsschemas_deduplication_period_type_0 = DeduplicationPeriodType0.from_dict(
+                    data
                 )
 
                 return componentsschemas_deduplication_period_type_0
@@ -326,8 +331,8 @@ class JsCommands:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_deduplication_period_type_1 = (
-                    DeduplicationPeriodType1.from_dict(data)
+                componentsschemas_deduplication_period_type_1 = DeduplicationPeriodType1.from_dict(
+                    data
                 )
 
                 return componentsschemas_deduplication_period_type_1
@@ -335,15 +340,11 @@ class JsCommands:
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
-            componentsschemas_deduplication_period_type_2 = (
-                DeduplicationPeriodType2.from_dict(data)
-            )
+            componentsschemas_deduplication_period_type_2 = DeduplicationPeriodType2.from_dict(data)
 
             return componentsschemas_deduplication_period_type_2
 
-        deduplication_period = _parse_deduplication_period(
-            d.pop("deduplicationPeriod", UNSET)
-        )
+        deduplication_period = _parse_deduplication_period(d.pop("deduplicationPeriod", UNSET))
 
         min_ledger_time_abs = d.pop("minLedgerTimeAbs", UNSET)
 
@@ -384,9 +385,11 @@ class JsCommands:
 
                 prefetch_contract_keys.append(prefetch_contract_keys_item)
 
+        taps_max_passes = d.pop("tapsMaxPasses", UNSET)
+
         js_commands = cls(
-            command_id=command_id,
             commands=commands,
+            command_id=command_id,
             act_as=act_as,
             user_id=user_id,
             read_as=read_as,
@@ -399,6 +402,7 @@ class JsCommands:
             synchronizer_id=synchronizer_id,
             package_id_selection_preference=package_id_selection_preference,
             prefetch_contract_keys=prefetch_contract_keys,
+            taps_max_passes=taps_max_passes,
         )
 
         js_commands.additional_properties = d

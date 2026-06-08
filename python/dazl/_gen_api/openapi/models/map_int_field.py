@@ -7,8 +7,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from attrs import define as _attrs_define
-from attrs import field as _attrs_field
+from attrs import define as _attrs_define, field as _attrs_field
 
 if TYPE_CHECKING:
     from ..models.field import Field
@@ -24,6 +23,7 @@ class MapIntField:
     additional_properties: dict[str, Field] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+
         field_dict: dict[str, Any] = {}
         for prop_name, prop in self.additional_properties.items():
             field_dict[prop_name] = prop.to_dict()

@@ -15,12 +15,14 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class SequencerConnect(_message.Message):
     __slots__ = ()
     class HandshakeRequest(_message.Message):
-        __slots__ = ("client_protocol_versions", "minimum_protocol_version")
+        __slots__ = ("client_protocol_versions", "minimum_protocol_version", "client_version")
         CLIENT_PROTOCOL_VERSIONS_FIELD_NUMBER: _ClassVar[int]
         MINIMUM_PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
+        CLIENT_VERSION_FIELD_NUMBER: _ClassVar[int]
         client_protocol_versions: _containers.RepeatedScalarFieldContainer[int]
         minimum_protocol_version: int
-        def __init__(self, client_protocol_versions: _Optional[_Iterable[int]] = ..., minimum_protocol_version: _Optional[int] = ...) -> None: ...
+        client_version: str
+        def __init__(self, client_protocol_versions: _Optional[_Iterable[int]] = ..., minimum_protocol_version: _Optional[int] = ..., client_version: _Optional[str] = ...) -> None: ...
     class HandshakeResponse(_message.Message):
         __slots__ = ("server_protocol_version", "success")
         class Success(_message.Message):
