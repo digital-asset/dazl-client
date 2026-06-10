@@ -9,6 +9,7 @@ import (
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/admin"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive"
+	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/common"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/transaction/v1"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/testing"
 	_ "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/crypto/v30"

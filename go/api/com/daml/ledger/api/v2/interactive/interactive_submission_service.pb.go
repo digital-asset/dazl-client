@@ -10,6 +10,7 @@ package interactive
 
 import (
 	v2 "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2"
+	common "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/common"
 	v1 "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/transaction/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1763,7 +1764,7 @@ func (x *Metadata_SubmitterInfo) GetCommandId() string {
 type Metadata_GlobalKeyMappingEntry struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
-	Key *GlobalKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Key *common.GlobalKey `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	// Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
 	Value         *v2.Value `protobuf:"bytes,2,opt,name=value,proto3,oneof" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1801,7 +1802,7 @@ func (*Metadata_GlobalKeyMappingEntry) Descriptor() ([]byte, []int) {
 }
 
 // Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
-func (x *Metadata_GlobalKeyMappingEntry) GetKey() *GlobalKey {
+func (x *Metadata_GlobalKeyMappingEntry) GetKey() *common.GlobalKey {
 	if x != nil {
 		return x.Key
 	}
@@ -2250,7 +2251,7 @@ var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto
 	(*v2.TransactionFormat)(nil),                           // 35: com.daml.ledger.api.v2.TransactionFormat
 	(*v2.Transaction)(nil),                                 // 36: com.daml.ledger.api.v2.Transaction
 	(*v2.PackageReference)(nil),                            // 37: com.daml.ledger.api.v2.PackageReference
-	(*GlobalKey)(nil),                                      // 38: com.daml.ledger.api.v2.interactive.GlobalKey
+	(*common.GlobalKey)(nil),                               // 38: com.daml.ledger.api.v2.interactive.GlobalKey
 	(*v2.Value)(nil),                                       // 39: com.daml.ledger.api.v2.Value
 	(*v1.Create)(nil),                                      // 40: com.daml.ledger.api.v2.interactive.transaction.v1.Create
 	(*v1.Node)(nil),                                        // 41: com.daml.ledger.api.v2.interactive.transaction.v1.Node
@@ -2330,7 +2331,6 @@ func file_com_daml_ledger_api_v2_interactive_interactive_submission_service_prot
 	if File_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto != nil {
 		return
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_common_data_proto_init()
 	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[2].OneofWrappers = []any{}
 	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[3].OneofWrappers = []any{}
 	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[6].OneofWrappers = []any{

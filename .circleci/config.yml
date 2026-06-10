@@ -88,6 +88,26 @@ jobs:
           command: make python-typecheck
       - store_test_results:
           path: target/test-results
+  check-go:
+    docker:
+      - image: cimg/base:stable
+    resource_class: medium
+    steps:
+      - checkout
+      - run:
+          name: Nix preparation
+          command: .circleci/scripts/prep.sh
+      - restore_cache:
+          name: Nix restore cache
+          keys:
+            - nix-{{ checksum "/home/circleci/nix/cache-keys/nix-checksums" }}
+            - nix
+      - run:
+          name: Nix Setup
+          command: .circleci/scripts/setup.sh
+      - run:
+          name: Go build
+          command: go build ./...
   test-py:
     parameters:
       python_version:
@@ -160,6 +180,9 @@ workflows:
               python_version: ["3.10", "3.11", "3.12", "3.13"]
           requires:
             - nix-setup
+      - check-go:
+          requires:
+            - nix-setup
       - test-py:
           matrix:
             parameters:
@@ -169,5 +192,6 @@ workflows:
       - build:
           requires:
             - blackduck
+            - check-go
             - check-py
             - test-py
