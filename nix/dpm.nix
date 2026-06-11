@@ -1,9 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  dpmPath = "europe-docker.pkg.dev/da-images/public/components/dpm";
   dpmVersion = "1.0.16";
-  dpmRef = "${dpmPath}:${dpmVersion}";
 
   dpmHashes = {
     "x86_64-linux" = "sha256:0x4qfnzb4bk0c5l46vbr4hlcsjkhvhm5q7yybkq9kryhnga22x1q";
