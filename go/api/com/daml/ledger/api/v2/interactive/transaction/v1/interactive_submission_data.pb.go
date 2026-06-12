@@ -10,7 +10,7 @@ package v1
 
 import (
 	v2 "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2"
-	interactive "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive"
+	common "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/common"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -26,17 +26,17 @@ const (
 )
 
 type Fetch struct {
-	state         protoimpl.MessageState                `protogen:"open.v1"`
-	LfVersion     string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	ContractId    string                                `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	PackageName   string                                `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId    *v2.Identifier                        `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Signatories   []string                              `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Stakeholders  []string                              `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
-	ActingParties []string                              `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
-	InterfaceId   *v2.Identifier                        `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
-	Key           *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,9,opt,name=key,proto3,oneof" json:"key,omitempty"`
-	ByKey         bool                                  `protobuf:"varint,10,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
+	state         protoimpl.MessageState           `protogen:"open.v1"`
+	LfVersion     string                           `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	ContractId    string                           `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	PackageName   string                           `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId    *v2.Identifier                   `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Signatories   []string                         `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Stakeholders  []string                         `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	ActingParties []string                         `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
+	InterfaceId   *v2.Identifier                   `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	Key           *common.GlobalKeyWithMaintainers `protobuf:"bytes,9,opt,name=key,proto3,oneof" json:"key,omitempty"`
+	ByKey         bool                             `protobuf:"varint,10,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -127,7 +127,7 @@ func (x *Fetch) GetInterfaceId() *v2.Identifier {
 	return nil
 }
 
-func (x *Fetch) GetKey() *interactive.GlobalKeyWithMaintainers {
+func (x *Fetch) GetKey() *common.GlobalKeyWithMaintainers {
 	if x != nil {
 		return x.Key
 	}
@@ -142,23 +142,23 @@ func (x *Fetch) GetByKey() bool {
 }
 
 type Exercise struct {
-	state           protoimpl.MessageState                `protogen:"open.v1"`
-	LfVersion       string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	ContractId      string                                `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	PackageName     string                                `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId      *v2.Identifier                        `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Signatories     []string                              `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Stakeholders    []string                              `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
-	ActingParties   []string                              `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
-	InterfaceId     *v2.Identifier                        `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
-	ChoiceId        string                                `protobuf:"bytes,9,opt,name=choice_id,json=choiceId,proto3" json:"choice_id,omitempty"`
-	ChosenValue     *v2.Value                             `protobuf:"bytes,10,opt,name=chosen_value,json=chosenValue,proto3" json:"chosen_value,omitempty"`
-	Consuming       bool                                  `protobuf:"varint,11,opt,name=consuming,proto3" json:"consuming,omitempty"`
-	Children        []string                              `protobuf:"bytes,12,rep,name=children,proto3" json:"children,omitempty"`
-	ExerciseResult  *v2.Value                             `protobuf:"bytes,13,opt,name=exercise_result,json=exerciseResult,proto3" json:"exercise_result,omitempty"`
-	ChoiceObservers []string                              `protobuf:"bytes,14,rep,name=choice_observers,json=choiceObservers,proto3" json:"choice_observers,omitempty"`
-	Key             *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,15,opt,name=key,proto3,oneof" json:"key,omitempty"`
-	ByKey           bool                                  `protobuf:"varint,16,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
+	state           protoimpl.MessageState           `protogen:"open.v1"`
+	LfVersion       string                           `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	ContractId      string                           `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	PackageName     string                           `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId      *v2.Identifier                   `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Signatories     []string                         `protobuf:"bytes,5,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Stakeholders    []string                         `protobuf:"bytes,6,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	ActingParties   []string                         `protobuf:"bytes,7,rep,name=acting_parties,json=actingParties,proto3" json:"acting_parties,omitempty"`
+	InterfaceId     *v2.Identifier                   `protobuf:"bytes,8,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	ChoiceId        string                           `protobuf:"bytes,9,opt,name=choice_id,json=choiceId,proto3" json:"choice_id,omitempty"`
+	ChosenValue     *v2.Value                        `protobuf:"bytes,10,opt,name=chosen_value,json=chosenValue,proto3" json:"chosen_value,omitempty"`
+	Consuming       bool                             `protobuf:"varint,11,opt,name=consuming,proto3" json:"consuming,omitempty"`
+	Children        []string                         `protobuf:"bytes,12,rep,name=children,proto3" json:"children,omitempty"`
+	ExerciseResult  *v2.Value                        `protobuf:"bytes,13,opt,name=exercise_result,json=exerciseResult,proto3" json:"exercise_result,omitempty"`
+	ChoiceObservers []string                         `protobuf:"bytes,14,rep,name=choice_observers,json=choiceObservers,proto3" json:"choice_observers,omitempty"`
+	Key             *common.GlobalKeyWithMaintainers `protobuf:"bytes,15,opt,name=key,proto3,oneof" json:"key,omitempty"`
+	ByKey           bool                             `protobuf:"varint,16,opt,name=by_key,json=byKey,proto3" json:"by_key,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -291,7 +291,7 @@ func (x *Exercise) GetChoiceObservers() []string {
 	return nil
 }
 
-func (x *Exercise) GetKey() *interactive.GlobalKeyWithMaintainers {
+func (x *Exercise) GetKey() *common.GlobalKeyWithMaintainers {
 	if x != nil {
 		return x.Key
 	}
@@ -306,15 +306,15 @@ func (x *Exercise) GetByKey() bool {
 }
 
 type Create struct {
-	state         protoimpl.MessageState                `protogen:"open.v1"`
-	LfVersion     string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	ContractId    string                                `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	PackageName   string                                `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId    *v2.Identifier                        `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Argument      *v2.Value                             `protobuf:"bytes,5,opt,name=argument,proto3" json:"argument,omitempty"`
-	Signatories   []string                              `protobuf:"bytes,6,rep,name=signatories,proto3" json:"signatories,omitempty"`
-	Stakeholders  []string                              `protobuf:"bytes,7,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
-	Key           *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,8,opt,name=key,proto3,oneof" json:"key,omitempty"`
+	state         protoimpl.MessageState           `protogen:"open.v1"`
+	LfVersion     string                           `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	ContractId    string                           `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	PackageName   string                           `protobuf:"bytes,3,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId    *v2.Identifier                   `protobuf:"bytes,4,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Argument      *v2.Value                        `protobuf:"bytes,5,opt,name=argument,proto3" json:"argument,omitempty"`
+	Signatories   []string                         `protobuf:"bytes,6,rep,name=signatories,proto3" json:"signatories,omitempty"`
+	Stakeholders  []string                         `protobuf:"bytes,7,rep,name=stakeholders,proto3" json:"stakeholders,omitempty"`
+	Key           *common.GlobalKeyWithMaintainers `protobuf:"bytes,8,opt,name=key,proto3,oneof" json:"key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -398,7 +398,7 @@ func (x *Create) GetStakeholders() []string {
 	return nil
 }
 
-func (x *Create) GetKey() *interactive.GlobalKeyWithMaintainers {
+func (x *Create) GetKey() *common.GlobalKeyWithMaintainers {
 	if x != nil {
 		return x.Key
 	}
@@ -450,13 +450,13 @@ func (x *Rollback) GetChildren() []string {
 }
 
 type QueryByKey struct {
-	state         protoimpl.MessageState                `protogen:"open.v1"`
-	LfVersion     string                                `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
-	PackageName   string                                `protobuf:"bytes,2,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	TemplateId    *v2.Identifier                        `protobuf:"bytes,3,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
-	Exhaustive    bool                                  `protobuf:"varint,4,opt,name=exhaustive,proto3" json:"exhaustive,omitempty"`
-	Key           *interactive.GlobalKeyWithMaintainers `protobuf:"bytes,5,opt,name=key,proto3" json:"key,omitempty"`
-	Result        []string                              `protobuf:"bytes,6,rep,name=result,proto3" json:"result,omitempty"`
+	state         protoimpl.MessageState           `protogen:"open.v1"`
+	LfVersion     string                           `protobuf:"bytes,1,opt,name=lf_version,json=lfVersion,proto3" json:"lf_version,omitempty"`
+	PackageName   string                           `protobuf:"bytes,2,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
+	TemplateId    *v2.Identifier                   `protobuf:"bytes,3,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
+	Exhaustive    bool                             `protobuf:"varint,4,opt,name=exhaustive,proto3" json:"exhaustive,omitempty"`
+	Key           *common.GlobalKeyWithMaintainers `protobuf:"bytes,5,opt,name=key,proto3" json:"key,omitempty"`
+	Result        []string                         `protobuf:"bytes,6,rep,name=result,proto3" json:"result,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -519,7 +519,7 @@ func (x *QueryByKey) GetExhaustive() bool {
 	return false
 }
 
-func (x *QueryByKey) GetKey() *interactive.GlobalKeyWithMaintainers {
+func (x *QueryByKey) GetKey() *common.GlobalKeyWithMaintainers {
 	if x != nil {
 		return x.Key
 	}
@@ -757,15 +757,15 @@ func file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submissi
 
 var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_goTypes = []any{
-	(*Fetch)(nil),         // 0: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch
-	(*Exercise)(nil),      // 1: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise
-	(*Create)(nil),        // 2: com.daml.ledger.api.v2.interactive.transaction.v1.Create
-	(*Rollback)(nil),      // 3: com.daml.ledger.api.v2.interactive.transaction.v1.Rollback
-	(*QueryByKey)(nil),    // 4: com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKey
-	(*Node)(nil),          // 5: com.daml.ledger.api.v2.interactive.transaction.v1.Node
-	(*v2.Identifier)(nil), // 6: com.daml.ledger.api.v2.Identifier
-	(*interactive.GlobalKeyWithMaintainers)(nil), // 7: com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
-	(*v2.Value)(nil), // 8: com.daml.ledger.api.v2.Value
+	(*Fetch)(nil),                           // 0: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch
+	(*Exercise)(nil),                        // 1: com.daml.ledger.api.v2.interactive.transaction.v1.Exercise
+	(*Create)(nil),                          // 2: com.daml.ledger.api.v2.interactive.transaction.v1.Create
+	(*Rollback)(nil),                        // 3: com.daml.ledger.api.v2.interactive.transaction.v1.Rollback
+	(*QueryByKey)(nil),                      // 4: com.daml.ledger.api.v2.interactive.transaction.v1.QueryByKey
+	(*Node)(nil),                            // 5: com.daml.ledger.api.v2.interactive.transaction.v1.Node
+	(*v2.Identifier)(nil),                   // 6: com.daml.ledger.api.v2.Identifier
+	(*common.GlobalKeyWithMaintainers)(nil), // 7: com.daml.ledger.api.v2.interactive.GlobalKeyWithMaintainers
+	(*v2.Value)(nil),                        // 8: com.daml.ledger.api.v2.Value
 }
 var file_com_daml_ledger_api_v2_interactive_transaction_v1_interactive_submission_data_proto_depIdxs = []int32{
 	6,  // 0: com.daml.ledger.api.v2.interactive.transaction.v1.Fetch.template_id:type_name -> com.daml.ledger.api.v2.Identifier

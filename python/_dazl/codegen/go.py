@@ -71,6 +71,10 @@ def corrected_name(name: str) -> str:
         return "com/digitalasset/daml/lf/value/value.pb.go"
     elif name == "com/digitalasset/daml/lf/transaction.pb.go":
         return "com/digitalasset/daml/lf/transaction/transaction.pb.go"
+    elif name == "com/daml/ledger/api/v2/interactive/interactive_submission_common_data.pb.go":
+        # patches.awk assigns this file a leaf Go package, but source_relative
+        # generation still emits it beside the interactive package.
+        return "com/daml/ledger/api/v2/interactive/common/interactive_submission_common_data.pb.go"
     else:
         return name
 

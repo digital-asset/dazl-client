@@ -29,14 +29,14 @@ _sym_db = _symbol_database.Default()
 from .. import value_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_value__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nKcom/daml/ledger/api/v2/interactive/interactive_submission_common_data.proto\x12\"com.daml.ledger.api.v2.interactive\x1a\"com/daml/ledger/api/v2/value.proto\"\xb8\x01\n\tGlobalKey\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v2.IdentifierR\ntemplateId\x12!\n\x0cpackage_name\x18\x02 \x01(\tR\x0bpackageName\x12/\n\x03key\x18\x03 \x01(\x0b\x32\x1d.com.daml.ledger.api.v2.ValueR\x03key\x12\x12\n\x04hash\x18\x04 \x01(\x0cR\x04hash\"}\n\x18GlobalKeyWithMaintainers\x12?\n\x03key\x18\x01 \x01(\x0b\x32-.com.daml.ledger.api.v2.interactive.GlobalKeyR\x03key\x12 \n\x0bmaintainers\x18\x02 \x03(\tR\x0bmaintainersB\xc7\x01\n\"com.daml.ledger.api.v2.interactiveB)InteractiveSubmissionCommonDataOuterClassZQgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive\xaa\x02\"Com.Daml.Ledger.Api.V2.Interactiveb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nKcom/daml/ledger/api/v2/interactive/interactive_submission_common_data.proto\x12\"com.daml.ledger.api.v2.interactive\x1a\"com/daml/ledger/api/v2/value.proto\"\xb8\x01\n\tGlobalKey\x12\x43\n\x0btemplate_id\x18\x01 \x01(\x0b\x32\".com.daml.ledger.api.v2.IdentifierR\ntemplateId\x12!\n\x0cpackage_name\x18\x02 \x01(\tR\x0bpackageName\x12/\n\x03key\x18\x03 \x01(\x0b\x32\x1d.com.daml.ledger.api.v2.ValueR\x03key\x12\x12\n\x04hash\x18\x04 \x01(\x0cR\x04hash\"}\n\x18GlobalKeyWithMaintainers\x12?\n\x03key\x18\x01 \x01(\x0b\x32-.com.daml.ledger.api.v2.interactive.GlobalKeyR\x03key\x12 \n\x0bmaintainers\x18\x02 \x03(\tR\x0bmaintainersB\xce\x01\n\"com.daml.ledger.api.v2.interactiveB)InteractiveSubmissionCommonDataOuterClassZXgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/common\xaa\x02\"Com.Daml.Ledger.Api.V2.Interactiveb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.daml.ledger.api.v2.interactive.interactive_submission_common_data_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'\n\"com.daml.ledger.api.v2.interactiveB)InteractiveSubmissionCommonDataOuterClassZQgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive\252\002\"Com.Daml.Ledger.Api.V2.Interactive'
+  _globals['DESCRIPTOR']._serialized_options = b'\n\"com.daml.ledger.api.v2.interactiveB)InteractiveSubmissionCommonDataOuterClassZXgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/common\252\002\"Com.Daml.Ledger.Api.V2.Interactive'
   _globals['_GLOBALKEY']._serialized_start=152
   _globals['_GLOBALKEY']._serialized_end=336
   _globals['_GLOBALKEYWITHMAINTAINERS']._serialized_start=338

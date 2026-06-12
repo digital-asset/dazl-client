@@ -6,7 +6,7 @@
 // 	protoc        v6.31.1
 // source: com/daml/ledger/api/v2/interactive/interactive_submission_common_data.proto
 
-package interactive
+package common
 
 import (
 	v2 "github.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2"
@@ -157,8 +157,8 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_common_data
 	"\x04hash\x18\x04 \x01(\fR\x04hash\"}\n" +
 	"\x18GlobalKeyWithMaintainers\x12?\n" +
 	"\x03key\x18\x01 \x01(\v2-.com.daml.ledger.api.v2.interactive.GlobalKeyR\x03key\x12 \n" +
-	"\vmaintainers\x18\x02 \x03(\tR\vmaintainersB\xc7\x01\n" +
-	"\"com.daml.ledger.api.v2.interactiveB)InteractiveSubmissionCommonDataOuterClassZQgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive\xaa\x02\"Com.Daml.Ledger.Api.V2.Interactiveb\x06proto3"
+	"\vmaintainers\x18\x02 \x03(\tR\vmaintainersB\xce\x01\n" +
+	"\"com.daml.ledger.api.v2.interactiveB)InteractiveSubmissionCommonDataOuterClassZXgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive/common\xaa\x02\"Com.Daml.Ledger.Api.V2.Interactiveb\x06proto3"
 
 var (
 	file_com_daml_ledger_api_v2_interactive_interactive_submission_common_data_proto_rawDescOnce sync.Once
