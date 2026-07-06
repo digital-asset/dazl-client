@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from contextlib import ExitStack
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 from os import PathLike
 from pathlib import Path
@@ -68,11 +68,11 @@ def wait_for_process_port(
     from .io import is_port_alive
 
     alive = False
-    max_time_wait = datetime.utcnow() + to_timedelta(timeout)
+    max_time_wait = datetime.now(timezone.utc) + to_timedelta(timeout)
 
     logging.debug("Waiting for port %s to be alive on pid %s...", port, process.pid)
     while (
-        (max_time_wait is None or (datetime.utcnow() < max_time_wait))
+        (max_time_wait is None or (datetime.now(timezone.utc) < max_time_wait))
         and process.poll() is None
         and not alive
     ):

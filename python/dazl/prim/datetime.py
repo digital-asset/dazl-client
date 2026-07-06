@@ -100,11 +100,10 @@ def to_datetime(obj: Any, /) -> datetime:
         return obj
     elif isinstance(obj, Timestamp):
         # straight from a Google Timestamp
-        dt = obj.ToDatetime()
-        return dt.replace(tzinfo=timezone.utc)
+        return obj.ToDatetime(timezone.utc)
     elif isinstance(obj, (int, float)):
         # from the gRPC Ledger API; interpret as microseconds from the GMT epoch
-        return datetime.utcfromtimestamp(obj / 1e6).replace(tzinfo=timezone.utc)
+        return datetime.fromtimestamp(obj / 1e6, timezone.utc)
     elif isinstance(obj, str):
         # from the REST Ledger API or an end user; give preference to the unambiguous wire
         # format ISO8601, but otherwise try to parse in a variety of formats
