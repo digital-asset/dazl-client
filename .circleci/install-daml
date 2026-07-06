@@ -9,7 +9,7 @@ function install {
         link
     fi
 
-    daml install 2.10.4
+    PATH="$PATH:$HOME/.daml/bin" daml install 2.10.4
 }
 
 function link {
