@@ -4,5 +4,5 @@ runs:
   using: composite
   steps:
     - name: 'Nix Setup'
-      run: 'nix --extra-experimental-features "nix-command flakes" print-dev-env ./nix#ci > nix.source'
+      run: 'nix --extra-experimental-features "nix-command flakes" print-dev-env ./nix > nix.source'
       shell: bash
