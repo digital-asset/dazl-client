@@ -1,57 +1,67 @@
 # Copyright (c) 2017-2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-[tool.poetry]
+[project]
 name = "dazl"
 version = "8.9.0"
 description = "high-level Ledger API client for Daml ledgers"
 license = "Apache-2.0"
-authors = ["Davin K. Tanabe <davin.tanabe@digitalasset.com>"]
+authors = [
+    { name = "Davin K. Tanabe", email = "davin.tanabe@digitalasset.com" },
+]
 readme = 'README.md'
 repository = "https://github.com/digital-asset/dazl-client"
 homepage = "https://github.com/digital-asset/dazl-client"
 keywords = ["daml", "blockchain", "dlt", "distributed ledger", "digital asset"]
-packages = [{ include = "dazl", from = "python" }, { include = "_dazl", from = "python" }]
+requires-python = "<4.0,>=3.10"
+dependencies = [
+    "attrs>=22.2.0",
+    "googleapis_common_protos",
+    "grpcio>=1.72.0",
+    "httpx>=0.27.0",
+    "protobuf>=6",
+    "python-dateutil>=2.8.1",
+    "semver",
+    "typing_extensions",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10.0"
-attrs = ">=22.2.0"
-googleapis_common_protos = "^1"
-grpcio = "^1.72.0"
-httpx = "^0.27.0"
-protobuf = ">=6"
-pygments = { version = "*", optional = true }
-pyOpenSSL = { version = "*", optional = true }
-python-dateutil = ">=2.8.1"
-semver = "*"
-typing_extensions = { version = "*" }
+[tool.poetry]
+packages = [
+    { include = "dazl", from = "python" },
+    { include = "_dazl", from = "python" },
+]
 
-[tool.poetry.extras]
-pygments = ["pygments"]
-tls-testing = ["pyOpenSSL"]
+[project.optional-dependencies]
+tls-testing = [
+    "cryptography",
+]
+pygments = [
+    "pygments",
+]
 
 [tool.poetry.scripts]
 dazl = 'dazl.cli:main'
 
-[tool.poetry.group.dev.dependencies]
-grpc-stubs = "*"
-grpcio-tools = "^1.72.0"
-jinja2 = "^3"
-mypy = "*"
-openapi-python-client = "*"
-pyjwt = "*"
-pytest = "*"
-pytest-asyncio = "*"
-pyyaml = "^6.0.2"
-rich = "^13.7.0"
-sphinx = "*"
-sphinx-autobuild = "*"
-sphinx-markdown-builder = "*"
-types-protobuf = "*"
-types-pyOpenSSL = "*"
-types-pyyaml = "^6.0.12.20250402"
-types-requests = "*"
-watchdog = "*"
+[dependency-groups]
+dev = [
+    "grpc-stubs",
+    "grpcio-tools>=1.72.0",
+    "mypy",
+    "openapi-python-client",
+    "pyjwt",
+    "pytest",
+    "pytest-asyncio",
+    "pyyaml",
+    "rich",
+    "sphinx",
+    "sphinx-autobuild",
+    "sphinx-markdown-builder",
+    "tomli (>=2.0.1,<3.0) ; python_version < '3.11'",
+    "types-protobuf",
+    "types-pyyaml",
+    "types-requests",
+    "watchdog",
+]
 
 [tool.ruff]
 line-length = 100

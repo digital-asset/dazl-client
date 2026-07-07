@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+import datetime
 from typing import Collection, Optional
 
 
@@ -23,44 +24,58 @@ def cert_gen(
     serial_number: int = 0,
     validity_end_in_seconds: int = 10 * 365 * 24 * 60 * 60,
 ) -> Certificate:
-    from OpenSSL import crypto
+    from cryptography import x509
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+    from cryptography.x509.oid import NameOID
 
-    # can look at generated file using openssl:
-    # openssl x509 -inform pem -in selfsigned.crt -noout -text
-    # create a key pair
-    k = crypto.PKey()
-    k.generate_key(crypto.TYPE_RSA, 4096)
-    # create a self-signed cert
-    cert = crypto.X509()
-    cert.set_version(2)
-    subject = cert.get_subject()
-    subject.C = country_name
-    subject.ST = state_or_province_name
-    subject.L = locality_name
-    subject.O = organization_name
-    subject.OU = organization_unit_name
-    subject.CN = common_name
-    subject.emailAddress = email_address
-    cert.set_serial_number(serial_number)
-    cert.gmtime_adj_notBefore(0)
-    cert.gmtime_adj_notAfter(validity_end_in_seconds)
-    cert.set_issuer(cert.get_subject())
-    cert.set_pubkey(k)
+    # 1. Generate a private key
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048,
+    )
+
+    # 2. Set up certificate details
+    subject = issuer = x509.Name(
+        [
+            x509.NameAttribute(NameOID.EMAIL_ADDRESS, email_address),
+            x509.NameAttribute(NameOID.COUNTRY_NAME, country_name),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, state_or_province_name),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, locality_name),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, organization_name),
+            x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, organization_unit_name),
+            x509.NameAttribute(NameOID.COMMON_NAME, common_name),
+        ]
+    )
+
+    # 3. Build the certificate
+    cert_builder = (
+        x509.CertificateBuilder()
+        .subject_name(subject)
+        .issuer_name(issuer)
+        .public_key(private_key.public_key())
+        .serial_number(x509.random_serial_number())
+        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))
+        # Valid for 365 days
+        .not_valid_after(
+            datetime.datetime.now(datetime.timezone.utc)
+            + datetime.timedelta(seconds=validity_end_in_seconds)
+        )
+    )
+
     if subject_alternative_name:
-        if isinstance(subject_alternative_name, str):
-            subject_alternative_name = (subject_alternative_name,)
-        cert.add_extensions(
-            [
-                crypto.X509Extension(
-                    b"subjectAltName",
-                    False,
-                    ",".join(f"DNS:{san}" for san in subject_alternative_name).encode("ascii"),
-                )
-            ]
+        cert_builder = cert_builder.add_extension(
+            x509.SubjectAlternativeName([x509.DNSName("localhost")]),
+            critical=False,
         )
 
-    cert.sign(k, "sha512")
+    cert = cert_builder.sign(private_key, hashes.SHA256())
+
     return Certificate(
-        public_cert=crypto.dump_certificate(crypto.FILETYPE_PEM, cert),
-        private_key=crypto.dump_privatekey(crypto.FILETYPE_PEM, k),
+        public_cert=cert.public_bytes(serialization.Encoding.PEM),
+        private_key=private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption(),
+        ),
     )

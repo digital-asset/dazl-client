@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from asyncio import CancelledError, sleep
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Awaitable, Callable, TypeVar
 
 from grpc import RpcError, StatusCode
@@ -40,14 +40,14 @@ async def retry(
     timeout: timedelta = DEFAULT_TIMEOUT,
 ) -> T:
     a, b = 0, 1
-    start = datetime.utcnow()
+    start = datetime.now(timezone.utc)
     while True:
         try:
             return await fn()
         except CancelledError:
             raise
         except Exception as ex:
-            if (datetime.utcnow() - start) <= timeout and retry_safe_ex(ex):
+            if (datetime.now(timezone.utc) - start) <= timeout and retry_safe_ex(ex):
                 # retry in increasing intervals according to the Fibonacci sequence;
                 # exponential backoff generally makes us wait too long
                 a, b = b, a + b
