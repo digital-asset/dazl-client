@@ -40,24 +40,26 @@ jobs:
       - uses: ./.github/actions/nix
       - run: go build ./...
 
-#  blackduck-gha:
-#    runs-on: digital-asset-dazl-client
-#    steps:
-#      - uses: actions/checkout@v7
-#      - uses: ./.github/actions/nix
-#      - run: make build
-#      - name: BlackDuck Detect
-#        env:
-#          SCAN_MODE: ${{ github.ref_name == 'main' && 'INTELLIGENT' || 'RAPID' }}
-#        run: |
-#          bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) \
-#            ci-build \
-#            "${{ github.repository_owner }}_${{ github.event.repository.name }}" \
-#            "${{ github.ref_name }}" \
-#            --detect.included.detector.types=POETRY \
-#            --detect.excluded.detector.types=GO_MOD \
-#            --detect.tools=DETECTOR \
-#            --logging.level.com.synopsys.integration=DEBUG \
-#            --detect.blackduck.scan.mode="$SCAN_MODE" \
-#            --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
-#            --detect.timeout=600
+  blackduck-gha:
+    runs-on: digital-asset-dazl-client
+    env:
+      BLACKDUCK_HUBDETECT_TOKEN: ${{ secrets.DA_BLACKDUCK }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/nix
+      - run: make build
+      - name: BlackDuck Detect
+        env:
+          SCAN_MODE: ${{ github.ref_name == 'main' && 'INTELLIGENT' || 'RAPID' }}
+        run: |
+          bash <(curl -s https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect) \
+            ci-build \
+            "${{ github.repository_owner }}_${{ github.event.repository.name }}" \
+            "${{ github.ref_name }}" \
+            --detect.included.detector.types=POETRY \
+            --detect.excluded.detector.types=GO_MOD \
+            --detect.tools=DETECTOR \
+            --logging.level.com.synopsys.integration=DEBUG \
+            --detect.blackduck.scan.mode="$SCAN_MODE" \
+            --detect.policy.check.fail.on.severities=MAJOR,CRITICAL,BLOCKER \
+            --detect.timeout=600
