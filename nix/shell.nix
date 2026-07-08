@@ -1,8 +1,8 @@
-{ pkgs, circleci }:
-let
-  requiredPackages = with pkgs; ([
+{ pkgs }: pkgs.mkShell {
+  packages = with pkgs; ([
     # these packages are required both in CI and for local development
     canton-3
+    daml-2
     dpm
     glibcLocales
     jq
@@ -16,20 +16,10 @@ let
     python311
     python312
     python313
-    #(python313.withPackages (pkgs: [ pkgs.pip ]))
     ruff
     yamlfmt
+  ]);
 
-  ] ++ (if circleci then [
-    # these packages should only be installed on Circle CI
-
-  ] else [
-    # install these on GitHub Actions and locally
-    daml-2
-  ]));
-
-in
-pkgs.mkShell {
   GOROOT = "";
   GOPATH = "";
 
@@ -40,6 +30,4 @@ pkgs.mkShell {
 
   # MacOS doesn't seem to like this for some reason
   ${if pkgs.stdenv.isLinux then "LOCALE_ARCHIVE" else null} = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-
-  packages = requiredPackages;
 }

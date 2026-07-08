@@ -2,9 +2,6 @@ Daml Python bindings (formerly known as dazl)
 =============================================
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/digital-asset/dazl-client/blob/main/LICENSE)
-<a href="https://circleci.com/gh/digital-asset/dazl-client">
-<img src="https://circleci.com/gh/digital-asset/dazl-client.svg?style=svg">
-</a>
 
 Copyright (c) 2017-2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
