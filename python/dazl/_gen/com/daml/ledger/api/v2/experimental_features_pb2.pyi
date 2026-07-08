@@ -21,16 +21,16 @@ class ExperimentalStaticTime(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class ExperimentalCommandInspectionService(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class ExperimentalPartyTopologyEvents(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...

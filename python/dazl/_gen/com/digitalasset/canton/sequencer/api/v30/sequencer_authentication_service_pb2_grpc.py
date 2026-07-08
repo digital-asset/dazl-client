@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_authentication_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__authentication__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class SequencerAuthenticationServiceStub(object):
+class SequencerAuthenticationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -55,7 +55,7 @@ class SequencerAuthenticationServiceStub(object):
                 _registered_method=True)
 
 
-class SequencerAuthenticationServiceServicer(object):
+class SequencerAuthenticationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Challenge(self, request, context):
@@ -102,7 +102,7 @@ def add_SequencerAuthenticationServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SequencerAuthenticationService(object):
+class SequencerAuthenticationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

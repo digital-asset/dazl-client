@@ -25,7 +25,7 @@ class GetUpdatesRequest(_message.Message):
     end_inclusive: int
     update_format: _transaction_filter_pb2.UpdateFormat
     descending_order: bool
-    def __init__(self, begin_exclusive: _Optional[int] = ..., end_inclusive: _Optional[int] = ..., update_format: _Optional[_Union[_transaction_filter_pb2.UpdateFormat, _Mapping]] = ..., descending_order: bool = ...) -> None: ...
+    def __init__(self, begin_exclusive: _Optional[int] = ..., end_inclusive: _Optional[int] = ..., update_format: _Optional[_Union[_transaction_filter_pb2.UpdateFormat, _Mapping]] = ..., descending_order: _Optional[bool] = ...) -> None: ...
 
 class GetUpdatesResponse(_message.Message):
     __slots__ = ("transaction", "reassignment", "offset_checkpoint", "topology_transaction")
@@ -79,7 +79,7 @@ class GetUpdatesPageRequest(_message.Message):
     update_format: _transaction_filter_pb2.UpdateFormat
     descending_order: bool
     page_token: bytes
-    def __init__(self, begin_offset_exclusive: _Optional[int] = ..., end_offset_inclusive: _Optional[int] = ..., max_page_size: _Optional[int] = ..., update_format: _Optional[_Union[_transaction_filter_pb2.UpdateFormat, _Mapping]] = ..., descending_order: bool = ..., page_token: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, begin_offset_exclusive: _Optional[int] = ..., end_offset_inclusive: _Optional[int] = ..., max_page_size: _Optional[int] = ..., update_format: _Optional[_Union[_transaction_filter_pb2.UpdateFormat, _Mapping]] = ..., descending_order: _Optional[bool] = ..., page_token: _Optional[bytes] = ...) -> None: ...
 
 class GetUpdatesPageResponse(_message.Message):
     __slots__ = ("updates", "lowest_page_offset_exclusive", "highest_page_offset_inclusive", "next_page_token")

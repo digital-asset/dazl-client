@@ -123,7 +123,7 @@ class CreatedContract(_message.Message):
     contract: bytes
     consumed_in_core: bool
     rolled_back: bool
-    def __init__(self, contract: _Optional[bytes] = ..., consumed_in_core: bool = ..., rolled_back: bool = ...) -> None: ...
+    def __init__(self, contract: _Optional[bytes] = ..., consumed_in_core: _Optional[bool] = ..., rolled_back: _Optional[bool] = ...) -> None: ...
 
 class InputContract(_message.Message):
     __slots__ = ("contract", "consumed")
@@ -131,7 +131,7 @@ class InputContract(_message.Message):
     CONSUMED_FIELD_NUMBER: _ClassVar[int]
     contract: bytes
     consumed: bool
-    def __init__(self, contract: _Optional[bytes] = ..., consumed: bool = ...) -> None: ...
+    def __init__(self, contract: _Optional[bytes] = ..., consumed: _Optional[bool] = ...) -> None: ...
 
 class CommonMetadata(_message.Message):
     __slots__ = ("salt", "physical_synchronizer_id", "uuid", "mediator_group")
@@ -216,7 +216,7 @@ class ActionDescription(_message.Message):
         interface_id: str
         template_id: str
         package_preference: _containers.RepeatedScalarFieldContainer[str]
-        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., node_seed: _Optional[bytes] = ..., failed: bool = ..., interface_id: _Optional[str] = ..., template_id: _Optional[str] = ..., package_preference: _Optional[_Iterable[str]] = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., node_seed: _Optional[bytes] = ..., failed: _Optional[bool] = ..., interface_id: _Optional[str] = ..., template_id: _Optional[str] = ..., package_preference: _Optional[_Iterable[str]] = ...) -> None: ...
     class FetchActionDescription(_message.Message):
         __slots__ = ("input_contract_id", "actors", "by_key", "template_id", "interface_id")
         INPUT_CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -229,7 +229,7 @@ class ActionDescription(_message.Message):
         by_key: bool
         template_id: str
         interface_id: str
-        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., template_id: _Optional[str] = ..., interface_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., template_id: _Optional[str] = ..., interface_id: _Optional[str] = ...) -> None: ...
     class LookupByKeyActionDescription(_message.Message):
         __slots__ = ("key",)
         KEY_FIELD_NUMBER: _ClassVar[int]

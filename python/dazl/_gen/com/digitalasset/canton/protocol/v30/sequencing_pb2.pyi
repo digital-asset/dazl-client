@@ -31,7 +31,7 @@ class PossiblyIgnoredSequencedEvent(_message.Message):
     trace_context: _trace_context_pb2.TraceContext
     is_ignored: bool
     underlying: bytes
-    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[int] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., is_ignored: bool = ..., underlying: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[int] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., is_ignored: _Optional[bool] = ..., underlying: _Optional[bytes] = ...) -> None: ...
 
 class RecipientsTree(_message.Message):
     __slots__ = ("recipients", "children")
@@ -83,7 +83,7 @@ class StaticSynchronizerParameters(_message.Message):
     serial: int
     enable_transparency_checks: bool
     topology_change_delay: _duration_pb2.Duration
-    def __init__(self, required_signing_specs: _Optional[_Union[_crypto_pb2.RequiredSigningSpecs, _Mapping]] = ..., required_encryption_specs: _Optional[_Union[_crypto_pb2.RequiredEncryptionSpecs, _Mapping]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., required_signature_formats: _Optional[_Iterable[_Union[_crypto_pb2.SignatureFormat, str]]] = ..., protocol_version: _Optional[int] = ..., serial: _Optional[int] = ..., enable_transparency_checks: bool = ..., topology_change_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, required_signing_specs: _Optional[_Union[_crypto_pb2.RequiredSigningSpecs, _Mapping]] = ..., required_encryption_specs: _Optional[_Union[_crypto_pb2.RequiredEncryptionSpecs, _Mapping]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., required_signature_formats: _Optional[_Iterable[_Union[_crypto_pb2.SignatureFormat, str]]] = ..., protocol_version: _Optional[int] = ..., serial: _Optional[int] = ..., enable_transparency_checks: _Optional[bool] = ..., topology_change_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class Envelope(_message.Message):
     __slots__ = ("content", "recipients", "signatures")

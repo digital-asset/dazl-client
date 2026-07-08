@@ -34,7 +34,7 @@ class Fetch(_message.Message):
     interface_id: _value_pb2.Identifier
     key: _interactive_submission_common_data_pb2.GlobalKeyWithMaintainers
     by_key: bool
-    def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: bool = ...) -> None: ...
+    def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ...) -> None: ...
 
 class Exercise(_message.Message):
     __slots__ = ("lf_version", "contract_id", "package_name", "template_id", "signatories", "stakeholders", "acting_parties", "interface_id", "choice_id", "chosen_value", "consuming", "children", "exercise_result", "choice_observers", "key", "by_key")
@@ -70,7 +70,7 @@ class Exercise(_message.Message):
     choice_observers: _containers.RepeatedScalarFieldContainer[str]
     key: _interactive_submission_common_data_pb2.GlobalKeyWithMaintainers
     by_key: bool
-    def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice_id: _Optional[str] = ..., chosen_value: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., consuming: bool = ..., children: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., choice_observers: _Optional[_Iterable[str]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: bool = ...) -> None: ...
+    def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice_id: _Optional[str] = ..., chosen_value: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., consuming: _Optional[bool] = ..., children: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., choice_observers: _Optional[_Iterable[str]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ...) -> None: ...
 
 class Create(_message.Message):
     __slots__ = ("lf_version", "contract_id", "package_name", "template_id", "argument", "signatories", "stakeholders", "key")
@@ -112,7 +112,7 @@ class QueryByKey(_message.Message):
     exhaustive: bool
     key: _interactive_submission_common_data_pb2.GlobalKeyWithMaintainers
     result: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, lf_version: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., exhaustive: bool = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., result: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, lf_version: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., exhaustive: _Optional[bool] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., result: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Node(_message.Message):
     __slots__ = ("create", "fetch", "exercise", "rollback", "query_by_key")

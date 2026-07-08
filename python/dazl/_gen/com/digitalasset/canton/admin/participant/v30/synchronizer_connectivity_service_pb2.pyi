@@ -37,13 +37,13 @@ class SynchronizerConnectionConfig(_message.Message):
     max_retry_delay: _duration_pb2.Duration
     time_tracker: _time_tracker_config_pb2.SynchronizerTimeTrackerConfig
     initialize_from_trusted_synchronizer: bool
-    def __init__(self, synchronizer_alias: _Optional[str] = ..., sequencer_connections: _Optional[_Union[_sequencer_connection_pb2.SequencerConnections, _Mapping]] = ..., manual_connect: bool = ..., physical_synchronizer_id: _Optional[str] = ..., priority: _Optional[int] = ..., initial_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., time_tracker: _Optional[_Union[_time_tracker_config_pb2.SynchronizerTimeTrackerConfig, _Mapping]] = ..., initialize_from_trusted_synchronizer: bool = ...) -> None: ...
+    def __init__(self, synchronizer_alias: _Optional[str] = ..., sequencer_connections: _Optional[_Union[_sequencer_connection_pb2.SequencerConnections, _Mapping]] = ..., manual_connect: _Optional[bool] = ..., physical_synchronizer_id: _Optional[str] = ..., priority: _Optional[int] = ..., initial_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., time_tracker: _Optional[_Union[_time_tracker_config_pb2.SynchronizerTimeTrackerConfig, _Mapping]] = ..., initialize_from_trusted_synchronizer: _Optional[bool] = ...) -> None: ...
 
 class ReconnectSynchronizersRequest(_message.Message):
     __slots__ = ("ignore_failures",)
     IGNORE_FAILURES_FIELD_NUMBER: _ClassVar[int]
     ignore_failures: bool
-    def __init__(self, ignore_failures: bool = ...) -> None: ...
+    def __init__(self, ignore_failures: _Optional[bool] = ...) -> None: ...
 
 class ReconnectSynchronizersResponse(_message.Message):
     __slots__ = ()
@@ -99,7 +99,7 @@ class ListRegisteredSynchronizersResponse(_message.Message):
         config: SynchronizerConnectionConfig
         connected: bool
         physical_synchronizer_id: str
-        def __init__(self, config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ..., connected: bool = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ..., connected: _Optional[bool] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListRegisteredSynchronizersResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListRegisteredSynchronizersResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -110,13 +110,13 @@ class ReconnectSynchronizerRequest(_message.Message):
     RETRY_FIELD_NUMBER: _ClassVar[int]
     synchronizer_alias: str
     retry: bool
-    def __init__(self, synchronizer_alias: _Optional[str] = ..., retry: bool = ...) -> None: ...
+    def __init__(self, synchronizer_alias: _Optional[str] = ..., retry: _Optional[bool] = ...) -> None: ...
 
 class ReconnectSynchronizerResponse(_message.Message):
     __slots__ = ("connected_successfully",)
     CONNECTED_SUCCESSFULLY_FIELD_NUMBER: _ClassVar[int]
     connected_successfully: bool
-    def __init__(self, connected_successfully: bool = ...) -> None: ...
+    def __init__(self, connected_successfully: _Optional[bool] = ...) -> None: ...
 
 class ConnectSynchronizerRequest(_message.Message):
     __slots__ = ("config", "sequencer_connection_validation")
@@ -130,7 +130,7 @@ class ConnectSynchronizerResponse(_message.Message):
     __slots__ = ("connected_successfully",)
     CONNECTED_SUCCESSFULLY_FIELD_NUMBER: _ClassVar[int]
     connected_successfully: bool
-    def __init__(self, connected_successfully: bool = ...) -> None: ...
+    def __init__(self, connected_successfully: _Optional[bool] = ...) -> None: ...
 
 class DisconnectSynchronizerRequest(_message.Message):
     __slots__ = ("synchronizer_alias",)
@@ -166,7 +166,7 @@ class ListConnectedSynchronizersResponse(_message.Message):
         synchronizer_id: str
         physical_synchronizer_id: str
         healthy: bool
-        def __init__(self, synchronizer_alias: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., physical_synchronizer_id: _Optional[str] = ..., healthy: bool = ...) -> None: ...
+        def __init__(self, synchronizer_alias: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., physical_synchronizer_id: _Optional[str] = ..., healthy: _Optional[bool] = ...) -> None: ...
     CONNECTED_SYNCHRONIZERS_FIELD_NUMBER: _ClassVar[int]
     connected_synchronizers: _containers.RepeatedCompositeFieldContainer[ListConnectedSynchronizersResponse.Result]
     def __init__(self, connected_synchronizers: _Optional[_Iterable[_Union[ListConnectedSynchronizersResponse.Result, _Mapping]]] = ...) -> None: ...

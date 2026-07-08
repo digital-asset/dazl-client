@@ -44,7 +44,7 @@ class PeerEndpointId(_message.Message):
     address: str
     port: int
     tls: bool
-    def __init__(self, address: _Optional[str] = ..., port: _Optional[int] = ..., tls: bool = ...) -> None: ...
+    def __init__(self, address: _Optional[str] = ..., port: _Optional[int] = ..., tls: _Optional[bool] = ...) -> None: ...
 
 class PlainTextPeerEndpoint(_message.Message):
     __slots__ = ()
@@ -70,13 +70,13 @@ class AddPeerEndpointResponse(_message.Message):
     __slots__ = ("added",)
     ADDED_FIELD_NUMBER: _ClassVar[int]
     added: bool
-    def __init__(self, added: bool = ...) -> None: ...
+    def __init__(self, added: _Optional[bool] = ...) -> None: ...
 
 class RemovePeerEndpointResponse(_message.Message):
     __slots__ = ("removed",)
     REMOVED_FIELD_NUMBER: _ClassVar[int]
     removed: bool
-    def __init__(self, removed: bool = ...) -> None: ...
+    def __init__(self, removed: _Optional[bool] = ...) -> None: ...
 
 class Authenticated(_message.Message):
     __slots__ = ("sequencer_id",)
@@ -121,7 +121,7 @@ class PeerEndpointStatus(_message.Message):
     endpoint_id: PeerEndpointId
     is_outgoing_connection: bool
     health: PeerEndpointHealth
-    def __init__(self, endpoint_id: _Optional[_Union[PeerEndpointId, _Mapping]] = ..., is_outgoing_connection: bool = ..., health: _Optional[_Union[PeerEndpointHealth, _Mapping]] = ...) -> None: ...
+    def __init__(self, endpoint_id: _Optional[_Union[PeerEndpointId, _Mapping]] = ..., is_outgoing_connection: _Optional[bool] = ..., health: _Optional[_Union[PeerEndpointHealth, _Mapping]] = ...) -> None: ...
 
 class PeerConnectionStatus(_message.Message):
     __slots__ = ("peer_endpoint_status", "peer_incoming_connection")
@@ -196,7 +196,7 @@ class SetPerformanceMetricsEnabledRequest(_message.Message):
     __slots__ = ("enabled",)
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     enabled: bool
-    def __init__(self, enabled: bool = ...) -> None: ...
+    def __init__(self, enabled: _Optional[bool] = ...) -> None: ...
 
 class SetPerformanceMetricsEnabledResponse(_message.Message):
     __slots__ = ()

@@ -28,7 +28,7 @@ class TrafficControlParameters(_message.Message):
     enforce_rate_limiting: bool
     base_event_cost: int
     free_confirmation_responses: bool
-    def __init__(self, max_base_traffic_amount: _Optional[int] = ..., max_base_traffic_accumulation_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., read_vs_write_scaling_factor: _Optional[int] = ..., set_balance_request_submission_window_size: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., enforce_rate_limiting: bool = ..., base_event_cost: _Optional[int] = ..., free_confirmation_responses: bool = ...) -> None: ...
+    def __init__(self, max_base_traffic_amount: _Optional[int] = ..., max_base_traffic_accumulation_duration: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., read_vs_write_scaling_factor: _Optional[int] = ..., set_balance_request_submission_window_size: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., enforce_rate_limiting: _Optional[bool] = ..., base_event_cost: _Optional[int] = ..., free_confirmation_responses: _Optional[bool] = ...) -> None: ...
 
 class TrafficReceipt(_message.Message):
     __slots__ = ("consumed_cost", "extra_traffic_consumed", "base_traffic_remainder")

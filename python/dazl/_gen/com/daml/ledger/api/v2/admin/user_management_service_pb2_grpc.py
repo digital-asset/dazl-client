@@ -9,7 +9,7 @@ import warnings
 
 from . import user_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_user__management__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class UserManagementServiceStub(object):
+class UserManagementServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -85,7 +85,7 @@ class UserManagementServiceStub(object):
                 _registered_method=True)
 
 
-class UserManagementServiceServicer(object):
+class UserManagementServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def CreateUser(self, request, context):
@@ -198,7 +198,7 @@ def add_UserManagementServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class UserManagementService(object):
+class UserManagementService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

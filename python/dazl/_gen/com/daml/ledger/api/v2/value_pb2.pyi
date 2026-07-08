@@ -45,7 +45,7 @@ class Value(_message.Message):
     record: Record
     variant: Variant
     enum: Enum
-    def __init__(self, unit: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., bool: bool = ..., int64: _Optional[int] = ..., date: _Optional[int] = ..., timestamp: _Optional[int] = ..., numeric: _Optional[str] = ..., party: _Optional[str] = ..., text: _Optional[str] = ..., contract_id: _Optional[str] = ..., optional: _Optional[_Union[Optional, _Mapping]] = ..., list: _Optional[_Union[List, _Mapping]] = ..., text_map: _Optional[_Union[TextMap, _Mapping]] = ..., gen_map: _Optional[_Union[GenMap, _Mapping]] = ..., record: _Optional[_Union[Record, _Mapping]] = ..., variant: _Optional[_Union[Variant, _Mapping]] = ..., enum: _Optional[_Union[Enum, _Mapping]] = ...) -> None: ...  # type: ignore
+    def __init__(self, unit: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., bool: _Optional[bool] = ..., int64: _Optional[int] = ..., date: _Optional[int] = ..., timestamp: _Optional[int] = ..., numeric: _Optional[str] = ..., party: _Optional[str] = ..., text: _Optional[str] = ..., contract_id: _Optional[str] = ..., optional: _Optional[_Union[Optional, _Mapping]] = ..., list: _Optional[_Union[List, _Mapping]] = ..., text_map: _Optional[_Union[TextMap, _Mapping]] = ..., gen_map: _Optional[_Union[GenMap, _Mapping]] = ..., record: _Optional[_Union[Record, _Mapping]] = ..., variant: _Optional[_Union[Variant, _Mapping]] = ..., enum: _Optional[_Union[Enum, _Mapping]] = ...) -> None: ...
 
 class Record(_message.Message):
     __slots__ = ("record_id", "fields")

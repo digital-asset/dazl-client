@@ -44,7 +44,7 @@ class ParticipantStatusResponse(_message.Message):
         connected_synchronizers: _containers.RepeatedCompositeFieldContainer[ConnectedSynchronizer]
         active: bool
         supported_protocol_versions: _containers.RepeatedScalarFieldContainer[int]
-        def __init__(self, common_status: _Optional[_Union[_status_service_pb2.Status, _Mapping]] = ..., connected_synchronizers: _Optional[_Iterable[_Union[ConnectedSynchronizer, _Mapping]]] = ..., active: bool = ..., supported_protocol_versions: _Optional[_Iterable[int]] = ...) -> None: ...
+        def __init__(self, common_status: _Optional[_Union[_status_service_pb2.Status, _Mapping]] = ..., connected_synchronizers: _Optional[_Iterable[_Union[ConnectedSynchronizer, _Mapping]]] = ..., active: _Optional[bool] = ..., supported_protocol_versions: _Optional[_Iterable[int]] = ...) -> None: ...
     STATUS_FIELD_NUMBER: _ClassVar[int]
     NOT_INITIALIZED_FIELD_NUMBER: _ClassVar[int]
     status: ParticipantStatusResponse.ParticipantStatusResponseStatus

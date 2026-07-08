@@ -9,7 +9,7 @@ import warnings
 
 from . import package_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_package__management__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class PackageManagementServiceStub(object):
+class PackageManagementServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -60,7 +60,7 @@ class PackageManagementServiceStub(object):
                 _registered_method=True)
 
 
-class PackageManagementServiceServicer(object):
+class PackageManagementServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ListKnownPackages(self, request, context):
@@ -118,7 +118,7 @@ def add_PackageManagementServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class PackageManagementService(object):
+class PackageManagementService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
