@@ -38,7 +38,7 @@ async def test_deadline_does_not_abort_query_stream(sandbox: SandboxLauncher) ->
 
 @pytest.mark.asyncio
 async def test_reconnect_party_allocation() -> None:
-    sandbox = SandboxLauncher(version="2.10.2")
+    sandbox = SandboxLauncher(version="2.10.4")
     try:
         sandbox.start()
         async with connect(url=sandbox.url, admin=True) as conn:
@@ -93,7 +93,7 @@ async def test_reconnect_party_allocation() -> None:
 
 @pytest.mark.asyncio
 async def test_reconnect_query_stream() -> None:
-    sandbox = SandboxLauncher(version="2.10.2")
+    sandbox = SandboxLauncher(version="2.10.4")
     try:
         sandbox.start()
         async with connect(url=sandbox.url, admin=True) as conn:

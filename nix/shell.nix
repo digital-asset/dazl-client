@@ -1,4 +1,4 @@
-{ pkgs, ci }:
+{ pkgs, circleci }:
 let
   requiredPackages = with pkgs; ([
     # these packages are required both in CI and for local development
@@ -20,11 +20,12 @@ let
     ruff
     yamlfmt
 
-  ] ++ (if ci then [
-    # these packages should only be installed on CI
+  ] ++ (if circleci then [
+    # these packages should only be installed on Circle CI
 
   ] else [
-    # these packages are only installed on developer machines locally
+    # install these on GitHub Actions and locally
+    daml-2
   ]));
 
 in

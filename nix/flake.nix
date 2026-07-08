@@ -11,8 +11,8 @@
           pkgs = import nixpkgs { inherit system; overlays = import ./overlays.nix; };
         in
         {
-          devShells.default = import ./shell.nix { inherit pkgs ; ci = false; };
-          devShells.ci = import ./shell.nix { inherit pkgs ; ci = true; };
+          devShells.default = import ./shell.nix { inherit pkgs ; circleci = false; };
+          devShells.ci = import ./shell.nix { inherit pkgs ; circleci = true; };
         }
       );
 }

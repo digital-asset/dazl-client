@@ -42,7 +42,7 @@ def get_installed_daml_versions() -> list[str]:
                         versions.append(version)
         return versions
     except Exception:
-        return ["2.10.2"]
+        return ["2.10.4"]
 
 
 INSTALLED_VERSIONS = get_installed_daml_versions()
@@ -108,7 +108,7 @@ class SandboxV3Wrapper:
 
 @pytest.fixture(scope="session")
 def sandbox() -> Generator[testing.SandboxLauncher, None, None]:
-    version = "2.10.2" if "2.10.2" in INSTALLED_VERSIONS else INSTALLED_VERSIONS[0]
+    version = "2.10.4" if "2.10.4" in INSTALLED_VERSIONS else INSTALLED_VERSIONS[0]
     with testing.sandbox(version=version) as sb:
         yield sb
 
