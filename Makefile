@@ -143,11 +143,6 @@ build: $(packages)  # Build everything.
 test: python-format-test python-typecheck python-unit-test  ## Run all tests.
 
 
-.PHONY: local-ci
-local-ci:  ## Run the build as if it were running on CI.
-	circleci local execute
-
-
 .PHONY: publish
 publish: $(packages)  ## Publish everything.
 	scripts/publish.sh $^
