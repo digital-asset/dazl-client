@@ -8,6 +8,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
+import builtins
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -104,7 +105,7 @@ class Value(_message.Message):
     VARIANT_FIELD_NUMBER: _ClassVar[int]
     ENUM_FIELD_NUMBER: _ClassVar[int]
     unit: _empty_pb2.Empty
-    bool: bool  # type: ignore
+    bool: builtins.bool  # type: ignore
     int64: int
     date: int
     timestamp: int
@@ -119,4 +120,4 @@ class Value(_message.Message):
     record: Value.Record
     variant: Value.Variant
     enum: Value.Enum
-    def __init__(self, unit: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., bool: _Optional[bool] = ..., int64: _Optional[int] = ..., date: _Optional[int] = ..., timestamp: _Optional[int] = ..., numeric: _Optional[str] = ..., party: _Optional[str] = ..., text: _Optional[str] = ..., contract_id: _Optional[bytes] = ..., optional: _Optional[_Union[Value.Optional, _Mapping]] = ..., list: _Optional[_Union[Value.List, _Mapping]] = ..., map: _Optional[_Union[Value.Map, _Mapping]] = ..., text_map: _Optional[_Union[Value.TextMap, _Mapping]] = ..., record: _Optional[_Union[Value.Record, _Mapping]] = ..., variant: _Optional[_Union[Value.Variant, _Mapping]] = ..., enum: _Optional[_Union[Value.Enum, _Mapping]] = ...) -> None: ...
+    def __init__(self, unit: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., bool: _Optional[builtins.bool] = ..., int64: _Optional[int] = ..., date: _Optional[int] = ..., timestamp: _Optional[int] = ..., numeric: _Optional[str] = ..., party: _Optional[str] = ..., text: _Optional[str] = ..., contract_id: _Optional[bytes] = ..., optional: _Optional[_Union[Value.Optional, _Mapping]] = ..., list: _Optional[_Union[Value.List, _Mapping]] = ..., map: _Optional[_Union[Value.Map, _Mapping]] = ..., text_map: _Optional[_Union[Value.TextMap, _Mapping]] = ..., record: _Optional[_Union[Value.Record, _Mapping]] = ..., variant: _Optional[_Union[Value.Variant, _Mapping]] = ..., enum: _Optional[_Union[Value.Enum, _Mapping]] = ...) -> None: ...

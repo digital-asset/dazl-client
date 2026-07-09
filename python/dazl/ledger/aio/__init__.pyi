@@ -330,7 +330,7 @@ class Connection(PackageService, Protocol):
     ) -> MeteringReport: ...
     async def prune(
         self,
-        up_to: str,
+        up_to: int,
         submission_id: Optional[str] = ...,
         prune_all_divulged_contracts=...,
         *,

@@ -14,10 +14,10 @@ from threading import Event, Thread
 import time
 from typing import Optional, TextIO
 
-from google.protobuf.empty_pb2 import Empty
 from grpc import insecure_channel, secure_channel, ssl_channel_credentials
 
-from .._gen.com.digitalasset.canton.health.admin.v0.status_service_pb2_grpc import StatusServiceStub
+from .._gen.com.digitalasset.canton.admin.participant.v30.participant_status_service_pb2_grpc import ParticipantStatusServiceStub
+from .._gen.com.digitalasset.canton.admin.participant.v30.participant_status_service_pb2 import ParticipantStatusRequest
 from ..prim import DazlError, TimeDeltaLike, to_timedelta
 
 __all__ = ["kill_process_tree", "wait_for_process_port", "ProcessLogger", "ProcessDiedException"]
@@ -95,9 +95,9 @@ def wait_for_process_port(
                             channel = stack.enter_context(
                                 insecure_channel(f"localhost:{participant_admin_port}")
                             )
-                        status_service = StatusServiceStub(channel)
-                        response = status_service.Status(Empty(), timeout=5.0)
-                        alive = response.success.active
+                        status_service = ParticipantStatusServiceStub(channel)
+                        response = status_service.ParticipantStatus(ParticipantStatusRequest(), timeout=5.0)
+                        alive = response.status.active
                 except Exception as ex:
                     logging.debug("Participant not yet active: %s", ex)
                     alive = False
