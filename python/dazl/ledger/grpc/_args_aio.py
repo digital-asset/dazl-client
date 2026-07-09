@@ -9,8 +9,8 @@ from typing import Callable, Collection, Optional, TypedDict, TypeVar
 from grpc import aio
 
 from ... import Party
-from ..._gen.com.daml.ledger.api import v1 as lapipb
-from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
+from ..._gen.com.daml.ledger.api import v2 as lapipb
+from ..._gen.com.daml.ledger.api.v2 import admin as lapiadminpb
 from .. import ActAs, CommandMeta, ReadAs
 from .._call import CallContext as CallContextBase
 from ..auth import parse_token
@@ -53,16 +53,6 @@ class CallContext(CallContextBase):
         if meta.act_as is not None:
             p.update(meta.act_as)
         return sorted(p)
-
-    async def get_ledger_id(self) -> str:
-        if self.ledger_id is None:
-            stub = self.grpc_stub(lapipb.LedgerIdentityServiceStub)
-            response = await stub.GetLedgerIdentity(
-                lapipb.GetLedgerIdentityRequest(), **self.grpc_kwargs
-            )
-            self.ledger_id = response.ledger_id
-
-        return self.ledger_id
 
     async def command_meta(self) -> CommandMeta:
         """

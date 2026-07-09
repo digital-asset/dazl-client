@@ -9,7 +9,7 @@ from typing import Any, Optional, Type as PyType, TypeVar
 from google.protobuf import timestamp_pb2
 from google.protobuf.empty_pb2 import Empty
 
-from .._gen.com.daml.ledger.api import v1 as lapipb
+from .._gen.com.daml.ledger.api import v2 as lapipb
 from ..damlast.daml_lf_1 import DefDataType, Type
 from ..damlast.util import find_variant_type
 from ..prim import (
@@ -116,7 +116,7 @@ class ProtobufDecoder(ValueMapper):
         return context.convert_optional(t, maybe_val)
 
     def prim_text_map(self, context: Context, item_type: Type, obj: Any) -> Any:
-        msg = get_value(obj, "map", lapipb.Map)
+        msg = get_value(obj, "map", lapipb.TextMap)
         mapping = {entry_pb.key: entry_pb.value for entry_pb in msg.entries}
         return context.convert_text_map(item_type, mapping)
 
@@ -221,7 +221,7 @@ class ProtobufEncoder(ValueMapper):
         return "optional", msg
 
     def prim_text_map(self, context: Context, item_type: Type, obj: Any) -> Any:
-        msg = lapipb.Map()
+        msg = lapipb.TextMap()
         for key, value in obj.items():
             entry = msg.entries.add()
             entry.key = key

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
 
-from dazl._gen.com.daml.ledger.api import v1 as lapipb
+from dazl._gen.com.daml.ledger.api import v2 as lapipb
 from dazl.damlast import CachedDarFile, daml_types as daml
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.values import Context, ProtobufDecoder, ProtobufEncoder

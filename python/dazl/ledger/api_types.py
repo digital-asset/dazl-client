@@ -95,7 +95,7 @@ def to_commands(*commands: Optional[Commands]) -> Sequence[Command]:
     if commands is not None:
         for c in commands:
             if c is not None:
-                if is_command(c):
+                if isinstance(c, _Command):
                     cmds.append(c)
                 else:
                     cmds.extend(to_commands(*c))  # type: ignore
@@ -393,7 +393,7 @@ class CommandMeta:
     act_as: Optional[Sequence[Party]]
     user_id: str
     deduplication_duration: Optional[timedelta]
-    deduplication_offset: Optional[str]
+    deduplication_offset: Optional[int]
 
     def __init__(
         self,
@@ -403,7 +403,7 @@ class CommandMeta:
         act_as: Optional[Parties],
         user_id: str,
         deduplication_duration: Optional[TimeDeltaLike],
-        deduplication_offset: Optional[str],
+        deduplication_offset: Optional[int],
     ):
         if workflow_id:
             if not LEDGER_STRING_REGEX.match(workflow_id):
@@ -462,7 +462,7 @@ class CommandMeta:
         if self.deduplication_duration is not None:
             s.append(f"deduplication_duration={self.deduplication_duration}")
         if self.deduplication_offset is not None:
-            s.append(f"deduplication_offset={_repr.str(self.deduplication_offset)}")
+            s.append(f"deduplication_offset={self.deduplication_offset}")
         return f"{self.__class__.__name__}({', '.join(s)})"
 
 
@@ -830,15 +830,13 @@ class PartyInfo:
     Full information about a ``Party``.
     """
 
-    __slots__ = ("_party", "_display_name", "_is_local")
+    __slots__ = ("_party", "_is_local")
     if TYPE_CHECKING:
         _party: Party
-        _display_name: str
         _is_local: bool
 
-    def __init__(self, party: Party, display_name: str, is_local: bool):
+    def __init__(self, party: Party, is_local: bool):
         object.__setattr__(self, "_party", party)
-        object.__setattr__(self, "_display_name", display_name)
         object.__setattr__(self, "_is_local", is_local)
 
     @property
@@ -847,13 +845,6 @@ class PartyInfo:
         The stable unique identifier of a Daml ``Party``.
         """
         return self._party
-
-    @property
-    def display_name(self) -> str:
-        """
-        The human-readable name associated with the ``Party``.
-        """
-        return self._display_name
 
     @property
     def is_local(self) -> bool:

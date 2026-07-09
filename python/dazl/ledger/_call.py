@@ -63,7 +63,7 @@ class AnyCallParameters(TypedDict, total=False):
     act_as: Optional[Parties]
     application_name: Optional[str]
     deduplication_duration: Optional[TimeDeltaLike]
-    deduplication_offset: Optional[str]
+    deduplication_offset: Optional[int]
 
 
 class CachedParameters(TypedDict):
@@ -223,7 +223,7 @@ class CallContext:
         ledger_id,
         user_id_or_application_name,
         deduplication_duration: Optional[TimeDeltaLike],
-        deduplication_offset: Optional[str],
+        deduplication_offset: Optional[int],
         token,
         timeout,
     ) -> None:
