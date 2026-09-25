@@ -10,7 +10,7 @@ import warnings
 from ....admin.pruning.v30 import pruning_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_pruning_dot_v30_dot_pruning__pb2
 from . import sequencer_pruning_administration_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__pruning__administration__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -30,7 +30,7 @@ if _version_not_supported:
     )
 
 
-class SequencerPruningAdministrationServiceStub(object):
+class SequencerPruningAdministrationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -81,7 +81,7 @@ class SequencerPruningAdministrationServiceStub(object):
                 _registered_method=True)
 
 
-class SequencerPruningAdministrationServiceServicer(object):
+class SequencerPruningAdministrationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Prune(self, request, context):
@@ -183,7 +183,7 @@ def add_SequencerPruningAdministrationServiceServicer_to_server(servicer, server
 
 
  # This class is part of an EXPERIMENTAL API.
-class SequencerPruningAdministrationService(object):
+class SequencerPruningAdministrationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

@@ -9,7 +9,7 @@ import warnings
 
 from . import update_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_update__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class UpdateServiceStub(object):
+class UpdateServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -60,7 +60,7 @@ class UpdateServiceStub(object):
                 _registered_method=True)
 
 
-class UpdateServiceServicer(object):
+class UpdateServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetUpdates(self, request, context):
@@ -118,7 +118,7 @@ def add_UpdateServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class UpdateService(object):
+class UpdateService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

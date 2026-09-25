@@ -9,7 +9,7 @@ import warnings
 
 from . import bft_ordering_service_pb2 as com_dot_digitalasset_dot_canton_dot_synchronizer_dot_sequencing_dot_sequencer_dot_bftordering_dot_v30_dot_bft__ordering__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class BftOrderingServiceStub(object):
+class BftOrderingServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class BftOrderingServiceStub(object):
                 _registered_method=True)
 
 
-class BftOrderingServiceServicer(object):
+class BftOrderingServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Receive(self, request_iterator, context):
@@ -70,7 +70,7 @@ def add_BftOrderingServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class BftOrderingService(object):
+class BftOrderingService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

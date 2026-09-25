@@ -55,7 +55,7 @@ class Node(_message.Message):
         actors: _containers.RepeatedScalarFieldContainer[str]
         key_with_maintainers: KeyWithMaintainers
         by_key: bool
-        def __init__(self, contract_id: _Optional[bytes] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., non_maintainer_signatories: _Optional[_Iterable[str]] = ..., non_signatory_stakeholders: _Optional[_Iterable[str]] = ..., actors: _Optional[_Iterable[str]] = ..., key_with_maintainers: _Optional[_Union[KeyWithMaintainers, _Mapping]] = ..., by_key: bool = ...) -> None: ...
+        def __init__(self, contract_id: _Optional[bytes] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., non_maintainer_signatories: _Optional[_Iterable[str]] = ..., non_signatory_stakeholders: _Optional[_Iterable[str]] = ..., actors: _Optional[_Iterable[str]] = ..., key_with_maintainers: _Optional[_Union[KeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ...) -> None: ...
     class Exercise(_message.Message):
         __slots__ = ("fetch", "interface_id", "choice", "arg", "consuming", "children", "result", "observers", "authorizers")
         FETCH_FIELD_NUMBER: _ClassVar[int]
@@ -76,7 +76,7 @@ class Node(_message.Message):
         result: bytes
         observers: _containers.RepeatedScalarFieldContainer[str]
         authorizers: _containers.RepeatedScalarFieldContainer[str]
-        def __init__(self, fetch: _Optional[_Union[Node.Fetch, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., arg: _Optional[bytes] = ..., consuming: bool = ..., children: _Optional[_Iterable[str]] = ..., result: _Optional[bytes] = ..., observers: _Optional[_Iterable[str]] = ..., authorizers: _Optional[_Iterable[str]] = ...) -> None: ...
+        def __init__(self, fetch: _Optional[_Union[Node.Fetch, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., arg: _Optional[bytes] = ..., consuming: _Optional[bool] = ..., children: _Optional[_Iterable[str]] = ..., result: _Optional[bytes] = ..., observers: _Optional[_Iterable[str]] = ..., authorizers: _Optional[_Iterable[str]] = ...) -> None: ...
     class Rollback(_message.Message):
         __slots__ = ("children",)
         CHILDREN_FIELD_NUMBER: _ClassVar[int]
@@ -94,7 +94,7 @@ class Node(_message.Message):
         key_with_maintainers: KeyWithMaintainers
         contract_id: _containers.RepeatedScalarFieldContainer[bytes]
         exaustive: bool
-        def __init__(self, package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., key_with_maintainers: _Optional[_Union[KeyWithMaintainers, _Mapping]] = ..., contract_id: _Optional[_Iterable[bytes]] = ..., exaustive: bool = ...) -> None: ...
+        def __init__(self, package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., key_with_maintainers: _Optional[_Union[KeyWithMaintainers, _Mapping]] = ..., contract_id: _Optional[_Iterable[bytes]] = ..., exaustive: _Optional[bool] = ...) -> None: ...
     VERSION_FIELD_NUMBER: _ClassVar[int]
     NODE_ID_FIELD_NUMBER: _ClassVar[int]
     CREATE_FIELD_NUMBER: _ClassVar[int]

@@ -2,7 +2,6 @@
   packages = with pkgs; ([
     # these packages are required both in CI and for local development
     canton-3
-    daml-2
     dpm
     glibcLocales
     jq

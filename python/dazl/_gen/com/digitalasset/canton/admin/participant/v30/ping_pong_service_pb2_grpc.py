@@ -9,7 +9,7 @@ import warnings
 
 from . import ping_pong_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_ping__pong__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class PingServiceStub(object):
+class PingServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class PingServiceStub(object):
                 _registered_method=True)
 
 
-class PingServiceServicer(object):
+class PingServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Ping(self, request, context):
@@ -70,7 +70,7 @@ def add_PingServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class PingService(object):
+class PingService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

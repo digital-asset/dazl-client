@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_api_dot_v30_dot_sequencer__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class SequencerServiceStub(object):
+class SequencerServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -75,7 +75,7 @@ class SequencerServiceStub(object):
                 _registered_method=True)
 
 
-class SequencerServiceServicer(object):
+class SequencerServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def SendAsync(self, request, context):
@@ -166,7 +166,7 @@ def add_SequencerServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SequencerService(object):
+class SequencerService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

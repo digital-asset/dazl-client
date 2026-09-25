@@ -22,7 +22,7 @@ class InitializeSequencerFromGenesisStateResponse(_message.Message):
     __slots__ = ("replicated",)
     REPLICATED_FIELD_NUMBER: _ClassVar[int]
     replicated: bool
-    def __init__(self, replicated: bool = ...) -> None: ...
+    def __init__(self, replicated: _Optional[bool] = ...) -> None: ...
 
 class InitializeSequencerFromLsuPredecessorRequest(_message.Message):
     __slots__ = ("topology_snapshot", "synchronizer_parameters", "ignore_psid_check")
@@ -32,7 +32,7 @@ class InitializeSequencerFromLsuPredecessorRequest(_message.Message):
     topology_snapshot: bytes
     synchronizer_parameters: _sequencing_pb2.StaticSynchronizerParameters
     ignore_psid_check: bool
-    def __init__(self, topology_snapshot: _Optional[bytes] = ..., synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., ignore_psid_check: bool = ...) -> None: ...
+    def __init__(self, topology_snapshot: _Optional[bytes] = ..., synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., ignore_psid_check: _Optional[bool] = ...) -> None: ...
 
 class InitializeSequencerFromLsuPredecessorResponse(_message.Message):
     __slots__ = ()
@@ -48,7 +48,7 @@ class InitializeSequencerFromOnboardingStateResponse(_message.Message):
     __slots__ = ("replicated",)
     REPLICATED_FIELD_NUMBER: _ClassVar[int]
     replicated: bool
-    def __init__(self, replicated: bool = ...) -> None: ...
+    def __init__(self, replicated: _Optional[bool] = ...) -> None: ...
 
 class InitializeSequencerFromGenesisStateV2Request(_message.Message):
     __slots__ = ("topology_snapshot", "synchronizer_parameters")
@@ -62,7 +62,7 @@ class InitializeSequencerFromGenesisStateV2Response(_message.Message):
     __slots__ = ("replicated",)
     REPLICATED_FIELD_NUMBER: _ClassVar[int]
     replicated: bool
-    def __init__(self, replicated: bool = ...) -> None: ...
+    def __init__(self, replicated: _Optional[bool] = ...) -> None: ...
 
 class InitializeSequencerFromOnboardingStateV2Request(_message.Message):
     __slots__ = ("onboarding_state",)
@@ -74,4 +74,4 @@ class InitializeSequencerFromOnboardingStateV2Response(_message.Message):
     __slots__ = ("replicated",)
     REPLICATED_FIELD_NUMBER: _ClassVar[int]
     replicated: bool
-    def __init__(self, replicated: bool = ...) -> None: ...
+    def __init__(self, replicated: _Optional[bool] = ...) -> None: ...

@@ -18,8 +18,8 @@ from typing import Any, Optional, Sequence
 
 from google.protobuf.json_format import MessageToDict
 
-from ..._gen.com.daml.ledger.api import v1 as lapipb
-from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
+from ..._gen.com.daml.ledger.api import v2 as lapipb
+from ..._gen.com.daml.ledger.api.v2 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import (
     DefTemplate,
     DottedName,
@@ -124,13 +124,13 @@ class Codec:
                 )
             case ExerciseByKeyCommand(template_id, key, choice, argument):
                 return lapipb.Command(
-                    exerciseByKey=await self.encode_exercise_by_key_command(
+                    exercise_by_key=await self.encode_exercise_by_key_command(
                         template_id, choice, key, argument, token=token
                     )
                 )
             case CreateAndExerciseCommand(template_id, payload, choice, argument):
                 return lapipb.Command(
-                    createAndExercise=await self.encode_create_and_exercise_command(
+                    create_and_exercise=await self.encode_create_and_exercise_command(
                         template_id, payload, choice, argument, token=token
                     )
                 )
@@ -383,7 +383,7 @@ class Codec:
             cdata,
             tuple(Party(p) for p in event.signatories),
             tuple(Party(p) for p in event.observers),
-            event.agreement_text.value,
+            None,
             key,
             created_event_blob=event.created_event_blob or None,
             interface_views=[
@@ -545,7 +545,7 @@ class Codec:
     @staticmethod
     def decode_party_info(party_details: lapiadminpb.PartyDetails, /) -> PartyInfo:
         return PartyInfo(
-            Party(party_details.party), party_details.display_name, party_details.is_local
+            Party(party_details.party), party_details.is_local
         )
 
     @staticmethod

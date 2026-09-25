@@ -9,7 +9,7 @@ import warnings
 
 from . import identity_provider_config_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_admin_dot_identity__provider__config__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class IdentityProviderConfigServiceStub(object):
+class IdentityProviderConfigServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -65,7 +65,7 @@ class IdentityProviderConfigServiceStub(object):
                 _registered_method=True)
 
 
-class IdentityProviderConfigServiceServicer(object):
+class IdentityProviderConfigServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def CreateIdentityProviderConfig(self, request, context):
@@ -134,7 +134,7 @@ def add_IdentityProviderConfigServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class IdentityProviderConfigService(object):
+class IdentityProviderConfigService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

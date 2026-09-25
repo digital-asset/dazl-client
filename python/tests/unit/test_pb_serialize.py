@@ -6,7 +6,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Generator
 
-from dazl._gen.com.daml.ledger.api import v1 as lapipb
+from dazl._gen.com.daml.ledger.api import v2 as lapipb
 from dazl.damlast import DarFile
 from dazl.damlast.lookup import MultiPackageLookup
 from dazl.damlast.protocols import SymbolLookup
@@ -86,10 +86,10 @@ async def test_serialize_exercise_by_key(dar_fixture: DarFixture) -> None:
     command = ExerciseByKeyCommand("Pending:Counter", "SomeParty", "Increment", {})
 
     expected = lapipb.Command()
-    expected.exerciseByKey.template_id.MergeFrom(dar_fixture.get_identifier("Pending:Counter"))
-    expected.exerciseByKey.contract_key.party = "SomeParty"
-    expected.exerciseByKey.choice = "Increment"
-    expected.exerciseByKey.choice_argument.record.SetInParent()
+    expected.exercise_by_key.template_id.MergeFrom(dar_fixture.get_identifier("Pending:Counter"))
+    expected.exercise_by_key.contract_key.party = "SomeParty"
+    expected.exercise_by_key.choice = "Increment"
+    expected.exercise_by_key.choice_argument.record.SetInParent()
     actual = await sut.encode_command(command)
 
     assert expected == actual
@@ -104,14 +104,14 @@ async def test_serialize_create_and_exercise(dar_fixture: DarFixture) -> None:
     )
 
     expected = lapipb.Command()
-    expected.createAndExercise.template_id.MergeFrom(
+    expected.create_and_exercise.template_id.MergeFrom(
         dar_fixture.get_identifier("Pending:AccountRequest")
     )
-    expected.createAndExercise.create_arguments.fields.append(
+    expected.create_and_exercise.create_arguments.fields.append(
         lapipb.RecordField(label="owner", value=lapipb.Value(party=Party("SomeParty")))
     )
-    expected.createAndExercise.choice = "CreateAccount"
-    expected.createAndExercise.choice_argument.record.fields.append(
+    expected.create_and_exercise.choice = "CreateAccount"
+    expected.create_and_exercise.choice_argument.record.fields.append(
         lapipb.RecordField(label="accountId", value=lapipb.Value(int64=42))
     )
     actual = await sut.encode_command(command)

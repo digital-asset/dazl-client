@@ -1265,7 +1265,7 @@ class TemplateChoice(_message.Message):
     self_binder_str: str
     self_binder_interned_str: int
     location: Location
-    def __init__(self, name_str: _Optional[str] = ..., name_interned_str: _Optional[int] = ..., consuming: bool = ..., controllers: _Optional[_Union[Expr, _Mapping]] = ..., observers: _Optional[_Union[Expr, _Mapping]] = ..., authorizers: _Optional[_Union[Expr, _Mapping]] = ..., arg_binder: _Optional[_Union[VarWithType, _Mapping]] = ..., ret_type: _Optional[_Union[Type, _Mapping]] = ..., update: _Optional[_Union[Expr, _Mapping]] = ..., self_binder_str: _Optional[str] = ..., self_binder_interned_str: _Optional[int] = ..., location: _Optional[_Union[Location, _Mapping]] = ...) -> None: ...
+    def __init__(self, name_str: _Optional[str] = ..., name_interned_str: _Optional[int] = ..., consuming: _Optional[bool] = ..., controllers: _Optional[_Union[Expr, _Mapping]] = ..., observers: _Optional[_Union[Expr, _Mapping]] = ..., authorizers: _Optional[_Union[Expr, _Mapping]] = ..., arg_binder: _Optional[_Union[VarWithType, _Mapping]] = ..., ret_type: _Optional[_Union[Type, _Mapping]] = ..., update: _Optional[_Union[Expr, _Mapping]] = ..., self_binder_str: _Optional[str] = ..., self_binder_interned_str: _Optional[int] = ..., location: _Optional[_Union[Location, _Mapping]] = ...) -> None: ...
 
 class KeyExpr(_message.Message):
     __slots__ = ("projections", "record")
@@ -1449,7 +1449,7 @@ class DefDataType(_message.Message):
     interface: Unit
     serializable: bool
     location: Location
-    def __init__(self, name_dname: _Optional[_Union[DottedName, _Mapping]] = ..., name_interned_dname: _Optional[int] = ..., params: _Optional[_Iterable[_Union[TypeVarWithKind, _Mapping]]] = ..., record: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., variant: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., enum: _Optional[_Union[DefDataType.EnumConstructors, _Mapping]] = ..., interface: _Optional[_Union[Unit, _Mapping]] = ..., serializable: bool = ..., location: _Optional[_Union[Location, _Mapping]] = ...) -> None: ...
+    def __init__(self, name_dname: _Optional[_Union[DottedName, _Mapping]] = ..., name_interned_dname: _Optional[int] = ..., params: _Optional[_Iterable[_Union[TypeVarWithKind, _Mapping]]] = ..., record: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., variant: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., enum: _Optional[_Union[DefDataType.EnumConstructors, _Mapping]] = ..., interface: _Optional[_Union[Unit, _Mapping]] = ..., serializable: _Optional[bool] = ..., location: _Optional[_Union[Location, _Mapping]] = ...) -> None: ...
 
 class DefTypeSyn(_message.Message):
     __slots__ = ("name_dname", "name_interned_dname", "params", "type", "location")
@@ -1486,7 +1486,7 @@ class DefValue(_message.Message):
     no_party_literals: bool
     is_test: bool
     location: Location
-    def __init__(self, name_with_type: _Optional[_Union[DefValue.NameWithType, _Mapping]] = ..., expr: _Optional[_Union[Expr, _Mapping]] = ..., no_party_literals: bool = ..., is_test: bool = ..., location: _Optional[_Union[Location, _Mapping]] = ...) -> None: ...
+    def __init__(self, name_with_type: _Optional[_Union[DefValue.NameWithType, _Mapping]] = ..., expr: _Optional[_Union[Expr, _Mapping]] = ..., no_party_literals: _Optional[bool] = ..., is_test: _Optional[bool] = ..., location: _Optional[_Union[Location, _Mapping]] = ...) -> None: ...
 
 class FeatureFlags(_message.Message):
     __slots__ = ("forbidPartyLiterals", "dontDivulgeContractIdsInCreateArguments", "dontDiscloseNonConsumingChoicesToObservers")
@@ -1496,7 +1496,7 @@ class FeatureFlags(_message.Message):
     forbidPartyLiterals: bool
     dontDivulgeContractIdsInCreateArguments: bool
     dontDiscloseNonConsumingChoicesToObservers: bool
-    def __init__(self, forbidPartyLiterals: bool = ..., dontDivulgeContractIdsInCreateArguments: bool = ..., dontDiscloseNonConsumingChoicesToObservers: bool = ...) -> None: ...
+    def __init__(self, forbidPartyLiterals: _Optional[bool] = ..., dontDivulgeContractIdsInCreateArguments: _Optional[bool] = ..., dontDiscloseNonConsumingChoicesToObservers: _Optional[bool] = ...) -> None: ...
 
 class Module(_message.Message):
     __slots__ = ("name_dname", "name_interned_dname", "flags", "synonyms", "data_types", "values", "templates", "exceptions", "interfaces")

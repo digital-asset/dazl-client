@@ -9,7 +9,7 @@ import warnings
 
 from . import participant_inspection_service_pb2 as com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__inspection__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.82.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class ParticipantInspectionServiceStub(object):
+class ParticipantInspectionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -85,7 +85,7 @@ class ParticipantInspectionServiceStub(object):
                 _registered_method=True)
 
 
-class ParticipantInspectionServiceServicer(object):
+class ParticipantInspectionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def LookupOffsetByTime(self, request, context):
@@ -198,7 +198,7 @@ def add_ParticipantInspectionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class ParticipantInspectionService(object):
+class ParticipantInspectionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

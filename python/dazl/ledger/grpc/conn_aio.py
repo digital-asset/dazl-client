@@ -29,8 +29,8 @@ from grpc import ChannelConnectivity
 from grpc.aio import Channel, UnaryStreamCall, UsageError
 
 from ... import LOG
-from ..._gen.com.daml.ledger.api import v1 as lapipb
-from ..._gen.com.daml.ledger.api.v1 import admin as lapiadminpb
+from ..._gen.com.daml.ledger.api import v2 as lapipb
+from ..._gen.com.daml.ledger.api.v2 import admin as lapiadminpb
 from ...damlast.daml_lf_1 import PackageRef, TypeConName
 from ...damlast.util import is_match
 from ...prim import (
@@ -465,7 +465,7 @@ class Connection(aio.Connection):
         ) as call:
             commands = [
                 lapipb.Command(
-                    createAndExercise=await self._codec.encode_create_and_exercise_command(
+                    create_and_exercise=await self._codec.encode_create_and_exercise_command(
                         template_id, payload, choice_name, argument, token=call.token
                     )
                 )
@@ -552,7 +552,7 @@ class Connection(aio.Connection):
         ) as call:
             commands = [
                 lapipb.Command(
-                    exerciseByKey=await self._codec.encode_exercise_by_key_command(
+                    exercise_by_key=await self._codec.encode_exercise_by_key_command(
                         template_id, choice_name, key, argument, token=call.token
                     )
                 )
@@ -706,12 +706,9 @@ class Connection(aio.Connection):
         commands: Collection[lapipb.Command],
         meta: CommandMeta,
         /,
-        ledger_id: Optional[str] = None,
     ) -> lapipb.SubmitAndWaitRequest:
         return lapipb.SubmitAndWaitRequest(
             commands=lapipb.Commands(
-                ledger_id=ledger_id,
-                application_id=meta.application_name,
                 command_id=meta.command_id,
                 workflow_id=meta.workflow_id,
                 commands=commands,
@@ -748,7 +745,7 @@ class Connection(aio.Connection):
         """
         with self._call(token=token, timeout=timeout) as call:
             stub = call.grpc_stub(lapipb.TransactionServiceStub)
-            request = lapipb.GetLedgerEndRequest(ledger_id=call.ledger_id)
+            request = lapipb.GetLedgerEndRequest()
             response = await retry(
                 lambda: stub.GetLedgerEnd(request, **call.grpc_kwargs),
                 timeout=call.timeout,
@@ -964,7 +961,7 @@ class Connection(aio.Connection):
     ) -> Version:
         with self._call(token=token, timeout=timeout) as call:
             stub = call.grpc_stub(lapipb.VersionServiceStub)
-            request = lapipb.GetLedgerApiVersionRequest(ledger_id=call.ledger_id)
+            request = lapipb.GetLedgerApiVersionRequest()
 
             response = await retry(
                 lambda: stub.GetLedgerApiVersion(request, **call.grpc_kwargs), timeout=call.timeout
@@ -1055,7 +1052,6 @@ class Connection(aio.Connection):
             stub = call.grpc_stub(lapiadminpb.PartyManagementServiceStub)
             request = lapiadminpb.AllocatePartyRequest(
                 party_id_hint=Party(identifier_hint) if identifier_hint else None,
-                display_name=display_name,
             )
             response = await retry(
                 lambda: stub.AllocateParty(request, **call.grpc_kwargs), timeout=call.timeout
@@ -1090,7 +1086,7 @@ class Connection(aio.Connection):
     ) -> bytes:
         with self._call(token=token, timeout=timeout) as call:
             stub = call.grpc_stub(lapipb.PackageServiceStub)
-            request = lapipb.GetPackageRequest(ledger_id=call.ledger_id, package_id=package_id)
+            request = lapipb.GetPackageRequest(package_id=package_id)
 
             response = await retry(
                 lambda: stub.GetPackage(request, **call.grpc_kwargs), timeout=call.timeout
@@ -1105,7 +1101,7 @@ class Connection(aio.Connection):
     ) -> AbstractSet[PackageRef]:
         with self._call(token=token, timeout=timeout) as call:
             stub = call.grpc_stub(lapipb.PackageServiceStub)
-            request = lapipb.ListPackagesRequest(ledger_id=call.ledger_id)
+            request = lapipb.ListPackagesRequest()
             response = await retry(
                 lambda: stub.ListPackages(request, **call.grpc_kwargs), timeout=call.timeout
             )
@@ -1165,7 +1161,7 @@ class Connection(aio.Connection):
 
     async def prune(
         self,
-        up_to: str,
+        up_to: int,
         submission_id: Optional[str] = None,
         prune_all_divulged_contracts=False,
         *,
@@ -1292,7 +1288,7 @@ class QueryStream(aio.QueryStreamBase):
         self, filter_pb: lapipb.TransactionFilter
     ) -> AsyncIterable[CreateEvent | Boundary]:
         stub = self._call.grpc_stub(lapipb.ActiveContractsServiceStub)
-        request = lapipb.GetActiveContractsRequest(ledger_id=self._call.ledger_id, filter=filter_pb)
+        request = lapipb.GetActiveContractsRequest(filter=filter_pb)
 
         # Unidirectional gRPC streams cannot sensibly have a deadline because the stream may be
         # open indefinitely. However, if fetching an individual message from the stream takes a
