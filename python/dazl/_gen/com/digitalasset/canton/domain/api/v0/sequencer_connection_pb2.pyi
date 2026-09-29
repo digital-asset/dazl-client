@@ -27,7 +27,7 @@ class SequencerConnection(_message.Message):
         connections: _containers.RepeatedScalarFieldContainer[str]
         transportSecurity: bool
         customTrustCertificates: _wrappers_pb2.BytesValue
-        def __init__(self, connections: _Optional[_Iterable[str]] = ..., transportSecurity: bool = ..., customTrustCertificates: _Optional[_Union[_wrappers_pb2.BytesValue, _Mapping]] = ...) -> None: ...
+        def __init__(self, connections: _Optional[_Iterable[str]] = ..., transportSecurity: _Optional[bool] = ..., customTrustCertificates: _Optional[_Union[_wrappers_pb2.BytesValue, _Mapping]] = ...) -> None: ...
     GRPC_FIELD_NUMBER: _ClassVar[int]
     ALIAS_FIELD_NUMBER: _ClassVar[int]
     grpc: SequencerConnection.Grpc

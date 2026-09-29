@@ -106,14 +106,14 @@ class PartyReplicationStatus(_message.Message):
         IS_ONBOARDING_FLAG_CLEARED_FIELD_NUMBER: _ClassVar[int]
         onboarding_at: _timestamp_pb2.Timestamp
         is_onboarding_flag_cleared: bool
-        def __init__(self, onboarding_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., is_onboarding_flag_cleared: bool = ...) -> None: ...
+        def __init__(self, onboarding_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., is_onboarding_flag_cleared: _Optional[bool] = ...) -> None: ...
     class AcsReplicationProgress(_message.Message):
         __slots__ = ("processed_contract_count", "fully_processed_acs")
         PROCESSED_CONTRACT_COUNT_FIELD_NUMBER: _ClassVar[int]
         FULLY_PROCESSED_ACS_FIELD_NUMBER: _ClassVar[int]
         processed_contract_count: int
         fully_processed_acs: bool
-        def __init__(self, processed_contract_count: _Optional[int] = ..., fully_processed_acs: bool = ...) -> None: ...
+        def __init__(self, processed_contract_count: _Optional[int] = ..., fully_processed_acs: _Optional[bool] = ...) -> None: ...
     class AcsIndexingProgress(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
@@ -136,7 +136,7 @@ class PartyReplicationStatus(_message.Message):
     indexing: PartyReplicationStatus.AcsIndexingProgress
     has_completed: bool
     error_message: PartyReplicationStatus.PartyReplicationError
-    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: bool = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...
+    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...
 
 class ExportPartyAcsRequest(_message.Message):
     __slots__ = ("party_id", "synchronizer_id", "target_participant_uid", "begin_offset_exclusive", "wait_for_activation_timeout")
@@ -186,7 +186,7 @@ class GetHighestOffsetByTimestampRequest(_message.Message):
     synchronizer_id: str
     timestamp: _timestamp_pb2.Timestamp
     force: bool
-    def __init__(self, synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., force: bool = ...) -> None: ...
+    def __init__(self, synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class GetHighestOffsetByTimestampResponse(_message.Message):
     __slots__ = ("ledger_offset",)
@@ -212,4 +212,4 @@ class ClearPartyOnboardingFlagResponse(_message.Message):
     EARLIEST_RETRY_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     onboarded: bool
     earliest_retry_timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, onboarded: bool = ..., earliest_retry_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, onboarded: _Optional[bool] = ..., earliest_retry_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

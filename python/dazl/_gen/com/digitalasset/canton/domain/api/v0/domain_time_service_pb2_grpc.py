@@ -10,7 +10,7 @@ import warnings
 from . import domain_time_service_pb2 as com_dot_digitalasset_dot_canton_dot_domain_dot_api_dot_v0_dot_domain__time__service__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -30,7 +30,7 @@ if _version_not_supported:
     )
 
 
-class DomainTimeServiceStub(object):
+class DomainTimeServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -51,7 +51,7 @@ class DomainTimeServiceStub(object):
                 _registered_method=True)
 
 
-class DomainTimeServiceServicer(object):
+class DomainTimeServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def FetchTime(self, request, context):
@@ -87,7 +87,7 @@ def add_DomainTimeServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class DomainTimeService(object):
+class DomainTimeService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

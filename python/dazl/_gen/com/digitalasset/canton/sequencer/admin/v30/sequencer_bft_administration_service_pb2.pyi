@@ -24,17 +24,29 @@ class RemovePeerEndpointRequest(_message.Message):
     endpoint_id: PeerEndpointId
     def __init__(self, endpoint_id: _Optional[_Union[PeerEndpointId, _Mapping]] = ...) -> None: ...
 
+class ListConfiguredEndpointsRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class ListConfiguredEndpointsResponse(_message.Message):
+    __slots__ = ("endpoints",)
+    ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
+    endpoints: _containers.RepeatedCompositeFieldContainer[PeerEndpoint]
+    def __init__(self, endpoints: _Optional[_Iterable[_Union[PeerEndpoint, _Mapping]]] = ...) -> None: ...
+
 class PeerEndpoint(_message.Message):
-    __slots__ = ("address", "port", "plain_text", "tls")
+    __slots__ = ("address", "port", "plain_text", "tls", "sequencer_id")
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     PORT_FIELD_NUMBER: _ClassVar[int]
     PLAIN_TEXT_FIELD_NUMBER: _ClassVar[int]
     TLS_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCER_ID_FIELD_NUMBER: _ClassVar[int]
     address: str
     port: int
     plain_text: PlainTextPeerEndpoint
     tls: TlsPeerEndpoint
-    def __init__(self, address: _Optional[str] = ..., port: _Optional[int] = ..., plain_text: _Optional[_Union[PlainTextPeerEndpoint, _Mapping]] = ..., tls: _Optional[_Union[TlsPeerEndpoint, _Mapping]] = ...) -> None: ...
+    sequencer_id: str
+    def __init__(self, address: _Optional[str] = ..., port: _Optional[int] = ..., plain_text: _Optional[_Union[PlainTextPeerEndpoint, _Mapping]] = ..., tls: _Optional[_Union[TlsPeerEndpoint, _Mapping]] = ..., sequencer_id: _Optional[str] = ...) -> None: ...
 
 class PeerEndpointId(_message.Message):
     __slots__ = ("address", "port", "tls")
@@ -44,7 +56,7 @@ class PeerEndpointId(_message.Message):
     address: str
     port: int
     tls: bool
-    def __init__(self, address: _Optional[str] = ..., port: _Optional[int] = ..., tls: bool = ...) -> None: ...
+    def __init__(self, address: _Optional[str] = ..., port: _Optional[int] = ..., tls: _Optional[bool] = ...) -> None: ...
 
 class PlainTextPeerEndpoint(_message.Message):
     __slots__ = ()
@@ -70,19 +82,57 @@ class AddPeerEndpointResponse(_message.Message):
     __slots__ = ("added",)
     ADDED_FIELD_NUMBER: _ClassVar[int]
     added: bool
-    def __init__(self, added: bool = ...) -> None: ...
+    def __init__(self, added: _Optional[bool] = ...) -> None: ...
 
 class RemovePeerEndpointResponse(_message.Message):
     __slots__ = ("removed",)
     REMOVED_FIELD_NUMBER: _ClassVar[int]
     removed: bool
-    def __init__(self, removed: bool = ...) -> None: ...
+    def __init__(self, removed: _Optional[bool] = ...) -> None: ...
 
 class Authenticated(_message.Message):
     __slots__ = ("sequencer_id",)
     SEQUENCER_ID_FIELD_NUMBER: _ClassVar[int]
     sequencer_id: str
     def __init__(self, sequencer_id: _Optional[str] = ...) -> None: ...
+
+class GetPeerNetworkStatusRequest(_message.Message):
+    __slots__ = ("endpoint_ids",)
+    ENDPOINT_IDS_FIELD_NUMBER: _ClassVar[int]
+    endpoint_ids: _containers.RepeatedCompositeFieldContainer[PeerEndpointId]
+    def __init__(self, endpoint_ids: _Optional[_Iterable[_Union[PeerEndpointId, _Mapping]]] = ...) -> None: ...
+
+class GetPeerNetworkStatusResponse(_message.Message):
+    __slots__ = ("statuses",)
+    STATUSES_FIELD_NUMBER: _ClassVar[int]
+    statuses: _containers.RepeatedCompositeFieldContainer[PeerConnectionStatus]
+    def __init__(self, statuses: _Optional[_Iterable[_Union[PeerConnectionStatus, _Mapping]]] = ...) -> None: ...
+
+class PeerConnectionStatus(_message.Message):
+    __slots__ = ("peer_endpoint_status", "peer_incoming_connection")
+    PEER_ENDPOINT_STATUS_FIELD_NUMBER: _ClassVar[int]
+    PEER_INCOMING_CONNECTION_FIELD_NUMBER: _ClassVar[int]
+    peer_endpoint_status: PeerEndpointStatus
+    peer_incoming_connection: Authenticated
+    def __init__(self, peer_endpoint_status: _Optional[_Union[PeerEndpointStatus, _Mapping]] = ..., peer_incoming_connection: _Optional[_Union[Authenticated, _Mapping]] = ...) -> None: ...
+
+class PeerEndpointStatus(_message.Message):
+    __slots__ = ("endpoint_id", "is_outgoing_connection", "health")
+    ENDPOINT_ID_FIELD_NUMBER: _ClassVar[int]
+    IS_OUTGOING_CONNECTION_FIELD_NUMBER: _ClassVar[int]
+    HEALTH_FIELD_NUMBER: _ClassVar[int]
+    endpoint_id: PeerEndpointId
+    is_outgoing_connection: bool
+    health: PeerEndpointHealth
+    def __init__(self, endpoint_id: _Optional[_Union[PeerEndpointId, _Mapping]] = ..., is_outgoing_connection: _Optional[bool] = ..., health: _Optional[_Union[PeerEndpointHealth, _Mapping]] = ...) -> None: ...
+
+class PeerEndpointHealth(_message.Message):
+    __slots__ = ("status", "description")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    status: PeerEndpointHealthStatus
+    description: str
+    def __init__(self, status: _Optional[_Union[PeerEndpointHealthStatus, _Mapping]] = ..., description: _Optional[str] = ...) -> None: ...
 
 class PeerEndpointHealthStatus(_message.Message):
     __slots__ = ("unknown_endpoint", "disconnected", "unauthenticated", "authenticated")
@@ -104,44 +154,6 @@ class PeerEndpointHealthStatus(_message.Message):
     unauthenticated: PeerEndpointHealthStatus.Unauthenticated
     authenticated: Authenticated
     def __init__(self, unknown_endpoint: _Optional[_Union[PeerEndpointHealthStatus.UnknownEndpoint, _Mapping]] = ..., disconnected: _Optional[_Union[PeerEndpointHealthStatus.Disconnected, _Mapping]] = ..., unauthenticated: _Optional[_Union[PeerEndpointHealthStatus.Unauthenticated, _Mapping]] = ..., authenticated: _Optional[_Union[Authenticated, _Mapping]] = ...) -> None: ...
-
-class PeerEndpointHealth(_message.Message):
-    __slots__ = ("status", "description")
-    STATUS_FIELD_NUMBER: _ClassVar[int]
-    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    status: PeerEndpointHealthStatus
-    description: str
-    def __init__(self, status: _Optional[_Union[PeerEndpointHealthStatus, _Mapping]] = ..., description: _Optional[str] = ...) -> None: ...
-
-class PeerEndpointStatus(_message.Message):
-    __slots__ = ("endpoint_id", "is_outgoing_connection", "health")
-    ENDPOINT_ID_FIELD_NUMBER: _ClassVar[int]
-    IS_OUTGOING_CONNECTION_FIELD_NUMBER: _ClassVar[int]
-    HEALTH_FIELD_NUMBER: _ClassVar[int]
-    endpoint_id: PeerEndpointId
-    is_outgoing_connection: bool
-    health: PeerEndpointHealth
-    def __init__(self, endpoint_id: _Optional[_Union[PeerEndpointId, _Mapping]] = ..., is_outgoing_connection: bool = ..., health: _Optional[_Union[PeerEndpointHealth, _Mapping]] = ...) -> None: ...
-
-class PeerConnectionStatus(_message.Message):
-    __slots__ = ("peer_endpoint_status", "peer_incoming_connection")
-    PEER_ENDPOINT_STATUS_FIELD_NUMBER: _ClassVar[int]
-    PEER_INCOMING_CONNECTION_FIELD_NUMBER: _ClassVar[int]
-    peer_endpoint_status: PeerEndpointStatus
-    peer_incoming_connection: Authenticated
-    def __init__(self, peer_endpoint_status: _Optional[_Union[PeerEndpointStatus, _Mapping]] = ..., peer_incoming_connection: _Optional[_Union[Authenticated, _Mapping]] = ...) -> None: ...
-
-class GetPeerNetworkStatusRequest(_message.Message):
-    __slots__ = ("endpoint_ids",)
-    ENDPOINT_IDS_FIELD_NUMBER: _ClassVar[int]
-    endpoint_ids: _containers.RepeatedCompositeFieldContainer[PeerEndpointId]
-    def __init__(self, endpoint_ids: _Optional[_Iterable[_Union[PeerEndpointId, _Mapping]]] = ...) -> None: ...
-
-class GetPeerNetworkStatusResponse(_message.Message):
-    __slots__ = ("statuses",)
-    STATUSES_FIELD_NUMBER: _ClassVar[int]
-    statuses: _containers.RepeatedCompositeFieldContainer[PeerConnectionStatus]
-    def __init__(self, statuses: _Optional[_Iterable[_Union[PeerConnectionStatus, _Mapping]]] = ...) -> None: ...
 
 class GetWriteReadinessRequest(_message.Message):
     __slots__ = ()
@@ -196,7 +208,7 @@ class SetPerformanceMetricsEnabledRequest(_message.Message):
     __slots__ = ("enabled",)
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     enabled: bool
-    def __init__(self, enabled: bool = ...) -> None: ...
+    def __init__(self, enabled: _Optional[bool] = ...) -> None: ...
 
 class SetPerformanceMetricsEnabledResponse(_message.Message):
     __slots__ = ()

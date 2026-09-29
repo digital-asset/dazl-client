@@ -38,7 +38,7 @@ class CostEstimationHints(_message.Message):
     EXPECTED_SIGNATURES_FIELD_NUMBER: _ClassVar[int]
     disabled: bool
     expected_signatures: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningAlgorithmSpec]
-    def __init__(self, disabled: bool = ..., expected_signatures: _Optional[_Iterable[_Union[_crypto_pb2.SigningAlgorithmSpec, str]]] = ...) -> None: ...
+    def __init__(self, disabled: _Optional[bool] = ..., expected_signatures: _Optional[_Iterable[_Union[_crypto_pb2.SigningAlgorithmSpec, str]]] = ...) -> None: ...
 
 class CostEstimation(_message.Message):
     __slots__ = ("estimation_timestamp", "confirmation_request_traffic_cost_estimation", "confirmation_response_traffic_cost_estimation", "total_traffic_cost_estimation")
@@ -84,7 +84,7 @@ class PrepareSubmissionRequest(_message.Message):
     estimate_traffic_cost: CostEstimationHints
     hashing_scheme_version: HashingSchemeVersion
     taps_max_passes: int
-    def __init__(self, user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., min_ledger_time: _Optional[_Union[MinLedgerTime, _Mapping]] = ..., max_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., disclosed_contracts: _Optional[_Iterable[_Union[_commands_pb2.DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., verbose_hashing: bool = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[_commands_pb2.PrefetchContractKey, _Mapping]]] = ..., estimate_traffic_cost: _Optional[_Union[CostEstimationHints, _Mapping]] = ..., hashing_scheme_version: _Optional[_Union[HashingSchemeVersion, str]] = ..., taps_max_passes: _Optional[int] = ...) -> None: ...
+    def __init__(self, user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., commands: _Optional[_Iterable[_Union[_commands_pb2.Command, _Mapping]]] = ..., min_ledger_time: _Optional[_Union[MinLedgerTime, _Mapping]] = ..., max_record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., read_as: _Optional[_Iterable[str]] = ..., disclosed_contracts: _Optional[_Iterable[_Union[_commands_pb2.DisclosedContract, _Mapping]]] = ..., synchronizer_id: _Optional[str] = ..., package_id_selection_preference: _Optional[_Iterable[str]] = ..., verbose_hashing: _Optional[bool] = ..., prefetch_contract_keys: _Optional[_Iterable[_Union[_commands_pb2.PrefetchContractKey, _Mapping]]] = ..., estimate_traffic_cost: _Optional[_Union[CostEstimationHints, _Mapping]] = ..., hashing_scheme_version: _Optional[_Union[HashingSchemeVersion, str]] = ..., taps_max_passes: _Optional[int] = ...) -> None: ...
 
 class PrepareSubmissionResponse(_message.Message):
     __slots__ = ("prepared_transaction", "prepared_transaction_hash", "hashing_scheme_version", "hashing_details", "cost_estimation")

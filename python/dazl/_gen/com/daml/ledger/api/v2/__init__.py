@@ -27,7 +27,7 @@ from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCom
 from .version_service_pb2 import FeaturesDescriptor, GetLedgerApiVersionRequest, GetLedgerApiVersionResponse, OffsetCheckpointFeature, PackageFeature, PartyManagementFeature, UserManagementFeature
 from .version_service_pb2_grpc import VersionServiceStub
 from .reassignment_commands_pb2 import AssignCommand, ReassignmentCommand, ReassignmentCommands, UnassignCommand
-from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse
+from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse, GetCompletionsRequest
 from .command_completion_service_pb2_grpc import CommandCompletionServiceStub
 from .command_service_pb2 import SubmitAndWaitForReassignmentRequest, SubmitAndWaitForReassignmentResponse, SubmitAndWaitForTransactionRequest, SubmitAndWaitForTransactionResponse, SubmitAndWaitRequest, SubmitAndWaitResponse
 from .command_service_pb2_grpc import CommandServiceStub
@@ -76,6 +76,7 @@ __all__ = [
     "GetActiveContractsPageResponse",
     "GetActiveContractsRequest",
     "GetActiveContractsResponse",
+    "GetCompletionsRequest",
     "GetConnectedSynchronizersRequest",
     "GetConnectedSynchronizersResponse",
     "GetContractRequest",

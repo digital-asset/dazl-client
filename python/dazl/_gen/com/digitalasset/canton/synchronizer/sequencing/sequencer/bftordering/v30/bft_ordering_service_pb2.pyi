@@ -107,10 +107,12 @@ class StoreResponse(_message.Message):
     def __init__(self, batch_id: _Optional[bytes] = ..., signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ...) -> None: ...
 
 class BatchRequest(_message.Message):
-    __slots__ = ("batch_id",)
+    __slots__ = ("batch_id", "epoch_number")
     BATCH_ID_FIELD_NUMBER: _ClassVar[int]
+    EPOCH_NUMBER_FIELD_NUMBER: _ClassVar[int]
     batch_id: bytes
-    def __init__(self, batch_id: _Optional[bytes] = ...) -> None: ...
+    epoch_number: int
+    def __init__(self, batch_id: _Optional[bytes] = ..., epoch_number: _Optional[int] = ...) -> None: ...
 
 class BatchResponse(_message.Message):
     __slots__ = ("batch_id", "batch")
@@ -302,7 +304,7 @@ class BlockInProgress(_message.Message):
     pre_prepared: bool
     prepares_present: _containers.RepeatedScalarFieldContainer[bool]
     commits_present: _containers.RepeatedScalarFieldContainer[bool]
-    def __init__(self, pre_prepared: bool = ..., prepares_present: _Optional[_Iterable[bool]] = ..., commits_present: _Optional[_Iterable[bool]] = ...) -> None: ...
+    def __init__(self, pre_prepared: _Optional[bool] = ..., prepares_present: _Optional[_Iterable[bool]] = ..., commits_present: _Optional[_Iterable[bool]] = ...) -> None: ...
 
 class StateTransferMessage(_message.Message):
     __slots__ = ("block_request", "block_response")

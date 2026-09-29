@@ -57,3 +57,13 @@ class StoreId(_message.Message):
     synchronizer: Synchronizer
     temporary: StoreId.Temporary
     def __init__(self, authorized: _Optional[_Union[StoreId.Authorized, _Mapping]] = ..., synchronizer: _Optional[_Union[Synchronizer, _Mapping]] = ..., temporary: _Optional[_Union[StoreId.Temporary, _Mapping]] = ...) -> None: ...
+
+class SynchronizerPredecessor(_message.Message):
+    __slots__ = ("predecessor_physical_id", "upgrade_time", "is_late_upgrade")
+    PREDECESSOR_PHYSICAL_ID_FIELD_NUMBER: _ClassVar[int]
+    UPGRADE_TIME_FIELD_NUMBER: _ClassVar[int]
+    IS_LATE_UPGRADE_FIELD_NUMBER: _ClassVar[int]
+    predecessor_physical_id: str
+    upgrade_time: _timestamp_pb2.Timestamp
+    is_late_upgrade: bool
+    def __init__(self, predecessor_physical_id: _Optional[str] = ..., upgrade_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., is_late_upgrade: _Optional[bool] = ...) -> None: ...

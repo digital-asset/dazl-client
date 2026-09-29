@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_bft_administration_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class SequencerBftAdministrationServiceStub(object):
+class SequencerBftAdministrationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -47,6 +47,11 @@ class SequencerBftAdministrationServiceStub(object):
                 '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/RemovePeerEndpoint',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.RemovePeerEndpointRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.RemovePeerEndpointResponse.FromString,
+                _registered_method=True)
+        self.ListConfiguredEndpoints = channel.unary_unary(
+                '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/ListConfiguredEndpoints',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.ListConfiguredEndpointsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.ListConfiguredEndpointsResponse.FromString,
                 _registered_method=True)
         self.GetPeerNetworkStatus = channel.unary_unary(
                 '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/GetPeerNetworkStatus',
@@ -70,7 +75,7 @@ class SequencerBftAdministrationServiceStub(object):
                 _registered_method=True)
 
 
-class SequencerBftAdministrationServiceServicer(object):
+class SequencerBftAdministrationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def AddPeerEndpoint(self, request, context):
@@ -80,6 +85,12 @@ class SequencerBftAdministrationServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def RemovePeerEndpoint(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListConfiguredEndpoints(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -122,6 +133,11 @@ def add_SequencerBftAdministrationServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.RemovePeerEndpointRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.RemovePeerEndpointResponse.SerializeToString,
             ),
+            'ListConfiguredEndpoints': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListConfiguredEndpoints,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.ListConfiguredEndpointsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.ListConfiguredEndpointsResponse.SerializeToString,
+            ),
             'GetPeerNetworkStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetPeerNetworkStatus,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.GetPeerNetworkStatusRequest.FromString,
@@ -150,7 +166,7 @@ def add_SequencerBftAdministrationServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SequencerBftAdministrationService(object):
+class SequencerBftAdministrationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -197,6 +213,33 @@ class SequencerBftAdministrationService(object):
             '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/RemovePeerEndpoint',
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.RemovePeerEndpointRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.RemovePeerEndpointResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListConfiguredEndpoints(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.sequencer.admin.v30.SequencerBftAdministrationService/ListConfiguredEndpoints',
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.ListConfiguredEndpointsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__bft__administration__service__pb2.ListConfiguredEndpointsResponse.FromString,
             options,
             channel_credentials,
             insecure,

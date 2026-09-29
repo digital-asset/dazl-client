@@ -87,7 +87,7 @@ class InspectCommitmentContractsRequest(_message.Message):
     expected_synchronizer_id: str
     timestamp: _timestamp_pb2.Timestamp
     download_payload: bool
-    def __init__(self, cids: _Optional[_Iterable[bytes]] = ..., expected_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., download_payload: bool = ...) -> None: ...
+    def __init__(self, cids: _Optional[_Iterable[bytes]] = ..., expected_synchronizer_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., download_payload: _Optional[bool] = ...) -> None: ...
 
 class InspectCommitmentContractsResponse(_message.Message):
     __slots__ = ("chunk",)
@@ -105,7 +105,7 @@ class CommitmentContract(_message.Message):
     active_on_expected_synchronizer: bool
     contract: bytes
     states: _containers.RepeatedCompositeFieldContainer[ContractState.SynchronizerState]
-    def __init__(self, cid: _Optional[bytes] = ..., active_on_expected_synchronizer: bool = ..., contract: _Optional[bytes] = ..., states: _Optional[_Iterable[_Union[ContractState.SynchronizerState, _Mapping]]] = ...) -> None: ...
+    def __init__(self, cid: _Optional[bytes] = ..., active_on_expected_synchronizer: _Optional[bool] = ..., contract: _Optional[bytes] = ..., states: _Optional[_Iterable[_Union[ContractState.SynchronizerState, _Mapping]]] = ...) -> None: ...
 
 class ContractState(_message.Message):
     __slots__ = ()
@@ -166,7 +166,7 @@ class LookupReceivedAcsCommitmentsRequest(_message.Message):
     counter_participant_ids: _containers.RepeatedScalarFieldContainer[str]
     commitment_state: _containers.RepeatedScalarFieldContainer[ReceivedCommitmentState]
     verbose: bool
-    def __init__(self, time_ranges: _Optional[_Iterable[_Union[SynchronizerTimeRange, _Mapping]]] = ..., counter_participant_ids: _Optional[_Iterable[str]] = ..., commitment_state: _Optional[_Iterable[_Union[ReceivedCommitmentState, str]]] = ..., verbose: bool = ...) -> None: ...
+    def __init__(self, time_ranges: _Optional[_Iterable[_Union[SynchronizerTimeRange, _Mapping]]] = ..., counter_participant_ids: _Optional[_Iterable[str]] = ..., commitment_state: _Optional[_Iterable[_Union[ReceivedCommitmentState, str]]] = ..., verbose: _Optional[bool] = ...) -> None: ...
 
 class LookupReceivedAcsCommitmentsResponse(_message.Message):
     __slots__ = ("received",)
@@ -252,7 +252,7 @@ class LookupSentAcsCommitmentsRequest(_message.Message):
     counter_participant_ids: _containers.RepeatedScalarFieldContainer[str]
     commitment_state: _containers.RepeatedScalarFieldContainer[SentCommitmentState]
     verbose: bool
-    def __init__(self, time_ranges: _Optional[_Iterable[_Union[SynchronizerTimeRange, _Mapping]]] = ..., counter_participant_ids: _Optional[_Iterable[str]] = ..., commitment_state: _Optional[_Iterable[_Union[SentCommitmentState, str]]] = ..., verbose: bool = ...) -> None: ...
+    def __init__(self, time_ranges: _Optional[_Iterable[_Union[SynchronizerTimeRange, _Mapping]]] = ..., counter_participant_ids: _Optional[_Iterable[str]] = ..., commitment_state: _Optional[_Iterable[_Union[SentCommitmentState, str]]] = ..., verbose: _Optional[bool] = ...) -> None: ...
 
 class LookupSentAcsCommitmentsResponse(_message.Message):
     __slots__ = ("sent",)

@@ -9,7 +9,7 @@ import warnings
 
 from . import command_completion_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class CommandCompletionServiceStub(object):
+class CommandCompletionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -43,12 +43,23 @@ class CommandCompletionServiceStub(object):
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
                 _registered_method=True)
+        self.GetCompletions = channel.unary_stream(
+                '/com.daml.ledger.api.v2.CommandCompletionService/GetCompletions',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionsRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
+                _registered_method=True)
 
 
-class CommandCompletionServiceServicer(object):
+class CommandCompletionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def CompletionStream(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetCompletions(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -62,6 +73,11 @@ def add_CommandCompletionServiceServicer_to_server(servicer, server):
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.SerializeToString,
             ),
+            'GetCompletions': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetCompletions,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionsRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'com.daml.ledger.api.v2.CommandCompletionService', rpc_method_handlers)
@@ -70,7 +86,7 @@ def add_CommandCompletionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class CommandCompletionService(object):
+class CommandCompletionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -89,6 +105,33 @@ class CommandCompletionService(object):
             target,
             '/com.daml.ledger.api.v2.CommandCompletionService/CompletionStream',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetCompletions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.CommandCompletionService/GetCompletions',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionsRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
             options,
             channel_credentials,

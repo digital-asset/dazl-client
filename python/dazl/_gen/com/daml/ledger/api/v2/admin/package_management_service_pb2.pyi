@@ -130,7 +130,7 @@ class UpdateVettedPackagesRequest(_message.Message):
     synchronizer_id: str
     expected_topology_serial: _package_reference_pb2.PriorTopologySerial
     update_vetted_packages_force_flags: _containers.RepeatedScalarFieldContainer[UpdateVettedPackagesForceFlag]
-    def __init__(self, changes: _Optional[_Iterable[_Union[VettedPackagesChange, _Mapping]]] = ..., dry_run: bool = ..., synchronizer_id: _Optional[str] = ..., expected_topology_serial: _Optional[_Union[_package_reference_pb2.PriorTopologySerial, _Mapping]] = ..., update_vetted_packages_force_flags: _Optional[_Iterable[_Union[UpdateVettedPackagesForceFlag, str]]] = ...) -> None: ...
+    def __init__(self, changes: _Optional[_Iterable[_Union[VettedPackagesChange, _Mapping]]] = ..., dry_run: _Optional[bool] = ..., synchronizer_id: _Optional[str] = ..., expected_topology_serial: _Optional[_Union[_package_reference_pb2.PriorTopologySerial, _Mapping]] = ..., update_vetted_packages_force_flags: _Optional[_Iterable[_Union[UpdateVettedPackagesForceFlag, str]]] = ...) -> None: ...
 
 class UpdateVettedPackagesResponse(_message.Message):
     __slots__ = ("past_vetted_packages", "new_vetted_packages")

@@ -27,7 +27,7 @@ class GetTransactionsRequest(_message.Message):
     filter: _transaction_filter_pb2.TransactionFilter
     verbose: bool
     send_pruned_offsets: bool
-    def __init__(self, ledger_id: _Optional[str] = ..., begin: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., end: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ..., send_pruned_offsets: bool = ...) -> None: ...
+    def __init__(self, ledger_id: _Optional[str] = ..., begin: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., end: _Optional[_Union[_ledger_offset_pb2.LedgerOffset, _Mapping]] = ..., filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: _Optional[bool] = ..., send_pruned_offsets: _Optional[bool] = ...) -> None: ...
 
 class GetTransactionsResponse(_message.Message):
     __slots__ = ("transactions", "pruned_offset")

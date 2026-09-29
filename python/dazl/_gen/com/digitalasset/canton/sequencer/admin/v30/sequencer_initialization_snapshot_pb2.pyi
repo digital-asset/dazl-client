@@ -75,7 +75,7 @@ class SequencerMemberStatus(_message.Message):
     registered_at: int
     last_acknowledged: int
     enabled: bool
-    def __init__(self, member: _Optional[str] = ..., registered_at: _Optional[int] = ..., last_acknowledged: _Optional[int] = ..., enabled: bool = ...) -> None: ...
+    def __init__(self, member: _Optional[str] = ..., registered_at: _Optional[int] = ..., last_acknowledged: _Optional[int] = ..., enabled: _Optional[bool] = ...) -> None: ...
 
 class SequencerPruningStatus(_message.Message):
     __slots__ = ("now", "earliest_event_timestamp", "members")

@@ -11,7 +11,7 @@ from . import enterprise_mediator_administration_service_pb2 as com_dot_digitala
 from ....pruning.admin.v0 import pruning_pb2 as com_dot_digitalasset_dot_canton_dot_pruning_dot_admin_dot_v0_dot_pruning__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -31,7 +31,7 @@ if _version_not_supported:
     )
 
 
-class EnterpriseMediatorAdministrationServiceStub(object):
+class EnterpriseMediatorAdministrationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -82,7 +82,7 @@ class EnterpriseMediatorAdministrationServiceStub(object):
                 _registered_method=True)
 
 
-class EnterpriseMediatorAdministrationServiceServicer(object):
+class EnterpriseMediatorAdministrationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Prune(self, request, context):
@@ -184,7 +184,7 @@ def add_EnterpriseMediatorAdministrationServiceServicer_to_server(servicer, serv
 
 
  # This class is part of an EXPERIMENTAL API.
-class EnterpriseMediatorAdministrationService(object):
+class EnterpriseMediatorAdministrationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

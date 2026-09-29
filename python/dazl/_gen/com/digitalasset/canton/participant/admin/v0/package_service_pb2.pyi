@@ -47,7 +47,7 @@ class RemovePackageRequest(_message.Message):
     FORCE_FIELD_NUMBER: _ClassVar[int]
     package_id: str
     force: bool
-    def __init__(self, package_id: _Optional[str] = ..., force: bool = ...) -> None: ...
+    def __init__(self, package_id: _Optional[str] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class RemovePackageResponse(_message.Message):
     __slots__ = ("success",)
@@ -61,7 +61,7 @@ class VetDarRequest(_message.Message):
     SYNCHRONIZE_FIELD_NUMBER: _ClassVar[int]
     dar_hash: str
     synchronize: bool
-    def __init__(self, dar_hash: _Optional[str] = ..., synchronize: bool = ...) -> None: ...
+    def __init__(self, dar_hash: _Optional[str] = ..., synchronize: _Optional[bool] = ...) -> None: ...
 
 class VetDarResponse(_message.Message):
     __slots__ = ()
@@ -73,7 +73,7 @@ class UnvetDarRequest(_message.Message):
     SYNCHRONIZE_FIELD_NUMBER: _ClassVar[int]
     dar_hash: str
     synchronize: bool
-    def __init__(self, dar_hash: _Optional[str] = ..., synchronize: bool = ...) -> None: ...
+    def __init__(self, dar_hash: _Optional[str] = ..., synchronize: _Optional[bool] = ...) -> None: ...
 
 class UnvetDarResponse(_message.Message):
     __slots__ = ()
@@ -139,7 +139,7 @@ class UploadDarRequest(_message.Message):
     filename: str
     vet_all_packages: bool
     synchronize_vetting: bool
-    def __init__(self, data: _Optional[bytes] = ..., filename: _Optional[str] = ..., vet_all_packages: bool = ..., synchronize_vetting: bool = ...) -> None: ...
+    def __init__(self, data: _Optional[bytes] = ..., filename: _Optional[str] = ..., vet_all_packages: _Optional[bool] = ..., synchronize_vetting: _Optional[bool] = ...) -> None: ...
 
 class UploadDarResponse(_message.Message):
     __slots__ = ("success", "failure")
