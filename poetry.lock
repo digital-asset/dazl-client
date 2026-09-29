@@ -2758,4 +2758,4 @@ tls-testing = ["cryptography"]
 [metadata]
 lock-version = "2.1"
 python-versions = "<4.0,>=3.10"
-content-hash = "cd3a68d26b3cc3c8b0070c939c72e5507476f4056f6f90aeb2ea42c7fe00d328"
+content-hash = "38a93100ed609edc85ed6eaea1d5b028463f8309a9a9ee62f0a03d74a73290d6"
