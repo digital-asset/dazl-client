@@ -71,6 +71,9 @@ lint.isort.force-sort-within-sections = true
 
 [tool.mypy]
 cache_dir = '.cache/mypy'
+exclude = [
+    "^python/dazl/_gen/.*"
+]
 #disallow_untyped_defs = true
 namespace_packages = true
 
