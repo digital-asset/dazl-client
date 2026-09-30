@@ -3,14 +3,14 @@
 # fmt: off
 # isort: skip_file
 
-from .common_pb2 import StoreId, Synchronizer, SynchronizerPredecessor, TopologyTransactions
+from .common_pb2 import StoreId, Synchronizer, TopologyTransactions
 from .initialization_service_pb2 import CurrentTimeRequest, CurrentTimeResponse, GetIdRequest, GetIdResponse, GetOnboardingTransactionsRequest, GetOnboardingTransactionsResponse, InitIdRequest, InitIdResponse
 from .initialization_service_pb2_grpc import IdentityInitializationServiceStub
-from .topology_manager_write_service_pb2 import AddTransactionsRequest, AddTransactionsResponse, AuthorizeRequest, AuthorizeResponse, CreateTemporaryTopologyStoreRequest, CreateTemporaryTopologyStoreResponse, DropTemporaryTopologyStoreRequest, DropTemporaryTopologyStoreResponse, ForceFlag, GenerateTransactionsRequest, GenerateTransactionsResponse, ImportTopologySnapshotRequest, ImportTopologySnapshotResponse, ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response, SignTransactionsRequest, SignTransactionsResponse
+from .topology_manager_write_service_pb2 import AddTransactionsRequest, AddTransactionsResponse, AuthorizeRequest, AuthorizeResponse, BaseWriteRequest, CreateTemporaryTopologyStoreRequest, CreateTemporaryTopologyStoreResponse, DropTemporaryTopologyStoreRequest, DropTemporaryTopologyStoreResponse, ForceFlag, GenerateTransactionsRequest, GenerateTransactionsResponse, ImportTopologySnapshotRequest, ImportTopologySnapshotResponse, ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response, SignTransactionsRequest, SignTransactionsResponse
 from .topology_manager_write_service_pb2_grpc import TopologyManagerWriteServiceStub
-from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ExportTopologySnapshotRequest, ExportTopologySnapshotResponse, ExportTopologySnapshotV2Request, ExportTopologySnapshotV2Response, GenesisStateRequest, GenesisStateResponse, GenesisStateV2Request, GenesisStateV2Response, ListAllRequest, ListAllResponse, ListAllV2Request, ListAllV2Response, ListAvailableStoresRequest, ListAvailableStoresResponse, ListDecentralizedNamespaceDefinitionRequest, ListDecentralizedNamespaceDefinitionResponse, ListLsuAnnouncementRequest, ListLsuAnnouncementResponse, ListLsuSequencerConnectionSuccessorRequest, ListLsuSequencerConnectionSuccessorResponse, ListMediatorSynchronizerStateRequest, ListMediatorSynchronizerStateResponse, ListNamespaceDelegationRequest, ListNamespaceDelegationResponse, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResponse, ListParticipantSynchronizerPermissionRequest, ListParticipantSynchronizerPermissionResponse, ListPartyHostingLimitsRequest, ListPartyHostingLimitsResponse, ListPartyToKeyMappingRequest, ListPartyToKeyMappingResponse, ListPartyToParticipantRequest, ListPartyToParticipantResponse, ListSequencerSynchronizerStateRequest, ListSequencerSynchronizerStateResponse, ListSequencingParametersStateRequest, ListSequencingParametersStateResponse, ListSynchronizerParametersStateRequest, ListSynchronizerParametersStateResponse, ListSynchronizerTrustCertificateRequest, ListSynchronizerTrustCertificateResponse, ListVettedPackagesRequest, ListVettedPackagesResponse, SequencerLsuStateRequest, SequencerLsuStateResponse
+from .topology_manager_read_service_pb2 import BaseQuery, BaseResult, ExportTopologySnapshotRequest, ExportTopologySnapshotResponse, ExportTopologySnapshotV2Request, ExportTopologySnapshotV2Response, GenerateOnboardingTopologyTransactionsRequest, GenerateOnboardingTopologyTransactionsResponse, GenesisStateRequest, GenesisStateResponse, GenesisStateV2Request, GenesisStateV2Response, ListAllRequest, ListAllResponse, ListAllV2Request, ListAllV2Response, ListAvailableStoresRequest, ListAvailableStoresResponse, ListDecentralizedNamespaceDefinitionRequest, ListDecentralizedNamespaceDefinitionResponse, ListLsuAnnouncementRequest, ListLsuAnnouncementResponse, ListLsuSequencerConnectionSuccessorRequest, ListLsuSequencerConnectionSuccessorResponse, ListMediatorSynchronizerStateRequest, ListMediatorSynchronizerStateResponse, ListNamespaceDelegationRequest, ListNamespaceDelegationResponse, ListOwnerToKeyMappingRequest, ListOwnerToKeyMappingResponse, ListParticipantSynchronizerPermissionRequest, ListParticipantSynchronizerPermissionResponse, ListPartyHostingLimitsRequest, ListPartyHostingLimitsResponse, ListPartyToKeyMappingRequest, ListPartyToKeyMappingResponse, ListPartyToParticipantRequest, ListPartyToParticipantResponse, ListSequencerSynchronizerStateRequest, ListSequencerSynchronizerStateResponse, ListSequencingParametersStateRequest, ListSequencingParametersStateResponse, ListSynchronizerParametersStateRequest, ListSynchronizerParametersStateResponse, ListSynchronizerTrustCertificateRequest, ListSynchronizerTrustCertificateResponse, ListVettedPackagesRequest, ListVettedPackagesResponse, SequencerLsuStateRequest, SequencerLsuStateResponse
 from .topology_manager_read_service_pb2_grpc import TopologyManagerReadServiceStub
-from .topology_aggregation_service_pb2 import ListKeyOwnersRequest, ListKeyOwnersResponse, ListPartiesRequest, ListPartiesResponse
+from .topology_aggregation_service_pb2 import BaseAggregationRequest, ListKeyOwnersRequest, ListKeyOwnersResponse, ListPartiesRequest, ListPartiesResponse
 from .topology_aggregation_service_pb2_grpc import TopologyAggregationServiceStub
 
 __all__ = [
@@ -18,8 +18,10 @@ __all__ = [
     "AddTransactionsResponse",
     "AuthorizeRequest",
     "AuthorizeResponse",
+    "BaseAggregationRequest",
     "BaseQuery",
     "BaseResult",
+    "BaseWriteRequest",
     "CreateTemporaryTopologyStoreRequest",
     "CreateTemporaryTopologyStoreResponse",
     "CurrentTimeRequest",
@@ -31,6 +33,8 @@ __all__ = [
     "ExportTopologySnapshotV2Request",
     "ExportTopologySnapshotV2Response",
     "ForceFlag",
+    "GenerateOnboardingTopologyTransactionsRequest",
+    "GenerateOnboardingTopologyTransactionsResponse",
     "GenerateTransactionsRequest",
     "GenerateTransactionsResponse",
     "GenesisStateRequest",
@@ -94,7 +98,6 @@ __all__ = [
     "SignTransactionsResponse",
     "StoreId",
     "Synchronizer",
-    "SynchronizerPredecessor",
     "TopologyAggregationServiceStub",
     "TopologyManagerReadServiceStub",
     "TopologyManagerWriteServiceStub",

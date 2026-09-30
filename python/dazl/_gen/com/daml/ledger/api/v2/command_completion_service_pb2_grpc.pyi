@@ -8,7 +8,7 @@ import builtins as _builtins, typing as _typing
 import grpc as _grpc
 from grpc import aio as _grpc_aio
 
-from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse, GetCompletionsRequest
+from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse, GetCompletionByHashRequest, GetCompletionByHashResponse, GetCompletionsRequest
 
 __all__ = [
     "CommandCompletionServiceStub",
@@ -25,13 +25,16 @@ class CommandCompletionServiceStub:
     def __new__(cls, channel: _grpc_aio.Channel) -> _CommandCompletionServiceAsyncStub: ...  # type: ignore
     def CompletionStream(self, __1: CompletionStreamRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse] | _grpc_aio.UnaryStreamCall[_typing.Any, CompletionStreamResponse]: ...
     def GetCompletions(self, __1: GetCompletionsRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse] | _grpc_aio.UnaryStreamCall[_typing.Any, CompletionStreamResponse]: ...
+    def GetCompletionByHash(self, __1: GetCompletionByHashRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetCompletionByHashResponse | _grpc_aio.UnaryUnaryCall[_typing.Any, GetCompletionByHashResponse]: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _CommandCompletionServiceBlockingStub(CommandCompletionServiceStub):
     def CompletionStream(self, __1: CompletionStreamRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse]: ...
     def GetCompletions(self, __1: GetCompletionsRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc.CallIterator[CompletionStreamResponse]: ...
+    def GetCompletionByHash(self, __1: GetCompletionByHashRequest, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_typing.Tuple[_typing.Tuple[str, str | bytes], ...]] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> GetCompletionByHashResponse: ...
 
 # noinspection PyPep8Naming,DuplicatedCode
 class _CommandCompletionServiceAsyncStub(CommandCompletionServiceStub):
     def CompletionStream(self, __1: CompletionStreamRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, CompletionStreamResponse]: ...  # type: ignore
     def GetCompletions(self, __1: GetCompletionsRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryStreamCall[_typing.Any, CompletionStreamResponse]: ...  # type: ignore
+    def GetCompletionByHash(self, __1: GetCompletionByHashRequest, *, timeout: _typing.Optional[float] = ..., metadata: _typing.Optional[_grpc_aio.Metadata] = ..., credentials: _typing.Optional[_grpc.CallCredentials] = ..., wait_for_ready: _typing.Optional[bool] = ..., compression: _typing.Optional[_grpc.Compression] = ...) -> _grpc_aio.UnaryUnaryCall[_typing.Any, GetCompletionByHashResponse]: ...  # type: ignore

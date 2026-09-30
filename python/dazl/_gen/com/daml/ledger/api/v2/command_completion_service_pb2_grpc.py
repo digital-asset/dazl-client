@@ -48,6 +48,11 @@ class CommandCompletionServiceStub:
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionsRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
                 _registered_method=True)
+        self.GetCompletionByHash = channel.unary_unary(
+                '/com.daml.ledger.api.v2.CommandCompletionService/GetCompletionByHash',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionByHashRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionByHashResponse.FromString,
+                _registered_method=True)
 
 
 class CommandCompletionServiceServicer:
@@ -65,6 +70,12 @@ class CommandCompletionServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetCompletionByHash(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_CommandCompletionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -77,6 +88,11 @@ def add_CommandCompletionServiceServicer_to_server(servicer, server):
                     servicer.GetCompletions,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionsRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.SerializeToString,
+            ),
+            'GetCompletionByHash': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetCompletionByHash,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionByHashRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionByHashResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -133,6 +149,33 @@ class CommandCompletionService:
             '/com.daml.ledger.api.v2.CommandCompletionService/GetCompletions',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionsRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.CompletionStreamResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetCompletionByHash(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.CommandCompletionService/GetCompletionByHash',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionByHashRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_command__completion__service__pb2.GetCompletionByHashResponse.FromString,
             options,
             channel_credentials,
             insecure,

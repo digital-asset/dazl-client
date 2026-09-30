@@ -194,168 +194,6 @@ func (x *SignedProtocolMessage) GetTypedSignedProtocolMessageContent() []byte {
 	return nil
 }
 
-type EnvelopeContent struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to SomeEnvelopeContent:
-	//
-	//	*EnvelopeContent_InformeeMessage
-	//	*EnvelopeContent_EncryptedViewMessage
-	//	*EnvelopeContent_UnassignmentMediatorMessage
-	//	*EnvelopeContent_AssignmentMediatorMessage
-	//	*EnvelopeContent_RootHashMessage
-	//	*EnvelopeContent_TopologyTransactionsBroadcast
-	//	*EnvelopeContent_LsuSequencingTestMessage
-	SomeEnvelopeContent isEnvelopeContent_SomeEnvelopeContent `protobuf_oneof:"some_envelope_content"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *EnvelopeContent) Reset() {
-	*x = EnvelopeContent{}
-	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *EnvelopeContent) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*EnvelopeContent) ProtoMessage() {}
-
-func (x *EnvelopeContent) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use EnvelopeContent.ProtoReflect.Descriptor instead.
-func (*EnvelopeContent) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *EnvelopeContent) GetSomeEnvelopeContent() isEnvelopeContent_SomeEnvelopeContent {
-	if x != nil {
-		return x.SomeEnvelopeContent
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetInformeeMessage() *InformeeMessage {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_InformeeMessage); ok {
-			return x.InformeeMessage
-		}
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetEncryptedViewMessage() *EncryptedViewMessage {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_EncryptedViewMessage); ok {
-			return x.EncryptedViewMessage
-		}
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetUnassignmentMediatorMessage() *UnassignmentMediatorMessage {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_UnassignmentMediatorMessage); ok {
-			return x.UnassignmentMediatorMessage
-		}
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetAssignmentMediatorMessage() *AssignmentMediatorMessage {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_AssignmentMediatorMessage); ok {
-			return x.AssignmentMediatorMessage
-		}
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetRootHashMessage() *RootHashMessage {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_RootHashMessage); ok {
-			return x.RootHashMessage
-		}
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetTopologyTransactionsBroadcast() *TopologyTransactionsBroadcast {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_TopologyTransactionsBroadcast); ok {
-			return x.TopologyTransactionsBroadcast
-		}
-	}
-	return nil
-}
-
-func (x *EnvelopeContent) GetLsuSequencingTestMessage() *LsuSequencingTestMessage {
-	if x != nil {
-		if x, ok := x.SomeEnvelopeContent.(*EnvelopeContent_LsuSequencingTestMessage); ok {
-			return x.LsuSequencingTestMessage
-		}
-	}
-	return nil
-}
-
-type isEnvelopeContent_SomeEnvelopeContent interface {
-	isEnvelopeContent_SomeEnvelopeContent()
-}
-
-type EnvelopeContent_InformeeMessage struct {
-	InformeeMessage *InformeeMessage `protobuf:"bytes,1,opt,name=informee_message,json=informeeMessage,proto3,oneof"`
-}
-
-type EnvelopeContent_EncryptedViewMessage struct {
-	EncryptedViewMessage *EncryptedViewMessage `protobuf:"bytes,2,opt,name=encrypted_view_message,json=encryptedViewMessage,proto3,oneof"`
-}
-
-type EnvelopeContent_UnassignmentMediatorMessage struct {
-	UnassignmentMediatorMessage *UnassignmentMediatorMessage `protobuf:"bytes,3,opt,name=unassignment_mediator_message,json=unassignmentMediatorMessage,proto3,oneof"`
-}
-
-type EnvelopeContent_AssignmentMediatorMessage struct {
-	AssignmentMediatorMessage *AssignmentMediatorMessage `protobuf:"bytes,4,opt,name=assignment_mediator_message,json=assignmentMediatorMessage,proto3,oneof"`
-}
-
-type EnvelopeContent_RootHashMessage struct {
-	RootHashMessage *RootHashMessage `protobuf:"bytes,5,opt,name=root_hash_message,json=rootHashMessage,proto3,oneof"`
-}
-
-type EnvelopeContent_TopologyTransactionsBroadcast struct {
-	TopologyTransactionsBroadcast *TopologyTransactionsBroadcast `protobuf:"bytes,6,opt,name=topology_transactions_broadcast,json=topologyTransactionsBroadcast,proto3,oneof"`
-}
-
-type EnvelopeContent_LsuSequencingTestMessage struct {
-	LsuSequencingTestMessage *LsuSequencingTestMessage `protobuf:"bytes,7,opt,name=lsu_sequencing_test_message,json=lsuSequencingTestMessage,proto3,oneof"`
-}
-
-func (*EnvelopeContent_InformeeMessage) isEnvelopeContent_SomeEnvelopeContent() {}
-
-func (*EnvelopeContent_EncryptedViewMessage) isEnvelopeContent_SomeEnvelopeContent() {}
-
-func (*EnvelopeContent_UnassignmentMediatorMessage) isEnvelopeContent_SomeEnvelopeContent() {}
-
-func (*EnvelopeContent_AssignmentMediatorMessage) isEnvelopeContent_SomeEnvelopeContent() {}
-
-func (*EnvelopeContent_RootHashMessage) isEnvelopeContent_SomeEnvelopeContent() {}
-
-func (*EnvelopeContent_TopologyTransactionsBroadcast) isEnvelopeContent_SomeEnvelopeContent() {}
-
-func (*EnvelopeContent_LsuSequencingTestMessage) isEnvelopeContent_SomeEnvelopeContent() {}
-
 type LsuSequencingTestMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Content       []byte                 `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
@@ -366,7 +204,7 @@ type LsuSequencingTestMessage struct {
 
 func (x *LsuSequencingTestMessage) Reset() {
 	*x = LsuSequencingTestMessage{}
-	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -378,7 +216,7 @@ func (x *LsuSequencingTestMessage) String() string {
 func (*LsuSequencingTestMessage) ProtoMessage() {}
 
 func (x *LsuSequencingTestMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -391,7 +229,7 @@ func (x *LsuSequencingTestMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LsuSequencingTestMessage.ProtoReflect.Descriptor instead.
 func (*LsuSequencingTestMessage) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescGZIP(), []int{3}
+	return file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *LsuSequencingTestMessage) GetContent() []byte {
@@ -418,7 +256,7 @@ type LsuSequencingTestMessageContent struct {
 
 func (x *LsuSequencingTestMessageContent) Reset() {
 	*x = LsuSequencingTestMessageContent{}
-	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -430,7 +268,7 @@ func (x *LsuSequencingTestMessageContent) String() string {
 func (*LsuSequencingTestMessageContent) ProtoMessage() {}
 
 func (x *LsuSequencingTestMessageContent) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -443,7 +281,7 @@ func (x *LsuSequencingTestMessageContent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LsuSequencingTestMessageContent.ProtoReflect.Descriptor instead.
 func (*LsuSequencingTestMessageContent) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescGZIP(), []int{4}
+	return file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *LsuSequencingTestMessageContent) GetPhysicalSynchronizerId() string {
@@ -464,7 +302,7 @@ var File_com_digitalasset_canton_protocol_v30_synchronization_proto protoreflect
 
 const file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDesc = "" +
 	"\n" +
-	":com/digitalasset/canton/protocol/v30/synchronization.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1aCcom/digitalasset/canton/protocol/v30/participant_reassignment.proto\x1aBcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\x8e\x02\n" +
+	":com/digitalasset/canton/protocol/v30/synchronization.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\"\x8e\x02\n" +
 	"!TypedSignedProtocolMessageContent\x127\n" +
 	"\x16confirmation_responses\x18\x02 \x01(\fH\x00R\x15confirmationResponses\x121\n" +
 	"\x13confirmation_result\x18\x03 \x01(\fH\x00R\x12confirmationResult\x12'\n" +
@@ -473,16 +311,7 @@ const file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDesc = 
 	"\x1csome_signed_protocol_message\"\xb6\x01\n" +
 	"\x15SignedProtocolMessage\x12K\n" +
 	"\tsignature\x18\x01 \x03(\v2-.com.digitalasset.canton.crypto.v30.SignatureR\tsignature\x12P\n" +
-	"%typed_signed_protocol_message_content\x18\x02 \x01(\fR!typedSignedProtocolMessageContent\"\x86\a\n" +
-	"\x0fEnvelopeContent\x12b\n" +
-	"\x10informee_message\x18\x01 \x01(\v25.com.digitalasset.canton.protocol.v30.InformeeMessageH\x00R\x0finformeeMessage\x12r\n" +
-	"\x16encrypted_view_message\x18\x02 \x01(\v2:.com.digitalasset.canton.protocol.v30.EncryptedViewMessageH\x00R\x14encryptedViewMessage\x12\x87\x01\n" +
-	"\x1dunassignment_mediator_message\x18\x03 \x01(\v2A.com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessageH\x00R\x1bunassignmentMediatorMessage\x12\x81\x01\n" +
-	"\x1bassignment_mediator_message\x18\x04 \x01(\v2?.com.digitalasset.canton.protocol.v30.AssignmentMediatorMessageH\x00R\x19assignmentMediatorMessage\x12c\n" +
-	"\x11root_hash_message\x18\x05 \x01(\v25.com.digitalasset.canton.protocol.v30.RootHashMessageH\x00R\x0frootHashMessage\x12\x8d\x01\n" +
-	"\x1ftopology_transactions_broadcast\x18\x06 \x01(\v2C.com.digitalasset.canton.protocol.v30.TopologyTransactionsBroadcastH\x00R\x1dtopologyTransactionsBroadcast\x12\x7f\n" +
-	"\x1blsu_sequencing_test_message\x18\a \x01(\v2>.com.digitalasset.canton.protocol.v30.LsuSequencingTestMessageH\x00R\x18lsuSequencingTestMessageB\x17\n" +
-	"\x15some_envelope_content\"\x83\x01\n" +
+	"%typed_signed_protocol_message_content\x18\x02 \x01(\fR!typedSignedProtocolMessageContent\"\x83\x01\n" +
 	"\x18LsuSequencingTestMessage\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\fR\acontent\x12M\n" +
 	"\n" +
@@ -504,36 +333,22 @@ func file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescGZIP
 	return file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_com_digitalasset_canton_protocol_v30_synchronization_proto_goTypes = []any{
 	(*TypedSignedProtocolMessageContent)(nil), // 0: com.digitalasset.canton.protocol.v30.TypedSignedProtocolMessageContent
 	(*SignedProtocolMessage)(nil),             // 1: com.digitalasset.canton.protocol.v30.SignedProtocolMessage
-	(*EnvelopeContent)(nil),                   // 2: com.digitalasset.canton.protocol.v30.EnvelopeContent
-	(*LsuSequencingTestMessage)(nil),          // 3: com.digitalasset.canton.protocol.v30.LsuSequencingTestMessage
-	(*LsuSequencingTestMessageContent)(nil),   // 4: com.digitalasset.canton.protocol.v30.LsuSequencingTestMessageContent
-	(*v30.Signature)(nil),                     // 5: com.digitalasset.canton.crypto.v30.Signature
-	(*InformeeMessage)(nil),                   // 6: com.digitalasset.canton.protocol.v30.InformeeMessage
-	(*EncryptedViewMessage)(nil),              // 7: com.digitalasset.canton.protocol.v30.EncryptedViewMessage
-	(*UnassignmentMediatorMessage)(nil),       // 8: com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessage
-	(*AssignmentMediatorMessage)(nil),         // 9: com.digitalasset.canton.protocol.v30.AssignmentMediatorMessage
-	(*RootHashMessage)(nil),                   // 10: com.digitalasset.canton.protocol.v30.RootHashMessage
-	(*TopologyTransactionsBroadcast)(nil),     // 11: com.digitalasset.canton.protocol.v30.TopologyTransactionsBroadcast
+	(*LsuSequencingTestMessage)(nil),          // 2: com.digitalasset.canton.protocol.v30.LsuSequencingTestMessage
+	(*LsuSequencingTestMessageContent)(nil),   // 3: com.digitalasset.canton.protocol.v30.LsuSequencingTestMessageContent
+	(*v30.Signature)(nil),                     // 4: com.digitalasset.canton.crypto.v30.Signature
 }
 var file_com_digitalasset_canton_protocol_v30_synchronization_proto_depIdxs = []int32{
-	5,  // 0: com.digitalasset.canton.protocol.v30.SignedProtocolMessage.signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	6,  // 1: com.digitalasset.canton.protocol.v30.EnvelopeContent.informee_message:type_name -> com.digitalasset.canton.protocol.v30.InformeeMessage
-	7,  // 2: com.digitalasset.canton.protocol.v30.EnvelopeContent.encrypted_view_message:type_name -> com.digitalasset.canton.protocol.v30.EncryptedViewMessage
-	8,  // 3: com.digitalasset.canton.protocol.v30.EnvelopeContent.unassignment_mediator_message:type_name -> com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessage
-	9,  // 4: com.digitalasset.canton.protocol.v30.EnvelopeContent.assignment_mediator_message:type_name -> com.digitalasset.canton.protocol.v30.AssignmentMediatorMessage
-	10, // 5: com.digitalasset.canton.protocol.v30.EnvelopeContent.root_hash_message:type_name -> com.digitalasset.canton.protocol.v30.RootHashMessage
-	11, // 6: com.digitalasset.canton.protocol.v30.EnvelopeContent.topology_transactions_broadcast:type_name -> com.digitalasset.canton.protocol.v30.TopologyTransactionsBroadcast
-	3,  // 7: com.digitalasset.canton.protocol.v30.EnvelopeContent.lsu_sequencing_test_message:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencingTestMessage
-	5,  // 8: com.digitalasset.canton.protocol.v30.LsuSequencingTestMessage.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	4, // 0: com.digitalasset.canton.protocol.v30.SignedProtocolMessage.signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	4, // 1: com.digitalasset.canton.protocol.v30.LsuSequencingTestMessage.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v30_synchronization_proto_init() }
@@ -541,23 +356,11 @@ func file_com_digitalasset_canton_protocol_v30_synchronization_proto_init() {
 	if File_com_digitalasset_canton_protocol_v30_synchronization_proto != nil {
 		return
 	}
-	file_com_digitalasset_canton_protocol_v30_participant_reassignment_proto_init()
-	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_init()
-	file_com_digitalasset_canton_protocol_v30_topology_proto_init()
 	file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[0].OneofWrappers = []any{
 		(*TypedSignedProtocolMessageContent_ConfirmationResponses)(nil),
 		(*TypedSignedProtocolMessageContent_ConfirmationResult)(nil),
 		(*TypedSignedProtocolMessageContent_AcsCommitment)(nil),
 		(*TypedSignedProtocolMessageContent_SetTrafficPurchased)(nil),
-	}
-	file_com_digitalasset_canton_protocol_v30_synchronization_proto_msgTypes[2].OneofWrappers = []any{
-		(*EnvelopeContent_InformeeMessage)(nil),
-		(*EnvelopeContent_EncryptedViewMessage)(nil),
-		(*EnvelopeContent_UnassignmentMediatorMessage)(nil),
-		(*EnvelopeContent_AssignmentMediatorMessage)(nil),
-		(*EnvelopeContent_RootHashMessage)(nil),
-		(*EnvelopeContent_TopologyTransactionsBroadcast)(nil),
-		(*EnvelopeContent_LsuSequencingTestMessage)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -565,7 +368,7 @@ func file_com_digitalasset_canton_protocol_v30_synchronization_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v30_synchronization_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

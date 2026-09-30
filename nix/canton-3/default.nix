@@ -2,12 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "canton-open-source";
-
-  version = "3.5.19";
+  version = "3.7.0-snapshot.20260929.20584.0.vbb57304b";
 
   src = builtins.fetchurl {
-    url = "https://github.com/digital-asset/canton/releases/download/v${version}/canton-open-source-${version}.tar.gz";
-    sha256 = "sha256:154ll0mysllv63xrxil453vrv0wljvgl16spr0k14sqysjfqyyfm";
+    url = "https://europe-maven.pkg.dev/da-images/public-maven-unstable/com/digitalasset/canton/canton-api/${version}/canton-api-${version}.tar.gz";
+    sha256 = "sha256:0r9vgfxd5vhybmm2lai8zv3z20rbxv6rfvz13h80s9wmhv9cmw07";
   };
   installPhase = ''
     mkdir -p "$out"

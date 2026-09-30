@@ -15,7 +15,7 @@ from .package_service_pb2_grpc import PackageServiceStub
 from .participant_status_service_pb2 import ConnectedSynchronizer, ParticipantStatusRequest, ParticipantStatusResponse
 from .participant_status_service_pb2_grpc import ParticipantStatusServiceStub
 from .acs_import_pb2 import ContractImportMode, RepresentativePackageIdOverride
-from .participant_repair_service_pb2 import ChangeAssignationRequest, ChangeAssignationResponse, ExportAcsRequest, ExportAcsResponse, ExportAcsTargetSynchronizer, IgnoreEventsRequest, IgnoreEventsResponse, ImportAcsRequest, ImportAcsResponse, MigrateSynchronizerRequest, MigrateSynchronizerResponse, PerformLateLsuRequest, PerformLateLsuResponse, PurgeContractsRequest, PurgeContractsResponse, PurgeDeactivatedSynchronizerRequest, PurgeDeactivatedSynchronizerResponse, RepairCommitmentsStatus, RepairCommitmentsUsingAcsRequest, RepairCommitmentsUsingAcsResponse, RollbackUnassignmentRequest, RollbackUnassignmentResponse, UnignoreEventsRequest, UnignoreEventsResponse
+from .participant_repair_service_pb2 import ChangeAssignationRequest, ChangeAssignationResponse, DeletePendingOperationRequest, DeletePendingOperationResponse, DeleteSynchronizerConnectionConfigRequest, DeleteSynchronizerConnectionConfigResponse, DigestConsistencyCheckStatusRequest, DigestConsistencyCheckStatusResponse, ExportAcsRequest, ExportAcsResponse, ExportAcsTargetSynchronizer, IgnoreEventsRequest, IgnoreEventsResponse, ImportAcsRequest, ImportAcsResponse, ListPendingOperationsRequest, ListPendingOperationsResponse, MigrateSynchronizerRequest, MigrateSynchronizerResponse, PendingOperationMetadata, PerformLateLsuRequest, PerformLateLsuResponse, PurgeContractsRequest, PurgeContractsResponse, PurgeDeactivatedSynchronizerRequest, PurgeDeactivatedSynchronizerResponse, ReinitializeDigestCommitmentsRequest, ReinitializeDigestCommitmentsResponse, ReinitializeDigestCommitmentsStatusRequest, ReinitializeDigestCommitmentsStatusResponse, RepairCommitmentsStatus, RepairCommitmentsUsingAcsRequest, RepairCommitmentsUsingAcsResponse, RollbackUnassignmentRequest, RollbackUnassignmentResponse, RunDigestConsistencyCheckRequest, RunDigestConsistencyCheckResponse, UnignoreEventsRequest, UnignoreEventsResponse
 from .participant_repair_service_pb2_grpc import ParticipantRepairServiceStub
 from .ping_pong_service_pb2 import PingFailure, PingRequest, PingResponse, PingSuccess
 from .ping_pong_service_pb2_grpc import PingServiceStub
@@ -52,6 +52,12 @@ __all__ = [
     "CountInFlightResponse",
     "CounterParticipantInfo",
     "DarDescription",
+    "DeletePendingOperationRequest",
+    "DeletePendingOperationResponse",
+    "DeleteSynchronizerConnectionConfigRequest",
+    "DeleteSynchronizerConnectionConfigResponse",
+    "DigestConsistencyCheckStatusRequest",
+    "DigestConsistencyCheckStatusResponse",
     "DisconnectAllSynchronizersRequest",
     "DisconnectAllSynchronizersResponse",
     "DisconnectSynchronizerRequest",
@@ -98,6 +104,8 @@ __all__ = [
     "ListDarsResponse",
     "ListPackagesRequest",
     "ListPackagesResponse",
+    "ListPendingOperationsRequest",
+    "ListPendingOperationsResponse",
     "ListRegisteredSynchronizersRequest",
     "ListRegisteredSynchronizersResponse",
     "LogoutRequest",
@@ -126,6 +134,7 @@ __all__ = [
     "ParticipantStatusServiceStub",
     "PartyManagementServiceStub",
     "PartyReplicationStatus",
+    "PendingOperationMetadata",
     "PerformLateLsuRequest",
     "PerformLateLsuResponse",
     "PerformManualLsuRequest",
@@ -152,6 +161,10 @@ __all__ = [
     "ReconnectSynchronizersResponse",
     "RegisterSynchronizerRequest",
     "RegisterSynchronizerResponse",
+    "ReinitializeDigestCommitmentsRequest",
+    "ReinitializeDigestCommitmentsResponse",
+    "ReinitializeDigestCommitmentsStatusRequest",
+    "ReinitializeDigestCommitmentsStatusResponse",
     "RemoveDarRequest",
     "RemoveDarResponse",
     "RemovePackageRequest",
@@ -164,6 +177,8 @@ __all__ = [
     "ResourceManagementServiceStub",
     "RollbackUnassignmentRequest",
     "RollbackUnassignmentResponse",
+    "RunDigestConsistencyCheckRequest",
+    "RunDigestConsistencyCheckResponse",
     "SafeToPruneCommitmentState",
     "SentAcsCommitment",
     "SentAcsCommitmentPerSynchronizer",

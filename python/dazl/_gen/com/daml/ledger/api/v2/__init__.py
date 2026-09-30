@@ -14,24 +14,26 @@ from .event_query_service_pb2_grpc import EventQueryServiceStub
 from .package_reference_pb2 import PackageReference, PriorTopologySerial, VettedPackage, VettedPackages
 from .package_service_pb2 import GetPackageRequest, GetPackageResponse, GetPackageStatusRequest, GetPackageStatusResponse, HashFunction, ListPackagesRequest, ListPackagesResponse, ListVettedPackagesRequest, ListVettedPackagesResponse, PackageMetadataFilter, PackageStatus, TopologyStateFilter
 from .package_service_pb2_grpc import PackageServiceStub
+from .offset_checkpoint_pb2 import OffsetCheckpoint, SynchronizerTime
 from .reassignment_pb2 import AssignedEvent, Reassignment, ReassignmentEvent, UnassignedEvent
-from .state_service_pb2 import ActiveContract, GetActiveContractsPageRequest, GetActiveContractsPageResponse, GetActiveContractsRequest, GetActiveContractsResponse, GetConnectedSynchronizersRequest, GetConnectedSynchronizersResponse, GetLatestPrunedOffsetsRequest, GetLatestPrunedOffsetsResponse, GetLedgerEndRequest, GetLedgerEndResponse, IncompleteAssigned, IncompleteUnassigned, ParticipantPermission
+from .state_service_pb2 import ActiveContract, ConvertRecordTimeToOffsetRequest, ConvertRecordTimeToOffsetResponse, GetActiveContractsPageRequest, GetActiveContractsPageResponse, GetActiveContractsRequest, GetActiveContractsResponse, GetConnectedSynchronizersRequest, GetConnectedSynchronizersResponse, GetLatestPrunedOffsetsRequest, GetLatestPrunedOffsetsResponse, GetLedgerEndRequest, GetLedgerEndResponse, IncompleteAssigned, IncompleteUnassigned, ParticipantPermission
 from .state_service_pb2_grpc import StateServiceStub
 from .topology_transaction_pb2 import ParticipantAuthorizationAdded, ParticipantAuthorizationChanged, ParticipantAuthorizationOnboarding, ParticipantAuthorizationRevoked, TopologyEvent, TopologyTransaction
 from .transaction_pb2 import Transaction
 from .experimental_features_pb2 import ExperimentalCommandInspectionService, ExperimentalFeatures, ExperimentalPartyTopologyEvents, ExperimentalStaticTime
-from .offset_checkpoint_pb2 import OffsetCheckpoint, SynchronizerTime
 from .completion_pb2 import Completion
 from .crypto_pb2 import CryptoKeyFormat, Signature, SignatureFormat, SigningAlgorithmSpec, SigningKeySpec, SigningPublicKey
 from .commands_pb2 import Command, Commands, CreateAndExerciseCommand, CreateCommand, DisclosedContract, ExerciseByKeyCommand, ExerciseCommand, PrefetchContractKey
 from .version_service_pb2 import FeaturesDescriptor, GetLedgerApiVersionRequest, GetLedgerApiVersionResponse, OffsetCheckpointFeature, PackageFeature, PartyManagementFeature, UserManagementFeature
 from .version_service_pb2_grpc import VersionServiceStub
 from .reassignment_commands_pb2 import AssignCommand, ReassignmentCommand, ReassignmentCommands, UnassignCommand
-from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse, GetCompletionsRequest
+from .jose_service_pb2 import GetJwksRequest, GetJwksResponse
+from .jose_service_pb2_grpc import JoseServiceStub
+from .command_completion_service_pb2 import CompletionStreamRequest, CompletionStreamResponse, GetCompletionByHashRequest, GetCompletionByHashResponse, GetCompletionsRequest
 from .command_completion_service_pb2_grpc import CommandCompletionServiceStub
 from .command_service_pb2 import SubmitAndWaitForReassignmentRequest, SubmitAndWaitForReassignmentResponse, SubmitAndWaitForTransactionRequest, SubmitAndWaitForTransactionResponse, SubmitAndWaitRequest, SubmitAndWaitResponse
 from .command_service_pb2_grpc import CommandServiceStub
-from .update_service_pb2 import GetUpdateByIdRequest, GetUpdateByOffsetRequest, GetUpdateResponse, GetUpdatesPageRequest, GetUpdatesPageResponse, GetUpdatesRequest, GetUpdatesResponse
+from .update_service_pb2 import GetUpdateByHashRequest, GetUpdateByIdRequest, GetUpdateByOffsetRequest, GetUpdateResponse, GetUpdatesPageRequest, GetUpdatesPageResponse, GetUpdatesRequest, GetUpdatesResponse
 from .update_service_pb2_grpc import UpdateServiceStub
 from .command_submission_service_pb2 import SubmitReassignmentRequest, SubmitReassignmentResponse, SubmitRequest, SubmitResponse
 from .command_submission_service_pb2_grpc import CommandSubmissionServiceStub
@@ -51,6 +53,8 @@ __all__ = [
     "CompletionStreamRequest",
     "CompletionStreamResponse",
     "ContractServiceStub",
+    "ConvertRecordTimeToOffsetRequest",
+    "ConvertRecordTimeToOffsetResponse",
     "CreateAndExerciseCommand",
     "CreateCommand",
     "Created",
@@ -76,6 +80,8 @@ __all__ = [
     "GetActiveContractsPageResponse",
     "GetActiveContractsRequest",
     "GetActiveContractsResponse",
+    "GetCompletionByHashRequest",
+    "GetCompletionByHashResponse",
     "GetCompletionsRequest",
     "GetConnectedSynchronizersRequest",
     "GetConnectedSynchronizersResponse",
@@ -83,6 +89,8 @@ __all__ = [
     "GetContractResponse",
     "GetEventsByContractIdRequest",
     "GetEventsByContractIdResponse",
+    "GetJwksRequest",
+    "GetJwksResponse",
     "GetLatestPrunedOffsetsRequest",
     "GetLatestPrunedOffsetsResponse",
     "GetLedgerApiVersionRequest",
@@ -93,6 +101,7 @@ __all__ = [
     "GetPackageResponse",
     "GetPackageStatusRequest",
     "GetPackageStatusResponse",
+    "GetUpdateByHashRequest",
     "GetUpdateByIdRequest",
     "GetUpdateByOffsetRequest",
     "GetUpdateResponse",
@@ -106,6 +115,7 @@ __all__ = [
     "IncompleteUnassigned",
     "InterfaceFilter",
     "InterfaceView",
+    "JoseServiceStub",
     "List",
     "ListPackagesRequest",
     "ListPackagesResponse",
