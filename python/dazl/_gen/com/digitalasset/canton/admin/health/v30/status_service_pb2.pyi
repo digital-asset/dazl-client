@@ -25,23 +25,32 @@ class TopologyQueueStatus(_message.Message):
     def __init__(self, manager: _Optional[int] = ..., dispatcher: _Optional[int] = ..., clients: _Optional[int] = ...) -> None: ...
 
 class ComponentStatus(_message.Message):
-    __slots__ = ("name", "ok", "degraded", "failed", "fatal")
+    __slots__ = ("name", "ok", "degraded", "failed", "fatal", "labels")
     class StatusData(_message.Message):
         __slots__ = ("description",)
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         description: str
         def __init__(self, description: _Optional[str] = ...) -> None: ...
+    class LabelsEntry(_message.Message):
+        __slots__ = ("key", "value")
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
     NAME_FIELD_NUMBER: _ClassVar[int]
     OK_FIELD_NUMBER: _ClassVar[int]
     DEGRADED_FIELD_NUMBER: _ClassVar[int]
     FAILED_FIELD_NUMBER: _ClassVar[int]
     FATAL_FIELD_NUMBER: _ClassVar[int]
+    LABELS_FIELD_NUMBER: _ClassVar[int]
     name: str
     ok: ComponentStatus.StatusData
     degraded: ComponentStatus.StatusData
     failed: ComponentStatus.StatusData
     fatal: ComponentStatus.StatusData
-    def __init__(self, name: _Optional[str] = ..., ok: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., degraded: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., failed: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., fatal: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ...) -> None: ...
+    labels: _containers.ScalarMap[str, str]
+    def __init__(self, name: _Optional[str] = ..., ok: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., degraded: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., failed: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., fatal: _Optional[_Union[ComponentStatus.StatusData, _Mapping]] = ..., labels: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class NotInitialized(_message.Message):
     __slots__ = ("active", "waiting_for_external_input", "version")

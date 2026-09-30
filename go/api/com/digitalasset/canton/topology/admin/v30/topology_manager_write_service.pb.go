@@ -10,6 +10,7 @@ package v30
 
 import (
 	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
+	v31 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -104,16 +105,61 @@ func (ForceFlag) EnumDescriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{0}
 }
 
+type BaseWriteRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientVersion *string                `protobuf:"bytes,1,opt,name=client_version,json=clientVersion,proto3,oneof" json:"client_version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BaseWriteRequest) Reset() {
+	*x = BaseWriteRequest{}
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BaseWriteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BaseWriteRequest) ProtoMessage() {}
+
+func (x *BaseWriteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BaseWriteRequest.ProtoReflect.Descriptor instead.
+func (*BaseWriteRequest) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *BaseWriteRequest) GetClientVersion() string {
+	if x != nil && x.ClientVersion != nil {
+		return *x.ClientVersion
+	}
+	return ""
+}
+
 type GenerateTransactionsRequest struct {
 	state         protoimpl.MessageState                  `protogen:"open.v1"`
 	Proposals     []*GenerateTransactionsRequest_Proposal `protobuf:"bytes,1,rep,name=proposals,proto3" json:"proposals,omitempty"`
+	BaseRequest   *BaseWriteRequest                       `protobuf:"bytes,2,opt,name=base_request,json=baseRequest,proto3,oneof" json:"base_request,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GenerateTransactionsRequest) Reset() {
 	*x = GenerateTransactionsRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[0]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -125,7 +171,7 @@ func (x *GenerateTransactionsRequest) String() string {
 func (*GenerateTransactionsRequest) ProtoMessage() {}
 
 func (x *GenerateTransactionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[0]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -138,12 +184,19 @@ func (x *GenerateTransactionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateTransactionsRequest.ProtoReflect.Descriptor instead.
 func (*GenerateTransactionsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GenerateTransactionsRequest) GetProposals() []*GenerateTransactionsRequest_Proposal {
 	if x != nil {
 		return x.Proposals
+	}
+	return nil
+}
+
+func (x *GenerateTransactionsRequest) GetBaseRequest() *BaseWriteRequest {
+	if x != nil {
+		return x.BaseRequest
 	}
 	return nil
 }
@@ -157,7 +210,7 @@ type GenerateTransactionsResponse struct {
 
 func (x *GenerateTransactionsResponse) Reset() {
 	*x = GenerateTransactionsResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -169,7 +222,7 @@ func (x *GenerateTransactionsResponse) String() string {
 func (*GenerateTransactionsResponse) ProtoMessage() {}
 
 func (x *GenerateTransactionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -182,7 +235,7 @@ func (x *GenerateTransactionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateTransactionsResponse.ProtoReflect.Descriptor instead.
 func (*GenerateTransactionsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GenerateTransactionsResponse) GetGeneratedTransactions() []*GenerateTransactionsResponse_GeneratedTransaction {
@@ -210,7 +263,7 @@ type AuthorizeRequest struct {
 
 func (x *AuthorizeRequest) Reset() {
 	*x = AuthorizeRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -222,7 +275,7 @@ func (x *AuthorizeRequest) String() string {
 func (*AuthorizeRequest) ProtoMessage() {}
 
 func (x *AuthorizeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -235,7 +288,7 @@ func (x *AuthorizeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthorizeRequest.ProtoReflect.Descriptor instead.
 func (*AuthorizeRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{2}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AuthorizeRequest) GetType() isAuthorizeRequest_Type {
@@ -323,7 +376,7 @@ type AuthorizeResponse struct {
 
 func (x *AuthorizeResponse) Reset() {
 	*x = AuthorizeResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -335,7 +388,7 @@ func (x *AuthorizeResponse) String() string {
 func (*AuthorizeResponse) ProtoMessage() {}
 
 func (x *AuthorizeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -348,7 +401,7 @@ func (x *AuthorizeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthorizeResponse.ProtoReflect.Descriptor instead.
 func (*AuthorizeResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{3}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AuthorizeResponse) GetTransaction() *v30.SignedTopologyTransaction {
@@ -370,7 +423,7 @@ type AddTransactionsRequest struct {
 
 func (x *AddTransactionsRequest) Reset() {
 	*x = AddTransactionsRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -382,7 +435,7 @@ func (x *AddTransactionsRequest) String() string {
 func (*AddTransactionsRequest) ProtoMessage() {}
 
 func (x *AddTransactionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -395,7 +448,7 @@ func (x *AddTransactionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTransactionsRequest.ProtoReflect.Descriptor instead.
 func (*AddTransactionsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{4}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AddTransactionsRequest) GetTransactions() []*v30.SignedTopologyTransaction {
@@ -434,7 +487,7 @@ type AddTransactionsResponse struct {
 
 func (x *AddTransactionsResponse) Reset() {
 	*x = AddTransactionsResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -446,7 +499,7 @@ func (x *AddTransactionsResponse) String() string {
 func (*AddTransactionsResponse) ProtoMessage() {}
 
 func (x *AddTransactionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -459,7 +512,7 @@ func (x *AddTransactionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTransactionsResponse.ProtoReflect.Descriptor instead.
 func (*AddTransactionsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{5}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{6}
 }
 
 type ImportTopologySnapshotRequest struct {
@@ -473,7 +526,7 @@ type ImportTopologySnapshotRequest struct {
 
 func (x *ImportTopologySnapshotRequest) Reset() {
 	*x = ImportTopologySnapshotRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -485,7 +538,7 @@ func (x *ImportTopologySnapshotRequest) String() string {
 func (*ImportTopologySnapshotRequest) ProtoMessage() {}
 
 func (x *ImportTopologySnapshotRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -498,7 +551,7 @@ func (x *ImportTopologySnapshotRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportTopologySnapshotRequest.ProtoReflect.Descriptor instead.
 func (*ImportTopologySnapshotRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{6}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ImportTopologySnapshotRequest) GetTopologySnapshot() []byte {
@@ -530,7 +583,7 @@ type ImportTopologySnapshotResponse struct {
 
 func (x *ImportTopologySnapshotResponse) Reset() {
 	*x = ImportTopologySnapshotResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -542,7 +595,7 @@ func (x *ImportTopologySnapshotResponse) String() string {
 func (*ImportTopologySnapshotResponse) ProtoMessage() {}
 
 func (x *ImportTopologySnapshotResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +608,7 @@ func (x *ImportTopologySnapshotResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportTopologySnapshotResponse.ProtoReflect.Descriptor instead.
 func (*ImportTopologySnapshotResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{7}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{8}
 }
 
 type ImportTopologySnapshotV2Request struct {
@@ -569,7 +622,7 @@ type ImportTopologySnapshotV2Request struct {
 
 func (x *ImportTopologySnapshotV2Request) Reset() {
 	*x = ImportTopologySnapshotV2Request{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -581,7 +634,7 @@ func (x *ImportTopologySnapshotV2Request) String() string {
 func (*ImportTopologySnapshotV2Request) ProtoMessage() {}
 
 func (x *ImportTopologySnapshotV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -594,7 +647,7 @@ func (x *ImportTopologySnapshotV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportTopologySnapshotV2Request.ProtoReflect.Descriptor instead.
 func (*ImportTopologySnapshotV2Request) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{8}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ImportTopologySnapshotV2Request) GetTopologySnapshot() []byte {
@@ -626,7 +679,7 @@ type ImportTopologySnapshotV2Response struct {
 
 func (x *ImportTopologySnapshotV2Response) Reset() {
 	*x = ImportTopologySnapshotV2Response{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -638,7 +691,7 @@ func (x *ImportTopologySnapshotV2Response) String() string {
 func (*ImportTopologySnapshotV2Response) ProtoMessage() {}
 
 func (x *ImportTopologySnapshotV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -651,7 +704,7 @@ func (x *ImportTopologySnapshotV2Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportTopologySnapshotV2Response.ProtoReflect.Descriptor instead.
 func (*ImportTopologySnapshotV2Response) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{9}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{10}
 }
 
 type SignTransactionsRequest struct {
@@ -666,7 +719,7 @@ type SignTransactionsRequest struct {
 
 func (x *SignTransactionsRequest) Reset() {
 	*x = SignTransactionsRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -678,7 +731,7 @@ func (x *SignTransactionsRequest) String() string {
 func (*SignTransactionsRequest) ProtoMessage() {}
 
 func (x *SignTransactionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -691,7 +744,7 @@ func (x *SignTransactionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignTransactionsRequest.ProtoReflect.Descriptor instead.
 func (*SignTransactionsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{10}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *SignTransactionsRequest) GetTransactions() []*v30.SignedTopologyTransaction {
@@ -731,7 +784,7 @@ type SignTransactionsResponse struct {
 
 func (x *SignTransactionsResponse) Reset() {
 	*x = SignTransactionsResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -743,7 +796,7 @@ func (x *SignTransactionsResponse) String() string {
 func (*SignTransactionsResponse) ProtoMessage() {}
 
 func (x *SignTransactionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +809,7 @@ func (x *SignTransactionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignTransactionsResponse.ProtoReflect.Descriptor instead.
 func (*SignTransactionsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{11}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *SignTransactionsResponse) GetTransactions() []*v30.SignedTopologyTransaction {
@@ -776,7 +829,7 @@ type CreateTemporaryTopologyStoreRequest struct {
 
 func (x *CreateTemporaryTopologyStoreRequest) Reset() {
 	*x = CreateTemporaryTopologyStoreRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -788,7 +841,7 @@ func (x *CreateTemporaryTopologyStoreRequest) String() string {
 func (*CreateTemporaryTopologyStoreRequest) ProtoMessage() {}
 
 func (x *CreateTemporaryTopologyStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -801,7 +854,7 @@ func (x *CreateTemporaryTopologyStoreRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use CreateTemporaryTopologyStoreRequest.ProtoReflect.Descriptor instead.
 func (*CreateTemporaryTopologyStoreRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{12}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateTemporaryTopologyStoreRequest) GetName() string {
@@ -827,7 +880,7 @@ type CreateTemporaryTopologyStoreResponse struct {
 
 func (x *CreateTemporaryTopologyStoreResponse) Reset() {
 	*x = CreateTemporaryTopologyStoreResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -839,7 +892,7 @@ func (x *CreateTemporaryTopologyStoreResponse) String() string {
 func (*CreateTemporaryTopologyStoreResponse) ProtoMessage() {}
 
 func (x *CreateTemporaryTopologyStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -852,7 +905,7 @@ func (x *CreateTemporaryTopologyStoreResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use CreateTemporaryTopologyStoreResponse.ProtoReflect.Descriptor instead.
 func (*CreateTemporaryTopologyStoreResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{13}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CreateTemporaryTopologyStoreResponse) GetStoreId() *StoreId_Temporary {
@@ -871,7 +924,7 @@ type DropTemporaryTopologyStoreRequest struct {
 
 func (x *DropTemporaryTopologyStoreRequest) Reset() {
 	*x = DropTemporaryTopologyStoreRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -883,7 +936,7 @@ func (x *DropTemporaryTopologyStoreRequest) String() string {
 func (*DropTemporaryTopologyStoreRequest) ProtoMessage() {}
 
 func (x *DropTemporaryTopologyStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -896,7 +949,7 @@ func (x *DropTemporaryTopologyStoreRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use DropTemporaryTopologyStoreRequest.ProtoReflect.Descriptor instead.
 func (*DropTemporaryTopologyStoreRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{14}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DropTemporaryTopologyStoreRequest) GetStoreId() *StoreId_Temporary {
@@ -914,7 +967,7 @@ type DropTemporaryTopologyStoreResponse struct {
 
 func (x *DropTemporaryTopologyStoreResponse) Reset() {
 	*x = DropTemporaryTopologyStoreResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -926,7 +979,7 @@ func (x *DropTemporaryTopologyStoreResponse) String() string {
 func (*DropTemporaryTopologyStoreResponse) ProtoMessage() {}
 
 func (x *DropTemporaryTopologyStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -939,22 +992,26 @@ func (x *DropTemporaryTopologyStoreResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use DropTemporaryTopologyStoreResponse.ProtoReflect.Descriptor instead.
 func (*DropTemporaryTopologyStoreResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{15}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{16}
 }
 
 type GenerateTransactionsRequest_Proposal struct {
-	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Operation     v30.Enums_TopologyChangeOp `protobuf:"varint,1,opt,name=operation,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_TopologyChangeOp" json:"operation,omitempty"`
-	Serial        uint32                     `protobuf:"varint,2,opt,name=serial,proto3" json:"serial,omitempty"`
-	Mapping       *v30.TopologyMapping       `protobuf:"bytes,3,opt,name=mapping,proto3" json:"mapping,omitempty"`
-	Store         *StoreId                   `protobuf:"bytes,4,opt,name=store,proto3" json:"store,omitempty"`
+	state     protoimpl.MessageState     `protogen:"open.v1"`
+	Operation v30.Enums_TopologyChangeOp `protobuf:"varint,1,opt,name=operation,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_TopologyChangeOp" json:"operation,omitempty"`
+	Serial    uint32                     `protobuf:"varint,2,opt,name=serial,proto3" json:"serial,omitempty"`
+	// Types that are valid to be assigned to Mapping:
+	//
+	//	*GenerateTransactionsRequest_Proposal_V30
+	//	*GenerateTransactionsRequest_Proposal_V31
+	Mapping       isGenerateTransactionsRequest_Proposal_Mapping `protobuf_oneof:"mapping"`
+	Store         *StoreId                                       `protobuf:"bytes,4,opt,name=store,proto3" json:"store,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GenerateTransactionsRequest_Proposal) Reset() {
 	*x = GenerateTransactionsRequest_Proposal{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -966,7 +1023,7 @@ func (x *GenerateTransactionsRequest_Proposal) String() string {
 func (*GenerateTransactionsRequest_Proposal) ProtoMessage() {}
 
 func (x *GenerateTransactionsRequest_Proposal) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -979,7 +1036,7 @@ func (x *GenerateTransactionsRequest_Proposal) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GenerateTransactionsRequest_Proposal.ProtoReflect.Descriptor instead.
 func (*GenerateTransactionsRequest_Proposal) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{0, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{1, 0}
 }
 
 func (x *GenerateTransactionsRequest_Proposal) GetOperation() v30.Enums_TopologyChangeOp {
@@ -996,9 +1053,27 @@ func (x *GenerateTransactionsRequest_Proposal) GetSerial() uint32 {
 	return 0
 }
 
-func (x *GenerateTransactionsRequest_Proposal) GetMapping() *v30.TopologyMapping {
+func (x *GenerateTransactionsRequest_Proposal) GetMapping() isGenerateTransactionsRequest_Proposal_Mapping {
 	if x != nil {
 		return x.Mapping
+	}
+	return nil
+}
+
+func (x *GenerateTransactionsRequest_Proposal) GetV30() *v30.TopologyMapping {
+	if x != nil {
+		if x, ok := x.Mapping.(*GenerateTransactionsRequest_Proposal_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+func (x *GenerateTransactionsRequest_Proposal) GetV31() *v31.TopologyMapping {
+	if x != nil {
+		if x, ok := x.Mapping.(*GenerateTransactionsRequest_Proposal_V31); ok {
+			return x.V31
+		}
 	}
 	return nil
 }
@@ -1010,6 +1085,22 @@ func (x *GenerateTransactionsRequest_Proposal) GetStore() *StoreId {
 	return nil
 }
 
+type isGenerateTransactionsRequest_Proposal_Mapping interface {
+	isGenerateTransactionsRequest_Proposal_Mapping()
+}
+
+type GenerateTransactionsRequest_Proposal_V30 struct {
+	V30 *v30.TopologyMapping `protobuf:"bytes,3,opt,name=v30,proto3,oneof"`
+}
+
+type GenerateTransactionsRequest_Proposal_V31 struct {
+	V31 *v31.TopologyMapping `protobuf:"bytes,5,opt,name=v31,proto3,oneof"`
+}
+
+func (*GenerateTransactionsRequest_Proposal_V30) isGenerateTransactionsRequest_Proposal_Mapping() {}
+
+func (*GenerateTransactionsRequest_Proposal_V31) isGenerateTransactionsRequest_Proposal_Mapping() {}
+
 type GenerateTransactionsResponse_GeneratedTransaction struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	SerializedTransaction []byte                 `protobuf:"bytes,1,opt,name=serialized_transaction,json=serializedTransaction,proto3" json:"serialized_transaction,omitempty"`
@@ -1020,7 +1111,7 @@ type GenerateTransactionsResponse_GeneratedTransaction struct {
 
 func (x *GenerateTransactionsResponse_GeneratedTransaction) Reset() {
 	*x = GenerateTransactionsResponse_GeneratedTransaction{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1032,7 +1123,7 @@ func (x *GenerateTransactionsResponse_GeneratedTransaction) String() string {
 func (*GenerateTransactionsResponse_GeneratedTransaction) ProtoMessage() {}
 
 func (x *GenerateTransactionsResponse_GeneratedTransaction) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1045,7 +1136,7 @@ func (x *GenerateTransactionsResponse_GeneratedTransaction) ProtoReflect() proto
 
 // Deprecated: Use GenerateTransactionsResponse_GeneratedTransaction.ProtoReflect.Descriptor instead.
 func (*GenerateTransactionsResponse_GeneratedTransaction) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{1, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{2, 0}
 }
 
 func (x *GenerateTransactionsResponse_GeneratedTransaction) GetSerializedTransaction() []byte {
@@ -1063,17 +1154,21 @@ func (x *GenerateTransactionsResponse_GeneratedTransaction) GetTransactionHash()
 }
 
 type AuthorizeRequest_Proposal struct {
-	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Change        v30.Enums_TopologyChangeOp `protobuf:"varint,1,opt,name=change,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_TopologyChangeOp" json:"change,omitempty"`
-	Serial        uint32                     `protobuf:"varint,2,opt,name=serial,proto3" json:"serial,omitempty"`
-	Mapping       *v30.TopologyMapping       `protobuf:"bytes,3,opt,name=mapping,proto3" json:"mapping,omitempty"`
+	state  protoimpl.MessageState     `protogen:"open.v1"`
+	Change v30.Enums_TopologyChangeOp `protobuf:"varint,1,opt,name=change,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_TopologyChangeOp" json:"change,omitempty"`
+	Serial uint32                     `protobuf:"varint,2,opt,name=serial,proto3" json:"serial,omitempty"`
+	// Types that are valid to be assigned to Mapping:
+	//
+	//	*AuthorizeRequest_Proposal_V30
+	//	*AuthorizeRequest_Proposal_V31
+	Mapping       isAuthorizeRequest_Proposal_Mapping `protobuf_oneof:"mapping"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AuthorizeRequest_Proposal) Reset() {
 	*x = AuthorizeRequest_Proposal{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1085,7 +1180,7 @@ func (x *AuthorizeRequest_Proposal) String() string {
 func (*AuthorizeRequest_Proposal) ProtoMessage() {}
 
 func (x *AuthorizeRequest_Proposal) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1098,7 +1193,7 @@ func (x *AuthorizeRequest_Proposal) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthorizeRequest_Proposal.ProtoReflect.Descriptor instead.
 func (*AuthorizeRequest_Proposal) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{2, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDescGZIP(), []int{3, 0}
 }
 
 func (x *AuthorizeRequest_Proposal) GetChange() v30.Enums_TopologyChangeOp {
@@ -1115,30 +1210,71 @@ func (x *AuthorizeRequest_Proposal) GetSerial() uint32 {
 	return 0
 }
 
-func (x *AuthorizeRequest_Proposal) GetMapping() *v30.TopologyMapping {
+func (x *AuthorizeRequest_Proposal) GetMapping() isAuthorizeRequest_Proposal_Mapping {
 	if x != nil {
 		return x.Mapping
 	}
 	return nil
 }
 
+func (x *AuthorizeRequest_Proposal) GetV30() *v30.TopologyMapping {
+	if x != nil {
+		if x, ok := x.Mapping.(*AuthorizeRequest_Proposal_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+func (x *AuthorizeRequest_Proposal) GetV31() *v31.TopologyMapping {
+	if x != nil {
+		if x, ok := x.Mapping.(*AuthorizeRequest_Proposal_V31); ok {
+			return x.V31
+		}
+	}
+	return nil
+}
+
+type isAuthorizeRequest_Proposal_Mapping interface {
+	isAuthorizeRequest_Proposal_Mapping()
+}
+
+type AuthorizeRequest_Proposal_V30 struct {
+	V30 *v30.TopologyMapping `protobuf:"bytes,3,opt,name=v30,proto3,oneof"`
+}
+
+type AuthorizeRequest_Proposal_V31 struct {
+	V31 *v31.TopologyMapping `protobuf:"bytes,4,opt,name=v31,proto3,oneof"`
+}
+
+func (*AuthorizeRequest_Proposal_V30) isAuthorizeRequest_Proposal_Mapping() {}
+
+func (*AuthorizeRequest_Proposal_V31) isAuthorizeRequest_Proposal_Mapping() {}
+
 var File_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDesc = "" +
 	"\n" +
-	"Ocom/digitalasset/canton/topology/admin/v30/topology_manager_write_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a7com/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1egoogle/protobuf/duration.proto\"\xaa\x03\n" +
+	"Ocom/digitalasset/canton/topology/admin/v30/topology_manager_write_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a3com/digitalasset/canton/protocol/v31/topology.proto\x1a7com/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1egoogle/protobuf/duration.proto\"Q\n" +
+	"\x10BaseWriteRequest\x12*\n" +
+	"\x0eclient_version\x18\x01 \x01(\tH\x00R\rclientVersion\x88\x01\x01B\x11\n" +
+	"\x0f_client_version\"\xf1\x04\n" +
 	"\x1bGenerateTransactionsRequest\x12n\n" +
-	"\tproposals\x18\x01 \x03(\v2P.com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.ProposalR\tproposals\x1a\x9a\x02\n" +
+	"\tproposals\x18\x01 \x03(\v2P.com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.ProposalR\tproposals\x12d\n" +
+	"\fbase_request\x18\x02 \x01(\v2<.com.digitalasset.canton.topology.admin.v30.BaseWriteRequestH\x00R\vbaseRequest\x88\x01\x01\x1a\xea\x02\n" +
 	"\bProposal\x12Z\n" +
 	"\toperation\x18\x01 \x01(\x0e2<.com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOpR\toperation\x12\x16\n" +
-	"\x06serial\x18\x02 \x01(\rR\x06serial\x12O\n" +
-	"\amapping\x18\x03 \x01(\v25.com.digitalasset.canton.protocol.v30.TopologyMappingR\amapping\x12I\n" +
-	"\x05store\x18\x04 \x01(\v23.com.digitalasset.canton.topology.admin.v30.StoreIdR\x05store\"\xaf\x02\n" +
+	"\x06serial\x18\x02 \x01(\rR\x06serial\x12I\n" +
+	"\x03v30\x18\x03 \x01(\v25.com.digitalasset.canton.protocol.v30.TopologyMappingH\x00R\x03v30\x12I\n" +
+	"\x03v31\x18\x05 \x01(\v25.com.digitalasset.canton.protocol.v31.TopologyMappingH\x00R\x03v31\x12I\n" +
+	"\x05store\x18\x04 \x01(\v23.com.digitalasset.canton.topology.admin.v30.StoreIdR\x05storeB\t\n" +
+	"\amappingB\x0f\n" +
+	"\r_base_request\"\xaf\x02\n" +
 	"\x1cGenerateTransactionsResponse\x12\x94\x01\n" +
 	"\x16generated_transactions\x18\x01 \x03(\v2].com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.GeneratedTransactionR\x15generatedTransactions\x1ax\n" +
 	"\x14GeneratedTransaction\x125\n" +
 	"\x16serialized_transaction\x18\x01 \x01(\fR\x15serializedTransaction\x12)\n" +
-	"\x10transaction_hash\x18\x02 \x01(\fR\x0ftransactionHash\"\xc2\x05\n" +
+	"\x10transaction_hash\x18\x02 \x01(\fR\x0ftransactionHash\"\x92\x06\n" +
 	"\x10AuthorizeRequest\x12c\n" +
 	"\bproposal\x18\x01 \x01(\v2E.com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.ProposalH\x00R\bproposal\x12+\n" +
 	"\x10transaction_hash\x18\x02 \x01(\tH\x00R\x0ftransactionHash\x120\n" +
@@ -1146,11 +1282,13 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_ser
 	"\rforce_changes\x18\x04 \x03(\x0e25.com.digitalasset.canton.topology.admin.v30.ForceFlagR\fforceChanges\x12\x1b\n" +
 	"\tsigned_by\x18\x05 \x03(\tR\bsignedBy\x12I\n" +
 	"\x05store\x18\x06 \x01(\v23.com.digitalasset.canton.topology.admin.v30.StoreIdR\x05store\x12R\n" +
-	"\x18wait_to_become_effective\x18\a \x01(\v2\x19.google.protobuf.DurationR\x15waitToBecomeEffective\x1a\xc9\x01\n" +
+	"\x18wait_to_become_effective\x18\a \x01(\v2\x19.google.protobuf.DurationR\x15waitToBecomeEffective\x1a\x99\x02\n" +
 	"\bProposal\x12T\n" +
 	"\x06change\x18\x01 \x01(\x0e2<.com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOpR\x06change\x12\x16\n" +
-	"\x06serial\x18\x02 \x01(\rR\x06serial\x12O\n" +
-	"\amapping\x18\x03 \x01(\v25.com.digitalasset.canton.protocol.v30.TopologyMappingR\amappingB\x06\n" +
+	"\x06serial\x18\x02 \x01(\rR\x06serial\x12I\n" +
+	"\x03v30\x18\x03 \x01(\v25.com.digitalasset.canton.protocol.v30.TopologyMappingH\x00R\x03v30\x12I\n" +
+	"\x03v31\x18\x04 \x01(\v25.com.digitalasset.canton.protocol.v31.TopologyMappingH\x00R\x03v31B\t\n" +
+	"\amappingB\x06\n" +
 	"\x04type\"v\n" +
 	"\x11AuthorizeResponse\x12a\n" +
 	"\vtransaction\x18\x01 \x01(\v2?.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionR\vtransaction\"\xf8\x02\n" +
@@ -1224,83 +1362,88 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_serv
 }
 
 var file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_goTypes = []any{
 	(ForceFlag)(0),                                            // 0: com.digitalasset.canton.topology.admin.v30.ForceFlag
-	(*GenerateTransactionsRequest)(nil),                       // 1: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest
-	(*GenerateTransactionsResponse)(nil),                      // 2: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse
-	(*AuthorizeRequest)(nil),                                  // 3: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest
-	(*AuthorizeResponse)(nil),                                 // 4: com.digitalasset.canton.topology.admin.v30.AuthorizeResponse
-	(*AddTransactionsRequest)(nil),                            // 5: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest
-	(*AddTransactionsResponse)(nil),                           // 6: com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse
-	(*ImportTopologySnapshotRequest)(nil),                     // 7: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest
-	(*ImportTopologySnapshotResponse)(nil),                    // 8: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotResponse
-	(*ImportTopologySnapshotV2Request)(nil),                   // 9: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request
-	(*ImportTopologySnapshotV2Response)(nil),                  // 10: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Response
-	(*SignTransactionsRequest)(nil),                           // 11: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest
-	(*SignTransactionsResponse)(nil),                          // 12: com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse
-	(*CreateTemporaryTopologyStoreRequest)(nil),               // 13: com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreRequest
-	(*CreateTemporaryTopologyStoreResponse)(nil),              // 14: com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreResponse
-	(*DropTemporaryTopologyStoreRequest)(nil),                 // 15: com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreRequest
-	(*DropTemporaryTopologyStoreResponse)(nil),                // 16: com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreResponse
-	(*GenerateTransactionsRequest_Proposal)(nil),              // 17: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal
-	(*GenerateTransactionsResponse_GeneratedTransaction)(nil), // 18: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.GeneratedTransaction
-	(*AuthorizeRequest_Proposal)(nil),                         // 19: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal
-	(*StoreId)(nil),                                           // 20: com.digitalasset.canton.topology.admin.v30.StoreId
-	(*durationpb.Duration)(nil),                               // 21: google.protobuf.Duration
-	(*v30.SignedTopologyTransaction)(nil),                     // 22: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
-	(*StoreId_Temporary)(nil),                                 // 23: com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
-	(v30.Enums_TopologyChangeOp)(0),                           // 24: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
-	(*v30.TopologyMapping)(nil),                               // 25: com.digitalasset.canton.protocol.v30.TopologyMapping
+	(*BaseWriteRequest)(nil),                                  // 1: com.digitalasset.canton.topology.admin.v30.BaseWriteRequest
+	(*GenerateTransactionsRequest)(nil),                       // 2: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest
+	(*GenerateTransactionsResponse)(nil),                      // 3: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse
+	(*AuthorizeRequest)(nil),                                  // 4: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest
+	(*AuthorizeResponse)(nil),                                 // 5: com.digitalasset.canton.topology.admin.v30.AuthorizeResponse
+	(*AddTransactionsRequest)(nil),                            // 6: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest
+	(*AddTransactionsResponse)(nil),                           // 7: com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse
+	(*ImportTopologySnapshotRequest)(nil),                     // 8: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest
+	(*ImportTopologySnapshotResponse)(nil),                    // 9: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotResponse
+	(*ImportTopologySnapshotV2Request)(nil),                   // 10: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request
+	(*ImportTopologySnapshotV2Response)(nil),                  // 11: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Response
+	(*SignTransactionsRequest)(nil),                           // 12: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest
+	(*SignTransactionsResponse)(nil),                          // 13: com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse
+	(*CreateTemporaryTopologyStoreRequest)(nil),               // 14: com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreRequest
+	(*CreateTemporaryTopologyStoreResponse)(nil),              // 15: com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreResponse
+	(*DropTemporaryTopologyStoreRequest)(nil),                 // 16: com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreRequest
+	(*DropTemporaryTopologyStoreResponse)(nil),                // 17: com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreResponse
+	(*GenerateTransactionsRequest_Proposal)(nil),              // 18: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal
+	(*GenerateTransactionsResponse_GeneratedTransaction)(nil), // 19: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.GeneratedTransaction
+	(*AuthorizeRequest_Proposal)(nil),                         // 20: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal
+	(*StoreId)(nil),                                           // 21: com.digitalasset.canton.topology.admin.v30.StoreId
+	(*durationpb.Duration)(nil),                               // 22: google.protobuf.Duration
+	(*v30.SignedTopologyTransaction)(nil),                     // 23: com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	(*StoreId_Temporary)(nil),                                 // 24: com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	(v30.Enums_TopologyChangeOp)(0),                           // 25: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	(*v30.TopologyMapping)(nil),                               // 26: com.digitalasset.canton.protocol.v30.TopologyMapping
+	(*v31.TopologyMapping)(nil),                               // 27: com.digitalasset.canton.protocol.v31.TopologyMapping
 }
 var file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_depIdxs = []int32{
-	17, // 0: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.proposals:type_name -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal
-	18, // 1: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.generated_transactions:type_name -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.GeneratedTransaction
-	19, // 2: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.proposal:type_name -> com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal
-	0,  // 3: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.force_changes:type_name -> com.digitalasset.canton.topology.admin.v30.ForceFlag
-	20, // 4: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	21, // 5: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.wait_to_become_effective:type_name -> google.protobuf.Duration
-	22, // 6: com.digitalasset.canton.topology.admin.v30.AuthorizeResponse.transaction:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
-	22, // 7: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
-	0,  // 8: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.force_changes:type_name -> com.digitalasset.canton.topology.admin.v30.ForceFlag
-	20, // 9: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	21, // 10: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.wait_to_become_effective:type_name -> google.protobuf.Duration
-	20, // 11: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	21, // 12: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest.wait_to_become_effective:type_name -> google.protobuf.Duration
-	20, // 13: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	21, // 14: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request.wait_to_become_effective:type_name -> google.protobuf.Duration
-	22, // 15: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest.transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
-	20, // 16: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	0,  // 17: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest.force_flags:type_name -> com.digitalasset.canton.topology.admin.v30.ForceFlag
-	22, // 18: com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse.transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
-	23, // 19: com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreResponse.store_id:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
-	23, // 20: com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreRequest.store_id:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
-	24, // 21: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
-	25, // 22: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.mapping:type_name -> com.digitalasset.canton.protocol.v30.TopologyMapping
-	20, // 23: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	24, // 24: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal.change:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
-	25, // 25: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal.mapping:type_name -> com.digitalasset.canton.protocol.v30.TopologyMapping
-	3,  // 26: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.Authorize:input_type -> com.digitalasset.canton.topology.admin.v30.AuthorizeRequest
-	5,  // 27: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.AddTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest
-	7,  // 28: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshot:input_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest
-	9,  // 29: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshotV2:input_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request
-	11, // 30: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.SignTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest
-	1,  // 31: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.GenerateTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest
-	13, // 32: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.CreateTemporaryTopologyStore:input_type -> com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreRequest
-	15, // 33: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.DropTemporaryTopologyStore:input_type -> com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreRequest
-	4,  // 34: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.Authorize:output_type -> com.digitalasset.canton.topology.admin.v30.AuthorizeResponse
-	6,  // 35: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.AddTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse
-	8,  // 36: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshot:output_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotResponse
-	10, // 37: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshotV2:output_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Response
-	12, // 38: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.SignTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse
-	2,  // 39: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.GenerateTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse
-	14, // 40: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.CreateTemporaryTopologyStore:output_type -> com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreResponse
-	16, // 41: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.DropTemporaryTopologyStore:output_type -> com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreResponse
-	34, // [34:42] is the sub-list for method output_type
-	26, // [26:34] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	18, // 0: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.proposals:type_name -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal
+	1,  // 1: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.base_request:type_name -> com.digitalasset.canton.topology.admin.v30.BaseWriteRequest
+	19, // 2: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.generated_transactions:type_name -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.GeneratedTransaction
+	20, // 3: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.proposal:type_name -> com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal
+	0,  // 4: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.force_changes:type_name -> com.digitalasset.canton.topology.admin.v30.ForceFlag
+	21, // 5: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	22, // 6: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.wait_to_become_effective:type_name -> google.protobuf.Duration
+	23, // 7: com.digitalasset.canton.topology.admin.v30.AuthorizeResponse.transaction:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	23, // 8: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	0,  // 9: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.force_changes:type_name -> com.digitalasset.canton.topology.admin.v30.ForceFlag
+	21, // 10: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	22, // 11: com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest.wait_to_become_effective:type_name -> google.protobuf.Duration
+	21, // 12: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	22, // 13: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest.wait_to_become_effective:type_name -> google.protobuf.Duration
+	21, // 14: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	22, // 15: com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request.wait_to_become_effective:type_name -> google.protobuf.Duration
+	23, // 16: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest.transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	21, // 17: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	0,  // 18: com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest.force_flags:type_name -> com.digitalasset.canton.topology.admin.v30.ForceFlag
+	23, // 19: com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse.transactions:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransaction
+	24, // 20: com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreResponse.store_id:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	24, // 21: com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreRequest.store_id:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	25, // 22: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	26, // 23: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.v30:type_name -> com.digitalasset.canton.protocol.v30.TopologyMapping
+	27, // 24: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.v31:type_name -> com.digitalasset.canton.protocol.v31.TopologyMapping
+	21, // 25: com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest.Proposal.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	25, // 26: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal.change:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	26, // 27: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal.v30:type_name -> com.digitalasset.canton.protocol.v30.TopologyMapping
+	27, // 28: com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.Proposal.v31:type_name -> com.digitalasset.canton.protocol.v31.TopologyMapping
+	4,  // 29: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.Authorize:input_type -> com.digitalasset.canton.topology.admin.v30.AuthorizeRequest
+	6,  // 30: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.AddTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest
+	8,  // 31: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshot:input_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotRequest
+	10, // 32: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshotV2:input_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Request
+	12, // 33: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.SignTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.SignTransactionsRequest
+	2,  // 34: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.GenerateTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsRequest
+	14, // 35: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.CreateTemporaryTopologyStore:input_type -> com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreRequest
+	16, // 36: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.DropTemporaryTopologyStore:input_type -> com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreRequest
+	5,  // 37: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.Authorize:output_type -> com.digitalasset.canton.topology.admin.v30.AuthorizeResponse
+	7,  // 38: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.AddTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse
+	9,  // 39: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshot:output_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotResponse
+	11, // 40: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.ImportTopologySnapshotV2:output_type -> com.digitalasset.canton.topology.admin.v30.ImportTopologySnapshotV2Response
+	13, // 41: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.SignTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.SignTransactionsResponse
+	3,  // 42: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.GenerateTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse
+	15, // 43: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.CreateTemporaryTopologyStore:output_type -> com.digitalasset.canton.topology.admin.v30.CreateTemporaryTopologyStoreResponse
+	17, // 44: com.digitalasset.canton.topology.admin.v30.TopologyManagerWriteService.DropTemporaryTopologyStore:output_type -> com.digitalasset.canton.topology.admin.v30.DropTemporaryTopologyStoreResponse
+	37, // [37:45] is the sub-list for method output_type
+	29, // [29:37] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() {
@@ -1311,9 +1454,19 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_serv
 		return
 	}
 	file_com_digitalasset_canton_topology_admin_v30_common_proto_init()
-	file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[2].OneofWrappers = []any{
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[0].OneofWrappers = []any{}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[1].OneofWrappers = []any{}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[3].OneofWrappers = []any{
 		(*AuthorizeRequest_Proposal_)(nil),
 		(*AuthorizeRequest_TransactionHash)(nil),
+	}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[17].OneofWrappers = []any{
+		(*GenerateTransactionsRequest_Proposal_V30)(nil),
+		(*GenerateTransactionsRequest_Proposal_V31)(nil),
+	}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_msgTypes[19].OneofWrappers = []any{
+		(*AuthorizeRequest_Proposal_V30)(nil),
+		(*AuthorizeRequest_Proposal_V31)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1321,7 +1474,7 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_serv
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDesc), len(file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   19,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

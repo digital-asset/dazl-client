@@ -10,6 +10,7 @@ package v30
 
 import (
 	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
+	v31 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -39,6 +40,7 @@ type BaseQuery struct {
 	TimeQuery       isBaseQuery_TimeQuery `protobuf_oneof:"time_query"`
 	FilterSignedKey string                `protobuf:"bytes,8,opt,name=filter_signed_key,json=filterSignedKey,proto3" json:"filter_signed_key,omitempty"`
 	ProtocolVersion *int32                `protobuf:"varint,9,opt,name=protocol_version,json=protocolVersion,proto3,oneof" json:"protocol_version,omitempty"`
+	ClientVersion   *string               `protobuf:"bytes,10,opt,name=client_version,json=clientVersion,proto3,oneof" json:"client_version,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -140,6 +142,13 @@ func (x *BaseQuery) GetProtocolVersion() int32 {
 		return *x.ProtocolVersion
 	}
 	return 0
+}
+
+func (x *BaseQuery) GetClientVersion() string {
+	if x != nil && x.ClientVersion != nil {
+		return *x.ClientVersion
+	}
+	return ""
 }
 
 type isBaseQuery_TimeQuery interface {
@@ -2522,6 +2531,102 @@ func (x *SequencerLsuStateResponse) GetChunk() []byte {
 	return nil
 }
 
+type GenerateOnboardingTopologyTransactionsRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	ProtocolVersion int32                  `protobuf:"varint,1,opt,name=protocol_version,json=protocolVersion,proto3" json:"protocol_version,omitempty"`
+	TemporaryStore  *StoreId_Temporary     `protobuf:"bytes,2,opt,name=temporary_store,json=temporaryStore,proto3,oneof" json:"temporary_store,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *GenerateOnboardingTopologyTransactionsRequest) Reset() {
+	*x = GenerateOnboardingTopologyTransactionsRequest{}
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateOnboardingTopologyTransactionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateOnboardingTopologyTransactionsRequest) ProtoMessage() {}
+
+func (x *GenerateOnboardingTopologyTransactionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateOnboardingTopologyTransactionsRequest.ProtoReflect.Descriptor instead.
+func (*GenerateOnboardingTopologyTransactionsRequest) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *GenerateOnboardingTopologyTransactionsRequest) GetProtocolVersion() int32 {
+	if x != nil {
+		return x.ProtocolVersion
+	}
+	return 0
+}
+
+func (x *GenerateOnboardingTopologyTransactionsRequest) GetTemporaryStore() *StoreId_Temporary {
+	if x != nil {
+		return x.TemporaryStore
+	}
+	return nil
+}
+
+type GenerateOnboardingTopologyTransactionsResponse struct {
+	state         protoimpl.MessageState          `protogen:"open.v1"`
+	Result        *v30.SignedTopologyTransactions `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateOnboardingTopologyTransactionsResponse) Reset() {
+	*x = GenerateOnboardingTopologyTransactionsResponse{}
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateOnboardingTopologyTransactionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateOnboardingTopologyTransactionsResponse) ProtoMessage() {}
+
+func (x *GenerateOnboardingTopologyTransactionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateOnboardingTopologyTransactionsResponse.ProtoReflect.Descriptor instead.
+func (*GenerateOnboardingTopologyTransactionsResponse) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *GenerateOnboardingTopologyTransactionsResponse) GetResult() *v30.SignedTopologyTransactions {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
 type BaseQuery_TimeRange struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	From          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
@@ -2532,7 +2637,7 @@ type BaseQuery_TimeRange struct {
 
 func (x *BaseQuery_TimeRange) Reset() {
 	*x = BaseQuery_TimeRange{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[48]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2544,7 +2649,7 @@ func (x *BaseQuery_TimeRange) String() string {
 func (*BaseQuery_TimeRange) ProtoMessage() {}
 
 func (x *BaseQuery_TimeRange) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[48]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2575,16 +2680,19 @@ func (x *BaseQuery_TimeRange) GetUntil() *timestamppb.Timestamp {
 }
 
 type ListNamespaceDelegationResponse_Result struct {
-	state         protoimpl.MessageState   `protogen:"open.v1"`
-	Context       *BaseResult              `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	Item          *v30.NamespaceDelegation `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Context *BaseResult            `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	// Types that are valid to be assigned to Item:
+	//
+	//	*ListNamespaceDelegationResponse_Result_V30
+	Item          isListNamespaceDelegationResponse_Result_Item `protobuf_oneof:"item"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListNamespaceDelegationResponse_Result) Reset() {
 	*x = ListNamespaceDelegationResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[49]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2596,7 +2704,7 @@ func (x *ListNamespaceDelegationResponse_Result) String() string {
 func (*ListNamespaceDelegationResponse_Result) ProtoMessage() {}
 
 func (x *ListNamespaceDelegationResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[49]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2619,12 +2727,31 @@ func (x *ListNamespaceDelegationResponse_Result) GetContext() *BaseResult {
 	return nil
 }
 
-func (x *ListNamespaceDelegationResponse_Result) GetItem() *v30.NamespaceDelegation {
+func (x *ListNamespaceDelegationResponse_Result) GetItem() isListNamespaceDelegationResponse_Result_Item {
 	if x != nil {
 		return x.Item
 	}
 	return nil
 }
+
+func (x *ListNamespaceDelegationResponse_Result) GetV30() *v30.NamespaceDelegation {
+	if x != nil {
+		if x, ok := x.Item.(*ListNamespaceDelegationResponse_Result_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+type isListNamespaceDelegationResponse_Result_Item interface {
+	isListNamespaceDelegationResponse_Result_Item()
+}
+
+type ListNamespaceDelegationResponse_Result_V30 struct {
+	V30 *v30.NamespaceDelegation `protobuf:"bytes,2,opt,name=v30,proto3,oneof"`
+}
+
+func (*ListNamespaceDelegationResponse_Result_V30) isListNamespaceDelegationResponse_Result_Item() {}
 
 type ListDecentralizedNamespaceDefinitionResponse_Result struct {
 	state         protoimpl.MessageState                `protogen:"open.v1"`
@@ -2636,7 +2763,7 @@ type ListDecentralizedNamespaceDefinitionResponse_Result struct {
 
 func (x *ListDecentralizedNamespaceDefinitionResponse_Result) Reset() {
 	*x = ListDecentralizedNamespaceDefinitionResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[50]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2648,7 +2775,7 @@ func (x *ListDecentralizedNamespaceDefinitionResponse_Result) String() string {
 func (*ListDecentralizedNamespaceDefinitionResponse_Result) ProtoMessage() {}
 
 func (x *ListDecentralizedNamespaceDefinitionResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[50]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2679,16 +2806,19 @@ func (x *ListDecentralizedNamespaceDefinitionResponse_Result) GetItem() *v30.Dec
 }
 
 type ListOwnerToKeyMappingResponse_Result struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Context       *BaseResult            `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	Item          *v30.OwnerToKeyMapping `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Context *BaseResult            `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	// Types that are valid to be assigned to Item:
+	//
+	//	*ListOwnerToKeyMappingResponse_Result_V30
+	Item          isListOwnerToKeyMappingResponse_Result_Item `protobuf_oneof:"item"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListOwnerToKeyMappingResponse_Result) Reset() {
 	*x = ListOwnerToKeyMappingResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[51]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2700,7 +2830,7 @@ func (x *ListOwnerToKeyMappingResponse_Result) String() string {
 func (*ListOwnerToKeyMappingResponse_Result) ProtoMessage() {}
 
 func (x *ListOwnerToKeyMappingResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[51]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2723,24 +2853,46 @@ func (x *ListOwnerToKeyMappingResponse_Result) GetContext() *BaseResult {
 	return nil
 }
 
-func (x *ListOwnerToKeyMappingResponse_Result) GetItem() *v30.OwnerToKeyMapping {
+func (x *ListOwnerToKeyMappingResponse_Result) GetItem() isListOwnerToKeyMappingResponse_Result_Item {
 	if x != nil {
 		return x.Item
 	}
 	return nil
 }
 
+func (x *ListOwnerToKeyMappingResponse_Result) GetV30() *v30.OwnerToKeyMapping {
+	if x != nil {
+		if x, ok := x.Item.(*ListOwnerToKeyMappingResponse_Result_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+type isListOwnerToKeyMappingResponse_Result_Item interface {
+	isListOwnerToKeyMappingResponse_Result_Item()
+}
+
+type ListOwnerToKeyMappingResponse_Result_V30 struct {
+	V30 *v30.OwnerToKeyMapping `protobuf:"bytes,2,opt,name=v30,proto3,oneof"`
+}
+
+func (*ListOwnerToKeyMappingResponse_Result_V30) isListOwnerToKeyMappingResponse_Result_Item() {}
+
 type ListPartyToKeyMappingResponse_Result struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Context       *BaseResult            `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	Item          *v30.PartyToKeyMapping `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Context *BaseResult            `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	// Types that are valid to be assigned to Item:
+	//
+	//	*ListPartyToKeyMappingResponse_Result_V30
+	Item          isListPartyToKeyMappingResponse_Result_Item `protobuf_oneof:"item"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListPartyToKeyMappingResponse_Result) Reset() {
 	*x = ListPartyToKeyMappingResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[52]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2752,7 +2904,7 @@ func (x *ListPartyToKeyMappingResponse_Result) String() string {
 func (*ListPartyToKeyMappingResponse_Result) ProtoMessage() {}
 
 func (x *ListPartyToKeyMappingResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[52]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2775,12 +2927,31 @@ func (x *ListPartyToKeyMappingResponse_Result) GetContext() *BaseResult {
 	return nil
 }
 
-func (x *ListPartyToKeyMappingResponse_Result) GetItem() *v30.PartyToKeyMapping {
+func (x *ListPartyToKeyMappingResponse_Result) GetItem() isListPartyToKeyMappingResponse_Result_Item {
 	if x != nil {
 		return x.Item
 	}
 	return nil
 }
+
+func (x *ListPartyToKeyMappingResponse_Result) GetV30() *v30.PartyToKeyMapping {
+	if x != nil {
+		if x, ok := x.Item.(*ListPartyToKeyMappingResponse_Result_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+type isListPartyToKeyMappingResponse_Result_Item interface {
+	isListPartyToKeyMappingResponse_Result_Item()
+}
+
+type ListPartyToKeyMappingResponse_Result_V30 struct {
+	V30 *v30.PartyToKeyMapping `protobuf:"bytes,2,opt,name=v30,proto3,oneof"`
+}
+
+func (*ListPartyToKeyMappingResponse_Result_V30) isListPartyToKeyMappingResponse_Result_Item() {}
 
 type ListSynchronizerTrustCertificateResponse_Result struct {
 	state         protoimpl.MessageState            `protogen:"open.v1"`
@@ -2792,7 +2963,7 @@ type ListSynchronizerTrustCertificateResponse_Result struct {
 
 func (x *ListSynchronizerTrustCertificateResponse_Result) Reset() {
 	*x = ListSynchronizerTrustCertificateResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[53]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2804,7 +2975,7 @@ func (x *ListSynchronizerTrustCertificateResponse_Result) String() string {
 func (*ListSynchronizerTrustCertificateResponse_Result) ProtoMessage() {}
 
 func (x *ListSynchronizerTrustCertificateResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[53]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2844,7 +3015,7 @@ type ListParticipantSynchronizerPermissionResponse_Result struct {
 
 func (x *ListParticipantSynchronizerPermissionResponse_Result) Reset() {
 	*x = ListParticipantSynchronizerPermissionResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[54]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2856,7 +3027,7 @@ func (x *ListParticipantSynchronizerPermissionResponse_Result) String() string {
 func (*ListParticipantSynchronizerPermissionResponse_Result) ProtoMessage() {}
 
 func (x *ListParticipantSynchronizerPermissionResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[54]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2896,7 +3067,7 @@ type ListPartyHostingLimitsResponse_Result struct {
 
 func (x *ListPartyHostingLimitsResponse_Result) Reset() {
 	*x = ListPartyHostingLimitsResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[55]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2908,7 +3079,7 @@ func (x *ListPartyHostingLimitsResponse_Result) String() string {
 func (*ListPartyHostingLimitsResponse_Result) ProtoMessage() {}
 
 func (x *ListPartyHostingLimitsResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[55]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2948,7 +3119,7 @@ type ListVettedPackagesResponse_Result struct {
 
 func (x *ListVettedPackagesResponse_Result) Reset() {
 	*x = ListVettedPackagesResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[56]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2960,7 +3131,7 @@ func (x *ListVettedPackagesResponse_Result) String() string {
 func (*ListVettedPackagesResponse_Result) ProtoMessage() {}
 
 func (x *ListVettedPackagesResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[56]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2991,16 +3162,20 @@ func (x *ListVettedPackagesResponse_Result) GetItem() *v30.VettedPackages {
 }
 
 type ListPartyToParticipantResponse_Result struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Context       *BaseResult             `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	Item          *v30.PartyToParticipant `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Context *BaseResult            `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	// Types that are valid to be assigned to Item:
+	//
+	//	*ListPartyToParticipantResponse_Result_V30
+	//	*ListPartyToParticipantResponse_Result_V31
+	Item          isListPartyToParticipantResponse_Result_Item `protobuf_oneof:"item"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListPartyToParticipantResponse_Result) Reset() {
 	*x = ListPartyToParticipantResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[57]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3012,7 +3187,7 @@ func (x *ListPartyToParticipantResponse_Result) String() string {
 func (*ListPartyToParticipantResponse_Result) ProtoMessage() {}
 
 func (x *ListPartyToParticipantResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[57]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3035,12 +3210,46 @@ func (x *ListPartyToParticipantResponse_Result) GetContext() *BaseResult {
 	return nil
 }
 
-func (x *ListPartyToParticipantResponse_Result) GetItem() *v30.PartyToParticipant {
+func (x *ListPartyToParticipantResponse_Result) GetItem() isListPartyToParticipantResponse_Result_Item {
 	if x != nil {
 		return x.Item
 	}
 	return nil
 }
+
+func (x *ListPartyToParticipantResponse_Result) GetV30() *v30.PartyToParticipant {
+	if x != nil {
+		if x, ok := x.Item.(*ListPartyToParticipantResponse_Result_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+func (x *ListPartyToParticipantResponse_Result) GetV31() *v31.PartyToParticipant {
+	if x != nil {
+		if x, ok := x.Item.(*ListPartyToParticipantResponse_Result_V31); ok {
+			return x.V31
+		}
+	}
+	return nil
+}
+
+type isListPartyToParticipantResponse_Result_Item interface {
+	isListPartyToParticipantResponse_Result_Item()
+}
+
+type ListPartyToParticipantResponse_Result_V30 struct {
+	V30 *v30.PartyToParticipant `protobuf:"bytes,2,opt,name=v30,proto3,oneof"`
+}
+
+type ListPartyToParticipantResponse_Result_V31 struct {
+	V31 *v31.PartyToParticipant `protobuf:"bytes,3,opt,name=v31,proto3,oneof"`
+}
+
+func (*ListPartyToParticipantResponse_Result_V30) isListPartyToParticipantResponse_Result_Item() {}
+
+func (*ListPartyToParticipantResponse_Result_V31) isListPartyToParticipantResponse_Result_Item() {}
 
 type ListSynchronizerParametersStateResponse_Result struct {
 	state         protoimpl.MessageState             `protogen:"open.v1"`
@@ -3052,7 +3261,7 @@ type ListSynchronizerParametersStateResponse_Result struct {
 
 func (x *ListSynchronizerParametersStateResponse_Result) Reset() {
 	*x = ListSynchronizerParametersStateResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[58]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3064,7 +3273,7 @@ func (x *ListSynchronizerParametersStateResponse_Result) String() string {
 func (*ListSynchronizerParametersStateResponse_Result) ProtoMessage() {}
 
 func (x *ListSynchronizerParametersStateResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[58]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3104,7 +3313,7 @@ type ListSequencingParametersStateResponse_Result struct {
 
 func (x *ListSequencingParametersStateResponse_Result) Reset() {
 	*x = ListSequencingParametersStateResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[59]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3116,7 +3325,7 @@ func (x *ListSequencingParametersStateResponse_Result) String() string {
 func (*ListSequencingParametersStateResponse_Result) ProtoMessage() {}
 
 func (x *ListSequencingParametersStateResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[59]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3156,7 +3365,7 @@ type ListMediatorSynchronizerStateResponse_Result struct {
 
 func (x *ListMediatorSynchronizerStateResponse_Result) Reset() {
 	*x = ListMediatorSynchronizerStateResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[60]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3168,7 +3377,7 @@ func (x *ListMediatorSynchronizerStateResponse_Result) String() string {
 func (*ListMediatorSynchronizerStateResponse_Result) ProtoMessage() {}
 
 func (x *ListMediatorSynchronizerStateResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[60]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3208,7 +3417,7 @@ type ListSequencerSynchronizerStateResponse_Result struct {
 
 func (x *ListSequencerSynchronizerStateResponse_Result) Reset() {
 	*x = ListSequencerSynchronizerStateResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[61]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3220,7 +3429,7 @@ func (x *ListSequencerSynchronizerStateResponse_Result) String() string {
 func (*ListSequencerSynchronizerStateResponse_Result) ProtoMessage() {}
 
 func (x *ListSequencerSynchronizerStateResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[61]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3260,7 +3469,7 @@ type ListLsuAnnouncementResponse_Result struct {
 
 func (x *ListLsuAnnouncementResponse_Result) Reset() {
 	*x = ListLsuAnnouncementResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[62]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3272,7 +3481,7 @@ func (x *ListLsuAnnouncementResponse_Result) String() string {
 func (*ListLsuAnnouncementResponse_Result) ProtoMessage() {}
 
 func (x *ListLsuAnnouncementResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[62]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3312,7 +3521,7 @@ type ListLsuSequencerConnectionSuccessorResponse_Result struct {
 
 func (x *ListLsuSequencerConnectionSuccessorResponse_Result) Reset() {
 	*x = ListLsuSequencerConnectionSuccessorResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[63]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3324,7 +3533,7 @@ func (x *ListLsuSequencerConnectionSuccessorResponse_Result) String() string {
 func (*ListLsuSequencerConnectionSuccessorResponse_Result) ProtoMessage() {}
 
 func (x *ListLsuSequencerConnectionSuccessorResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[63]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3358,7 +3567,7 @@ var File_com_digitalasset_canton_topology_admin_v30_topology_manager_read_servic
 
 const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDesc = "" +
 	"\n" +
-	"Ncom/digitalasset/canton/topology/admin/v30/topology_manager_read_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a@com/digitalasset/canton/protocol/v30/sequencing_parameters.proto\x1aBcom/digitalasset/canton/protocol/v30/synchronizer_parameters.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a7com/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x05\n" +
+	"Ncom/digitalasset/canton/topology/admin/v30/topology_manager_read_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a@com/digitalasset/canton/protocol/v30/sequencing_parameters.proto\x1aBcom/digitalasset/canton/protocol/v30/synchronizer_parameters.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a3com/digitalasset/canton/protocol/v31/topology.proto\x1a7com/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcf\x05\n" +
 	"\tBaseQuery\x12I\n" +
 	"\x05store\x18\x01 \x01(\v23.com.digitalasset.canton.topology.admin.v30.StoreIdR\x05store\x12\x1c\n" +
 	"\tproposals\x18\x02 \x01(\bR\tproposals\x12Z\n" +
@@ -3368,13 +3577,16 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_serv
 	"head_state\x18\x06 \x01(\v2\x16.google.protobuf.EmptyH\x00R\theadState\x12W\n" +
 	"\x05range\x18\a \x01(\v2?.com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRangeH\x00R\x05range\x12*\n" +
 	"\x11filter_signed_key\x18\b \x01(\tR\x0ffilterSignedKey\x12.\n" +
-	"\x10protocol_version\x18\t \x01(\x05H\x01R\x0fprotocolVersion\x88\x01\x01\x1am\n" +
+	"\x10protocol_version\x18\t \x01(\x05H\x01R\x0fprotocolVersion\x88\x01\x01\x12*\n" +
+	"\x0eclient_version\x18\n" +
+	" \x01(\tH\x02R\rclientVersion\x88\x01\x01\x1am\n" +
 	"\tTimeRange\x12.\n" +
 	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x120\n" +
 	"\x05until\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x05untilB\f\n" +
 	"\n" +
 	"time_queryB\x13\n" +
-	"\x11_protocol_versionJ\x04\b\x04\x10\x05\"\xde\x03\n" +
+	"\x11_protocol_versionB\x11\n" +
+	"\x0f_client_versionJ\x04\b\x04\x10\x05\"\xde\x03\n" +
 	"\n" +
 	"BaseResult\x12I\n" +
 	"\x05store\x18\x01 \x01(\v23.com.digitalasset.canton.topology.admin.v30.StoreIdR\x05store\x128\n" +
@@ -3391,12 +3603,13 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_serv
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x12)\n" +
 	"\x10filter_namespace\x18\x02 \x01(\tR\x0ffilterNamespace\x12A\n" +
-	"\x1dfilter_target_key_fingerprint\x18\x03 \x01(\tR\x1afilterTargetKeyFingerprint\"\xbb\x02\n" +
+	"\x1dfilter_target_key_fingerprint\x18\x03 \x01(\tR\x1afilterTargetKeyFingerprint\"\xc3\x02\n" +
 	"\x1fListNamespaceDelegationResponse\x12l\n" +
-	"\aresults\x18\x01 \x03(\v2R.com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.ResultR\aresults\x1a\xa9\x01\n" +
+	"\aresults\x18\x01 \x03(\v2R.com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.ResultR\aresults\x1a\xb1\x01\n" +
 	"\x06Result\x12P\n" +
 	"\acontext\x18\x01 \x01(\v26.com.digitalasset.canton.topology.admin.v30.BaseResultR\acontext\x12M\n" +
-	"\x04item\x18\x02 \x01(\v29.com.digitalasset.canton.protocol.v30.NamespaceDelegationR\x04item\"\xae\x01\n" +
+	"\x03v30\x18\x02 \x01(\v29.com.digitalasset.canton.protocol.v30.NamespaceDelegationH\x00R\x03v30B\x06\n" +
+	"\x04item\"\xae\x01\n" +
 	"+ListDecentralizedNamespaceDefinitionRequest\x12T\n" +
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x12)\n" +
@@ -3410,21 +3623,23 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_serv
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x121\n" +
 	"\x15filter_key_owner_type\x18\x02 \x01(\tR\x12filterKeyOwnerType\x12/\n" +
-	"\x14filter_key_owner_uid\x18\x03 \x01(\tR\x11filterKeyOwnerUid\"\xb5\x02\n" +
+	"\x14filter_key_owner_uid\x18\x03 \x01(\tR\x11filterKeyOwnerUid\"\xbd\x02\n" +
 	"\x1dListOwnerToKeyMappingResponse\x12j\n" +
-	"\aresults\x18\x01 \x03(\v2P.com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.ResultR\aresults\x1a\xa7\x01\n" +
+	"\aresults\x18\x01 \x03(\v2P.com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.ResultR\aresults\x1a\xaf\x01\n" +
 	"\x06Result\x12P\n" +
 	"\acontext\x18\x01 \x01(\v26.com.digitalasset.canton.topology.admin.v30.BaseResultR\acontext\x12K\n" +
-	"\x04item\x18\x02 \x01(\v27.com.digitalasset.canton.protocol.v30.OwnerToKeyMappingR\x04item\"\x97\x01\n" +
+	"\x03v30\x18\x02 \x01(\v27.com.digitalasset.canton.protocol.v30.OwnerToKeyMappingH\x00R\x03v30B\x06\n" +
+	"\x04item\"\x97\x01\n" +
 	"\x1cListPartyToKeyMappingRequest\x12T\n" +
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x12!\n" +
-	"\ffilter_party\x18\x02 \x01(\tR\vfilterParty\"\xb5\x02\n" +
+	"\ffilter_party\x18\x02 \x01(\tR\vfilterParty\"\xbd\x02\n" +
 	"\x1dListPartyToKeyMappingResponse\x12j\n" +
-	"\aresults\x18\x01 \x03(\v2P.com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.ResultR\aresults\x1a\xa7\x01\n" +
+	"\aresults\x18\x01 \x03(\v2P.com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.ResultR\aresults\x1a\xaf\x01\n" +
 	"\x06Result\x12P\n" +
 	"\acontext\x18\x01 \x01(\v26.com.digitalasset.canton.topology.admin.v30.BaseResultR\acontext\x12K\n" +
-	"\x04item\x18\x02 \x01(\v27.com.digitalasset.canton.protocol.v30.PartyToKeyMappingR\x04item\"\x9e\x01\n" +
+	"\x03v30\x18\x02 \x01(\v27.com.digitalasset.canton.protocol.v30.PartyToKeyMappingH\x00R\x03v30B\x06\n" +
+	"\x04item\"\x9e\x01\n" +
 	"'ListSynchronizerTrustCertificateRequest\x12T\n" +
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x12\x1d\n" +
@@ -3468,12 +3683,14 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_serv
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x12!\n" +
 	"\ffilter_party\x18\x02 \x01(\tR\vfilterParty\x12-\n" +
-	"\x12filter_participant\x18\x03 \x01(\tR\x11filterParticipant\"\xb8\x02\n" +
+	"\x12filter_participant\x18\x03 \x01(\tR\x11filterParticipant\"\x8e\x03\n" +
 	"\x1eListPartyToParticipantResponse\x12k\n" +
-	"\aresults\x18\x02 \x03(\v2Q.com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.ResultR\aresults\x1a\xa8\x01\n" +
+	"\aresults\x18\x02 \x03(\v2Q.com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.ResultR\aresults\x1a\xfe\x01\n" +
 	"\x06Result\x12P\n" +
 	"\acontext\x18\x01 \x01(\v26.com.digitalasset.canton.topology.admin.v30.BaseResultR\acontext\x12L\n" +
-	"\x04item\x18\x02 \x01(\v28.com.digitalasset.canton.protocol.v30.PartyToParticipantR\x04item\"\xb4\x01\n" +
+	"\x03v30\x18\x02 \x01(\v28.com.digitalasset.canton.protocol.v30.PartyToParticipantH\x00R\x03v30\x12L\n" +
+	"\x03v31\x18\x03 \x01(\v28.com.digitalasset.canton.protocol.v31.PartyToParticipantH\x00R\x03v31B\x06\n" +
+	"\x04item\"\xb4\x01\n" +
 	"&ListSynchronizerParametersStateRequest\x12T\n" +
 	"\n" +
 	"base_query\x18\x01 \x01(\v25.com.digitalasset.canton.topology.admin.v30.BaseQueryR\tbaseQuery\x124\n" +
@@ -3579,7 +3796,13 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_serv
 	"\n" +
 	"_timestamp\"1\n" +
 	"\x19SequencerLsuStateResponse\x12\x14\n" +
-	"\x05chunk\x18\x01 \x01(\fR\x05chunk2\xf8 \n" +
+	"\x05chunk\x18\x01 \x01(\fR\x05chunk\"\xdb\x01\n" +
+	"-GenerateOnboardingTopologyTransactionsRequest\x12)\n" +
+	"\x10protocol_version\x18\x01 \x01(\x05R\x0fprotocolVersion\x12k\n" +
+	"\x0ftemporary_store\x18\x02 \x01(\v2=.com.digitalasset.canton.topology.admin.v30.StoreId.TemporaryH\x00R\x0etemporaryStore\x88\x01\x01B\x12\n" +
+	"\x10_temporary_store\"\x8a\x01\n" +
+	".GenerateOnboardingTopologyTransactionsResponse\x12X\n" +
+	"\x06result\x18\x01 \x01(\v2@.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionsR\x06result2\xda\"\n" +
 	"\x1aTopologyManagerReadService\x12\xb2\x01\n" +
 	"\x17ListNamespaceDelegation\x12J.com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationRequest\x1aK.com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse\x12\xd9\x01\n" +
 	"$ListDecentralizedNamespaceDefinition\x12W.com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionRequest\x1aX.com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse\x12\xac\x01\n" +
@@ -3603,7 +3826,8 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_serv
 	"\x18ExportTopologySnapshotV2\x12K.com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Request\x1aL.com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Response0\x01\x12\x98\x01\n" +
 	"\fGenesisState\x12?.com.digitalasset.canton.topology.admin.v30.GenesisStateRequest\x1a@.com.digitalasset.canton.topology.admin.v30.GenesisStateResponse\"\x03\x88\x02\x010\x01\x12\x99\x01\n" +
 	"\x0eGenesisStateV2\x12A.com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request\x1aB.com.digitalasset.canton.topology.admin.v30.GenesisStateV2Response0\x01\x12\xa2\x01\n" +
-	"\x11SequencerLsuState\x12D.com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest\x1aE.com.digitalasset.canton.topology.admin.v30.SequencerLsuStateResponse0\x01B[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30b\x06proto3"
+	"\x11SequencerLsuState\x12D.com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest\x1aE.com.digitalasset.canton.topology.admin.v30.SequencerLsuStateResponse0\x01\x12\xdf\x01\n" +
+	"&GenerateOnboardingTopologyTransactions\x12Y.com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsRequest\x1aZ.com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsResponseB[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDescOnce sync.Once
@@ -3617,7 +3841,7 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_servi
 	return file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
+var file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes = make([]protoimpl.MessageInfo, 66)
 var file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_goTypes = []any{
 	(*BaseQuery)(nil),                                            // 0: com.digitalasset.canton.topology.admin.v30.BaseQuery
 	(*BaseResult)(nil),                                           // 1: com.digitalasset.canton.topology.admin.v30.BaseResult
@@ -3667,180 +3891,190 @@ var file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_servic
 	(*GenesisStateV2Response)(nil),                               // 45: com.digitalasset.canton.topology.admin.v30.GenesisStateV2Response
 	(*SequencerLsuStateRequest)(nil),                             // 46: com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest
 	(*SequencerLsuStateResponse)(nil),                            // 47: com.digitalasset.canton.topology.admin.v30.SequencerLsuStateResponse
-	(*BaseQuery_TimeRange)(nil),                                  // 48: com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange
-	(*ListNamespaceDelegationResponse_Result)(nil),               // 49: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result
-	(*ListDecentralizedNamespaceDefinitionResponse_Result)(nil),  // 50: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result
-	(*ListOwnerToKeyMappingResponse_Result)(nil),                 // 51: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result
-	(*ListPartyToKeyMappingResponse_Result)(nil),                 // 52: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result
-	(*ListSynchronizerTrustCertificateResponse_Result)(nil),      // 53: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result
-	(*ListParticipantSynchronizerPermissionResponse_Result)(nil), // 54: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result
-	(*ListPartyHostingLimitsResponse_Result)(nil),                // 55: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result
-	(*ListVettedPackagesResponse_Result)(nil),                    // 56: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result
-	(*ListPartyToParticipantResponse_Result)(nil),                // 57: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result
-	(*ListSynchronizerParametersStateResponse_Result)(nil),       // 58: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result
-	(*ListSequencingParametersStateResponse_Result)(nil),         // 59: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result
-	(*ListMediatorSynchronizerStateResponse_Result)(nil),         // 60: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result
-	(*ListSequencerSynchronizerStateResponse_Result)(nil),        // 61: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result
-	(*ListLsuAnnouncementResponse_Result)(nil),                   // 62: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result
-	(*ListLsuSequencerConnectionSuccessorResponse_Result)(nil),   // 63: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result
-	(*StoreId)(nil),                               // 64: com.digitalasset.canton.topology.admin.v30.StoreId
-	(v30.Enums_TopologyChangeOp)(0),               // 65: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
-	(*timestamppb.Timestamp)(nil),                 // 66: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),                         // 67: google.protobuf.Empty
-	(*TopologyTransactions)(nil),                  // 68: com.digitalasset.canton.topology.admin.v30.TopologyTransactions
-	(*v30.NamespaceDelegation)(nil),               // 69: com.digitalasset.canton.protocol.v30.NamespaceDelegation
-	(*v30.DecentralizedNamespaceDefinition)(nil),  // 70: com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
-	(*v30.OwnerToKeyMapping)(nil),                 // 71: com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
-	(*v30.PartyToKeyMapping)(nil),                 // 72: com.digitalasset.canton.protocol.v30.PartyToKeyMapping
-	(*v30.SynchronizerTrustCertificate)(nil),      // 73: com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
-	(*v30.ParticipantSynchronizerPermission)(nil), // 74: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
-	(*v30.PartyHostingLimits)(nil),                // 75: com.digitalasset.canton.protocol.v30.PartyHostingLimits
-	(*v30.VettedPackages)(nil),                    // 76: com.digitalasset.canton.protocol.v30.VettedPackages
-	(*v30.PartyToParticipant)(nil),                // 77: com.digitalasset.canton.protocol.v30.PartyToParticipant
-	(*v30.DynamicSynchronizerParameters)(nil),     // 78: com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
-	(*v30.DynamicSequencingParameters)(nil),       // 79: com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
-	(*v30.MediatorSynchronizerState)(nil),         // 80: com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
-	(*v30.SequencerSynchronizerState)(nil),        // 81: com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
-	(*v30.LsuAnnouncement)(nil),                   // 82: com.digitalasset.canton.protocol.v30.LsuAnnouncement
-	(*v30.LsuSequencerConnectionSuccessor)(nil),   // 83: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
+	(*GenerateOnboardingTopologyTransactionsRequest)(nil),        // 48: com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsRequest
+	(*GenerateOnboardingTopologyTransactionsResponse)(nil),       // 49: com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsResponse
+	(*BaseQuery_TimeRange)(nil),                                  // 50: com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange
+	(*ListNamespaceDelegationResponse_Result)(nil),               // 51: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result
+	(*ListDecentralizedNamespaceDefinitionResponse_Result)(nil),  // 52: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result
+	(*ListOwnerToKeyMappingResponse_Result)(nil),                 // 53: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result
+	(*ListPartyToKeyMappingResponse_Result)(nil),                 // 54: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result
+	(*ListSynchronizerTrustCertificateResponse_Result)(nil),      // 55: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result
+	(*ListParticipantSynchronizerPermissionResponse_Result)(nil), // 56: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result
+	(*ListPartyHostingLimitsResponse_Result)(nil),                // 57: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result
+	(*ListVettedPackagesResponse_Result)(nil),                    // 58: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result
+	(*ListPartyToParticipantResponse_Result)(nil),                // 59: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result
+	(*ListSynchronizerParametersStateResponse_Result)(nil),       // 60: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result
+	(*ListSequencingParametersStateResponse_Result)(nil),         // 61: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result
+	(*ListMediatorSynchronizerStateResponse_Result)(nil),         // 62: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result
+	(*ListSequencerSynchronizerStateResponse_Result)(nil),        // 63: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result
+	(*ListLsuAnnouncementResponse_Result)(nil),                   // 64: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result
+	(*ListLsuSequencerConnectionSuccessorResponse_Result)(nil),   // 65: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result
+	(*StoreId)(nil),                               // 66: com.digitalasset.canton.topology.admin.v30.StoreId
+	(v30.Enums_TopologyChangeOp)(0),               // 67: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	(*timestamppb.Timestamp)(nil),                 // 68: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                         // 69: google.protobuf.Empty
+	(*TopologyTransactions)(nil),                  // 70: com.digitalasset.canton.topology.admin.v30.TopologyTransactions
+	(*StoreId_Temporary)(nil),                     // 71: com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	(*v30.SignedTopologyTransactions)(nil),        // 72: com.digitalasset.canton.protocol.v30.SignedTopologyTransactions
+	(*v30.NamespaceDelegation)(nil),               // 73: com.digitalasset.canton.protocol.v30.NamespaceDelegation
+	(*v30.DecentralizedNamespaceDefinition)(nil),  // 74: com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
+	(*v30.OwnerToKeyMapping)(nil),                 // 75: com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
+	(*v30.PartyToKeyMapping)(nil),                 // 76: com.digitalasset.canton.protocol.v30.PartyToKeyMapping
+	(*v30.SynchronizerTrustCertificate)(nil),      // 77: com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
+	(*v30.ParticipantSynchronizerPermission)(nil), // 78: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
+	(*v30.PartyHostingLimits)(nil),                // 79: com.digitalasset.canton.protocol.v30.PartyHostingLimits
+	(*v30.VettedPackages)(nil),                    // 80: com.digitalasset.canton.protocol.v30.VettedPackages
+	(*v30.PartyToParticipant)(nil),                // 81: com.digitalasset.canton.protocol.v30.PartyToParticipant
+	(*v31.PartyToParticipant)(nil),                // 82: com.digitalasset.canton.protocol.v31.PartyToParticipant
+	(*v30.DynamicSynchronizerParameters)(nil),     // 83: com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
+	(*v30.DynamicSequencingParameters)(nil),       // 84: com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
+	(*v30.MediatorSynchronizerState)(nil),         // 85: com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
+	(*v30.SequencerSynchronizerState)(nil),        // 86: com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
+	(*v30.LsuAnnouncement)(nil),                   // 87: com.digitalasset.canton.protocol.v30.LsuAnnouncement
+	(*v30.LsuSequencerConnectionSuccessor)(nil),   // 88: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
 }
 var file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_depIdxs = []int32{
-	64,  // 0: com.digitalasset.canton.topology.admin.v30.BaseQuery.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	65,  // 1: com.digitalasset.canton.topology.admin.v30.BaseQuery.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
-	66,  // 2: com.digitalasset.canton.topology.admin.v30.BaseQuery.snapshot:type_name -> google.protobuf.Timestamp
-	67,  // 3: com.digitalasset.canton.topology.admin.v30.BaseQuery.head_state:type_name -> google.protobuf.Empty
-	48,  // 4: com.digitalasset.canton.topology.admin.v30.BaseQuery.range:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange
-	64,  // 5: com.digitalasset.canton.topology.admin.v30.BaseResult.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	66,  // 6: com.digitalasset.canton.topology.admin.v30.BaseResult.sequenced:type_name -> google.protobuf.Timestamp
-	66,  // 7: com.digitalasset.canton.topology.admin.v30.BaseResult.valid_from:type_name -> google.protobuf.Timestamp
-	66,  // 8: com.digitalasset.canton.topology.admin.v30.BaseResult.valid_until:type_name -> google.protobuf.Timestamp
-	65,  // 9: com.digitalasset.canton.topology.admin.v30.BaseResult.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	66,  // 0: com.digitalasset.canton.topology.admin.v30.BaseQuery.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	67,  // 1: com.digitalasset.canton.topology.admin.v30.BaseQuery.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	68,  // 2: com.digitalasset.canton.topology.admin.v30.BaseQuery.snapshot:type_name -> google.protobuf.Timestamp
+	69,  // 3: com.digitalasset.canton.topology.admin.v30.BaseQuery.head_state:type_name -> google.protobuf.Empty
+	50,  // 4: com.digitalasset.canton.topology.admin.v30.BaseQuery.range:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange
+	66,  // 5: com.digitalasset.canton.topology.admin.v30.BaseResult.store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	68,  // 6: com.digitalasset.canton.topology.admin.v30.BaseResult.sequenced:type_name -> google.protobuf.Timestamp
+	68,  // 7: com.digitalasset.canton.topology.admin.v30.BaseResult.valid_from:type_name -> google.protobuf.Timestamp
+	68,  // 8: com.digitalasset.canton.topology.admin.v30.BaseResult.valid_until:type_name -> google.protobuf.Timestamp
+	67,  // 9: com.digitalasset.canton.topology.admin.v30.BaseResult.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
 	0,   // 10: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	49,  // 11: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result
+	51,  // 11: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result
 	0,   // 12: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	50,  // 13: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result
+	52,  // 13: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result
 	0,   // 14: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	51,  // 15: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result
+	53,  // 15: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result
 	0,   // 16: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	52,  // 17: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result
+	54,  // 17: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result
 	0,   // 18: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	53,  // 19: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result
+	55,  // 19: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result
 	0,   // 20: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	54,  // 21: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result
+	56,  // 21: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result
 	0,   // 22: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	55,  // 23: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result
+	57,  // 23: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result
 	0,   // 24: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	56,  // 25: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result
+	58,  // 25: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result
 	0,   // 26: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	57,  // 27: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result
+	59,  // 27: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result
 	0,   // 28: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	58,  // 29: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result
+	60,  // 29: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result
 	0,   // 30: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	59,  // 31: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result
+	61,  // 31: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result
 	0,   // 32: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	60,  // 33: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result
+	62,  // 33: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result
 	0,   // 34: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	61,  // 35: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result
+	63,  // 35: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result
 	0,   // 36: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	62,  // 37: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result
+	64,  // 37: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result
 	0,   // 38: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	63,  // 39: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result
-	64,  // 40: com.digitalasset.canton.topology.admin.v30.ListAvailableStoresResponse.store_ids:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	65,  // 39: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result
+	66,  // 40: com.digitalasset.canton.topology.admin.v30.ListAvailableStoresResponse.store_ids:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
 	0,   // 41: com.digitalasset.canton.topology.admin.v30.ListAllRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	68,  // 42: com.digitalasset.canton.topology.admin.v30.ListAllResponse.result:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions
+	70,  // 42: com.digitalasset.canton.topology.admin.v30.ListAllResponse.result:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions
 	0,   // 43: com.digitalasset.canton.topology.admin.v30.ListAllV2Request.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	68,  // 44: com.digitalasset.canton.topology.admin.v30.ListAllV2Response.result:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions
+	70,  // 44: com.digitalasset.canton.topology.admin.v30.ListAllV2Response.result:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions
 	0,   // 45: com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotRequest.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
 	0,   // 46: com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Request.base_query:type_name -> com.digitalasset.canton.topology.admin.v30.BaseQuery
-	64,  // 47: com.digitalasset.canton.topology.admin.v30.GenesisStateRequest.synchronizer_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	66,  // 48: com.digitalasset.canton.topology.admin.v30.GenesisStateRequest.timestamp:type_name -> google.protobuf.Timestamp
-	64,  // 49: com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request.synchronizer_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	66,  // 50: com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request.timestamp:type_name -> google.protobuf.Timestamp
-	64,  // 51: com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest.synchronizer_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
-	66,  // 52: com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest.timestamp:type_name -> google.protobuf.Timestamp
-	66,  // 53: com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange.from:type_name -> google.protobuf.Timestamp
-	66,  // 54: com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange.until:type_name -> google.protobuf.Timestamp
-	1,   // 55: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	69,  // 56: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation
-	1,   // 57: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	70,  // 58: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
-	1,   // 59: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	71,  // 60: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
-	1,   // 61: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	72,  // 62: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.PartyToKeyMapping
-	1,   // 63: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	73,  // 64: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
-	1,   // 65: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	74,  // 66: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
-	1,   // 67: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	75,  // 68: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.PartyHostingLimits
-	1,   // 69: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	76,  // 70: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.VettedPackages
-	1,   // 71: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	77,  // 72: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.PartyToParticipant
-	1,   // 73: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	78,  // 74: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
-	1,   // 75: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	79,  // 76: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
-	1,   // 77: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	80,  // 78: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
-	1,   // 79: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	81,  // 80: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
-	1,   // 81: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	82,  // 82: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.LsuAnnouncement
-	1,   // 83: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
-	83,  // 84: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
-	2,   // 85: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListNamespaceDelegation:input_type -> com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationRequest
-	4,   // 86: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListDecentralizedNamespaceDefinition:input_type -> com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionRequest
-	6,   // 87: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListOwnerToKeyMapping:input_type -> com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingRequest
-	8,   // 88: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToKeyMapping:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingRequest
-	10,  // 89: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerTrustCertificate:input_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateRequest
-	12,  // 90: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListParticipantSynchronizerPermission:input_type -> com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionRequest
-	14,  // 91: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyHostingLimits:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsRequest
-	16,  // 92: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListVettedPackages:input_type -> com.digitalasset.canton.topology.admin.v30.ListVettedPackagesRequest
-	18,  // 93: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToParticipant:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantRequest
-	20,  // 94: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerParametersState:input_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateRequest
-	22,  // 95: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencingParametersState:input_type -> com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateRequest
-	24,  // 96: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListMediatorSynchronizerState:input_type -> com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateRequest
-	26,  // 97: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencerSynchronizerState:input_type -> com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateRequest
-	28,  // 98: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuAnnouncement:input_type -> com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementRequest
-	30,  // 99: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuSequencerConnectionSuccessor:input_type -> com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorRequest
-	32,  // 100: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAvailableStores:input_type -> com.digitalasset.canton.topology.admin.v30.ListAvailableStoresRequest
-	34,  // 101: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAll:input_type -> com.digitalasset.canton.topology.admin.v30.ListAllRequest
-	36,  // 102: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAllV2:input_type -> com.digitalasset.canton.topology.admin.v30.ListAllV2Request
-	38,  // 103: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshot:input_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotRequest
-	40,  // 104: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshotV2:input_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Request
-	42,  // 105: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisState:input_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateRequest
-	44,  // 106: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisStateV2:input_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request
-	46,  // 107: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.SequencerLsuState:input_type -> com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest
-	3,   // 108: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListNamespaceDelegation:output_type -> com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse
-	5,   // 109: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListDecentralizedNamespaceDefinition:output_type -> com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse
-	7,   // 110: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListOwnerToKeyMapping:output_type -> com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse
-	9,   // 111: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToKeyMapping:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse
-	11,  // 112: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerTrustCertificate:output_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse
-	13,  // 113: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListParticipantSynchronizerPermission:output_type -> com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse
-	15,  // 114: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyHostingLimits:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse
-	17,  // 115: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListVettedPackages:output_type -> com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse
-	19,  // 116: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToParticipant:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse
-	21,  // 117: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerParametersState:output_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse
-	23,  // 118: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencingParametersState:output_type -> com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse
-	25,  // 119: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListMediatorSynchronizerState:output_type -> com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse
-	27,  // 120: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencerSynchronizerState:output_type -> com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse
-	29,  // 121: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuAnnouncement:output_type -> com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse
-	31,  // 122: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuSequencerConnectionSuccessor:output_type -> com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse
-	33,  // 123: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAvailableStores:output_type -> com.digitalasset.canton.topology.admin.v30.ListAvailableStoresResponse
-	35,  // 124: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAll:output_type -> com.digitalasset.canton.topology.admin.v30.ListAllResponse
-	37,  // 125: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAllV2:output_type -> com.digitalasset.canton.topology.admin.v30.ListAllV2Response
-	39,  // 126: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshot:output_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotResponse
-	41,  // 127: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshotV2:output_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Response
-	43,  // 128: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisState:output_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateResponse
-	45,  // 129: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisStateV2:output_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateV2Response
-	47,  // 130: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.SequencerLsuState:output_type -> com.digitalasset.canton.topology.admin.v30.SequencerLsuStateResponse
-	108, // [108:131] is the sub-list for method output_type
-	85,  // [85:108] is the sub-list for method input_type
-	85,  // [85:85] is the sub-list for extension type_name
-	85,  // [85:85] is the sub-list for extension extendee
-	0,   // [0:85] is the sub-list for field type_name
+	66,  // 47: com.digitalasset.canton.topology.admin.v30.GenesisStateRequest.synchronizer_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	68,  // 48: com.digitalasset.canton.topology.admin.v30.GenesisStateRequest.timestamp:type_name -> google.protobuf.Timestamp
+	66,  // 49: com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request.synchronizer_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	68,  // 50: com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request.timestamp:type_name -> google.protobuf.Timestamp
+	66,  // 51: com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest.synchronizer_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId
+	68,  // 52: com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest.timestamp:type_name -> google.protobuf.Timestamp
+	71,  // 53: com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsRequest.temporary_store:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	72,  // 54: com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsResponse.result:type_name -> com.digitalasset.canton.protocol.v30.SignedTopologyTransactions
+	68,  // 55: com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange.from:type_name -> google.protobuf.Timestamp
+	68,  // 56: com.digitalasset.canton.topology.admin.v30.BaseQuery.TimeRange.until:type_name -> google.protobuf.Timestamp
+	1,   // 57: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	73,  // 58: com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse.Result.v30:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation
+	1,   // 59: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	74,  // 60: com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
+	1,   // 61: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	75,  // 62: com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse.Result.v30:type_name -> com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
+	1,   // 63: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	76,  // 64: com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse.Result.v30:type_name -> com.digitalasset.canton.protocol.v30.PartyToKeyMapping
+	1,   // 65: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	77,  // 66: com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
+	1,   // 67: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	78,  // 68: com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
+	1,   // 69: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	79,  // 70: com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.PartyHostingLimits
+	1,   // 71: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	80,  // 72: com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.VettedPackages
+	1,   // 73: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	81,  // 74: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result.v30:type_name -> com.digitalasset.canton.protocol.v30.PartyToParticipant
+	82,  // 75: com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse.Result.v31:type_name -> com.digitalasset.canton.protocol.v31.PartyToParticipant
+	1,   // 76: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	83,  // 77: com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.DynamicSynchronizerParameters
+	1,   // 78: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	84,  // 79: com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParameters
+	1,   // 80: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	85,  // 81: com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
+	1,   // 82: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	86,  // 83: com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
+	1,   // 84: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	87,  // 85: com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.LsuAnnouncement
+	1,   // 86: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result.context:type_name -> com.digitalasset.canton.topology.admin.v30.BaseResult
+	88,  // 87: com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse.Result.item:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
+	2,   // 88: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListNamespaceDelegation:input_type -> com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationRequest
+	4,   // 89: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListDecentralizedNamespaceDefinition:input_type -> com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionRequest
+	6,   // 90: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListOwnerToKeyMapping:input_type -> com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingRequest
+	8,   // 91: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToKeyMapping:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingRequest
+	10,  // 92: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerTrustCertificate:input_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateRequest
+	12,  // 93: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListParticipantSynchronizerPermission:input_type -> com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionRequest
+	14,  // 94: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyHostingLimits:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsRequest
+	16,  // 95: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListVettedPackages:input_type -> com.digitalasset.canton.topology.admin.v30.ListVettedPackagesRequest
+	18,  // 96: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToParticipant:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantRequest
+	20,  // 97: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerParametersState:input_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateRequest
+	22,  // 98: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencingParametersState:input_type -> com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateRequest
+	24,  // 99: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListMediatorSynchronizerState:input_type -> com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateRequest
+	26,  // 100: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencerSynchronizerState:input_type -> com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateRequest
+	28,  // 101: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuAnnouncement:input_type -> com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementRequest
+	30,  // 102: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuSequencerConnectionSuccessor:input_type -> com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorRequest
+	32,  // 103: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAvailableStores:input_type -> com.digitalasset.canton.topology.admin.v30.ListAvailableStoresRequest
+	34,  // 104: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAll:input_type -> com.digitalasset.canton.topology.admin.v30.ListAllRequest
+	36,  // 105: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAllV2:input_type -> com.digitalasset.canton.topology.admin.v30.ListAllV2Request
+	38,  // 106: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshot:input_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotRequest
+	40,  // 107: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshotV2:input_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Request
+	42,  // 108: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisState:input_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateRequest
+	44,  // 109: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisStateV2:input_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateV2Request
+	46,  // 110: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.SequencerLsuState:input_type -> com.digitalasset.canton.topology.admin.v30.SequencerLsuStateRequest
+	48,  // 111: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenerateOnboardingTopologyTransactions:input_type -> com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsRequest
+	3,   // 112: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListNamespaceDelegation:output_type -> com.digitalasset.canton.topology.admin.v30.ListNamespaceDelegationResponse
+	5,   // 113: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListDecentralizedNamespaceDefinition:output_type -> com.digitalasset.canton.topology.admin.v30.ListDecentralizedNamespaceDefinitionResponse
+	7,   // 114: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListOwnerToKeyMapping:output_type -> com.digitalasset.canton.topology.admin.v30.ListOwnerToKeyMappingResponse
+	9,   // 115: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToKeyMapping:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToKeyMappingResponse
+	11,  // 116: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerTrustCertificate:output_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerTrustCertificateResponse
+	13,  // 117: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListParticipantSynchronizerPermission:output_type -> com.digitalasset.canton.topology.admin.v30.ListParticipantSynchronizerPermissionResponse
+	15,  // 118: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyHostingLimits:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartyHostingLimitsResponse
+	17,  // 119: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListVettedPackages:output_type -> com.digitalasset.canton.topology.admin.v30.ListVettedPackagesResponse
+	19,  // 120: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListPartyToParticipant:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartyToParticipantResponse
+	21,  // 121: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSynchronizerParametersState:output_type -> com.digitalasset.canton.topology.admin.v30.ListSynchronizerParametersStateResponse
+	23,  // 122: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencingParametersState:output_type -> com.digitalasset.canton.topology.admin.v30.ListSequencingParametersStateResponse
+	25,  // 123: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListMediatorSynchronizerState:output_type -> com.digitalasset.canton.topology.admin.v30.ListMediatorSynchronizerStateResponse
+	27,  // 124: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListSequencerSynchronizerState:output_type -> com.digitalasset.canton.topology.admin.v30.ListSequencerSynchronizerStateResponse
+	29,  // 125: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuAnnouncement:output_type -> com.digitalasset.canton.topology.admin.v30.ListLsuAnnouncementResponse
+	31,  // 126: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListLsuSequencerConnectionSuccessor:output_type -> com.digitalasset.canton.topology.admin.v30.ListLsuSequencerConnectionSuccessorResponse
+	33,  // 127: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAvailableStores:output_type -> com.digitalasset.canton.topology.admin.v30.ListAvailableStoresResponse
+	35,  // 128: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAll:output_type -> com.digitalasset.canton.topology.admin.v30.ListAllResponse
+	37,  // 129: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ListAllV2:output_type -> com.digitalasset.canton.topology.admin.v30.ListAllV2Response
+	39,  // 130: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshot:output_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotResponse
+	41,  // 131: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.ExportTopologySnapshotV2:output_type -> com.digitalasset.canton.topology.admin.v30.ExportTopologySnapshotV2Response
+	43,  // 132: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisState:output_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateResponse
+	45,  // 133: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenesisStateV2:output_type -> com.digitalasset.canton.topology.admin.v30.GenesisStateV2Response
+	47,  // 134: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.SequencerLsuState:output_type -> com.digitalasset.canton.topology.admin.v30.SequencerLsuStateResponse
+	49,  // 135: com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService.GenerateOnboardingTopologyTransactions:output_type -> com.digitalasset.canton.topology.admin.v30.GenerateOnboardingTopologyTransactionsResponse
+	112, // [112:136] is the sub-list for method output_type
+	88,  // [88:112] is the sub-list for method input_type
+	88,  // [88:88] is the sub-list for extension type_name
+	88,  // [88:88] is the sub-list for extension extendee
+	0,   // [0:88] is the sub-list for field type_name
 }
 
 func init() {
@@ -3859,13 +4093,27 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_servi
 	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[42].OneofWrappers = []any{}
 	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[44].OneofWrappers = []any{}
 	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[46].OneofWrappers = []any{}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[48].OneofWrappers = []any{}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[51].OneofWrappers = []any{
+		(*ListNamespaceDelegationResponse_Result_V30)(nil),
+	}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[53].OneofWrappers = []any{
+		(*ListOwnerToKeyMappingResponse_Result_V30)(nil),
+	}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[54].OneofWrappers = []any{
+		(*ListPartyToKeyMappingResponse_Result_V30)(nil),
+	}
+	file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_msgTypes[59].OneofWrappers = []any{
+		(*ListPartyToParticipantResponse_Result_V30)(nil),
+		(*ListPartyToParticipantResponse_Result_V31)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDesc), len(file_com_digitalasset_canton_topology_admin_v30_topology_manager_read_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   64,
+			NumMessages:   66,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -7,6 +7,7 @@ import datetime
 from ....protocol.v30 import sequencing_parameters_pb2 as _sequencing_parameters_pb2
 from ....protocol.v30 import synchronizer_parameters_pb2 as _synchronizer_parameters_pb2
 from ....protocol.v30 import topology_pb2 as _topology_pb2
+from ....protocol.v31 import topology_pb2 as _topology_pb2_1
 from . import common_pb2 as _common_pb2
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -19,7 +20,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class BaseQuery(_message.Message):
-    __slots__ = ("store", "proposals", "operation", "snapshot", "head_state", "range", "filter_signed_key", "protocol_version")
+    __slots__ = ("store", "proposals", "operation", "snapshot", "head_state", "range", "filter_signed_key", "protocol_version", "client_version")
     class TimeRange(_message.Message):
         __slots__ = ("until",)
         FROM_FIELD_NUMBER: _ClassVar[int]
@@ -34,6 +35,7 @@ class BaseQuery(_message.Message):
     RANGE_FIELD_NUMBER: _ClassVar[int]
     FILTER_SIGNED_KEY_FIELD_NUMBER: _ClassVar[int]
     PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_VERSION_FIELD_NUMBER: _ClassVar[int]
     store: _common_pb2.StoreId
     proposals: bool
     operation: _topology_pb2.Enums.TopologyChangeOp
@@ -42,7 +44,8 @@ class BaseQuery(_message.Message):
     range: BaseQuery.TimeRange
     filter_signed_key: str
     protocol_version: int
-    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., proposals: _Optional[bool] = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
+    client_version: str
+    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., proposals: _Optional[bool] = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[int] = ..., client_version: _Optional[str] = ...) -> None: ...
 
 class BaseResult(_message.Message):
     __slots__ = ("store", "sequenced", "valid_from", "valid_until", "operation", "transaction_hash", "serial", "signed_by_fingerprints")
@@ -77,12 +80,12 @@ class ListNamespaceDelegationRequest(_message.Message):
 class ListNamespaceDelegationResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ("context", "item")
+        __slots__ = ("context", "v30")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
-        ITEM_FIELD_NUMBER: _ClassVar[int]
+        V30_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.NamespaceDelegation
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.NamespaceDelegation, _Mapping]] = ...) -> None: ...
+        v30: _topology_pb2.NamespaceDelegation
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., v30: _Optional[_Union[_topology_pb2.NamespaceDelegation, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListNamespaceDelegationResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListNamespaceDelegationResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -121,12 +124,12 @@ class ListOwnerToKeyMappingRequest(_message.Message):
 class ListOwnerToKeyMappingResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ("context", "item")
+        __slots__ = ("context", "v30")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
-        ITEM_FIELD_NUMBER: _ClassVar[int]
+        V30_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.OwnerToKeyMapping
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.OwnerToKeyMapping, _Mapping]] = ...) -> None: ...
+        v30: _topology_pb2.OwnerToKeyMapping
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., v30: _Optional[_Union[_topology_pb2.OwnerToKeyMapping, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListOwnerToKeyMappingResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListOwnerToKeyMappingResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -142,12 +145,12 @@ class ListPartyToKeyMappingRequest(_message.Message):
 class ListPartyToKeyMappingResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ("context", "item")
+        __slots__ = ("context", "v30")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
-        ITEM_FIELD_NUMBER: _ClassVar[int]
+        V30_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.PartyToKeyMapping
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.PartyToKeyMapping, _Mapping]] = ...) -> None: ...
+        v30: _topology_pb2.PartyToKeyMapping
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., v30: _Optional[_Union[_topology_pb2.PartyToKeyMapping, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListPartyToKeyMappingResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListPartyToKeyMappingResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -249,12 +252,14 @@ class ListPartyToParticipantRequest(_message.Message):
 class ListPartyToParticipantResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ("context", "item")
+        __slots__ = ("context", "v30", "v31")
         CONTEXT_FIELD_NUMBER: _ClassVar[int]
-        ITEM_FIELD_NUMBER: _ClassVar[int]
+        V30_FIELD_NUMBER: _ClassVar[int]
+        V31_FIELD_NUMBER: _ClassVar[int]
         context: BaseResult
-        item: _topology_pb2.PartyToParticipant
-        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., item: _Optional[_Union[_topology_pb2.PartyToParticipant, _Mapping]] = ...) -> None: ...
+        v30: _topology_pb2.PartyToParticipant
+        v31: _topology_pb2_1.PartyToParticipant
+        def __init__(self, context: _Optional[_Union[BaseResult, _Mapping]] = ..., v30: _Optional[_Union[_topology_pb2.PartyToParticipant, _Mapping]] = ..., v31: _Optional[_Union[_topology_pb2_1.PartyToParticipant, _Mapping]] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListPartyToParticipantResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListPartyToParticipantResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -502,3 +507,17 @@ class SequencerLsuStateResponse(_message.Message):
     CHUNK_FIELD_NUMBER: _ClassVar[int]
     chunk: bytes
     def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
+
+class GenerateOnboardingTopologyTransactionsRequest(_message.Message):
+    __slots__ = ("protocol_version", "temporary_store")
+    PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
+    TEMPORARY_STORE_FIELD_NUMBER: _ClassVar[int]
+    protocol_version: int
+    temporary_store: _common_pb2.StoreId.Temporary
+    def __init__(self, protocol_version: _Optional[int] = ..., temporary_store: _Optional[_Union[_common_pb2.StoreId.Temporary, _Mapping]] = ...) -> None: ...
+
+class GenerateOnboardingTopologyTransactionsResponse(_message.Message):
+    __slots__ = ("result",)
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: _topology_pb2.SignedTopologyTransactions
+    def __init__(self, result: _Optional[_Union[_topology_pb2.SignedTopologyTransactions, _Mapping]] = ...) -> None: ...

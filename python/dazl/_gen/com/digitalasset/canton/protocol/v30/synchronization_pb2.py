@@ -27,12 +27,9 @@ _sym_db = _symbol_database.Default()
 
 
 from ...crypto.v30 import crypto_pb2 as com_dot_digitalasset_dot_canton_dot_crypto_dot_v30_dot_crypto__pb2
-from . import participant_reassignment_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_participant__reassignment__pb2
-from . import participant_transaction_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_participant__transaction__pb2
-from . import topology_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_topology__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/digitalasset/canton/protocol/v30/synchronization.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a\x43\x63om/digitalasset/canton/protocol/v30/participant_reassignment.proto\x1a\x42\x63om/digitalasset/canton/protocol/v30/participant_transaction.proto\x1a\x33\x63om/digitalasset/canton/protocol/v30/topology.proto\"\x8e\x02\n!TypedSignedProtocolMessageContent\x12\x37\n\x16\x63onfirmation_responses\x18\x02 \x01(\x0cH\x00R\x15\x63onfirmationResponses\x12\x31\n\x13\x63onfirmation_result\x18\x03 \x01(\x0cH\x00R\x12\x63onfirmationResult\x12\'\n\x0e\x61\x63s_commitment\x18\x04 \x01(\x0cH\x00R\racsCommitment\x12\x34\n\x15set_traffic_purchased\x18\x05 \x01(\x0cH\x00R\x13setTrafficPurchasedB\x1e\n\x1csome_signed_protocol_message\"\xb6\x01\n\x15SignedProtocolMessage\x12K\n\tsignature\x18\x01 \x03(\x0b\x32-.com.digitalasset.canton.crypto.v30.SignatureR\tsignature\x12P\n%typed_signed_protocol_message_content\x18\x02 \x01(\x0cR!typedSignedProtocolMessageContent\"\x86\x07\n\x0f\x45nvelopeContent\x12\x62\n\x10informee_message\x18\x01 \x01(\x0b\x32\x35.com.digitalasset.canton.protocol.v30.InformeeMessageH\x00R\x0finformeeMessage\x12r\n\x16\x65ncrypted_view_message\x18\x02 \x01(\x0b\x32:.com.digitalasset.canton.protocol.v30.EncryptedViewMessageH\x00R\x14\x65ncryptedViewMessage\x12\x87\x01\n\x1dunassignment_mediator_message\x18\x03 \x01(\x0b\x32\x41.com.digitalasset.canton.protocol.v30.UnassignmentMediatorMessageH\x00R\x1bunassignmentMediatorMessage\x12\x81\x01\n\x1b\x61ssignment_mediator_message\x18\x04 \x01(\x0b\x32?.com.digitalasset.canton.protocol.v30.AssignmentMediatorMessageH\x00R\x19\x61ssignmentMediatorMessage\x12\x63\n\x11root_hash_message\x18\x05 \x01(\x0b\x32\x35.com.digitalasset.canton.protocol.v30.RootHashMessageH\x00R\x0frootHashMessage\x12\x8d\x01\n\x1ftopology_transactions_broadcast\x18\x06 \x01(\x0b\x32\x43.com.digitalasset.canton.protocol.v30.TopologyTransactionsBroadcastH\x00R\x1dtopologyTransactionsBroadcast\x12\x7f\n\x1blsu_sequencing_test_message\x18\x07 \x01(\x0b\x32>.com.digitalasset.canton.protocol.v30.LsuSequencingTestMessageH\x00R\x18lsuSequencingTestMessageB\x17\n\x15some_envelope_content\"\x83\x01\n\x18LsuSequencingTestMessage\x12\x18\n\x07\x63ontent\x18\x01 \x01(\x0cR\x07\x63ontent\x12M\n\nsignatures\x18\x02 \x01(\x0b\x32-.com.digitalasset.canton.crypto.v30.SignatureR\nsignatures\"s\n\x1fLsuSequencingTestMessageContent\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12\x16\n\x06sender\x18\x02 \x01(\tR\x06senderBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n:com/digitalasset/canton/protocol/v30/synchronization.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\"\x8e\x02\n!TypedSignedProtocolMessageContent\x12\x37\n\x16\x63onfirmation_responses\x18\x02 \x01(\x0cH\x00R\x15\x63onfirmationResponses\x12\x31\n\x13\x63onfirmation_result\x18\x03 \x01(\x0cH\x00R\x12\x63onfirmationResult\x12\'\n\x0e\x61\x63s_commitment\x18\x04 \x01(\x0cH\x00R\racsCommitment\x12\x34\n\x15set_traffic_purchased\x18\x05 \x01(\x0cH\x00R\x13setTrafficPurchasedB\x1e\n\x1csome_signed_protocol_message\"\xb6\x01\n\x15SignedProtocolMessage\x12K\n\tsignature\x18\x01 \x03(\x0b\x32-.com.digitalasset.canton.crypto.v30.SignatureR\tsignature\x12P\n%typed_signed_protocol_message_content\x18\x02 \x01(\x0cR!typedSignedProtocolMessageContent\"\x83\x01\n\x18LsuSequencingTestMessage\x12\x18\n\x07\x63ontent\x18\x01 \x01(\x0cR\x07\x63ontent\x12M\n\nsignatures\x18\x02 \x01(\x0b\x32-.com.digitalasset.canton.crypto.v30.SignatureR\nsignatures\"s\n\x1fLsuSequencingTestMessageContent\x12\x38\n\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12\x16\n\x06sender\x18\x02 \x01(\tR\x06senderBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -40,14 +37,12 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.pro
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'ZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30'
-  _globals['_TYPEDSIGNEDPROTOCOLMESSAGECONTENT']._serialized_start=340
-  _globals['_TYPEDSIGNEDPROTOCOLMESSAGECONTENT']._serialized_end=610
-  _globals['_SIGNEDPROTOCOLMESSAGE']._serialized_start=613
-  _globals['_SIGNEDPROTOCOLMESSAGE']._serialized_end=795
-  _globals['_ENVELOPECONTENT']._serialized_start=798
-  _globals['_ENVELOPECONTENT']._serialized_end=1700
-  _globals['_LSUSEQUENCINGTESTMESSAGE']._serialized_start=1703
-  _globals['_LSUSEQUENCINGTESTMESSAGE']._serialized_end=1834
-  _globals['_LSUSEQUENCINGTESTMESSAGECONTENT']._serialized_start=1836
-  _globals['_LSUSEQUENCINGTESTMESSAGECONTENT']._serialized_end=1951
+  _globals['_TYPEDSIGNEDPROTOCOLMESSAGECONTENT']._serialized_start=150
+  _globals['_TYPEDSIGNEDPROTOCOLMESSAGECONTENT']._serialized_end=420
+  _globals['_SIGNEDPROTOCOLMESSAGE']._serialized_start=423
+  _globals['_SIGNEDPROTOCOLMESSAGE']._serialized_end=605
+  _globals['_LSUSEQUENCINGTESTMESSAGE']._serialized_start=608
+  _globals['_LSUSEQUENCINGTESTMESSAGE']._serialized_end=739
+  _globals['_LSUSEQUENCINGTESTMESSAGECONTENT']._serialized_start=741
+  _globals['_LSUSEQUENCINGTESTMESSAGECONTENT']._serialized_end=856
 # @@protoc_insertion_point(module_scope)

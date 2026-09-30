@@ -37,6 +37,7 @@ type Transaction struct {
 	RecordTime              *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
 	ExternalTransactionHash []byte                 `protobuf:"bytes,10,opt,name=external_transaction_hash,json=externalTransactionHash,proto3,oneof" json:"external_transaction_hash,omitempty"`
 	PaidTrafficCost         *int64                 `protobuf:"varint,11,opt,name=paid_traffic_cost,json=paidTrafficCost,proto3,oneof" json:"paid_traffic_cost,omitempty"`
+	TransactionHash         []byte                 `protobuf:"bytes,12,opt,name=transaction_hash,json=transactionHash,proto3,oneof" json:"transaction_hash,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -148,11 +149,18 @@ func (x *Transaction) GetPaidTrafficCost() int64 {
 	return 0
 }
 
+func (x *Transaction) GetTransactionHash() []byte {
+	if x != nil {
+		return x.TransactionHash
+	}
+	return nil
+}
+
 var File_com_daml_ledger_api_v2_transaction_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_transaction_proto_rawDesc = "" +
 	"\n" +
-	"(com/daml/ledger/api/v2/transaction.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcf\x04\n" +
+	"(com/daml/ledger/api/v2/transaction.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x94\x05\n" +
 	"\vTransaction\x12\x1b\n" +
 	"\tupdate_id\x18\x01 \x01(\tR\bupdateId\x12\x1d\n" +
 	"\n" +
@@ -168,9 +176,11 @@ const file_com_daml_ledger_api_v2_transaction_proto_rawDesc = "" +
 	"recordTime\x12?\n" +
 	"\x19external_transaction_hash\x18\n" +
 	" \x01(\fH\x00R\x17externalTransactionHash\x88\x01\x01\x12/\n" +
-	"\x11paid_traffic_cost\x18\v \x01(\x03H\x01R\x0fpaidTrafficCost\x88\x01\x01B\x1c\n" +
+	"\x11paid_traffic_cost\x18\v \x01(\x03H\x01R\x0fpaidTrafficCost\x88\x01\x01\x12.\n" +
+	"\x10transaction_hash\x18\f \x01(\fH\x02R\x0ftransactionHash\x88\x01\x01B\x1c\n" +
 	"\x1a_external_transaction_hashB\x14\n" +
-	"\x12_paid_traffic_costB\x8f\x01\n" +
+	"\x12_paid_traffic_costB\x13\n" +
+	"\x11_transaction_hashB\x8f\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x15TransactionOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (

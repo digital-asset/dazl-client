@@ -14,6 +14,7 @@ import (
 	status "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -330,6 +331,298 @@ func (x *SubmissionRequest) GetSubmissionCost() *v301.SequencingSubmissionCost {
 	return nil
 }
 
+type SynchronizerLimits struct {
+	state                     protoimpl.MessageState     `protogen:"open.v1"`
+	TransactionProtocolLimits *TransactionProtocolLimits `protobuf:"bytes,1,opt,name=transaction_protocol_limits,json=transactionProtocolLimits,proto3" json:"transaction_protocol_limits,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *SynchronizerLimits) Reset() {
+	*x = SynchronizerLimits{}
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SynchronizerLimits) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SynchronizerLimits) ProtoMessage() {}
+
+func (x *SynchronizerLimits) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SynchronizerLimits.ProtoReflect.Descriptor instead.
+func (*SynchronizerLimits) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SynchronizerLimits) GetTransactionProtocolLimits() *TransactionProtocolLimits {
+	if x != nil {
+		return x.TransactionProtocolLimits
+	}
+	return nil
+}
+
+type TransactionProtocolLimits struct {
+	state                               protoimpl.MessageState `protogen:"open.v1"`
+	MaxActAs                            uint32                 `protobuf:"varint,1,opt,name=max_act_as,json=maxActAs,proto3" json:"max_act_as,omitempty"`
+	MaxEnvelopes                        uint32                 `protobuf:"varint,2,opt,name=max_envelopes,json=maxEnvelopes,proto3" json:"max_envelopes,omitempty"`
+	MaxRecipientsPerBatch               uint32                 `protobuf:"varint,3,opt,name=max_recipients_per_batch,json=maxRecipientsPerBatch,proto3" json:"max_recipients_per_batch,omitempty"`
+	MaxRecipientsTrees                  uint32                 `protobuf:"varint,4,opt,name=max_recipients_trees,json=maxRecipientsTrees,proto3" json:"max_recipients_trees,omitempty"`
+	MaxRecipientsPerRecipientsTreeLevel uint32                 `protobuf:"varint,5,opt,name=max_recipients_per_recipients_tree_level,json=maxRecipientsPerRecipientsTreeLevel,proto3" json:"max_recipients_per_recipients_tree_level,omitempty"`
+	MaxChildrenPerRecipientsTreeLevel   uint32                 `protobuf:"varint,6,opt,name=max_children_per_recipients_tree_level,json=maxChildrenPerRecipientsTreeLevel,proto3" json:"max_children_per_recipients_tree_level,omitempty"`
+	MaxRecipientsPerEnvelope            uint32                 `protobuf:"varint,7,opt,name=max_recipients_per_envelope,json=maxRecipientsPerEnvelope,proto3" json:"max_recipients_per_envelope,omitempty"`
+	MaxRecipientsTreeDepth              uint32                 `protobuf:"varint,8,opt,name=max_recipients_tree_depth,json=maxRecipientsTreeDepth,proto3" json:"max_recipients_tree_depth,omitempty"`
+	MaxTransactionRootViews             uint32                 `protobuf:"varint,9,opt,name=max_transaction_root_views,json=maxTransactionRootViews,proto3" json:"max_transaction_root_views,omitempty"`
+	MaxTransactionSubViews              uint32                 `protobuf:"varint,10,opt,name=max_transaction_sub_views,json=maxTransactionSubViews,proto3" json:"max_transaction_sub_views,omitempty"`
+	MaxTransactionTreeDepth             uint32                 `protobuf:"varint,11,opt,name=max_transaction_tree_depth,json=maxTransactionTreeDepth,proto3" json:"max_transaction_tree_depth,omitempty"`
+	unknownFields                       protoimpl.UnknownFields
+	sizeCache                           protoimpl.SizeCache
+}
+
+func (x *TransactionProtocolLimits) Reset() {
+	*x = TransactionProtocolLimits{}
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TransactionProtocolLimits) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TransactionProtocolLimits) ProtoMessage() {}
+
+func (x *TransactionProtocolLimits) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TransactionProtocolLimits.ProtoReflect.Descriptor instead.
+func (*TransactionProtocolLimits) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *TransactionProtocolLimits) GetMaxActAs() uint32 {
+	if x != nil {
+		return x.MaxActAs
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxEnvelopes() uint32 {
+	if x != nil {
+		return x.MaxEnvelopes
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxRecipientsPerBatch() uint32 {
+	if x != nil {
+		return x.MaxRecipientsPerBatch
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxRecipientsTrees() uint32 {
+	if x != nil {
+		return x.MaxRecipientsTrees
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxRecipientsPerRecipientsTreeLevel() uint32 {
+	if x != nil {
+		return x.MaxRecipientsPerRecipientsTreeLevel
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxChildrenPerRecipientsTreeLevel() uint32 {
+	if x != nil {
+		return x.MaxChildrenPerRecipientsTreeLevel
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxRecipientsPerEnvelope() uint32 {
+	if x != nil {
+		return x.MaxRecipientsPerEnvelope
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxRecipientsTreeDepth() uint32 {
+	if x != nil {
+		return x.MaxRecipientsTreeDepth
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxTransactionRootViews() uint32 {
+	if x != nil {
+		return x.MaxTransactionRootViews
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxTransactionSubViews() uint32 {
+	if x != nil {
+		return x.MaxTransactionSubViews
+	}
+	return 0
+}
+
+func (x *TransactionProtocolLimits) GetMaxTransactionTreeDepth() uint32 {
+	if x != nil {
+		return x.MaxTransactionTreeDepth
+	}
+	return 0
+}
+
+type StaticSynchronizerParameters struct {
+	state                       protoimpl.MessageState       `protogen:"open.v1"`
+	RequiredSigningSpecs        *v30.RequiredSigningSpecs    `protobuf:"bytes,1,opt,name=required_signing_specs,json=requiredSigningSpecs,proto3" json:"required_signing_specs,omitempty"`
+	RequiredEncryptionSpecs     *v30.RequiredEncryptionSpecs `protobuf:"bytes,2,opt,name=required_encryption_specs,json=requiredEncryptionSpecs,proto3" json:"required_encryption_specs,omitempty"`
+	RequiredSymmetricKeySchemes []v30.SymmetricKeyScheme     `protobuf:"varint,3,rep,packed,name=required_symmetric_key_schemes,json=requiredSymmetricKeySchemes,proto3,enum=com.digitalasset.canton.crypto.v30.SymmetricKeyScheme" json:"required_symmetric_key_schemes,omitempty"`
+	RequiredHashAlgorithms      []v30.HashAlgorithm          `protobuf:"varint,4,rep,packed,name=required_hash_algorithms,json=requiredHashAlgorithms,proto3,enum=com.digitalasset.canton.crypto.v30.HashAlgorithm" json:"required_hash_algorithms,omitempty"`
+	RequiredCryptoKeyFormats    []v30.CryptoKeyFormat        `protobuf:"varint,5,rep,packed,name=required_crypto_key_formats,json=requiredCryptoKeyFormats,proto3,enum=com.digitalasset.canton.crypto.v30.CryptoKeyFormat" json:"required_crypto_key_formats,omitempty"`
+	RequiredSignatureFormats    []v30.SignatureFormat        `protobuf:"varint,6,rep,packed,name=required_signature_formats,json=requiredSignatureFormats,proto3,enum=com.digitalasset.canton.crypto.v30.SignatureFormat" json:"required_signature_formats,omitempty"`
+	ProtocolVersion             int32                        `protobuf:"varint,7,opt,name=protocol_version,json=protocolVersion,proto3" json:"protocol_version,omitempty"`
+	Serial                      int32                        `protobuf:"varint,8,opt,name=serial,proto3" json:"serial,omitempty"`
+	EnableTransparencyChecks    bool                         `protobuf:"varint,9,opt,name=enable_transparency_checks,json=enableTransparencyChecks,proto3" json:"enable_transparency_checks,omitempty"`
+	TopologyChangeDelay         *durationpb.Duration         `protobuf:"bytes,10,opt,name=topology_change_delay,json=topologyChangeDelay,proto3" json:"topology_change_delay,omitempty"`
+	SynchronizerLimits          *SynchronizerLimits          `protobuf:"bytes,11,opt,name=synchronizer_limits,json=synchronizerLimits,proto3" json:"synchronizer_limits,omitempty"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
+}
+
+func (x *StaticSynchronizerParameters) Reset() {
+	*x = StaticSynchronizerParameters{}
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StaticSynchronizerParameters) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StaticSynchronizerParameters) ProtoMessage() {}
+
+func (x *StaticSynchronizerParameters) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StaticSynchronizerParameters.ProtoReflect.Descriptor instead.
+func (*StaticSynchronizerParameters) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *StaticSynchronizerParameters) GetRequiredSigningSpecs() *v30.RequiredSigningSpecs {
+	if x != nil {
+		return x.RequiredSigningSpecs
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetRequiredEncryptionSpecs() *v30.RequiredEncryptionSpecs {
+	if x != nil {
+		return x.RequiredEncryptionSpecs
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetRequiredSymmetricKeySchemes() []v30.SymmetricKeyScheme {
+	if x != nil {
+		return x.RequiredSymmetricKeySchemes
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetRequiredHashAlgorithms() []v30.HashAlgorithm {
+	if x != nil {
+		return x.RequiredHashAlgorithms
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetRequiredCryptoKeyFormats() []v30.CryptoKeyFormat {
+	if x != nil {
+		return x.RequiredCryptoKeyFormats
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetRequiredSignatureFormats() []v30.SignatureFormat {
+	if x != nil {
+		return x.RequiredSignatureFormats
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetProtocolVersion() int32 {
+	if x != nil {
+		return x.ProtocolVersion
+	}
+	return 0
+}
+
+func (x *StaticSynchronizerParameters) GetSerial() int32 {
+	if x != nil {
+		return x.Serial
+	}
+	return 0
+}
+
+func (x *StaticSynchronizerParameters) GetEnableTransparencyChecks() bool {
+	if x != nil {
+		return x.EnableTransparencyChecks
+	}
+	return false
+}
+
+func (x *StaticSynchronizerParameters) GetTopologyChangeDelay() *durationpb.Duration {
+	if x != nil {
+		return x.TopologyChangeDelay
+	}
+	return nil
+}
+
+func (x *StaticSynchronizerParameters) GetSynchronizerLimits() *SynchronizerLimits {
+	if x != nil {
+		return x.SynchronizerLimits
+	}
+	return nil
+}
+
 type CompressedBatch_DecompressedRecipients struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Recipients    []*v301.Recipients     `protobuf:"bytes,1,rep,name=recipients,proto3" json:"recipients,omitempty"`
@@ -339,7 +632,7 @@ type CompressedBatch_DecompressedRecipients struct {
 
 func (x *CompressedBatch_DecompressedRecipients) Reset() {
 	*x = CompressedBatch_DecompressedRecipients{}
-	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -351,7 +644,7 @@ func (x *CompressedBatch_DecompressedRecipients) String() string {
 func (*CompressedBatch_DecompressedRecipients) ProtoMessage() {}
 
 func (x *CompressedBatch_DecompressedRecipients) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -378,7 +671,7 @@ var File_com_digitalasset_canton_protocol_v31_sequencing_proto protoreflect.File
 
 const file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDesc = "" +
 	"\n" +
-	"5com/digitalasset/canton/protocol/v31/sequencing.proto\x12$com.digitalasset.canton.protocol.v31\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a8com/digitalasset/canton/protocol/v30/common_stable.proto\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1aEcom/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x1a\x17google/rpc/status.proto\"\x84\x01\n" +
+	"5com/digitalasset/canton/protocol/v31/sequencing.proto\x12$com.digitalasset.canton.protocol.v31\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a8com/digitalasset/canton/protocol/v30/common_stable.proto\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1aEcom/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\x84\x01\n" +
 	"\x19EnvelopeWithoutRecipients\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\fR\acontent\x12M\n" +
 	"\n" +
@@ -414,7 +707,36 @@ const file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDesc = "" +
 	"\x12topology_timestamp\x18\x06 \x01(\x03H\x00R\x11topologyTimestamp\x88\x01\x01\x12`\n" +
 	"\x10aggregation_rule\x18\a \x01(\v25.com.digitalasset.canton.protocol.v30.AggregationRuleR\x0faggregationRule\x12g\n" +
 	"\x0fsubmission_cost\x18\b \x01(\v2>.com.digitalasset.canton.protocol.v30.SequencingSubmissionCostR\x0esubmissionCostB\x15\n" +
-	"\x13_topology_timestampBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31b\x06proto3"
+	"\x13_topology_timestamp\"\x95\x01\n" +
+	"\x12SynchronizerLimits\x12\x7f\n" +
+	"\x1btransaction_protocol_limits\x18\x01 \x01(\v2?.com.digitalasset.canton.protocol.v31.TransactionProtocolLimitsR\x19transactionProtocolLimits\"\xa2\x05\n" +
+	"\x19TransactionProtocolLimits\x12\x1c\n" +
+	"\n" +
+	"max_act_as\x18\x01 \x01(\rR\bmaxActAs\x12#\n" +
+	"\rmax_envelopes\x18\x02 \x01(\rR\fmaxEnvelopes\x127\n" +
+	"\x18max_recipients_per_batch\x18\x03 \x01(\rR\x15maxRecipientsPerBatch\x120\n" +
+	"\x14max_recipients_trees\x18\x04 \x01(\rR\x12maxRecipientsTrees\x12U\n" +
+	"(max_recipients_per_recipients_tree_level\x18\x05 \x01(\rR#maxRecipientsPerRecipientsTreeLevel\x12Q\n" +
+	"&max_children_per_recipients_tree_level\x18\x06 \x01(\rR!maxChildrenPerRecipientsTreeLevel\x12=\n" +
+	"\x1bmax_recipients_per_envelope\x18\a \x01(\rR\x18maxRecipientsPerEnvelope\x129\n" +
+	"\x19max_recipients_tree_depth\x18\b \x01(\rR\x16maxRecipientsTreeDepth\x12;\n" +
+	"\x1amax_transaction_root_views\x18\t \x01(\rR\x17maxTransactionRootViews\x129\n" +
+	"\x19max_transaction_sub_views\x18\n" +
+	" \x01(\rR\x16maxTransactionSubViews\x12;\n" +
+	"\x1amax_transaction_tree_depth\x18\v \x01(\rR\x17maxTransactionTreeDepth\"\x93\b\n" +
+	"\x1cStaticSynchronizerParameters\x12n\n" +
+	"\x16required_signing_specs\x18\x01 \x01(\v28.com.digitalasset.canton.crypto.v30.RequiredSigningSpecsR\x14requiredSigningSpecs\x12w\n" +
+	"\x19required_encryption_specs\x18\x02 \x01(\v2;.com.digitalasset.canton.crypto.v30.RequiredEncryptionSpecsR\x17requiredEncryptionSpecs\x12{\n" +
+	"\x1erequired_symmetric_key_schemes\x18\x03 \x03(\x0e26.com.digitalasset.canton.crypto.v30.SymmetricKeySchemeR\x1brequiredSymmetricKeySchemes\x12k\n" +
+	"\x18required_hash_algorithms\x18\x04 \x03(\x0e21.com.digitalasset.canton.crypto.v30.HashAlgorithmR\x16requiredHashAlgorithms\x12r\n" +
+	"\x1brequired_crypto_key_formats\x18\x05 \x03(\x0e23.com.digitalasset.canton.crypto.v30.CryptoKeyFormatR\x18requiredCryptoKeyFormats\x12q\n" +
+	"\x1arequired_signature_formats\x18\x06 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SignatureFormatR\x18requiredSignatureFormats\x12)\n" +
+	"\x10protocol_version\x18\a \x01(\x05R\x0fprotocolVersion\x12\x16\n" +
+	"\x06serial\x18\b \x01(\x05R\x06serial\x12<\n" +
+	"\x1aenable_transparency_checks\x18\t \x01(\bR\x18enableTransparencyChecks\x12M\n" +
+	"\x15topology_change_delay\x18\n" +
+	" \x01(\v2\x19.google.protobuf.DurationR\x13topologyChangeDelay\x12i\n" +
+	"\x13synchronizer_limits\x18\v \x01(\v28.com.digitalasset.canton.protocol.v31.SynchronizerLimitsR\x12synchronizerLimitsBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDescOnce sync.Once
@@ -428,36 +750,55 @@ func file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDescGZIP() []
 	return file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_com_digitalasset_canton_protocol_v31_sequencing_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_com_digitalasset_canton_protocol_v31_sequencing_proto_goTypes = []any{
 	(*EnvelopeWithoutRecipients)(nil),              // 0: com.digitalasset.canton.protocol.v31.EnvelopeWithoutRecipients
 	(*CompressedBatch)(nil),                        // 1: com.digitalasset.canton.protocol.v31.CompressedBatch
 	(*SequencedEvent)(nil),                         // 2: com.digitalasset.canton.protocol.v31.SequencedEvent
 	(*SubmissionRequest)(nil),                      // 3: com.digitalasset.canton.protocol.v31.SubmissionRequest
-	(*CompressedBatch_DecompressedRecipients)(nil), // 4: com.digitalasset.canton.protocol.v31.CompressedBatch.DecompressedRecipients
-	(*v30.Signature)(nil),                          // 5: com.digitalasset.canton.crypto.v30.Signature
-	(v301.CompressedBatch_CompressionAlgorithm)(0), // 6: com.digitalasset.canton.protocol.v30.CompressedBatch.CompressionAlgorithm
-	(*status.Status)(nil),                          // 7: google.rpc.Status
-	(*v301.TrafficReceipt)(nil),                    // 8: com.digitalasset.canton.protocol.v30.TrafficReceipt
-	(*v301.AggregationRule)(nil),                   // 9: com.digitalasset.canton.protocol.v30.AggregationRule
-	(*v301.SequencingSubmissionCost)(nil),          // 10: com.digitalasset.canton.protocol.v30.SequencingSubmissionCost
-	(*v301.Recipients)(nil),                        // 11: com.digitalasset.canton.protocol.v30.Recipients
+	(*SynchronizerLimits)(nil),                     // 4: com.digitalasset.canton.protocol.v31.SynchronizerLimits
+	(*TransactionProtocolLimits)(nil),              // 5: com.digitalasset.canton.protocol.v31.TransactionProtocolLimits
+	(*StaticSynchronizerParameters)(nil),           // 6: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
+	(*CompressedBatch_DecompressedRecipients)(nil), // 7: com.digitalasset.canton.protocol.v31.CompressedBatch.DecompressedRecipients
+	(*v30.Signature)(nil),                          // 8: com.digitalasset.canton.crypto.v30.Signature
+	(v301.CompressedBatch_CompressionAlgorithm)(0), // 9: com.digitalasset.canton.protocol.v30.CompressedBatch.CompressionAlgorithm
+	(*status.Status)(nil),                          // 10: google.rpc.Status
+	(*v301.TrafficReceipt)(nil),                    // 11: com.digitalasset.canton.protocol.v30.TrafficReceipt
+	(*v301.AggregationRule)(nil),                   // 12: com.digitalasset.canton.protocol.v30.AggregationRule
+	(*v301.SequencingSubmissionCost)(nil),          // 13: com.digitalasset.canton.protocol.v30.SequencingSubmissionCost
+	(*v30.RequiredSigningSpecs)(nil),               // 14: com.digitalasset.canton.crypto.v30.RequiredSigningSpecs
+	(*v30.RequiredEncryptionSpecs)(nil),            // 15: com.digitalasset.canton.crypto.v30.RequiredEncryptionSpecs
+	(v30.SymmetricKeyScheme)(0),                    // 16: com.digitalasset.canton.crypto.v30.SymmetricKeyScheme
+	(v30.HashAlgorithm)(0),                         // 17: com.digitalasset.canton.crypto.v30.HashAlgorithm
+	(v30.CryptoKeyFormat)(0),                       // 18: com.digitalasset.canton.crypto.v30.CryptoKeyFormat
+	(v30.SignatureFormat)(0),                       // 19: com.digitalasset.canton.crypto.v30.SignatureFormat
+	(*durationpb.Duration)(nil),                    // 20: google.protobuf.Duration
+	(*v301.Recipients)(nil),                        // 21: com.digitalasset.canton.protocol.v30.Recipients
 }
 var file_com_digitalasset_canton_protocol_v31_sequencing_proto_depIdxs = []int32{
-	5,  // 0: com.digitalasset.canton.protocol.v31.EnvelopeWithoutRecipients.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	6,  // 1: com.digitalasset.canton.protocol.v31.CompressedBatch.algorithm:type_name -> com.digitalasset.canton.protocol.v30.CompressedBatch.CompressionAlgorithm
+	8,  // 0: com.digitalasset.canton.protocol.v31.EnvelopeWithoutRecipients.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	9,  // 1: com.digitalasset.canton.protocol.v31.CompressedBatch.algorithm:type_name -> com.digitalasset.canton.protocol.v30.CompressedBatch.CompressionAlgorithm
 	1,  // 2: com.digitalasset.canton.protocol.v31.SequencedEvent.batch:type_name -> com.digitalasset.canton.protocol.v31.CompressedBatch
-	7,  // 3: com.digitalasset.canton.protocol.v31.SequencedEvent.deliver_error_reason:type_name -> google.rpc.Status
-	8,  // 4: com.digitalasset.canton.protocol.v31.SequencedEvent.traffic_receipt:type_name -> com.digitalasset.canton.protocol.v30.TrafficReceipt
+	10, // 3: com.digitalasset.canton.protocol.v31.SequencedEvent.deliver_error_reason:type_name -> google.rpc.Status
+	11, // 4: com.digitalasset.canton.protocol.v31.SequencedEvent.traffic_receipt:type_name -> com.digitalasset.canton.protocol.v30.TrafficReceipt
 	1,  // 5: com.digitalasset.canton.protocol.v31.SubmissionRequest.batch:type_name -> com.digitalasset.canton.protocol.v31.CompressedBatch
-	9,  // 6: com.digitalasset.canton.protocol.v31.SubmissionRequest.aggregation_rule:type_name -> com.digitalasset.canton.protocol.v30.AggregationRule
-	10, // 7: com.digitalasset.canton.protocol.v31.SubmissionRequest.submission_cost:type_name -> com.digitalasset.canton.protocol.v30.SequencingSubmissionCost
-	11, // 8: com.digitalasset.canton.protocol.v31.CompressedBatch.DecompressedRecipients.recipients:type_name -> com.digitalasset.canton.protocol.v30.Recipients
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	12, // 6: com.digitalasset.canton.protocol.v31.SubmissionRequest.aggregation_rule:type_name -> com.digitalasset.canton.protocol.v30.AggregationRule
+	13, // 7: com.digitalasset.canton.protocol.v31.SubmissionRequest.submission_cost:type_name -> com.digitalasset.canton.protocol.v30.SequencingSubmissionCost
+	5,  // 8: com.digitalasset.canton.protocol.v31.SynchronizerLimits.transaction_protocol_limits:type_name -> com.digitalasset.canton.protocol.v31.TransactionProtocolLimits
+	14, // 9: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.required_signing_specs:type_name -> com.digitalasset.canton.crypto.v30.RequiredSigningSpecs
+	15, // 10: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.required_encryption_specs:type_name -> com.digitalasset.canton.crypto.v30.RequiredEncryptionSpecs
+	16, // 11: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.required_symmetric_key_schemes:type_name -> com.digitalasset.canton.crypto.v30.SymmetricKeyScheme
+	17, // 12: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.required_hash_algorithms:type_name -> com.digitalasset.canton.crypto.v30.HashAlgorithm
+	18, // 13: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.required_crypto_key_formats:type_name -> com.digitalasset.canton.crypto.v30.CryptoKeyFormat
+	19, // 14: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.required_signature_formats:type_name -> com.digitalasset.canton.crypto.v30.SignatureFormat
+	20, // 15: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.topology_change_delay:type_name -> google.protobuf.Duration
+	4,  // 16: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters.synchronizer_limits:type_name -> com.digitalasset.canton.protocol.v31.SynchronizerLimits
+	21, // 17: com.digitalasset.canton.protocol.v31.CompressedBatch.DecompressedRecipients.recipients:type_name -> com.digitalasset.canton.protocol.v30.Recipients
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v31_sequencing_proto_init() }
@@ -473,7 +814,7 @@ func file_com_digitalasset_canton_protocol_v31_sequencing_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v31_sequencing_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

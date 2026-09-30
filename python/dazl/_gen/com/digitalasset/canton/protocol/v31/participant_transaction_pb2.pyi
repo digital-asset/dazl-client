@@ -4,6 +4,7 @@
 # isort: skip_file
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
 from ..v30 import common_pb2 as _common_pb2
+from ..v30 import merkle_pb2 as _merkle_pb2
 from ..v30 import participant_transaction_pb2 as _participant_transaction_pb2
 from . import common_stable_pb2 as _common_stable_pb2
 from google.protobuf.internal import containers as _containers
@@ -92,6 +93,24 @@ class ViewParticipantData(_message.Message):
     rollback_context: _participant_transaction_pb2.ViewParticipantData.RollbackContext
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., core_inputs: _Optional[_Iterable[_Union[_participant_transaction_pb2.InputContract, _Mapping]]] = ..., created_core: _Optional[_Iterable[_Union[_participant_transaction_pb2.CreatedContract, _Mapping]]] = ..., created_in_subview_archived_in_core: _Optional[_Iterable[str]] = ..., resolved_keys: _Optional[_Iterable[_Union[ViewParticipantData.KeyResolutionWithMaintainers, _Mapping]]] = ..., action_description: _Optional[_Union[ActionDescription, _Mapping]] = ..., rollback_context: _Optional[_Union[_participant_transaction_pb2.ViewParticipantData.RollbackContext, _Mapping]] = ...) -> None: ...
 
+class LightTransactionViewTree(_message.Message):
+    __slots__ = ("tree", "subview_keys_by_ciphertext_id")
+    TREE_FIELD_NUMBER: _ClassVar[int]
+    SUBVIEW_KEYS_BY_CIPHERTEXT_ID_FIELD_NUMBER: _ClassVar[int]
+    tree: _merkle_pb2.GenTransactionTree
+    subview_keys_by_ciphertext_id: _containers.RepeatedCompositeFieldContainer[CiphertextIdAndKey]
+    def __init__(self, tree: _Optional[_Union[_merkle_pb2.GenTransactionTree, _Mapping]] = ..., subview_keys_by_ciphertext_id: _Optional[_Iterable[_Union[CiphertextIdAndKey, _Mapping]]] = ...) -> None: ...
+
+class CiphertextIdAndKey(_message.Message):
+    __slots__ = ("ciphertext_id", "index", "view_encryption_key_randomness")
+    CIPHERTEXT_ID_FIELD_NUMBER: _ClassVar[int]
+    INDEX_FIELD_NUMBER: _ClassVar[int]
+    VIEW_ENCRYPTION_KEY_RANDOMNESS_FIELD_NUMBER: _ClassVar[int]
+    ciphertext_id: bytes
+    index: int
+    view_encryption_key_randomness: bytes
+    def __init__(self, ciphertext_id: _Optional[bytes] = ..., index: _Optional[int] = ..., view_encryption_key_randomness: _Optional[bytes] = ...) -> None: ...
+
 class EncryptedMultipleViewsMessage(_message.Message):
     __slots__ = ("compressed_view_trees", "view_hashes", "encryption_scheme", "submitting_participant_signature", "session_key_lookup", "physical_synchronizer_id", "view_type")
     class UncompressedViewTrees(_message.Message):
@@ -114,3 +133,11 @@ class EncryptedMultipleViewsMessage(_message.Message):
     physical_synchronizer_id: str
     view_type: _common_pb2.ViewType
     def __init__(self, compressed_view_trees: _Optional[bytes] = ..., view_hashes: _Optional[_Iterable[bytes]] = ..., encryption_scheme: _Optional[_Union[_crypto_pb2.SymmetricKeyScheme, str]] = ..., submitting_participant_signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., session_key_lookup: _Optional[_Iterable[_Union[_crypto_pb2.AsymmetricEncrypted, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ...) -> None: ...
+
+class CreatedContract(_message.Message):
+    __slots__ = ("contract", "consumed_in_core")
+    CONTRACT_FIELD_NUMBER: _ClassVar[int]
+    CONSUMED_IN_CORE_FIELD_NUMBER: _ClassVar[int]
+    contract: bytes
+    consumed_in_core: bool
+    def __init__(self, contract: _Optional[bytes] = ..., consumed_in_core: _Optional[bool] = ...) -> None: ...

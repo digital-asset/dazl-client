@@ -79,7 +79,15 @@ class GetAddPartyStatusResponse(_message.Message):
     def __init__(self, status: _Optional[_Union[PartyReplicationStatus, _Mapping]] = ...) -> None: ...
 
 class PartyReplicationStatus(_message.Message):
-    __slots__ = ("parameters", "agreement", "authorization", "replication", "indexing", "has_completed", "error_message")
+    __slots__ = ("parameters", "authorization", "replication", "indexing", "has_completed", "error_message", "acs_replication_status", "replication_mode")
+    class ReplicationMode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = ()
+        REPLICATION_MODE_UNSPECIFIED: _ClassVar[PartyReplicationStatus.ReplicationMode]
+        REPLICATION_MODE_FILE: _ClassVar[PartyReplicationStatus.ReplicationMode]
+        REPLICATION_MODE_SEQUENCER_CHANNEL: _ClassVar[PartyReplicationStatus.ReplicationMode]
+    REPLICATION_MODE_UNSPECIFIED: PartyReplicationStatus.ReplicationMode
+    REPLICATION_MODE_FILE: PartyReplicationStatus.ReplicationMode
+    REPLICATION_MODE_SEQUENCER_CHANNEL: PartyReplicationStatus.ReplicationMode
     class ReplicationParameters(_message.Message):
         __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "topology_serial")
         REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
@@ -95,11 +103,6 @@ class PartyReplicationStatus(_message.Message):
         target_participant_uid: str
         topology_serial: int
         def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ...) -> None: ...
-    class SequencerChannelAgreement(_message.Message):
-        __slots__ = ("sequencer_uid",)
-        SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-        sequencer_uid: str
-        def __init__(self, sequencer_uid: _Optional[str] = ...) -> None: ...
     class PartyReplicationAuthorization(_message.Message):
         __slots__ = ("onboarding_at", "is_onboarding_flag_cleared")
         ONBOARDING_AT_FIELD_NUMBER: _ClassVar[int]
@@ -122,21 +125,42 @@ class PartyReplicationStatus(_message.Message):
         ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
         error_message: str
         def __init__(self, error_message: _Optional[str] = ...) -> None: ...
+    class AcsReplicationStatus(_message.Message):
+        __slots__ = ("agreement", "has_completed", "error_message")
+        class SequencerChannelAgreement(_message.Message):
+            __slots__ = ("sequencer_uid",)
+            SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
+            sequencer_uid: str
+            def __init__(self, sequencer_uid: _Optional[str] = ...) -> None: ...
+        class AcsReplicationError(_message.Message):
+            __slots__ = ("error_message",)
+            ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+            error_message: str
+            def __init__(self, error_message: _Optional[str] = ...) -> None: ...
+        AGREEMENT_FIELD_NUMBER: _ClassVar[int]
+        HAS_COMPLETED_FIELD_NUMBER: _ClassVar[int]
+        ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+        agreement: PartyReplicationStatus.AcsReplicationStatus.SequencerChannelAgreement
+        has_completed: bool
+        error_message: PartyReplicationStatus.AcsReplicationStatus.AcsReplicationError
+        def __init__(self, agreement: _Optional[_Union[PartyReplicationStatus.AcsReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.AcsReplicationStatus.AcsReplicationError, _Mapping]] = ...) -> None: ...
     PARAMETERS_FIELD_NUMBER: _ClassVar[int]
-    AGREEMENT_FIELD_NUMBER: _ClassVar[int]
     AUTHORIZATION_FIELD_NUMBER: _ClassVar[int]
     REPLICATION_FIELD_NUMBER: _ClassVar[int]
     INDEXING_FIELD_NUMBER: _ClassVar[int]
     HAS_COMPLETED_FIELD_NUMBER: _ClassVar[int]
     ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    ACS_REPLICATION_STATUS_FIELD_NUMBER: _ClassVar[int]
+    REPLICATION_MODE_FIELD_NUMBER: _ClassVar[int]
     parameters: PartyReplicationStatus.ReplicationParameters
-    agreement: PartyReplicationStatus.SequencerChannelAgreement
     authorization: PartyReplicationStatus.PartyReplicationAuthorization
     replication: PartyReplicationStatus.AcsReplicationProgress
     indexing: PartyReplicationStatus.AcsIndexingProgress
     has_completed: bool
     error_message: PartyReplicationStatus.PartyReplicationError
-    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...
+    acs_replication_status: PartyReplicationStatus.AcsReplicationStatus
+    replication_mode: PartyReplicationStatus.ReplicationMode
+    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ..., acs_replication_status: _Optional[_Union[PartyReplicationStatus.AcsReplicationStatus, _Mapping]] = ..., replication_mode: _Optional[_Union[PartyReplicationStatus.ReplicationMode, str]] = ...) -> None: ...
 
 class ExportPartyAcsRequest(_message.Message):
     __slots__ = ("party_id", "synchronizer_id", "target_participant_uid", "begin_offset_exclusive", "wait_for_activation_timeout")

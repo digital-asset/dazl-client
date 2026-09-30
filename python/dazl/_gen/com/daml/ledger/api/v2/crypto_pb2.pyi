@@ -16,6 +16,7 @@ class SigningKeySpec(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SIGNING_KEY_SPEC_EC_P256: _ClassVar[SigningKeySpec]
     SIGNING_KEY_SPEC_EC_P384: _ClassVar[SigningKeySpec]
     SIGNING_KEY_SPEC_EC_SECP256K1: _ClassVar[SigningKeySpec]
+    SIGNING_KEY_SPEC_ML_DSA_65: _ClassVar[SigningKeySpec]
 
 class CryptoKeyFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -30,6 +31,7 @@ class SigningAlgorithmSpec(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SIGNING_ALGORITHM_SPEC_ED25519: _ClassVar[SigningAlgorithmSpec]
     SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256: _ClassVar[SigningAlgorithmSpec]
     SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384: _ClassVar[SigningAlgorithmSpec]
+    SIGNING_ALGORITHM_SPEC_ML_DSA_65: _ClassVar[SigningAlgorithmSpec]
 
 class SignatureFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -43,6 +45,7 @@ SIGNING_KEY_SPEC_EC_CURVE25519: SigningKeySpec
 SIGNING_KEY_SPEC_EC_P256: SigningKeySpec
 SIGNING_KEY_SPEC_EC_P384: SigningKeySpec
 SIGNING_KEY_SPEC_EC_SECP256K1: SigningKeySpec
+SIGNING_KEY_SPEC_ML_DSA_65: SigningKeySpec
 CRYPTO_KEY_FORMAT_UNSPECIFIED: CryptoKeyFormat
 CRYPTO_KEY_FORMAT_DER: CryptoKeyFormat
 CRYPTO_KEY_FORMAT_RAW: CryptoKeyFormat
@@ -51,6 +54,7 @@ SIGNING_ALGORITHM_SPEC_UNSPECIFIED: SigningAlgorithmSpec
 SIGNING_ALGORITHM_SPEC_ED25519: SigningAlgorithmSpec
 SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256: SigningAlgorithmSpec
 SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384: SigningAlgorithmSpec
+SIGNING_ALGORITHM_SPEC_ML_DSA_65: SigningAlgorithmSpec
 SIGNATURE_FORMAT_UNSPECIFIED: SignatureFormat
 SIGNATURE_FORMAT_RAW: SignatureFormat
 SIGNATURE_FORMAT_DER: SignatureFormat
