@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "canton-open-source";
-  version = "3.7.0-snapshot.20260929.20584.0.vbb57304b";  version = "3.5.19";
+  version = "3.7.0-snapshot.20260929.20584.0.vbb57304b";
 
   src = builtins.fetchurl {
     url =
