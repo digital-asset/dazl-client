@@ -9,7 +9,7 @@ import warnings
 
 from . import participant_repair_service_pb2 as com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_participant__repair__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class ParticipantRepairServiceStub(object):
+class ParticipantRepairServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -85,7 +85,7 @@ class ParticipantRepairServiceStub(object):
                 _registered_method=True)
 
 
-class ParticipantRepairServiceServicer(object):
+class ParticipantRepairServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Download(self, request, context):
@@ -198,7 +198,7 @@ def add_ParticipantRepairServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class ParticipantRepairService(object):
+class ParticipantRepairService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

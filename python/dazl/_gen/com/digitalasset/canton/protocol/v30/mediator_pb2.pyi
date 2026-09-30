@@ -43,7 +43,7 @@ class MediatorReject(_message.Message):
     IS_MALFORMED_FIELD_NUMBER: _ClassVar[int]
     reason: _status_pb2.Status
     is_malformed: bool
-    def __init__(self, reason: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., is_malformed: bool = ...) -> None: ...
+    def __init__(self, reason: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., is_malformed: _Optional[bool] = ...) -> None: ...
 
 class Verdict(_message.Message):
     __slots__ = ("approve", "participant_reject", "mediator_reject")

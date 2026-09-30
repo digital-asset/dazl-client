@@ -9,7 +9,7 @@ import warnings
 
 from . import transaction_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_transaction__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class TransactionServiceStub(object):
+class TransactionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -80,7 +80,7 @@ class TransactionServiceStub(object):
                 _registered_method=True)
 
 
-class TransactionServiceServicer(object):
+class TransactionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetTransactions(self, request, context):
@@ -182,7 +182,7 @@ def add_TransactionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class TransactionService(object):
+class TransactionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

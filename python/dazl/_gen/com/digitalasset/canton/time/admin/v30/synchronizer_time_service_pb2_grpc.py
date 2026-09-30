@@ -9,7 +9,7 @@ import warnings
 
 from . import synchronizer_time_service_pb2 as com_dot_digitalasset_dot_canton_dot_time_dot_admin_dot_v30_dot_synchronizer__time__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class SynchronizerTimeServiceStub(object):
+class SynchronizerTimeServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -50,7 +50,7 @@ class SynchronizerTimeServiceStub(object):
                 _registered_method=True)
 
 
-class SynchronizerTimeServiceServicer(object):
+class SynchronizerTimeServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def FetchTime(self, request, context):
@@ -86,7 +86,7 @@ def add_SynchronizerTimeServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SynchronizerTimeService(object):
+class SynchronizerTimeService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

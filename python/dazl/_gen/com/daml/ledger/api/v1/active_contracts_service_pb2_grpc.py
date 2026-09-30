@@ -9,7 +9,7 @@ import warnings
 
 from . import active_contracts_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_active__contracts__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class ActiveContractsServiceStub(object):
+class ActiveContractsServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class ActiveContractsServiceStub(object):
                 _registered_method=True)
 
 
-class ActiveContractsServiceServicer(object):
+class ActiveContractsServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetActiveContracts(self, request, context):
@@ -70,7 +70,7 @@ def add_ActiveContractsServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class ActiveContractsService(object):
+class ActiveContractsService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

@@ -58,7 +58,7 @@ class ActionDescription(_message.Message):
         interface_id: str
         template_id: str
         package_preference: _containers.RepeatedScalarFieldContainer[str]
-        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: bool = ..., interface_id: _Optional[str] = ..., template_id: _Optional[str] = ..., package_preference: _Optional[_Iterable[str]] = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: _Optional[bool] = ..., interface_id: _Optional[str] = ..., template_id: _Optional[str] = ..., package_preference: _Optional[_Iterable[str]] = ...) -> None: ...
     CREATE_FIELD_NUMBER: _ClassVar[int]
     EXERCISE_FIELD_NUMBER: _ClassVar[int]
     FETCH_FIELD_NUMBER: _ClassVar[int]

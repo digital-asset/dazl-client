@@ -100,7 +100,7 @@ class AuthorizeRequest(_message.Message):
     signed_by: _containers.RepeatedScalarFieldContainer[str]
     store: _common_pb2.StoreId
     wait_to_become_effective: _duration_pb2.Duration
-    def __init__(self, proposal: _Optional[_Union[AuthorizeRequest.Proposal, _Mapping]] = ..., transaction_hash: _Optional[str] = ..., must_fully_authorize: bool = ..., force_changes: _Optional[_Iterable[_Union[ForceFlag, str]]] = ..., signed_by: _Optional[_Iterable[str]] = ..., store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., wait_to_become_effective: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    def __init__(self, proposal: _Optional[_Union[AuthorizeRequest.Proposal, _Mapping]] = ..., transaction_hash: _Optional[str] = ..., must_fully_authorize: _Optional[bool] = ..., force_changes: _Optional[_Iterable[_Union[ForceFlag, str]]] = ..., signed_by: _Optional[_Iterable[str]] = ..., store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., wait_to_become_effective: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class AuthorizeResponse(_message.Message):
     __slots__ = ("transaction",)

@@ -82,7 +82,7 @@ class PartyReplicationStatus(_message.Message):
         IS_ONBOARDING_FLAG_CLEARED_FIELD_NUMBER: _ClassVar[int]
         onboarding_at: _timestamp_pb2.Timestamp
         is_onboarding_flag_cleared: bool
-        def __init__(self, onboarding_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., is_onboarding_flag_cleared: bool = ...) -> None: ...
+        def __init__(self, onboarding_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., is_onboarding_flag_cleared: _Optional[bool] = ...) -> None: ...
     class AcsReplicationProgress(_message.Message):
         __slots__ = ("processed_contract_count", "next_persistence_counter", "fully_processed_acs")
         PROCESSED_CONTRACT_COUNT_FIELD_NUMBER: _ClassVar[int]
@@ -91,7 +91,7 @@ class PartyReplicationStatus(_message.Message):
         processed_contract_count: int
         next_persistence_counter: int
         fully_processed_acs: bool
-        def __init__(self, processed_contract_count: _Optional[int] = ..., next_persistence_counter: _Optional[int] = ..., fully_processed_acs: bool = ...) -> None: ...
+        def __init__(self, processed_contract_count: _Optional[int] = ..., next_persistence_counter: _Optional[int] = ..., fully_processed_acs: _Optional[bool] = ...) -> None: ...
     class AcsIndexingProgress(_message.Message):
         __slots__ = ("indexed_contract_activation_change_count", "next_indexing_counter", "indexing_almost_done_watermark")
         INDEXED_CONTRACT_ACTIVATION_CHANGE_COUNT_FIELD_NUMBER: _ClassVar[int]
@@ -130,4 +130,4 @@ class PartyReplicationStatus(_message.Message):
     indexing: PartyReplicationStatus.AcsIndexingProgress
     has_completed: bool
     error_message: PartyReplicationStatus.PartyReplicationError
-    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: bool = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...
+    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...

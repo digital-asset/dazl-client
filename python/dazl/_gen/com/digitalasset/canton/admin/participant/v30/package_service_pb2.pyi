@@ -65,7 +65,7 @@ class GetPackageContentsResponse(_message.Message):
     modules: _containers.RepeatedCompositeFieldContainer[ModuleDescription]
     is_utility_package: bool
     language_version: str
-    def __init__(self, description: _Optional[_Union[PackageDescription, _Mapping]] = ..., modules: _Optional[_Iterable[_Union[ModuleDescription, _Mapping]]] = ..., is_utility_package: bool = ..., language_version: _Optional[str] = ...) -> None: ...
+    def __init__(self, description: _Optional[_Union[PackageDescription, _Mapping]] = ..., modules: _Optional[_Iterable[_Union[ModuleDescription, _Mapping]]] = ..., is_utility_package: _Optional[bool] = ..., language_version: _Optional[str] = ...) -> None: ...
 
 class GetPackageReferencesRequest(_message.Message):
     __slots__ = ("package_id",)
@@ -85,7 +85,7 @@ class RemovePackageRequest(_message.Message):
     FORCE_FIELD_NUMBER: _ClassVar[int]
     package_id: str
     force: bool
-    def __init__(self, package_id: _Optional[str] = ..., force: bool = ...) -> None: ...
+    def __init__(self, package_id: _Optional[str] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class RemovePackageResponse(_message.Message):
     __slots__ = ("success",)
@@ -128,7 +128,7 @@ class UploadDarRequest(_message.Message):
     vet_all_packages: bool
     synchronize_vetting: bool
     synchronizer_id: str
-    def __init__(self, dars: _Optional[_Iterable[_Union[UploadDarRequest.UploadDarData, _Mapping]]] = ..., vet_all_packages: bool = ..., synchronize_vetting: bool = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, dars: _Optional[_Iterable[_Union[UploadDarRequest.UploadDarData, _Mapping]]] = ..., vet_all_packages: _Optional[bool] = ..., synchronize_vetting: _Optional[bool] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class UploadDarResponse(_message.Message):
     __slots__ = ("dar_ids",)
@@ -208,7 +208,7 @@ class VetDarRequest(_message.Message):
     main_package_id: str
     synchronize: bool
     synchronizer_id: str
-    def __init__(self, main_package_id: _Optional[str] = ..., synchronize: bool = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, main_package_id: _Optional[str] = ..., synchronize: _Optional[bool] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class VetDarResponse(_message.Message):
     __slots__ = ()

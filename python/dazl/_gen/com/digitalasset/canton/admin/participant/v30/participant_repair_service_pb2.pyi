@@ -25,7 +25,7 @@ class PurgeContractsRequest(_message.Message):
     synchronizer_alias: str
     contract_ids: _containers.RepeatedScalarFieldContainer[str]
     ignore_already_purged: bool
-    def __init__(self, synchronizer_alias: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., ignore_already_purged: bool = ...) -> None: ...
+    def __init__(self, synchronizer_alias: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., ignore_already_purged: _Optional[bool] = ...) -> None: ...
 
 class PurgeContractsResponse(_message.Message):
     __slots__ = ()
@@ -48,7 +48,7 @@ class ChangeAssignationRequest(_message.Message):
     target_synchronizer_alias: str
     skip_inactive: bool
     contracts: _containers.RepeatedCompositeFieldContainer[ChangeAssignationRequest.Contract]
-    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_alias: _Optional[str] = ..., skip_inactive: bool = ..., contracts: _Optional[_Iterable[_Union[ChangeAssignationRequest.Contract, _Mapping]]] = ...) -> None: ...
+    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_alias: _Optional[str] = ..., skip_inactive: _Optional[bool] = ..., contracts: _Optional[_Iterable[_Union[ChangeAssignationRequest.Contract, _Mapping]]] = ...) -> None: ...
 
 class ChangeAssignationResponse(_message.Message):
     __slots__ = ()
@@ -62,7 +62,7 @@ class MigrateSynchronizerRequest(_message.Message):
     source_synchronizer_alias: str
     target_synchronizer_connection_config: _synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig
     force: bool
-    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_connection_config: _Optional[_Union[_synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., force: bool = ...) -> None: ...
+    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_connection_config: _Optional[_Union[_synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class MigrateSynchronizerResponse(_message.Message):
     __slots__ = ()
@@ -141,7 +141,7 @@ class IgnoreEventsRequest(_message.Message):
     from_inclusive: int
     to_inclusive: int
     force: bool
-    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: bool = ...) -> None: ...
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class IgnoreEventsResponse(_message.Message):
     __slots__ = ()
@@ -157,7 +157,7 @@ class UnignoreEventsRequest(_message.Message):
     from_inclusive: int
     to_inclusive: int
     force: bool
-    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: bool = ...) -> None: ...
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class UnignoreEventsResponse(_message.Message):
     __slots__ = ()

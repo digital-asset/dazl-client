@@ -98,7 +98,7 @@ class PartyDetails(_message.Message):
     is_local: bool
     local_metadata: _object_meta_pb2.ObjectMeta
     identity_provider_id: str
-    def __init__(self, party: _Optional[str] = ..., display_name: _Optional[str] = ..., is_local: bool = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, party: _Optional[str] = ..., display_name: _Optional[str] = ..., is_local: _Optional[bool] = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
 
 class UpdatePartyIdentityProviderRequest(_message.Message):
     __slots__ = ("party", "source_identity_provider_id", "target_identity_provider_id")

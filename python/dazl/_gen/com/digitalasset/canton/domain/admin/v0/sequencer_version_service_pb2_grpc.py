@@ -9,7 +9,7 @@ import warnings
 
 from ....protocol.v0 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v0_dot_sequencing__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class SequencerVersionServiceStub(object):
+class SequencerVersionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class SequencerVersionServiceStub(object):
                 _registered_method=True)
 
 
-class SequencerVersionServiceServicer(object):
+class SequencerVersionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Handshake(self, request, context):
@@ -70,7 +70,7 @@ def add_SequencerVersionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SequencerVersionService(object):
+class SequencerVersionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

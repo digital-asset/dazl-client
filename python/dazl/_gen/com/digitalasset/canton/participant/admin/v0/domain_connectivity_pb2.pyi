@@ -35,13 +35,13 @@ class DomainConnectionConfig(_message.Message):
     maxRetryDelay: _duration_pb2.Duration
     timeTracker: _time_tracker_config_pb2.DomainTimeTrackerConfig
     sequencerTrustThreshold: int
-    def __init__(self, domain_alias: _Optional[str] = ..., sequencerConnections: _Optional[_Iterable[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]]] = ..., manual_connect: bool = ..., domain_id: _Optional[str] = ..., priority: _Optional[int] = ..., initialRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., timeTracker: _Optional[_Union[_time_tracker_config_pb2.DomainTimeTrackerConfig, _Mapping]] = ..., sequencerTrustThreshold: _Optional[int] = ...) -> None: ...
+    def __init__(self, domain_alias: _Optional[str] = ..., sequencerConnections: _Optional[_Iterable[_Union[_sequencer_connection_pb2.SequencerConnection, _Mapping]]] = ..., manual_connect: _Optional[bool] = ..., domain_id: _Optional[str] = ..., priority: _Optional[int] = ..., initialRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., maxRetryDelay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., timeTracker: _Optional[_Union[_time_tracker_config_pb2.DomainTimeTrackerConfig, _Mapping]] = ..., sequencerTrustThreshold: _Optional[int] = ...) -> None: ...
 
 class ReconnectDomainsRequest(_message.Message):
     __slots__ = ("ignore_failures",)
     IGNORE_FAILURES_FIELD_NUMBER: _ClassVar[int]
     ignore_failures: bool
-    def __init__(self, ignore_failures: bool = ...) -> None: ...
+    def __init__(self, ignore_failures: _Optional[bool] = ...) -> None: ...
 
 class ReconnectDomainsResponse(_message.Message):
     __slots__ = ()
@@ -79,7 +79,7 @@ class ListConfiguredDomainsResponse(_message.Message):
         CONNECTED_FIELD_NUMBER: _ClassVar[int]
         config: DomainConnectionConfig
         connected: bool
-        def __init__(self, config: _Optional[_Union[DomainConnectionConfig, _Mapping]] = ..., connected: bool = ...) -> None: ...
+        def __init__(self, config: _Optional[_Union[DomainConnectionConfig, _Mapping]] = ..., connected: _Optional[bool] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListConfiguredDomainsResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListConfiguredDomainsResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -90,13 +90,13 @@ class ConnectDomainRequest(_message.Message):
     RETRY_FIELD_NUMBER: _ClassVar[int]
     domain_alias: str
     retry: bool
-    def __init__(self, domain_alias: _Optional[str] = ..., retry: bool = ...) -> None: ...
+    def __init__(self, domain_alias: _Optional[str] = ..., retry: _Optional[bool] = ...) -> None: ...
 
 class ConnectDomainResponse(_message.Message):
     __slots__ = ("connected_successfully",)
     CONNECTED_SUCCESSFULLY_FIELD_NUMBER: _ClassVar[int]
     connected_successfully: bool
-    def __init__(self, connected_successfully: bool = ...) -> None: ...
+    def __init__(self, connected_successfully: _Optional[bool] = ...) -> None: ...
 
 class DisconnectDomainRequest(_message.Message):
     __slots__ = ("domain_alias",)
@@ -122,7 +122,7 @@ class ListConnectedDomainsResponse(_message.Message):
         domain_alias: str
         domain_id: str
         healthy: bool
-        def __init__(self, domain_alias: _Optional[str] = ..., domain_id: _Optional[str] = ..., healthy: bool = ...) -> None: ...
+        def __init__(self, domain_alias: _Optional[str] = ..., domain_id: _Optional[str] = ..., healthy: _Optional[bool] = ...) -> None: ...
     CONNECTED_DOMAINS_FIELD_NUMBER: _ClassVar[int]
     connected_domains: _containers.RepeatedCompositeFieldContainer[ListConnectedDomainsResponse.Result]
     def __init__(self, connected_domains: _Optional[_Iterable[_Union[ListConnectedDomainsResponse.Result, _Mapping]]] = ...) -> None: ...
@@ -141,7 +141,7 @@ class GetAgreementResponse(_message.Message):
     domain_id: str
     agreement: Agreement
     accepted: bool
-    def __init__(self, domain_id: _Optional[str] = ..., agreement: _Optional[_Union[Agreement, _Mapping]] = ..., accepted: bool = ...) -> None: ...
+    def __init__(self, domain_id: _Optional[str] = ..., agreement: _Optional[_Union[Agreement, _Mapping]] = ..., accepted: _Optional[bool] = ...) -> None: ...
 
 class Agreement(_message.Message):
     __slots__ = ("id", "text")

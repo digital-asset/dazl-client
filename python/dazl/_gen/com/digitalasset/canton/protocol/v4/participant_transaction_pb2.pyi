@@ -49,7 +49,7 @@ class ActionDescription(_message.Message):
         version: str
         template_id: str
         interface_id: str
-        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., version: _Optional[str] = ..., template_id: _Optional[str] = ..., interface_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., version: _Optional[str] = ..., template_id: _Optional[str] = ..., interface_id: _Optional[str] = ...) -> None: ...
     CREATE_FIELD_NUMBER: _ClassVar[int]
     EXERCISE_FIELD_NUMBER: _ClassVar[int]
     FETCH_FIELD_NUMBER: _ClassVar[int]

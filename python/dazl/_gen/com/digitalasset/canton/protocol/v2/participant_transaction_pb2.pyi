@@ -96,7 +96,7 @@ class ActionDescription(_message.Message):
         failed: bool
         interface_id: str
         template_id: str
-        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: bool = ..., interface_id: _Optional[str] = ..., template_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: _Optional[bool] = ..., interface_id: _Optional[str] = ..., template_id: _Optional[str] = ...) -> None: ...
     CREATE_FIELD_NUMBER: _ClassVar[int]
     EXERCISE_FIELD_NUMBER: _ClassVar[int]
     FETCH_FIELD_NUMBER: _ClassVar[int]
@@ -115,7 +115,7 @@ class CreatedContract(_message.Message):
     contract: _common_pb2_1.SerializableContract
     consumed_in_core: bool
     rolled_back: bool
-    def __init__(self, contract: _Optional[_Union[_common_pb2_1.SerializableContract, _Mapping]] = ..., consumed_in_core: bool = ..., rolled_back: bool = ...) -> None: ...
+    def __init__(self, contract: _Optional[_Union[_common_pb2_1.SerializableContract, _Mapping]] = ..., consumed_in_core: _Optional[bool] = ..., rolled_back: _Optional[bool] = ...) -> None: ...
 
 class InputContract(_message.Message):
     __slots__ = ("contract", "consumed")
@@ -123,4 +123,4 @@ class InputContract(_message.Message):
     CONSUMED_FIELD_NUMBER: _ClassVar[int]
     contract: _common_pb2_1.SerializableContract
     consumed: bool
-    def __init__(self, contract: _Optional[_Union[_common_pb2_1.SerializableContract, _Mapping]] = ..., consumed: bool = ...) -> None: ...
+    def __init__(self, contract: _Optional[_Union[_common_pb2_1.SerializableContract, _Mapping]] = ..., consumed: _Optional[bool] = ...) -> None: ...

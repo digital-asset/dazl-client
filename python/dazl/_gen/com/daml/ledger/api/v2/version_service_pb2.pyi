@@ -47,7 +47,7 @@ class UserManagementFeature(_message.Message):
     supported: bool
     max_rights_per_user: int
     max_users_page_size: int
-    def __init__(self, supported: bool = ..., max_rights_per_user: _Optional[int] = ..., max_users_page_size: _Optional[int] = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ..., max_rights_per_user: _Optional[int] = ..., max_users_page_size: _Optional[int] = ...) -> None: ...
 
 class PartyManagementFeature(_message.Message):
     __slots__ = ("max_parties_page_size",)

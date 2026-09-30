@@ -9,7 +9,7 @@ import warnings
 
 from . import party_name_management_pb2 as com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_party__name__management__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class PartyNameManagementServiceStub(object):
+class PartyNameManagementServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class PartyNameManagementServiceStub(object):
                 _registered_method=True)
 
 
-class PartyNameManagementServiceServicer(object):
+class PartyNameManagementServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def setPartyDisplayName(self, request, context):
@@ -70,7 +70,7 @@ def add_PartyNameManagementServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class PartyNameManagementService(object):
+class PartyNameManagementService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
