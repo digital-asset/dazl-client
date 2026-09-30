@@ -5,11 +5,11 @@
 
 stdenv.mkDerivation rec {
   pname = "daml-protos";
-  version = "2.10.4";
+  version = "2.10.6";
   buildInputs = [ unzip ];
   src = builtins.fetchurl {
     url = "https://github.com/digital-asset/daml/releases/download/v${version}/protobufs-${version}.zip";
-    sha256 = "01nw3i6y1hpn656k8l4k6751v052zyba7wp6f1wvkpx000h5hxh4";
+    sha256 = "sha256:001v7ffykhpacc7p3yqgsvybpgmlj1c5f2wzzdv4j5820p08az6n";
   };
   dontUnpack = true;
   buildPhase = ''

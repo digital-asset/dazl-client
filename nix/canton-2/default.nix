@@ -2,10 +2,10 @@
 
 stdenv.mkDerivation rec {
   pname = "canton-open-source";
-  version = "2.10.4";
+  version = "2.10.6";
   src = builtins.fetchurl {
     url = "https://github.com/digital-asset/daml/releases/download/v${version}/canton-open-source-${version}.tar.gz";
-    sha256 = "0l107vmhsp7c5gmzq9ds6sacg9944qrs9glj51wwhff1pjjbwfmd";
+    sha256 = "sha256:0y6b1r70m0mcs809md97fwn9xn0v228a98ff3w38zyrkbmxckvq6";
   };
   installPhase = ''
     mkdir -p "$out"
