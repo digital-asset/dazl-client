@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_aggregation_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__aggregation__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class TopologyAggregationServiceStub(object):
+class TopologyAggregationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -50,7 +50,7 @@ class TopologyAggregationServiceStub(object):
                 _registered_method=True)
 
 
-class TopologyAggregationServiceServicer(object):
+class TopologyAggregationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ListParties(self, request, context):
@@ -86,7 +86,7 @@ def add_TopologyAggregationServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class TopologyAggregationService(object):
+class TopologyAggregationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

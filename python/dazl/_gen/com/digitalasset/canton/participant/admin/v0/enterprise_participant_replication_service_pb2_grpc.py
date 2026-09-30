@@ -9,7 +9,7 @@ import warnings
 
 from . import enterprise_participant_replication_service_pb2 as com_dot_digitalasset_dot_canton_dot_participant_dot_admin_dot_v0_dot_enterprise__participant__replication__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class EnterpriseParticipantReplicationServiceStub(object):
+class EnterpriseParticipantReplicationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class EnterpriseParticipantReplicationServiceStub(object):
                 _registered_method=True)
 
 
-class EnterpriseParticipantReplicationServiceServicer(object):
+class EnterpriseParticipantReplicationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def SetPassive(self, request, context):
@@ -70,7 +70,7 @@ def add_EnterpriseParticipantReplicationServiceServicer_to_server(servicer, serv
 
 
  # This class is part of an EXPERIMENTAL API.
-class EnterpriseParticipantReplicationService(object):
+class EnterpriseParticipantReplicationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

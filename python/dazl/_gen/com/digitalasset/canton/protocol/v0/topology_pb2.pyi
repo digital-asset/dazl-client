@@ -99,7 +99,7 @@ class NamespaceDelegation(_message.Message):
     namespace: str
     target_key: _crypto_pb2.SigningPublicKey
     is_root_delegation: bool
-    def __init__(self, namespace: _Optional[str] = ..., target_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., is_root_delegation: bool = ...) -> None: ...
+    def __init__(self, namespace: _Optional[str] = ..., target_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., is_root_delegation: _Optional[bool] = ...) -> None: ...
 
 class IdentifierDelegation(_message.Message):
     __slots__ = ("unique_identifier", "target_key")

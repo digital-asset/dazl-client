@@ -70,7 +70,7 @@ class ParticipantPruningSchedule(_message.Message):
     PRUNE_INTERNALLY_ONLY_FIELD_NUMBER: _ClassVar[int]
     schedule: PruningSchedule
     prune_internally_only: bool
-    def __init__(self, schedule: _Optional[_Union[PruningSchedule, _Mapping]] = ..., prune_internally_only: bool = ...) -> None: ...
+    def __init__(self, schedule: _Optional[_Union[PruningSchedule, _Mapping]] = ..., prune_internally_only: _Optional[bool] = ...) -> None: ...
 
 class ClearScheduleRequest(_message.Message):
     __slots__ = ()

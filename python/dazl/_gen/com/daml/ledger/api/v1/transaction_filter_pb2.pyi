@@ -48,7 +48,7 @@ class InterfaceFilter(_message.Message):
     interface_id: _value_pb2.Identifier
     include_interface_view: bool
     include_created_event_blob: bool
-    def __init__(self, interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_interface_view: bool = ..., include_created_event_blob: bool = ...) -> None: ...
+    def __init__(self, interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_interface_view: _Optional[bool] = ..., include_created_event_blob: _Optional[bool] = ...) -> None: ...
 
 class TemplateFilter(_message.Message):
     __slots__ = ("template_id", "include_created_event_blob")
@@ -56,4 +56,4 @@ class TemplateFilter(_message.Message):
     INCLUDE_CREATED_EVENT_BLOB_FIELD_NUMBER: _ClassVar[int]
     template_id: _value_pb2.Identifier
     include_created_event_blob: bool
-    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_created_event_blob: bool = ...) -> None: ...
+    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_created_event_blob: _Optional[bool] = ...) -> None: ...

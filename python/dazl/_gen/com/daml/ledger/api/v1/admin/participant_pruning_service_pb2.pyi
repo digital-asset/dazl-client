@@ -16,7 +16,7 @@ class PruneRequest(_message.Message):
     prune_up_to: str
     submission_id: str
     prune_all_divulged_contracts: bool
-    def __init__(self, prune_up_to: _Optional[str] = ..., submission_id: _Optional[str] = ..., prune_all_divulged_contracts: bool = ...) -> None: ...
+    def __init__(self, prune_up_to: _Optional[str] = ..., submission_id: _Optional[str] = ..., prune_all_divulged_contracts: _Optional[bool] = ...) -> None: ...
 
 class PruneResponse(_message.Message):
     __slots__ = ()

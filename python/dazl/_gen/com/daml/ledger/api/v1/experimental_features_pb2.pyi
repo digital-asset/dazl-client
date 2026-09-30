@@ -53,7 +53,7 @@ class ExperimentalStaticTime(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class CommandDeduplicationFeatures(_message.Message):
     __slots__ = ("deduplication_period_support", "deduplication_type", "max_deduplication_duration_enforced")
@@ -63,7 +63,7 @@ class CommandDeduplicationFeatures(_message.Message):
     deduplication_period_support: CommandDeduplicationPeriodSupport
     deduplication_type: CommandDeduplicationType
     max_deduplication_duration_enforced: bool
-    def __init__(self, deduplication_period_support: _Optional[_Union[CommandDeduplicationPeriodSupport, _Mapping]] = ..., deduplication_type: _Optional[_Union[CommandDeduplicationType, str]] = ..., max_deduplication_duration_enforced: bool = ...) -> None: ...
+    def __init__(self, deduplication_period_support: _Optional[_Union[CommandDeduplicationPeriodSupport, _Mapping]] = ..., deduplication_type: _Optional[_Union[CommandDeduplicationType, str]] = ..., max_deduplication_duration_enforced: _Optional[bool] = ...) -> None: ...
 
 class ExperimentalOptionalLedgerId(_message.Message):
     __slots__ = ()
@@ -119,34 +119,34 @@ class ExperimentalExplicitDisclosure(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class ExperimentalUserAndPartyLocalMetadataExtensions(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class AcsActiveAtOffsetFeature(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class TransactionsWithTemplateFilters(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class ExperimentalCommandInspectionService(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...
 
 class StreamingPrunedOffsets(_message.Message):
     __slots__ = ("supported",)
     SUPPORTED_FIELD_NUMBER: _ClassVar[int]
     supported: bool
-    def __init__(self, supported: bool = ...) -> None: ...
+    def __init__(self, supported: _Optional[bool] = ...) -> None: ...

@@ -129,14 +129,14 @@ class ViewParticipantData(_message.Message):
         contract: _common_pb2.SerializableContract
         consumed_in_core: bool
         rolled_back: bool
-        def __init__(self, contract: _Optional[_Union[_common_pb2.SerializableContract, _Mapping]] = ..., consumed_in_core: bool = ..., rolled_back: bool = ...) -> None: ...
+        def __init__(self, contract: _Optional[_Union[_common_pb2.SerializableContract, _Mapping]] = ..., consumed_in_core: _Optional[bool] = ..., rolled_back: _Optional[bool] = ...) -> None: ...
     class InputContract(_message.Message):
         __slots__ = ("contract", "consumed")
         CONTRACT_FIELD_NUMBER: _ClassVar[int]
         CONSUMED_FIELD_NUMBER: _ClassVar[int]
         contract: _common_pb2.SerializableContract
         consumed: bool
-        def __init__(self, contract: _Optional[_Union[_common_pb2.SerializableContract, _Mapping]] = ..., consumed: bool = ...) -> None: ...
+        def __init__(self, contract: _Optional[_Union[_common_pb2.SerializableContract, _Mapping]] = ..., consumed: _Optional[bool] = ...) -> None: ...
     class ResolvedKey(_message.Message):
         __slots__ = ("key", "contract_id", "free")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -203,7 +203,7 @@ class ActionDescription(_message.Message):
         node_seed: bytes
         version: str
         failed: bool
-        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: bool = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., choice: _Optional[str] = ..., chosen_value: _Optional[bytes] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., node_seed: _Optional[bytes] = ..., version: _Optional[str] = ..., failed: _Optional[bool] = ...) -> None: ...
     class FetchActionDescription(_message.Message):
         __slots__ = ("input_contract_id", "actors", "by_key", "version")
         INPUT_CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -214,7 +214,7 @@ class ActionDescription(_message.Message):
         actors: _containers.RepeatedScalarFieldContainer[str]
         by_key: bool
         version: str
-        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: bool = ..., version: _Optional[str] = ...) -> None: ...
+        def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., version: _Optional[str] = ...) -> None: ...
     class LookupByKeyActionDescription(_message.Message):
         __slots__ = ("key",)
         KEY_FIELD_NUMBER: _ClassVar[int]

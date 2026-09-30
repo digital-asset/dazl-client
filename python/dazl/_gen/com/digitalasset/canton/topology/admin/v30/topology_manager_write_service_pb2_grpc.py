@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_write_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__write__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class TopologyManagerWriteServiceStub(object):
+class TopologyManagerWriteServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -80,7 +80,7 @@ class TopologyManagerWriteServiceStub(object):
                 _registered_method=True)
 
 
-class TopologyManagerWriteServiceServicer(object):
+class TopologyManagerWriteServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def Authorize(self, request, context):
@@ -182,7 +182,7 @@ def add_TopologyManagerWriteServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class TopologyManagerWriteService(object):
+class TopologyManagerWriteService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

@@ -93,7 +93,7 @@ class BaseQuery(_message.Message):
     range: BaseQuery.TimeRange
     filter_signed_key: str
     protocol_version: _wrappers_pb2.StringValue
-    def __init__(self, filter_store: _Optional[str] = ..., use_state_store: bool = ..., operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., filter_operation: bool = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
+    def __init__(self, filter_store: _Optional[str] = ..., use_state_store: _Optional[bool] = ..., operation: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., filter_operation: _Optional[bool] = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class BaseResult(_message.Message):
     __slots__ = ("store", "sequenced", "valid_from", "valid_until", "operation", "serialized", "signed_by_fingerprint")

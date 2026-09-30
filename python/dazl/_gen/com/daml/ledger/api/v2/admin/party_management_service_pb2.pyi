@@ -98,7 +98,7 @@ class AllocateExternalPartyRequest(_message.Message):
     identity_provider_id: str
     wait_for_allocation: bool
     user_id: str
-    def __init__(self, synchronizer: _Optional[str] = ..., onboarding_transactions: _Optional[_Iterable[_Union[AllocateExternalPartyRequest.SignedTransaction, _Mapping]]] = ..., multi_hash_signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., identity_provider_id: _Optional[str] = ..., wait_for_allocation: bool = ..., user_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, synchronizer: _Optional[str] = ..., onboarding_transactions: _Optional[_Iterable[_Union[AllocateExternalPartyRequest.SignedTransaction, _Mapping]]] = ..., multi_hash_signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., identity_provider_id: _Optional[str] = ..., wait_for_allocation: _Optional[bool] = ..., user_id: _Optional[str] = ...) -> None: ...
 
 class AllocateExternalPartyResponse(_message.Message):
     __slots__ = ("party_id",)
@@ -130,7 +130,7 @@ class PartyDetails(_message.Message):
     is_local: bool
     local_metadata: _object_meta_pb2.ObjectMeta
     identity_provider_id: str
-    def __init__(self, party: _Optional[str] = ..., is_local: bool = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, party: _Optional[str] = ..., is_local: _Optional[bool] = ..., local_metadata: _Optional[_Union[_object_meta_pb2.ObjectMeta, _Mapping]] = ..., identity_provider_id: _Optional[str] = ...) -> None: ...
 
 class UpdatePartyIdentityProviderIdRequest(_message.Message):
     __slots__ = ("party", "source_identity_provider_id", "target_identity_provider_id")
@@ -162,7 +162,7 @@ class GenerateExternalPartyTopologyRequest(_message.Message):
     other_confirming_participant_uids: _containers.RepeatedScalarFieldContainer[str]
     confirmation_threshold: int
     observing_participant_uids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, synchronizer: _Optional[str] = ..., party_hint: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., local_participant_observation_only: bool = ..., other_confirming_participant_uids: _Optional[_Iterable[str]] = ..., confirmation_threshold: _Optional[int] = ..., observing_participant_uids: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, synchronizer: _Optional[str] = ..., party_hint: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., local_participant_observation_only: _Optional[bool] = ..., other_confirming_participant_uids: _Optional[_Iterable[str]] = ..., confirmation_threshold: _Optional[int] = ..., observing_participant_uids: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class GenerateExternalPartyTopologyResponse(_message.Message):
     __slots__ = ("party_id", "public_key_fingerprint", "topology_transactions", "multi_hash")

@@ -50,7 +50,7 @@ class NodeStatus(_message.Message):
         active: bool
         topology_queues: TopologyQueueStatus
         components: _containers.RepeatedCompositeFieldContainer[NodeStatus.ComponentStatus]
-        def __init__(self, id: _Optional[str] = ..., uptime: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., extra: _Optional[bytes] = ..., active: bool = ..., topology_queues: _Optional[_Union[TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[NodeStatus.ComponentStatus, _Mapping]]] = ...) -> None: ...
+        def __init__(self, id: _Optional[str] = ..., uptime: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., extra: _Optional[bytes] = ..., active: _Optional[bool] = ..., topology_queues: _Optional[_Union[TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[NodeStatus.ComponentStatus, _Mapping]]] = ...) -> None: ...
     class ComponentStatus(_message.Message):
         __slots__ = ("name", "ok", "degraded", "failed", "fatal")
         class StatusData(_message.Message):
@@ -73,7 +73,7 @@ class NodeStatus(_message.Message):
         __slots__ = ("active",)
         ACTIVE_FIELD_NUMBER: _ClassVar[int]
         active: bool
-        def __init__(self, active: bool = ...) -> None: ...
+        def __init__(self, active: _Optional[bool] = ...) -> None: ...
     NOT_INITIALIZED_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     not_initialized: NodeStatus.NotInitialized
@@ -108,12 +108,12 @@ class ParticipantStatusInfo(_message.Message):
         HEALTHY_FIELD_NUMBER: _ClassVar[int]
         domain: str
         healthy: bool
-        def __init__(self, domain: _Optional[str] = ..., healthy: bool = ...) -> None: ...
+        def __init__(self, domain: _Optional[str] = ..., healthy: _Optional[bool] = ...) -> None: ...
     CONNECTED_DOMAINS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     connected_domains: _containers.RepeatedCompositeFieldContainer[ParticipantStatusInfo.ConnectedDomain]
     active: bool
-    def __init__(self, connected_domains: _Optional[_Iterable[_Union[ParticipantStatusInfo.ConnectedDomain, _Mapping]]] = ..., active: bool = ...) -> None: ...
+    def __init__(self, connected_domains: _Optional[_Iterable[_Union[ParticipantStatusInfo.ConnectedDomain, _Mapping]]] = ..., active: _Optional[bool] = ...) -> None: ...
 
 class SequencerNodeStatus(_message.Message):
     __slots__ = ("connected_participants", "connected_mediators", "sequencer", "domain_id", "admin")
@@ -135,13 +135,13 @@ class SequencerHealthStatus(_message.Message):
     DETAILS_FIELD_NUMBER: _ClassVar[int]
     active: bool
     details: _wrappers_pb2.StringValue
-    def __init__(self, active: bool = ..., details: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
+    def __init__(self, active: _Optional[bool] = ..., details: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...) -> None: ...
 
 class SequencerAdminStatus(_message.Message):
     __slots__ = ("accepts_admin_changes",)
     ACCEPTS_ADMIN_CHANGES_FIELD_NUMBER: _ClassVar[int]
     accepts_admin_changes: bool
-    def __init__(self, accepts_admin_changes: bool = ...) -> None: ...
+    def __init__(self, accepts_admin_changes: _Optional[bool] = ...) -> None: ...
 
 class MediatorNodeStatus(_message.Message):
     __slots__ = ("domain_id",)

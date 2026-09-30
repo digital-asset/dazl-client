@@ -22,6 +22,14 @@ class CompletionStreamRequest(_message.Message):
     begin_exclusive: int
     def __init__(self, user_id: _Optional[str] = ..., parties: _Optional[_Iterable[str]] = ..., begin_exclusive: _Optional[int] = ...) -> None: ...
 
+class GetCompletionsRequest(_message.Message):
+    __slots__ = ("parties", "begin_exclusive")
+    PARTIES_FIELD_NUMBER: _ClassVar[int]
+    BEGIN_EXCLUSIVE_FIELD_NUMBER: _ClassVar[int]
+    parties: _containers.RepeatedScalarFieldContainer[str]
+    begin_exclusive: int
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., begin_exclusive: _Optional[int] = ...) -> None: ...
+
 class CompletionStreamResponse(_message.Message):
     __slots__ = ("completion", "offset_checkpoint")
     COMPLETION_FIELD_NUMBER: _ClassVar[int]

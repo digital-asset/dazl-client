@@ -40,7 +40,7 @@ class DownloadRequest(_message.Message):
     gzip_format: bool
     contract_domain_renames: _containers.ScalarMap[str, str]
     parties_offboarding: bool
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., protocol_version: _Optional[str] = ..., chunkSize: _Optional[_Union[_wrappers_pb2.UInt32Value, _Mapping]] = ..., gzip_format: bool = ..., contract_domain_renames: _Optional[_Mapping[str, str]] = ..., parties_offboarding: bool = ...) -> None: ...
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., protocol_version: _Optional[str] = ..., chunkSize: _Optional[_Union[_wrappers_pb2.UInt32Value, _Mapping]] = ..., gzip_format: _Optional[bool] = ..., contract_domain_renames: _Optional[_Mapping[str, str]] = ..., parties_offboarding: _Optional[bool] = ...) -> None: ...
 
 class PurgeContractsRequest(_message.Message):
     __slots__ = ("domain", "contract_ids", "ignore_already_purged", "offboarded_parties")
@@ -52,7 +52,7 @@ class PurgeContractsRequest(_message.Message):
     contract_ids: _containers.RepeatedScalarFieldContainer[str]
     ignore_already_purged: bool
     offboarded_parties: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, domain: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., ignore_already_purged: bool = ..., offboarded_parties: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, domain: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., ignore_already_purged: _Optional[bool] = ..., offboarded_parties: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class PurgeContractsResponse(_message.Message):
     __slots__ = ()
@@ -70,7 +70,7 @@ class UploadRequest(_message.Message):
     GZIP_FORMAT_FIELD_NUMBER: _ClassVar[int]
     acs_snapshot: bytes
     gzip_format: bool
-    def __init__(self, acs_snapshot: _Optional[bytes] = ..., gzip_format: bool = ...) -> None: ...
+    def __init__(self, acs_snapshot: _Optional[bytes] = ..., gzip_format: _Optional[bool] = ...) -> None: ...
 
 class UploadResponse(_message.Message):
     __slots__ = ()
@@ -126,7 +126,7 @@ class ExportAcsRequest(_message.Message):
     timestamp: _timestamp_pb2.Timestamp
     contract_domain_renames: _containers.MessageMap[str, ExportAcsRequest.TargetDomain]
     parties_offboarding: bool
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_domain_renames: _Optional[_Mapping[str, ExportAcsRequest.TargetDomain]] = ..., parties_offboarding: bool = ...) -> None: ...
+    def __init__(self, parties: _Optional[_Iterable[str]] = ..., filter_domain_id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contract_domain_renames: _Optional[_Mapping[str, ExportAcsRequest.TargetDomain]] = ..., parties_offboarding: _Optional[bool] = ...) -> None: ...
 
 class ExportAcsResponse(_message.Message):
     __slots__ = ("chunk",)
@@ -168,7 +168,7 @@ class IgnoreEventsRequest(_message.Message):
     from_inclusive: int
     to_inclusive: int
     force: bool
-    def __init__(self, domain_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: bool = ...) -> None: ...
+    def __init__(self, domain_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class IgnoreEventsResponse(_message.Message):
     __slots__ = ()
@@ -184,7 +184,7 @@ class UnignoreEventsRequest(_message.Message):
     from_inclusive: int
     to_inclusive: int
     force: bool
-    def __init__(self, domain_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: bool = ...) -> None: ...
+    def __init__(self, domain_id: _Optional[str] = ..., from_inclusive: _Optional[int] = ..., to_inclusive: _Optional[int] = ..., force: _Optional[bool] = ...) -> None: ...
 
 class UnignoreEventsResponse(_message.Message):
     __slots__ = ()

@@ -9,7 +9,7 @@ import warnings
 
 from . import version_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v2_dot_version__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class VersionServiceStub(object):
+class VersionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class VersionServiceStub(object):
                 _registered_method=True)
 
 
-class VersionServiceServicer(object):
+class VersionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetLedgerApiVersion(self, request, context):
@@ -70,7 +70,7 @@ def add_VersionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class VersionService(object):
+class VersionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

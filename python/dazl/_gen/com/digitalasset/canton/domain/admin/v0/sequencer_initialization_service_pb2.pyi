@@ -35,7 +35,7 @@ class InitResponse(_message.Message):
     key_id: str
     public_key: _crypto_pb2.SigningPublicKey
     replicated: bool
-    def __init__(self, key_id: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., replicated: bool = ...) -> None: ...
+    def __init__(self, key_id: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., replicated: _Optional[bool] = ...) -> None: ...
 
 class TopologyBootstrapRequest(_message.Message):
     __slots__ = ("initial_topology_snapshot",)

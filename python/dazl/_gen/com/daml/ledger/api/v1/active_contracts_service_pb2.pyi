@@ -22,7 +22,7 @@ class GetActiveContractsRequest(_message.Message):
     filter: _transaction_filter_pb2.TransactionFilter
     verbose: bool
     active_at_offset: str
-    def __init__(self, ledger_id: _Optional[str] = ..., filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: bool = ..., active_at_offset: _Optional[str] = ...) -> None: ...
+    def __init__(self, ledger_id: _Optional[str] = ..., filter: _Optional[_Union[_transaction_filter_pb2.TransactionFilter, _Mapping]] = ..., verbose: _Optional[bool] = ..., active_at_offset: _Optional[str] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
     __slots__ = ("offset", "workflow_id", "active_contracts")

@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-from .common_pb2 import StoreId, Synchronizer, TopologyTransactions
+from .common_pb2 import StoreId, Synchronizer, SynchronizerPredecessor, TopologyTransactions
 from .initialization_service_pb2 import CurrentTimeRequest, CurrentTimeResponse, GetIdRequest, GetIdResponse, GetOnboardingTransactionsRequest, GetOnboardingTransactionsResponse, InitIdRequest, InitIdResponse
 from .initialization_service_pb2_grpc import IdentityInitializationServiceStub
 from .topology_manager_write_service_pb2 import AddTransactionsRequest, AddTransactionsResponse, AuthorizeRequest, AuthorizeResponse, CreateTemporaryTopologyStoreRequest, CreateTemporaryTopologyStoreResponse, DropTemporaryTopologyStoreRequest, DropTemporaryTopologyStoreResponse, ForceFlag, GenerateTransactionsRequest, GenerateTransactionsResponse, ImportTopologySnapshotRequest, ImportTopologySnapshotResponse, ImportTopologySnapshotV2Request, ImportTopologySnapshotV2Response, SignTransactionsRequest, SignTransactionsResponse
@@ -94,6 +94,7 @@ __all__ = [
     "SignTransactionsResponse",
     "StoreId",
     "Synchronizer",
+    "SynchronizerPredecessor",
     "TopologyAggregationServiceStub",
     "TopologyManagerReadServiceStub",
     "TopologyManagerWriteServiceStub",

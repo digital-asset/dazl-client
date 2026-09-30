@@ -75,10 +75,10 @@ class Enums(_message.Message):
         __slots__ = ()
         PARTICIPANT_FEATURE_FLAG_UNSPECIFIED: _ClassVar[Enums.ParticipantFeatureFlag]
         PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW: _ClassVar[Enums.ParticipantFeatureFlag]
-        PARTICIPANT_FEATURE_FLAG_ENABLE_ALPHA_MULTI_SYNCHRONIZER: _ClassVar[Enums.ParticipantFeatureFlag]
+        PARTICIPANT_FEATURE_FLAG_ENABLE_MULTI_SYNCHRONIZER: _ClassVar[Enums.ParticipantFeatureFlag]
     PARTICIPANT_FEATURE_FLAG_UNSPECIFIED: Enums.ParticipantFeatureFlag
     PARTICIPANT_FEATURE_FLAG_PV33_EXTERNAL_SIGNING_LOCAL_CONTRACT_IN_SUBVIEW: Enums.ParticipantFeatureFlag
-    PARTICIPANT_FEATURE_FLAG_ENABLE_ALPHA_MULTI_SYNCHRONIZER: Enums.ParticipantFeatureFlag
+    PARTICIPANT_FEATURE_FLAG_ENABLE_MULTI_SYNCHRONIZER: Enums.ParticipantFeatureFlag
     def __init__(self) -> None: ...
 
 class NamespaceDelegation(_message.Message):
@@ -106,7 +106,7 @@ class NamespaceDelegation(_message.Message):
     can_sign_all_mappings: NamespaceDelegation.CanSignAllMappings
     can_sign_all_but_namespace_delegations: NamespaceDelegation.CanSignAllButNamespaceDelegations
     can_sign_specific_mapings: NamespaceDelegation.CanSignSpecificMappings
-    def __init__(self, namespace: _Optional[str] = ..., target_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., is_root_delegation: bool = ..., can_sign_all_mappings: _Optional[_Union[NamespaceDelegation.CanSignAllMappings, _Mapping]] = ..., can_sign_all_but_namespace_delegations: _Optional[_Union[NamespaceDelegation.CanSignAllButNamespaceDelegations, _Mapping]] = ..., can_sign_specific_mapings: _Optional[_Union[NamespaceDelegation.CanSignSpecificMappings, _Mapping]] = ...) -> None: ...
+    def __init__(self, namespace: _Optional[str] = ..., target_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., is_root_delegation: _Optional[bool] = ..., can_sign_all_mappings: _Optional[_Union[NamespaceDelegation.CanSignAllMappings, _Mapping]] = ..., can_sign_all_but_namespace_delegations: _Optional[_Union[NamespaceDelegation.CanSignAllButNamespaceDelegations, _Mapping]] = ..., can_sign_specific_mapings: _Optional[_Union[NamespaceDelegation.CanSignSpecificMappings, _Mapping]] = ...) -> None: ...
 
 class DecentralizedNamespaceDefinition(_message.Message):
     __slots__ = ("decentralized_namespace", "threshold", "owners")
@@ -340,7 +340,7 @@ class SignedTopologyTransaction(_message.Message):
     signatures: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.Signature]
     proposal: bool
     multi_transaction_signatures: _containers.RepeatedCompositeFieldContainer[MultiTransactionSignatures]
-    def __init__(self, transaction: _Optional[bytes] = ..., signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., proposal: bool = ..., multi_transaction_signatures: _Optional[_Iterable[_Union[MultiTransactionSignatures, _Mapping]]] = ...) -> None: ...
+    def __init__(self, transaction: _Optional[bytes] = ..., signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., proposal: _Optional[bool] = ..., multi_transaction_signatures: _Optional[_Iterable[_Union[MultiTransactionSignatures, _Mapping]]] = ...) -> None: ...
 
 class SignedTopologyTransactions(_message.Message):
     __slots__ = ("signed_transaction",)

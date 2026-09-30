@@ -9,7 +9,7 @@ import warnings
 
 from . import command_inspection_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_command__inspection__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class CommandInspectionServiceStub(object):
+class CommandInspectionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class CommandInspectionServiceStub(object):
                 _registered_method=True)
 
 
-class CommandInspectionServiceServicer(object):
+class CommandInspectionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetCommandStatus(self, request, context):
@@ -70,7 +70,7 @@ def add_CommandInspectionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class CommandInspectionService(object):
+class CommandInspectionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
