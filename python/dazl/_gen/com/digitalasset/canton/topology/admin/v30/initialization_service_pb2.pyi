@@ -32,7 +32,7 @@ class GetIdResponse(_message.Message):
     UNIQUE_IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
     initialized: bool
     unique_identifier: str
-    def __init__(self, initialized: bool = ..., unique_identifier: _Optional[str] = ...) -> None: ...
+    def __init__(self, initialized: _Optional[bool] = ..., unique_identifier: _Optional[str] = ...) -> None: ...
 
 class GetOnboardingTransactionsRequest(_message.Message):
     __slots__ = ()

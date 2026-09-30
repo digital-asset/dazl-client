@@ -1057,7 +1057,7 @@ class TemplateChoice(_message.Message):
     update: Expr
     self_binder_interned_str: int
     authorizers: Expr
-    def __init__(self, location: _Optional[_Union[Location, _Mapping]] = ..., name_interned_str: _Optional[int] = ..., consuming: bool = ..., controllers: _Optional[_Union[Expr, _Mapping]] = ..., observers: _Optional[_Union[Expr, _Mapping]] = ..., arg_binder: _Optional[_Union[VarWithType, _Mapping]] = ..., ret_type: _Optional[_Union[Type, _Mapping]] = ..., update: _Optional[_Union[Expr, _Mapping]] = ..., self_binder_interned_str: _Optional[int] = ..., authorizers: _Optional[_Union[Expr, _Mapping]] = ...) -> None: ...
+    def __init__(self, location: _Optional[_Union[Location, _Mapping]] = ..., name_interned_str: _Optional[int] = ..., consuming: _Optional[bool] = ..., controllers: _Optional[_Union[Expr, _Mapping]] = ..., observers: _Optional[_Union[Expr, _Mapping]] = ..., arg_binder: _Optional[_Union[VarWithType, _Mapping]] = ..., ret_type: _Optional[_Union[Type, _Mapping]] = ..., update: _Optional[_Union[Expr, _Mapping]] = ..., self_binder_interned_str: _Optional[int] = ..., authorizers: _Optional[_Union[Expr, _Mapping]] = ...) -> None: ...
 
 class InterfaceInstanceBody(_message.Message):
     __slots__ = ("methods", "view")
@@ -1180,7 +1180,7 @@ class DefDataType(_message.Message):
     variant: DefDataType.Fields
     enum: DefDataType.EnumConstructors
     interface: Unit
-    def __init__(self, location: _Optional[_Union[Location, _Mapping]] = ..., name_interned_dname: _Optional[int] = ..., params: _Optional[_Iterable[_Union[TypeVarWithKind, _Mapping]]] = ..., serializable: bool = ..., record: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., variant: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., enum: _Optional[_Union[DefDataType.EnumConstructors, _Mapping]] = ..., interface: _Optional[_Union[Unit, _Mapping]] = ...) -> None: ...
+    def __init__(self, location: _Optional[_Union[Location, _Mapping]] = ..., name_interned_dname: _Optional[int] = ..., params: _Optional[_Iterable[_Union[TypeVarWithKind, _Mapping]]] = ..., serializable: _Optional[bool] = ..., record: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., variant: _Optional[_Union[DefDataType.Fields, _Mapping]] = ..., enum: _Optional[_Union[DefDataType.EnumConstructors, _Mapping]] = ..., interface: _Optional[_Union[Unit, _Mapping]] = ...) -> None: ...
 
 class DefTypeSyn(_message.Message):
     __slots__ = ("location", "name_interned_dname", "params", "type")
@@ -1219,7 +1219,7 @@ class FeatureFlags(_message.Message):
     forbidPartyLiterals: bool
     dontDivulgeContractIdsInCreateArguments: bool
     dontDiscloseNonConsumingChoicesToObservers: bool
-    def __init__(self, forbidPartyLiterals: bool = ..., dontDivulgeContractIdsInCreateArguments: bool = ..., dontDiscloseNonConsumingChoicesToObservers: bool = ...) -> None: ...
+    def __init__(self, forbidPartyLiterals: _Optional[bool] = ..., dontDivulgeContractIdsInCreateArguments: _Optional[bool] = ..., dontDiscloseNonConsumingChoicesToObservers: _Optional[bool] = ...) -> None: ...
 
 class Module(_message.Message):
     __slots__ = ("name_interned_dname", "flags", "synonyms", "data_types", "values", "templates", "exceptions", "interfaces")

@@ -42,7 +42,7 @@ class BaseQuery(_message.Message):
     range: BaseQuery.TimeRange
     filter_signed_key: str
     protocol_version: int
-    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., proposals: bool = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
+    def __init__(self, store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ..., proposals: _Optional[bool] = ..., operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., snapshot: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., head_state: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., range: _Optional[_Union[BaseQuery.TimeRange, _Mapping]] = ..., filter_signed_key: _Optional[str] = ..., protocol_version: _Optional[int] = ...) -> None: ...
 
 class BaseResult(_message.Message):
     __slots__ = ("store", "sequenced", "valid_from", "valid_until", "operation", "transaction_hash", "serial", "signed_by_fingerprints")

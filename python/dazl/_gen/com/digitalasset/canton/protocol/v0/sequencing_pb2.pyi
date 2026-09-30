@@ -46,7 +46,7 @@ class PossiblyIgnoredSequencedEvent(_message.Message):
     trace_context: _trace_context_pb2.TraceContext
     is_ignored: bool
     underlying: SignedContent
-    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., is_ignored: bool = ..., underlying: _Optional[_Union[SignedContent, _Mapping]] = ...) -> None: ...
+    def __init__(self, counter: _Optional[int] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trace_context: _Optional[_Union[_trace_context_pb2.TraceContext, _Mapping]] = ..., is_ignored: _Optional[bool] = ..., underlying: _Optional[_Union[SignedContent, _Mapping]] = ...) -> None: ...
 
 class RecipientsTree(_message.Message):
     __slots__ = ("recipients", "children")
@@ -138,7 +138,7 @@ class StaticDomainParameters(_message.Message):
     required_hash_algorithms: _containers.RepeatedScalarFieldContainer[_crypto_pb2.HashAlgorithm]
     required_crypto_key_formats: _containers.RepeatedScalarFieldContainer[_crypto_pb2.CryptoKeyFormat]
     protocol_version: str
-    def __init__(self, reconciliation_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_rate_per_participant: _Optional[int] = ..., max_inbound_message_size: _Optional[int] = ..., unique_contract_keys: bool = ..., required_signing_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyScheme, str]]] = ..., required_encryption_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionKeyScheme, str]]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., protocol_version: _Optional[str] = ...) -> None: ...
+    def __init__(self, reconciliation_interval: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_rate_per_participant: _Optional[int] = ..., max_inbound_message_size: _Optional[int] = ..., unique_contract_keys: _Optional[bool] = ..., required_signing_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyScheme, str]]] = ..., required_encryption_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionKeyScheme, str]]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., protocol_version: _Optional[str] = ...) -> None: ...
 
 class DynamicDomainParameters(_message.Message):
     __slots__ = ("participant_response_timeout", "mediator_reaction_timeout", "transfer_exclusivity_timeout", "topology_change_delay", "ledger_time_record_time_tolerance")
@@ -196,4 +196,4 @@ class SubmissionRequest(_message.Message):
     batch: CompressedBatch
     max_sequencing_time: _timestamp_pb2.Timestamp
     timestamp_of_signing_key: _timestamp_pb2.Timestamp
-    def __init__(self, sender: _Optional[str] = ..., message_id: _Optional[str] = ..., is_request: bool = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., timestamp_of_signing_key: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, sender: _Optional[str] = ..., message_id: _Optional[str] = ..., is_request: _Optional[bool] = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., max_sequencing_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., timestamp_of_signing_key: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

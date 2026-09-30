@@ -24,7 +24,7 @@ class SequencerMemberStatus(_message.Message):
     registered_at: _timestamp_pb2.Timestamp
     last_acknowledged: _timestamp_pb2.Timestamp
     enabled: bool
-    def __init__(self, member: _Optional[str] = ..., registered_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_acknowledged: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., enabled: bool = ...) -> None: ...
+    def __init__(self, member: _Optional[str] = ..., registered_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_acknowledged: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., enabled: _Optional[bool] = ...) -> None: ...
 
 class SequencerPruningStatus(_message.Message):
     __slots__ = ("now", "earliest_event_timestamp", "members")

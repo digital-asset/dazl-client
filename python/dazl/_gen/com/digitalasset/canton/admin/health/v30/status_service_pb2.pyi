@@ -61,7 +61,7 @@ class NotInitialized(_message.Message):
     active: bool
     waiting_for_external_input: NotInitialized.WaitingForExternalInput
     version: str
-    def __init__(self, active: bool = ..., waiting_for_external_input: _Optional[_Union[NotInitialized.WaitingForExternalInput, str]] = ..., version: _Optional[str] = ...) -> None: ...
+    def __init__(self, active: _Optional[bool] = ..., waiting_for_external_input: _Optional[_Union[NotInitialized.WaitingForExternalInput, str]] = ..., version: _Optional[str] = ...) -> None: ...
 
 class Status(_message.Message):
     __slots__ = ("uid", "uptime", "ports", "active", "topology_queues", "components", "version")
@@ -86,7 +86,7 @@ class Status(_message.Message):
     topology_queues: TopologyQueueStatus
     components: _containers.RepeatedCompositeFieldContainer[ComponentStatus]
     version: str
-    def __init__(self, uid: _Optional[str] = ..., uptime: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., active: bool = ..., topology_queues: _Optional[_Union[TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[ComponentStatus, _Mapping]]] = ..., version: _Optional[str] = ...) -> None: ...
+    def __init__(self, uid: _Optional[str] = ..., uptime: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., ports: _Optional[_Mapping[str, int]] = ..., active: _Optional[bool] = ..., topology_queues: _Optional[_Union[TopologyQueueStatus, _Mapping]] = ..., components: _Optional[_Iterable[_Union[ComponentStatus, _Mapping]]] = ..., version: _Optional[str] = ...) -> None: ...
 
 class HealthDumpRequest(_message.Message):
     __slots__ = ("chunk_size",)

@@ -9,7 +9,7 @@ import warnings
 
 from . import sequencer_traffic_inspection_service_pb2 as com_dot_digitalasset_dot_canton_dot_sequencer_dot_admin_dot_v30_dot_sequencer__traffic__inspection__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class SequencerTrafficInspectionServiceStub(object):
+class SequencerTrafficInspectionServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -45,7 +45,7 @@ class SequencerTrafficInspectionServiceStub(object):
                 _registered_method=True)
 
 
-class SequencerTrafficInspectionServiceServicer(object):
+class SequencerTrafficInspectionServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetTrafficSummaries(self, request, context):
@@ -70,7 +70,7 @@ def add_SequencerTrafficInspectionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SequencerTrafficInspectionService(object):
+class SequencerTrafficInspectionService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

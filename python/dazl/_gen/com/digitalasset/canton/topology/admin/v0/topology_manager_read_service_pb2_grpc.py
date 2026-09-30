@@ -9,7 +9,7 @@ import warnings
 
 from . import topology_manager_read_service_pb2 as com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v0_dot_topology__manager__read__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class TopologyManagerReadServiceStub(object):
+class TopologyManagerReadServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -100,7 +100,7 @@ class TopologyManagerReadServiceStub(object):
                 _registered_method=True)
 
 
-class TopologyManagerReadServiceServicer(object):
+class TopologyManagerReadServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ListAvailableStores(self, request, context):
@@ -246,7 +246,7 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class TopologyManagerReadService(object):
+class TopologyManagerReadService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

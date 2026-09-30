@@ -23,7 +23,7 @@ class IdentityProviderConfig(_message.Message):
     issuer: str
     jwks_url: str
     audience: str
-    def __init__(self, identity_provider_id: _Optional[str] = ..., is_deactivated: bool = ..., issuer: _Optional[str] = ..., jwks_url: _Optional[str] = ..., audience: _Optional[str] = ...) -> None: ...
+    def __init__(self, identity_provider_id: _Optional[str] = ..., is_deactivated: _Optional[bool] = ..., issuer: _Optional[str] = ..., jwks_url: _Optional[str] = ..., audience: _Optional[str] = ...) -> None: ...
 
 class CreateIdentityProviderConfigRequest(_message.Message):
     __slots__ = ("identity_provider_config",)

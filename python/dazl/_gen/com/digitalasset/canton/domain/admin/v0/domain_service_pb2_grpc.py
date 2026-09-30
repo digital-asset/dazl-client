@@ -11,7 +11,7 @@ from . import domain_service_pb2 as com_dot_digitalasset_dot_canton_dot_domain_d
 from ....protocol.v0 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v0_dot_sequencing__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -31,7 +31,7 @@ if _version_not_supported:
     )
 
 
-class DomainServiceStub(object):
+class DomainServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -57,7 +57,7 @@ class DomainServiceStub(object):
                 _registered_method=True)
 
 
-class DomainServiceServicer(object):
+class DomainServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ListServiceAgreementAcceptances(self, request, context):
@@ -104,7 +104,7 @@ def add_DomainServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class DomainService(object):
+class DomainService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

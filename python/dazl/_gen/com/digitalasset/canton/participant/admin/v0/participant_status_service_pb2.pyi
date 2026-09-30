@@ -22,7 +22,7 @@ class ConnectedDomain(_message.Message):
     HEALTHY_FIELD_NUMBER: _ClassVar[int]
     domain_id: str
     healthy: bool
-    def __init__(self, domain_id: _Optional[str] = ..., healthy: bool = ...) -> None: ...
+    def __init__(self, domain_id: _Optional[str] = ..., healthy: _Optional[bool] = ...) -> None: ...
 
 class ParticipantStatusResponse(_message.Message):
     __slots__ = ("status", "unavailable", "failure")
@@ -36,7 +36,7 @@ class ParticipantStatusResponse(_message.Message):
         connected_domains: _containers.RepeatedCompositeFieldContainer[ConnectedDomain]
         active: bool
         supported_protocol_versions: _containers.RepeatedScalarFieldContainer[int]
-        def __init__(self, common_status: _Optional[_Union[_status_service_pb2_1.Status, _Mapping]] = ..., connected_domains: _Optional[_Iterable[_Union[ConnectedDomain, _Mapping]]] = ..., active: bool = ..., supported_protocol_versions: _Optional[_Iterable[int]] = ...) -> None: ...
+        def __init__(self, common_status: _Optional[_Union[_status_service_pb2_1.Status, _Mapping]] = ..., connected_domains: _Optional[_Iterable[_Union[ConnectedDomain, _Mapping]]] = ..., active: _Optional[bool] = ..., supported_protocol_versions: _Optional[_Iterable[int]] = ...) -> None: ...
     STATUS_FIELD_NUMBER: _ClassVar[int]
     UNAVAILABLE_FIELD_NUMBER: _ClassVar[int]
     FAILURE_FIELD_NUMBER: _ClassVar[int]

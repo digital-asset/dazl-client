@@ -41,7 +41,7 @@ class AuthorizationData(_message.Message):
     signed_by: str
     replace_existing: bool
     force_change: bool
-    def __init__(self, change: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., signed_by: _Optional[str] = ..., replace_existing: bool = ..., force_change: bool = ...) -> None: ...
+    def __init__(self, change: _Optional[_Union[_topology_pb2.TopologyChangeOp, str]] = ..., signed_by: _Optional[str] = ..., replace_existing: _Optional[bool] = ..., force_change: _Optional[bool] = ...) -> None: ...
 
 class NamespaceDelegationAuthorization(_message.Message):
     __slots__ = ("authorization", "namespace", "fingerprint_of_authorized_key", "is_root_delegation")
@@ -53,7 +53,7 @@ class NamespaceDelegationAuthorization(_message.Message):
     namespace: str
     fingerprint_of_authorized_key: str
     is_root_delegation: bool
-    def __init__(self, authorization: _Optional[_Union[AuthorizationData, _Mapping]] = ..., namespace: _Optional[str] = ..., fingerprint_of_authorized_key: _Optional[str] = ..., is_root_delegation: bool = ...) -> None: ...
+    def __init__(self, authorization: _Optional[_Union[AuthorizationData, _Mapping]] = ..., namespace: _Optional[str] = ..., fingerprint_of_authorized_key: _Optional[str] = ..., is_root_delegation: _Optional[bool] = ...) -> None: ...
 
 class IdentifierDelegationAuthorization(_message.Message):
     __slots__ = ("authorization", "identifier", "fingerprint_of_authorized_key")

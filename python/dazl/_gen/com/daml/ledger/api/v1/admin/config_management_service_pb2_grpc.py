@@ -9,7 +9,7 @@ import warnings
 
 from . import config_management_service_pb2 as com_dot_daml_dot_ledger_dot_api_dot_v1_dot_admin_dot_config__management__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class ConfigManagementServiceStub(object):
+class ConfigManagementServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -50,7 +50,7 @@ class ConfigManagementServiceStub(object):
                 _registered_method=True)
 
 
-class ConfigManagementServiceServicer(object):
+class ConfigManagementServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetTimeModel(self, request, context):
@@ -86,7 +86,7 @@ def add_ConfigManagementServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class ConfigManagementService(object):
+class ConfigManagementService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

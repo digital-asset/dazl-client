@@ -9,7 +9,7 @@ import warnings
 
 from . import vault_service_pb2 as com_dot_digitalasset_dot_canton_dot_crypto_dot_admin_dot_v30_dot_vault__service__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -29,7 +29,7 @@ if _version_not_supported:
     )
 
 
-class VaultServiceStub(object):
+class VaultServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -100,7 +100,7 @@ class VaultServiceStub(object):
                 _registered_method=True)
 
 
-class VaultServiceServicer(object):
+class VaultServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def ListMyKeys(self, request, context):
@@ -246,7 +246,7 @@ def add_VaultServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class VaultService(object):
+class VaultService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

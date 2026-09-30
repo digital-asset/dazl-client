@@ -41,7 +41,7 @@ class WildcardFilter(_message.Message):
     __slots__ = ("include_created_event_blob",)
     INCLUDE_CREATED_EVENT_BLOB_FIELD_NUMBER: _ClassVar[int]
     include_created_event_blob: bool
-    def __init__(self, include_created_event_blob: bool = ...) -> None: ...
+    def __init__(self, include_created_event_blob: _Optional[bool] = ...) -> None: ...
 
 class InterfaceFilter(_message.Message):
     __slots__ = ("interface_id", "include_interface_view", "include_created_event_blob")
@@ -51,7 +51,7 @@ class InterfaceFilter(_message.Message):
     interface_id: _value_pb2.Identifier
     include_interface_view: bool
     include_created_event_blob: bool
-    def __init__(self, interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_interface_view: bool = ..., include_created_event_blob: bool = ...) -> None: ...
+    def __init__(self, interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_interface_view: _Optional[bool] = ..., include_created_event_blob: _Optional[bool] = ...) -> None: ...
 
 class TemplateFilter(_message.Message):
     __slots__ = ("template_id", "include_created_event_blob")
@@ -59,7 +59,7 @@ class TemplateFilter(_message.Message):
     INCLUDE_CREATED_EVENT_BLOB_FIELD_NUMBER: _ClassVar[int]
     template_id: _value_pb2.Identifier
     include_created_event_blob: bool
-    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_created_event_blob: bool = ...) -> None: ...
+    def __init__(self, template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., include_created_event_blob: _Optional[bool] = ...) -> None: ...
 
 class EventFormat(_message.Message):
     __slots__ = ("filters_by_party", "filters_for_any_party", "verbose")
@@ -76,7 +76,7 @@ class EventFormat(_message.Message):
     filters_by_party: _containers.MessageMap[str, Filters]
     filters_for_any_party: Filters
     verbose: bool
-    def __init__(self, filters_by_party: _Optional[_Mapping[str, Filters]] = ..., filters_for_any_party: _Optional[_Union[Filters, _Mapping]] = ..., verbose: bool = ...) -> None: ...
+    def __init__(self, filters_by_party: _Optional[_Mapping[str, Filters]] = ..., filters_for_any_party: _Optional[_Union[Filters, _Mapping]] = ..., verbose: _Optional[bool] = ...) -> None: ...
 
 class TransactionFormat(_message.Message):
     __slots__ = ("event_format", "transaction_shape")

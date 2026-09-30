@@ -11,7 +11,7 @@ from . import initialization_service_pb2 as com_dot_digitalasset_dot_canton_dot_
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
-GRPC_GENERATED_VERSION = '1.80.0'
+GRPC_GENERATED_VERSION = '1.84.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -31,7 +31,7 @@ if _version_not_supported:
     )
 
 
-class InitializationServiceStub(object):
+class InitializationServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -57,7 +57,7 @@ class InitializationServiceStub(object):
                 _registered_method=True)
 
 
-class InitializationServiceServicer(object):
+class InitializationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def InitId(self, request, context):
@@ -104,7 +104,7 @@ def add_InitializationServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class InitializationService(object):
+class InitializationService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod

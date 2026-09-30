@@ -56,7 +56,7 @@ class SequencerConnect(_message.Message):
             __slots__ = ("is_active",)
             IS_ACTIVE_FIELD_NUMBER: _ClassVar[int]
             is_active: bool
-            def __init__(self, is_active: bool = ...) -> None: ...
+            def __init__(self, is_active: _Optional[bool] = ...) -> None: ...
         class Failure(_message.Message):
             __slots__ = ("reason",)
             REASON_FIELD_NUMBER: _ClassVar[int]
