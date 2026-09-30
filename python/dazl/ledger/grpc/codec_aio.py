@@ -544,9 +544,7 @@ class Codec:
 
     @staticmethod
     def decode_party_info(party_details: lapiadminpb.PartyDetails, /) -> PartyInfo:
-        return PartyInfo(
-            Party(party_details.party), party_details.is_local
-        )
+        return PartyInfo(Party(party_details.party), party_details.is_local)
 
     @staticmethod
     def decode_version(obj: lapipb.GetLedgerApiVersionResponse, /) -> Version:
