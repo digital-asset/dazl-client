@@ -37,3 +37,17 @@ class CompletionStreamResponse(_message.Message):
     completion: _completion_pb2.Completion
     offset_checkpoint: _offset_checkpoint_pb2.OffsetCheckpoint
     def __init__(self, completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., offset_checkpoint: _Optional[_Union[_offset_checkpoint_pb2.OffsetCheckpoint, _Mapping]] = ...) -> None: ...
+
+class GetCompletionByHashRequest(_message.Message):
+    __slots__ = ("transaction_hash",)
+    TRANSACTION_HASH_FIELD_NUMBER: _ClassVar[int]
+    transaction_hash: bytes
+    def __init__(self, transaction_hash: _Optional[bytes] = ...) -> None: ...
+
+class GetCompletionByHashResponse(_message.Message):
+    __slots__ = ("accepted_completion", "last_rejected_completions")
+    ACCEPTED_COMPLETION_FIELD_NUMBER: _ClassVar[int]
+    LAST_REJECTED_COMPLETIONS_FIELD_NUMBER: _ClassVar[int]
+    accepted_completion: _completion_pb2.Completion
+    last_rejected_completions: _containers.RepeatedCompositeFieldContainer[_completion_pb2.Completion]
+    def __init__(self, accepted_completion: _Optional[_Union[_completion_pb2.Completion, _Mapping]] = ..., last_rejected_completions: _Optional[_Iterable[_Union[_completion_pb2.Completion, _Mapping]]] = ...) -> None: ...

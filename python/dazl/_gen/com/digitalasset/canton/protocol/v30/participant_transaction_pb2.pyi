@@ -6,12 +6,10 @@ import datetime
 
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
 from . import common_pb2 as _common_pb2
-from . import common_stable_pb2 as _common_stable_pb2
 from . import merkle_pb2 as _merkle_pb2
 from . import quorum_pb2 as _quorum_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
@@ -145,48 +143,8 @@ class CommonMetadata(_message.Message):
     mediator_group: int
     def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., physical_synchronizer_id: _Optional[str] = ..., uuid: _Optional[str] = ..., mediator_group: _Optional[int] = ...) -> None: ...
 
-class SubmitterMetadata(_message.Message):
-    __slots__ = ("salt", "act_as", "user_id", "command_id", "submitting_participant_uid", "submission_id", "dedup_period", "max_sequencing_time", "external_authorization")
-    SALT_FIELD_NUMBER: _ClassVar[int]
-    ACT_AS_FIELD_NUMBER: _ClassVar[int]
-    USER_ID_FIELD_NUMBER: _ClassVar[int]
-    COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
-    SUBMITTING_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
-    SUBMISSION_ID_FIELD_NUMBER: _ClassVar[int]
-    DEDUP_PERIOD_FIELD_NUMBER: _ClassVar[int]
-    MAX_SEQUENCING_TIME_FIELD_NUMBER: _ClassVar[int]
-    EXTERNAL_AUTHORIZATION_FIELD_NUMBER: _ClassVar[int]
-    salt: _crypto_pb2.Salt
-    act_as: _containers.RepeatedScalarFieldContainer[str]
-    user_id: str
-    command_id: str
-    submitting_participant_uid: str
-    submission_id: str
-    dedup_period: DeduplicationPeriod
-    max_sequencing_time: int
-    external_authorization: ExternalAuthorization
-    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., act_as: _Optional[_Iterable[str]] = ..., user_id: _Optional[str] = ..., command_id: _Optional[str] = ..., submitting_participant_uid: _Optional[str] = ..., submission_id: _Optional[str] = ..., dedup_period: _Optional[_Union[DeduplicationPeriod, _Mapping]] = ..., max_sequencing_time: _Optional[int] = ..., external_authorization: _Optional[_Union[ExternalAuthorization, _Mapping]] = ...) -> None: ...
-
-class EncryptedViewMessage(_message.Message):
-    __slots__ = ("view_tree", "encryption_scheme", "submitting_participant_signature", "view_hash", "session_key_lookup", "physical_synchronizer_id", "view_type")
-    VIEW_TREE_FIELD_NUMBER: _ClassVar[int]
-    ENCRYPTION_SCHEME_FIELD_NUMBER: _ClassVar[int]
-    SUBMITTING_PARTICIPANT_SIGNATURE_FIELD_NUMBER: _ClassVar[int]
-    VIEW_HASH_FIELD_NUMBER: _ClassVar[int]
-    SESSION_KEY_LOOKUP_FIELD_NUMBER: _ClassVar[int]
-    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    VIEW_TYPE_FIELD_NUMBER: _ClassVar[int]
-    view_tree: bytes
-    encryption_scheme: _crypto_pb2.SymmetricKeyScheme
-    submitting_participant_signature: _crypto_pb2.Signature
-    view_hash: bytes
-    session_key_lookup: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.AsymmetricEncrypted]
-    physical_synchronizer_id: str
-    view_type: _common_pb2.ViewType
-    def __init__(self, view_tree: _Optional[bytes] = ..., encryption_scheme: _Optional[_Union[_crypto_pb2.SymmetricKeyScheme, str]] = ..., submitting_participant_signature: _Optional[_Union[_crypto_pb2.Signature, _Mapping]] = ..., view_hash: _Optional[bytes] = ..., session_key_lookup: _Optional[_Iterable[_Union[_crypto_pb2.AsymmetricEncrypted, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ..., view_type: _Optional[_Union[_common_pb2.ViewType, str]] = ...) -> None: ...
-
 class ActionDescription(_message.Message):
-    __slots__ = ("create", "exercise", "fetch", "lookup_by_key")
+    __slots__ = ()
     class CreateActionDescription(_message.Message):
         __slots__ = ("contract_id", "node_seed")
         CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -230,37 +188,10 @@ class ActionDescription(_message.Message):
         template_id: str
         interface_id: str
         def __init__(self, input_contract_id: _Optional[str] = ..., actors: _Optional[_Iterable[str]] = ..., by_key: _Optional[bool] = ..., template_id: _Optional[str] = ..., interface_id: _Optional[str] = ...) -> None: ...
-    class LookupByKeyActionDescription(_message.Message):
-        __slots__ = ("key",)
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        key: _common_stable_pb2.GlobalKey
-        def __init__(self, key: _Optional[_Union[_common_stable_pb2.GlobalKey, _Mapping]] = ...) -> None: ...
-    CREATE_FIELD_NUMBER: _ClassVar[int]
-    EXERCISE_FIELD_NUMBER: _ClassVar[int]
-    FETCH_FIELD_NUMBER: _ClassVar[int]
-    LOOKUP_BY_KEY_FIELD_NUMBER: _ClassVar[int]
-    create: ActionDescription.CreateActionDescription
-    exercise: ActionDescription.ExerciseActionDescription
-    fetch: ActionDescription.FetchActionDescription
-    lookup_by_key: ActionDescription.LookupByKeyActionDescription
-    def __init__(self, create: _Optional[_Union[ActionDescription.CreateActionDescription, _Mapping]] = ..., exercise: _Optional[_Union[ActionDescription.ExerciseActionDescription, _Mapping]] = ..., fetch: _Optional[_Union[ActionDescription.FetchActionDescription, _Mapping]] = ..., lookup_by_key: _Optional[_Union[ActionDescription.LookupByKeyActionDescription, _Mapping]] = ...) -> None: ...
+    def __init__(self) -> None: ...
 
 class ViewParticipantData(_message.Message):
-    __slots__ = ("salt", "core_inputs", "created_core", "created_in_subview_archived_in_core", "resolved_keys", "action_description", "rollback_context")
-    class FreeKey(_message.Message):
-        __slots__ = ("maintainers",)
-        MAINTAINERS_FIELD_NUMBER: _ClassVar[int]
-        maintainers: _containers.RepeatedScalarFieldContainer[str]
-        def __init__(self, maintainers: _Optional[_Iterable[str]] = ...) -> None: ...
-    class ResolvedKey(_message.Message):
-        __slots__ = ("key", "contract_id", "free")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
-        FREE_FIELD_NUMBER: _ClassVar[int]
-        key: _common_stable_pb2.GlobalKey
-        contract_id: str
-        free: ViewParticipantData.FreeKey
-        def __init__(self, key: _Optional[_Union[_common_stable_pb2.GlobalKey, _Mapping]] = ..., contract_id: _Optional[str] = ..., free: _Optional[_Union[ViewParticipantData.FreeKey, _Mapping]] = ...) -> None: ...
+    __slots__ = ()
     class RollbackContext(_message.Message):
         __slots__ = ("rollback_scope", "next_child")
         ROLLBACK_SCOPE_FIELD_NUMBER: _ClassVar[int]
@@ -268,21 +199,7 @@ class ViewParticipantData(_message.Message):
         rollback_scope: _containers.RepeatedScalarFieldContainer[int]
         next_child: int
         def __init__(self, rollback_scope: _Optional[_Iterable[int]] = ..., next_child: _Optional[int] = ...) -> None: ...
-    SALT_FIELD_NUMBER: _ClassVar[int]
-    CORE_INPUTS_FIELD_NUMBER: _ClassVar[int]
-    CREATED_CORE_FIELD_NUMBER: _ClassVar[int]
-    CREATED_IN_SUBVIEW_ARCHIVED_IN_CORE_FIELD_NUMBER: _ClassVar[int]
-    RESOLVED_KEYS_FIELD_NUMBER: _ClassVar[int]
-    ACTION_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    ROLLBACK_CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    salt: _crypto_pb2.Salt
-    core_inputs: _containers.RepeatedCompositeFieldContainer[InputContract]
-    created_core: _containers.RepeatedCompositeFieldContainer[CreatedContract]
-    created_in_subview_archived_in_core: _containers.RepeatedScalarFieldContainer[str]
-    resolved_keys: _containers.RepeatedCompositeFieldContainer[ViewParticipantData.ResolvedKey]
-    action_description: ActionDescription
-    rollback_context: ViewParticipantData.RollbackContext
-    def __init__(self, salt: _Optional[_Union[_crypto_pb2.Salt, _Mapping]] = ..., core_inputs: _Optional[_Iterable[_Union[InputContract, _Mapping]]] = ..., created_core: _Optional[_Iterable[_Union[CreatedContract, _Mapping]]] = ..., created_in_subview_archived_in_core: _Optional[_Iterable[str]] = ..., resolved_keys: _Optional[_Iterable[_Union[ViewParticipantData.ResolvedKey, _Mapping]]] = ..., action_description: _Optional[_Union[ActionDescription, _Mapping]] = ..., rollback_context: _Optional[_Union[ViewParticipantData.RollbackContext, _Mapping]] = ...) -> None: ...
+    def __init__(self) -> None: ...
 
 class ExternalPartyAuthorization(_message.Message):
     __slots__ = ("party", "signatures")
@@ -291,17 +208,3 @@ class ExternalPartyAuthorization(_message.Message):
     party: str
     signatures: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.Signature]
     def __init__(self, party: _Optional[str] = ..., signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ...) -> None: ...
-
-class ExternalAuthorization(_message.Message):
-    __slots__ = ("authentications", "hashing_scheme_version")
-    class HashingSchemeVersion(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        HASHING_SCHEME_VERSION_UNSPECIFIED: _ClassVar[ExternalAuthorization.HashingSchemeVersion]
-        HASHING_SCHEME_VERSION_V2: _ClassVar[ExternalAuthorization.HashingSchemeVersion]
-    HASHING_SCHEME_VERSION_UNSPECIFIED: ExternalAuthorization.HashingSchemeVersion
-    HASHING_SCHEME_VERSION_V2: ExternalAuthorization.HashingSchemeVersion
-    AUTHENTICATIONS_FIELD_NUMBER: _ClassVar[int]
-    HASHING_SCHEME_VERSION_FIELD_NUMBER: _ClassVar[int]
-    authentications: _containers.RepeatedCompositeFieldContainer[ExternalPartyAuthorization]
-    hashing_scheme_version: ExternalAuthorization.HashingSchemeVersion
-    def __init__(self, authentications: _Optional[_Iterable[_Union[ExternalPartyAuthorization, _Mapping]]] = ..., hashing_scheme_version: _Optional[_Union[ExternalAuthorization.HashingSchemeVersion, str]] = ...) -> None: ...

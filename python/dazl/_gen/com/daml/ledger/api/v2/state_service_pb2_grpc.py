@@ -63,6 +63,11 @@ class StateServiceStub:
                 request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetLatestPrunedOffsetsRequest.SerializeToString,
                 response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetLatestPrunedOffsetsResponse.FromString,
                 _registered_method=True)
+        self.ConvertRecordTimeToOffset = channel.unary_unary(
+                '/com.daml.ledger.api.v2.StateService/ConvertRecordTimeToOffset',
+                request_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.ConvertRecordTimeToOffsetRequest.SerializeToString,
+                response_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.ConvertRecordTimeToOffsetResponse.FromString,
+                _registered_method=True)
 
 
 class StateServiceServicer:
@@ -98,6 +103,12 @@ class StateServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ConvertRecordTimeToOffset(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_StateServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -125,6 +136,11 @@ def add_StateServiceServicer_to_server(servicer, server):
                     servicer.GetLatestPrunedOffsets,
                     request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetLatestPrunedOffsetsRequest.FromString,
                     response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetLatestPrunedOffsetsResponse.SerializeToString,
+            ),
+            'ConvertRecordTimeToOffset': grpc.unary_unary_rpc_method_handler(
+                    servicer.ConvertRecordTimeToOffset,
+                    request_deserializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.ConvertRecordTimeToOffsetRequest.FromString,
+                    response_serializer=com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.ConvertRecordTimeToOffsetResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -262,6 +278,33 @@ class StateService:
             '/com.daml.ledger.api.v2.StateService/GetLatestPrunedOffsets',
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetLatestPrunedOffsetsRequest.SerializeToString,
             com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.GetLatestPrunedOffsetsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ConvertRecordTimeToOffset(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.daml.ledger.api.v2.StateService/ConvertRecordTimeToOffset',
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.ConvertRecordTimeToOffsetRequest.SerializeToString,
+            com_dot_daml_dot_ledger_dot_api_dot_v2_dot_state__service__pb2.ConvertRecordTimeToOffsetResponse.FromString,
             options,
             channel_credentials,
             insecure,

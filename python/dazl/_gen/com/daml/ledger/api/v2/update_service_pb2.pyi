@@ -55,6 +55,14 @@ class GetUpdateByIdRequest(_message.Message):
     update_format: _transaction_filter_pb2.UpdateFormat
     def __init__(self, update_id: _Optional[str] = ..., update_format: _Optional[_Union[_transaction_filter_pb2.UpdateFormat, _Mapping]] = ...) -> None: ...
 
+class GetUpdateByHashRequest(_message.Message):
+    __slots__ = ("transaction_hash", "update_format")
+    TRANSACTION_HASH_FIELD_NUMBER: _ClassVar[int]
+    UPDATE_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    transaction_hash: bytes
+    update_format: _transaction_filter_pb2.UpdateFormat
+    def __init__(self, transaction_hash: _Optional[bytes] = ..., update_format: _Optional[_Union[_transaction_filter_pb2.UpdateFormat, _Mapping]] = ...) -> None: ...
+
 class GetUpdateResponse(_message.Message):
     __slots__ = ("transaction", "reassignment", "topology_transaction")
     TRANSACTION_FIELD_NUMBER: _ClassVar[int]

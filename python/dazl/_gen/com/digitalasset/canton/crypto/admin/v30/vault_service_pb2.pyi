@@ -11,6 +11,12 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class BaseVaultRequest(_message.Message):
+    __slots__ = ("client_version",)
+    CLIENT_VERSION_FIELD_NUMBER: _ClassVar[int]
+    client_version: str
+    def __init__(self, client_version: _Optional[str] = ...) -> None: ...
+
 class GenerateCertificateRequest(_message.Message):
     __slots__ = ("unique_identifier", "certificate_key", "additional_subject", "subject_alternative_names")
     UNIQUE_IDENTIFIER_FIELD_NUMBER: _ClassVar[int]
@@ -73,38 +79,42 @@ class ImportPublicKeyResponse(_message.Message):
     def __init__(self, fingerprint: _Optional[str] = ...) -> None: ...
 
 class ListKeysFilters(_message.Message):
-    __slots__ = ("fingerprint", "name", "purpose", "usage")
+    __slots__ = ("fingerprint", "name", "purpose", "usage_v30")
     FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PURPOSE_FIELD_NUMBER: _ClassVar[int]
-    USAGE_FIELD_NUMBER: _ClassVar[int]
+    USAGE_V30_FIELD_NUMBER: _ClassVar[int]
     fingerprint: str
     name: str
     purpose: _containers.RepeatedScalarFieldContainer[_crypto_pb2.KeyPurpose]
-    usage: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningKeyUsage]
-    def __init__(self, fingerprint: _Optional[str] = ..., name: _Optional[str] = ..., purpose: _Optional[_Iterable[_Union[_crypto_pb2.KeyPurpose, str]]] = ..., usage: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyUsage, str]]] = ...) -> None: ...
+    usage_v30: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningKeyUsage]
+    def __init__(self, fingerprint: _Optional[str] = ..., name: _Optional[str] = ..., purpose: _Optional[_Iterable[_Union[_crypto_pb2.KeyPurpose, str]]] = ..., usage_v30: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyUsage, str]]] = ...) -> None: ...
 
 class ListMyKeysRequest(_message.Message):
-    __slots__ = ("filters",)
+    __slots__ = ("filters", "base_request")
     FILTERS_FIELD_NUMBER: _ClassVar[int]
+    BASE_REQUEST_FIELD_NUMBER: _ClassVar[int]
     filters: ListKeysFilters
-    def __init__(self, filters: _Optional[_Union[ListKeysFilters, _Mapping]] = ...) -> None: ...
+    base_request: BaseVaultRequest
+    def __init__(self, filters: _Optional[_Union[ListKeysFilters, _Mapping]] = ..., base_request: _Optional[_Union[BaseVaultRequest, _Mapping]] = ...) -> None: ...
 
 class ListPublicKeysRequest(_message.Message):
-    __slots__ = ("filters",)
+    __slots__ = ("filters", "base_request")
     FILTERS_FIELD_NUMBER: _ClassVar[int]
+    BASE_REQUEST_FIELD_NUMBER: _ClassVar[int]
     filters: ListKeysFilters
-    def __init__(self, filters: _Optional[_Union[ListKeysFilters, _Mapping]] = ...) -> None: ...
+    base_request: BaseVaultRequest
+    def __init__(self, filters: _Optional[_Union[ListKeysFilters, _Mapping]] = ..., base_request: _Optional[_Union[BaseVaultRequest, _Mapping]] = ...) -> None: ...
 
 class PrivateKeyMetadata(_message.Message):
-    __slots__ = ("public_key_with_name", "wrapper_key_id", "kms_key_id")
-    PUBLIC_KEY_WITH_NAME_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("v30", "wrapper_key_id", "kms_key_id")
+    V30_FIELD_NUMBER: _ClassVar[int]
     WRAPPER_KEY_ID_FIELD_NUMBER: _ClassVar[int]
     KMS_KEY_ID_FIELD_NUMBER: _ClassVar[int]
-    public_key_with_name: _crypto_pb2.PublicKeyWithName
+    v30: _crypto_pb2.PublicKeyWithName
     wrapper_key_id: str
     kms_key_id: str
-    def __init__(self, public_key_with_name: _Optional[_Union[_crypto_pb2.PublicKeyWithName, _Mapping]] = ..., wrapper_key_id: _Optional[str] = ..., kms_key_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, v30: _Optional[_Union[_crypto_pb2.PublicKeyWithName, _Mapping]] = ..., wrapper_key_id: _Optional[str] = ..., kms_key_id: _Optional[str] = ...) -> None: ...
 
 class ListMyKeysResponse(_message.Message):
     __slots__ = ("private_keys_metadata",)
@@ -113,26 +123,28 @@ class ListMyKeysResponse(_message.Message):
     def __init__(self, private_keys_metadata: _Optional[_Iterable[_Union[PrivateKeyMetadata, _Mapping]]] = ...) -> None: ...
 
 class ListPublicKeysResponse(_message.Message):
-    __slots__ = ("public_keys",)
-    PUBLIC_KEYS_FIELD_NUMBER: _ClassVar[int]
-    public_keys: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.PublicKeyWithName]
-    def __init__(self, public_keys: _Optional[_Iterable[_Union[_crypto_pb2.PublicKeyWithName, _Mapping]]] = ...) -> None: ...
+    __slots__ = ("public_keys_v30",)
+    PUBLIC_KEYS_V30_FIELD_NUMBER: _ClassVar[int]
+    public_keys_v30: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.PublicKeyWithName]
+    def __init__(self, public_keys_v30: _Optional[_Iterable[_Union[_crypto_pb2.PublicKeyWithName, _Mapping]]] = ...) -> None: ...
 
 class GenerateSigningKeyRequest(_message.Message):
-    __slots__ = ("key_spec", "name", "usage")
+    __slots__ = ("key_spec", "name", "usage_v30", "base_request")
     KEY_SPEC_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    USAGE_FIELD_NUMBER: _ClassVar[int]
+    USAGE_V30_FIELD_NUMBER: _ClassVar[int]
+    BASE_REQUEST_FIELD_NUMBER: _ClassVar[int]
     key_spec: _crypto_pb2.SigningKeySpec
     name: str
-    usage: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningKeyUsage]
-    def __init__(self, key_spec: _Optional[_Union[_crypto_pb2.SigningKeySpec, str]] = ..., name: _Optional[str] = ..., usage: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyUsage, str]]] = ...) -> None: ...
+    usage_v30: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningKeyUsage]
+    base_request: BaseVaultRequest
+    def __init__(self, key_spec: _Optional[_Union[_crypto_pb2.SigningKeySpec, str]] = ..., name: _Optional[str] = ..., usage_v30: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyUsage, str]]] = ..., base_request: _Optional[_Union[BaseVaultRequest, _Mapping]] = ...) -> None: ...
 
 class GenerateSigningKeyResponse(_message.Message):
-    __slots__ = ("public_key",)
-    PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
-    public_key: _crypto_pb2.SigningPublicKey
-    def __init__(self, public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ...) -> None: ...
+    __slots__ = ("v30",)
+    V30_FIELD_NUMBER: _ClassVar[int]
+    v30: _crypto_pb2.SigningPublicKey
+    def __init__(self, v30: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ...) -> None: ...
 
 class GenerateEncryptionKeyRequest(_message.Message):
     __slots__ = ("key_spec", "name")
@@ -149,20 +161,22 @@ class GenerateEncryptionKeyResponse(_message.Message):
     def __init__(self, public_key: _Optional[_Union[_crypto_pb2.EncryptionPublicKey, _Mapping]] = ...) -> None: ...
 
 class RegisterKmsSigningKeyRequest(_message.Message):
-    __slots__ = ("kms_key_id", "name", "usage")
+    __slots__ = ("kms_key_id", "name", "usage_v30", "base_request")
     KMS_KEY_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    USAGE_FIELD_NUMBER: _ClassVar[int]
+    USAGE_V30_FIELD_NUMBER: _ClassVar[int]
+    BASE_REQUEST_FIELD_NUMBER: _ClassVar[int]
     kms_key_id: str
     name: str
-    usage: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningKeyUsage]
-    def __init__(self, kms_key_id: _Optional[str] = ..., name: _Optional[str] = ..., usage: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyUsage, str]]] = ...) -> None: ...
+    usage_v30: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningKeyUsage]
+    base_request: BaseVaultRequest
+    def __init__(self, kms_key_id: _Optional[str] = ..., name: _Optional[str] = ..., usage_v30: _Optional[_Iterable[_Union[_crypto_pb2.SigningKeyUsage, str]]] = ..., base_request: _Optional[_Union[BaseVaultRequest, _Mapping]] = ...) -> None: ...
 
 class RegisterKmsSigningKeyResponse(_message.Message):
-    __slots__ = ("public_key",)
-    PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
-    public_key: _crypto_pb2.SigningPublicKey
-    def __init__(self, public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ...) -> None: ...
+    __slots__ = ("v30",)
+    V30_FIELD_NUMBER: _ClassVar[int]
+    v30: _crypto_pb2.SigningPublicKey
+    def __init__(self, v30: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ...) -> None: ...
 
 class RegisterKmsEncryptionKeyRequest(_message.Message):
     __slots__ = ("kms_key_id", "name")

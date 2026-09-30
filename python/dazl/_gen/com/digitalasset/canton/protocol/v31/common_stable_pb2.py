@@ -28,7 +28,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n8com/digitalasset/canton/protocol/v31/common_stable.proto\x12$com.digitalasset.canton.protocol.v31\"\x99\x04\n\x14SerializableContract\x12\x1f\n\x0b\x63ontract_id\x18\x01 \x01(\tR\ncontractId\x12\x32\n\x15raw_contract_instance\x18\x02 \x01(\x0cR\x13rawContractInstance\x12_\n\x08metadata\x18\x03 \x01(\x0b\x32\x43.com.digitalasset.canton.protocol.v31.SerializableContract.MetadataR\x08metadata\x12,\n\x12ledger_create_time\x18\x04 \x01(\x03R\x10ledgerCreateTime\x12/\n\x13\x61uthentication_data\x18\x05 \x01(\x0cR\x12\x61uthenticationData\x1a\xeb\x01\n\x08Metadata\x12<\n\x1anon_maintainer_signatories\x18\x01 \x03(\tR\x18nonMaintainerSignatories\x12<\n\x1anon_signatory_stakeholders\x18\x02 \x03(\tR\x18nonSignatoryStakeholders\x12\x41\n\x03key\x18\x03 \x01(\x0b\x32/.com.digitalasset.canton.protocol.v31.GlobalKeyR\x03key\x12 \n\x0bmaintainers\x18\x04 \x03(\tR\x0bmaintainers\"u\n\tGlobalKey\x12\x1f\n\x0btemplate_id\x18\x01 \x01(\x0cR\ntemplateId\x12\x10\n\x03key\x18\x02 \x01(\x0cR\x03key\x12!\n\x0cpackage_name\x18\x03 \x01(\tR\x0bpackageName\x12\x12\n\x04hash\x18\x04 \x01(\x0cR\x04hashBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n8com/digitalasset/canton/protocol/v31/common_stable.proto\x12$com.digitalasset.canton.protocol.v31\"u\n\tGlobalKey\x12\x1f\n\x0btemplate_id\x18\x01 \x01(\x0cR\ntemplateId\x12\x10\n\x03key\x18\x02 \x01(\x0cR\x03key\x12!\n\x0cpackage_name\x18\x03 \x01(\tR\x0bpackageName\x12\x12\n\x04hash\x18\x04 \x01(\x0cR\x04hashBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,10 +36,6 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.pro
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'ZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31'
-  _globals['_SERIALIZABLECONTRACT']._serialized_start=99
-  _globals['_SERIALIZABLECONTRACT']._serialized_end=636
-  _globals['_SERIALIZABLECONTRACT_METADATA']._serialized_start=401
-  _globals['_SERIALIZABLECONTRACT_METADATA']._serialized_end=636
-  _globals['_GLOBALKEY']._serialized_start=638
-  _globals['_GLOBALKEY']._serialized_end=755
+  _globals['_GLOBALKEY']._serialized_start=98
+  _globals['_GLOBALKEY']._serialized_end=215
 # @@protoc_insertion_point(module_scope)

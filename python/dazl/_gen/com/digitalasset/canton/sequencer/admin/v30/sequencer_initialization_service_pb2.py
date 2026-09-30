@@ -27,9 +27,11 @@ _sym_db = _symbol_database.Default()
 
 
 from ....protocol.v30 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v30_dot_sequencing__pb2
+from ....protocol.v31 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v31_dot_sequencing__pb2
+from ....protocol.v32 import sequencing_pb2 as com_dot_digitalasset_dot_canton_dot_protocol_dot_v32_dot_sequencing__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nRcom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a\x35\x63om/digitalasset/canton/protocol/v30/sequencing.proto\"\xd6\x01\n*InitializeSequencerFromGenesisStateRequest\x12+\n\x11topology_snapshot\x18\x01 \x01(\x0cR\x10topologySnapshot\x12{\n\x17synchronizer_parameters\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x16synchronizerParameters\"M\n+InitializeSequencerFromGenesisStateResponse\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated\"\x84\x02\n,InitializeSequencerFromLsuPredecessorRequest\x12+\n\x11topology_snapshot\x18\x01 \x01(\x0cR\x10topologySnapshot\x12{\n\x17synchronizer_parameters\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x16synchronizerParameters\x12*\n\x11ignore_psid_check\x18\x03 \x01(\x08R\x0fignorePsidCheck\"/\n-InitializeSequencerFromLsuPredecessorResponse\"Z\n-InitializeSequencerFromOnboardingStateRequest\x12)\n\x10onboarding_state\x18\x01 \x01(\x0cR\x0fonboardingState\"P\n.InitializeSequencerFromOnboardingStateResponse\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated\"\xd8\x01\n,InitializeSequencerFromGenesisStateV2Request\x12+\n\x11topology_snapshot\x18\x01 \x01(\x0cR\x10topologySnapshot\x12{\n\x17synchronizer_parameters\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x16synchronizerParameters\"O\n-InitializeSequencerFromGenesisStateV2Response\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated\"\\\n/InitializeSequencerFromOnboardingStateV2Request\x12)\n\x10onboarding_state\x18\x01 \x01(\x0cR\x0fonboardingState\"R\n0InitializeSequencerFromOnboardingStateV2Response\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated2\x9f\t\n\x1eSequencerInitializationService\x12\xdf\x01\n#InitializeSequencerFromGenesisState\x12W.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest\x1aX.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse\"\x03\x88\x02\x01(\x01\x12\xe8\x01\n&InitializeSequencerFromOnboardingState\x12Z.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest\x1a[.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse\"\x03\x88\x02\x01(\x01\x12\xe0\x01\n%InitializeSequencerFromLsuPredecessor\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse(\x01\x12\xe0\x01\n%InitializeSequencerFromGenesisStateV2\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response(\x01\x12\xe9\x01\n(InitializeSequencerFromOnboardingStateV2\x12\\.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request\x1a].com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response(\x01\x42\\ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nRcom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a\x35\x63om/digitalasset/canton/protocol/v30/sequencing.proto\x1a\x35\x63om/digitalasset/canton/protocol/v31/sequencing.proto\x1a\x35\x63om/digitalasset/canton/protocol/v32/sequencing.proto\"\xef\x02\n*InitializeSequencerFromGenesisStateRequest\x12+\n\x11topology_snapshot\x18\x01 \x01(\x0cR\x10topologySnapshot\x12V\n\x03v30\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\x03v30\x12V\n\x03v31\x18\x03 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x03v31\x12V\n\x03v32\x18\x04 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x03v32B\x0c\n\nparameters\"M\n+InitializeSequencerFromGenesisStateResponse\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated\"\xc6\x03\n,InitializeSequencerFromLsuPredecessorRequest\x12+\n\x11topology_snapshot\x18\x01 \x01(\x0cR\x10topologySnapshot\x12V\n\x03v30\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\x03v30\x12V\n\x03v31\x18\x04 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x03v31\x12V\n\x03v32\x18\x06 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x03v32\x12*\n\x11ignore_psid_check\x18\x03 \x01(\x08R\x0fignorePsidCheck\x12\'\n\x0fsynchronizer_id\x18\x05 \x01(\tR\x0esynchronizerIdB\x0c\n\nparameters\"/\n-InitializeSequencerFromLsuPredecessorResponse\"Z\n-InitializeSequencerFromOnboardingStateRequest\x12)\n\x10onboarding_state\x18\x01 \x01(\x0cR\x0fonboardingState\"P\n.InitializeSequencerFromOnboardingStateResponse\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated\"\xfe\x03\n,InitializeSequencerFromGenesisStateV2Request\x12+\n\x11topology_snapshot\x18\x01 \x01(\x0cR\x10topologySnapshot\x12\x84\x01\n\x1bsynchronizer_parameters_v30\x18\x02 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\x19synchronizerParametersV30\x12\x84\x01\n\x1bsynchronizer_parameters_v31\x18\x03 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x19synchronizerParametersV31\x12\x84\x01\n\x1bsynchronizer_parameters_v32\x18\x04 \x01(\x0b\x32\x42.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x19synchronizerParametersV32B\x0c\n\nparameters\"O\n-InitializeSequencerFromGenesisStateV2Response\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated\"\\\n/InitializeSequencerFromOnboardingStateV2Request\x12)\n\x10onboarding_state\x18\x01 \x01(\x0cR\x0fonboardingState\"R\n0InitializeSequencerFromOnboardingStateV2Response\x12\x1e\n\nreplicated\x18\x01 \x01(\x08R\nreplicated2\x9f\t\n\x1eSequencerInitializationService\x12\xdf\x01\n#InitializeSequencerFromGenesisState\x12W.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest\x1aX.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse\"\x03\x88\x02\x01(\x01\x12\xe8\x01\n&InitializeSequencerFromOnboardingState\x12Z.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest\x1a[.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse\"\x03\x88\x02\x01(\x01\x12\xe0\x01\n%InitializeSequencerFromLsuPredecessor\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse(\x01\x12\xe0\x01\n%InitializeSequencerFromGenesisStateV2\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response(\x01\x12\xe9\x01\n(InitializeSequencerFromOnboardingStateV2\x12\\.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request\x1a].com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response(\x01\x42\\ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -41,26 +43,26 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_SEQUENCERINITIALIZATIONSERVICE'].methods_by_name['InitializeSequencerFromGenesisState']._serialized_options = b'\210\002\001'
   _globals['_SEQUENCERINITIALIZATIONSERVICE'].methods_by_name['InitializeSequencerFromOnboardingState']._loaded_options = None
   _globals['_SEQUENCERINITIALIZATIONSERVICE'].methods_by_name['InitializeSequencerFromOnboardingState']._serialized_options = b'\210\002\001'
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEREQUEST']._serialized_start=187
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEREQUEST']._serialized_end=401
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATERESPONSE']._serialized_start=403
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATERESPONSE']._serialized_end=480
-  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORREQUEST']._serialized_start=483
-  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORREQUEST']._serialized_end=743
-  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORRESPONSE']._serialized_start=745
-  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORRESPONSE']._serialized_end=792
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEREQUEST']._serialized_start=794
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEREQUEST']._serialized_end=884
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATERESPONSE']._serialized_start=886
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATERESPONSE']._serialized_end=966
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2REQUEST']._serialized_start=969
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2REQUEST']._serialized_end=1185
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2RESPONSE']._serialized_start=1187
-  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2RESPONSE']._serialized_end=1266
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2REQUEST']._serialized_start=1268
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2REQUEST']._serialized_end=1360
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2RESPONSE']._serialized_start=1362
-  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2RESPONSE']._serialized_end=1444
-  _globals['_SEQUENCERINITIALIZATIONSERVICE']._serialized_start=1447
-  _globals['_SEQUENCERINITIALIZATIONSERVICE']._serialized_end=2630
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEREQUEST']._serialized_start=297
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEREQUEST']._serialized_end=664
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATERESPONSE']._serialized_start=666
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATERESPONSE']._serialized_end=743
+  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORREQUEST']._serialized_start=746
+  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORREQUEST']._serialized_end=1200
+  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORRESPONSE']._serialized_start=1202
+  _globals['_INITIALIZESEQUENCERFROMLSUPREDECESSORRESPONSE']._serialized_end=1249
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEREQUEST']._serialized_start=1251
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEREQUEST']._serialized_end=1341
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATERESPONSE']._serialized_start=1343
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATERESPONSE']._serialized_end=1423
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2REQUEST']._serialized_start=1426
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2REQUEST']._serialized_end=1936
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2RESPONSE']._serialized_start=1938
+  _globals['_INITIALIZESEQUENCERFROMGENESISSTATEV2RESPONSE']._serialized_end=2017
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2REQUEST']._serialized_start=2019
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2REQUEST']._serialized_end=2111
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2RESPONSE']._serialized_start=2113
+  _globals['_INITIALIZESEQUENCERFROMONBOARDINGSTATEV2RESPONSE']._serialized_end=2195
+  _globals['_SEQUENCERINITIALIZATIONSERVICE']._serialized_start=2198
+  _globals['_SEQUENCERINITIALIZATIONSERVICE']._serialized_end=3381
 # @@protoc_insertion_point(module_scope)

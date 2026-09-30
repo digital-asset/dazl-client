@@ -331,6 +331,7 @@ type RegisterSynchronizerRequest struct {
 	Config                        *SynchronizerConnectionConfig                      `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 	SynchronizerConnection        RegisterSynchronizerRequest_SynchronizerConnection `protobuf:"varint,2,opt,name=synchronizer_connection,json=synchronizerConnection,proto3,enum=com.digitalasset.canton.admin.participant.v30.RegisterSynchronizerRequest_SynchronizerConnection" json:"synchronizer_connection,omitempty"`
 	SequencerConnectionValidation v30.SequencerConnectionValidation                  `protobuf:"varint,3,opt,name=sequencer_connection_validation,json=sequencerConnectionValidation,proto3,enum=com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidation" json:"sequencer_connection_validation,omitempty"`
+	OnboardingTransactions        [][]byte                                           `protobuf:"bytes,4,rep,name=onboarding_transactions,json=onboardingTransactions,proto3" json:"onboarding_transactions,omitempty"`
 	unknownFields                 protoimpl.UnknownFields
 	sizeCache                     protoimpl.SizeCache
 }
@@ -384,6 +385,13 @@ func (x *RegisterSynchronizerRequest) GetSequencerConnectionValidation() v30.Seq
 		return x.SequencerConnectionValidation
 	}
 	return v30.SequencerConnectionValidation(0)
+}
+
+func (x *RegisterSynchronizerRequest) GetOnboardingTransactions() [][]byte {
+	if x != nil {
+		return x.OnboardingTransactions
+	}
+	return nil
 }
 
 type RegisterSynchronizerResponse struct {
@@ -706,6 +714,7 @@ type ConnectSynchronizerRequest struct {
 	state                         protoimpl.MessageState            `protogen:"open.v1"`
 	Config                        *SynchronizerConnectionConfig     `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 	SequencerConnectionValidation v30.SequencerConnectionValidation `protobuf:"varint,2,opt,name=sequencer_connection_validation,json=sequencerConnectionValidation,proto3,enum=com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidation" json:"sequencer_connection_validation,omitempty"`
+	OnboardingTransactions        [][]byte                          `protobuf:"bytes,3,rep,name=onboarding_transactions,json=onboardingTransactions,proto3" json:"onboarding_transactions,omitempty"`
 	unknownFields                 protoimpl.UnknownFields
 	sizeCache                     protoimpl.SizeCache
 }
@@ -752,6 +761,13 @@ func (x *ConnectSynchronizerRequest) GetSequencerConnectionValidation() v30.Sequ
 		return x.SequencerConnectionValidation
 	}
 	return v30.SequencerConnectionValidation(0)
+}
+
+func (x *ConnectSynchronizerRequest) GetOnboardingTransactions() [][]byte {
+	if x != nil {
+		return x.OnboardingTransactions
+	}
+	return nil
 }
 
 type ConnectSynchronizerResponse struct {
@@ -1607,11 +1623,12 @@ const file_com_digitalasset_canton_admin_participant_v30_synchronizer_connectivi
 	" \x01(\bR!initializeFromTrustedSynchronizer\"H\n" +
 	"\x1dReconnectSynchronizersRequest\x12'\n" +
 	"\x0fignore_failures\x18\x01 \x01(\bR\x0eignoreFailures\" \n" +
-	"\x1eReconnectSynchronizersResponse\"\xc1\x04\n" +
+	"\x1eReconnectSynchronizersResponse\"\xfa\x04\n" +
 	"\x1bRegisterSynchronizerRequest\x12c\n" +
 	"\x06config\x18\x01 \x01(\v2K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\x06config\x12\x9a\x01\n" +
 	"\x17synchronizer_connection\x18\x02 \x01(\x0e2a.com.digitalasset.canton.admin.participant.v30.RegisterSynchronizerRequest.SynchronizerConnectionR\x16synchronizerConnection\x12\x92\x01\n" +
-	"\x1fsequencer_connection_validation\x18\x03 \x01(\x0e2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidationR\x1dsequencerConnectionValidation\"\x8a\x01\n" +
+	"\x1fsequencer_connection_validation\x18\x03 \x01(\x0e2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidationR\x1dsequencerConnectionValidation\x127\n" +
+	"\x17onboarding_transactions\x18\x04 \x03(\fR\x16onboardingTransactions\"\x8a\x01\n" +
 	"\x16SynchronizerConnection\x12'\n" +
 	"#SYNCHRONIZER_CONNECTION_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cSYNCHRONIZER_CONNECTION_NONE\x10\x01\x12%\n" +
@@ -1648,10 +1665,11 @@ const file_com_digitalasset_canton_admin_participant_v30_synchronizer_connectivi
 	"\x12synchronizer_alias\x18\x01 \x01(\tR\x11synchronizerAlias\x12\x14\n" +
 	"\x05retry\x18\x02 \x01(\bR\x05retry\"V\n" +
 	"\x1dReconnectSynchronizerResponse\x125\n" +
-	"\x16connected_successfully\x18\x01 \x01(\bR\x15connectedSuccessfully\"\x96\x02\n" +
+	"\x16connected_successfully\x18\x01 \x01(\bR\x15connectedSuccessfully\"\xcf\x02\n" +
 	"\x1aConnectSynchronizerRequest\x12c\n" +
 	"\x06config\x18\x01 \x01(\v2K.com.digitalasset.canton.admin.participant.v30.SynchronizerConnectionConfigR\x06config\x12\x92\x01\n" +
-	"\x1fsequencer_connection_validation\x18\x02 \x01(\x0e2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidationR\x1dsequencerConnectionValidation\"T\n" +
+	"\x1fsequencer_connection_validation\x18\x02 \x01(\x0e2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidationR\x1dsequencerConnectionValidation\x127\n" +
+	"\x17onboarding_transactions\x18\x03 \x03(\fR\x16onboardingTransactions\"T\n" +
 	"\x1bConnectSynchronizerResponse\x125\n" +
 	"\x16connected_successfully\x18\x01 \x01(\bR\x15connectedSuccessfully\"N\n" +
 	"\x1dDisconnectSynchronizerRequest\x12-\n" +

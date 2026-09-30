@@ -23,82 +23,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type SerializableContract struct {
-	state               protoimpl.MessageState         `protogen:"open.v1"`
-	ContractId          string                         `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	RawContractInstance []byte                         `protobuf:"bytes,2,opt,name=raw_contract_instance,json=rawContractInstance,proto3" json:"raw_contract_instance,omitempty"`
-	Metadata            *SerializableContract_Metadata `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	LedgerCreateTime    int64                          `protobuf:"varint,4,opt,name=ledger_create_time,json=ledgerCreateTime,proto3" json:"ledger_create_time,omitempty"`
-	AuthenticationData  []byte                         `protobuf:"bytes,5,opt,name=authentication_data,json=authenticationData,proto3" json:"authentication_data,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *SerializableContract) Reset() {
-	*x = SerializableContract{}
-	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SerializableContract) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SerializableContract) ProtoMessage() {}
-
-func (x *SerializableContract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SerializableContract.ProtoReflect.Descriptor instead.
-func (*SerializableContract) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *SerializableContract) GetContractId() string {
-	if x != nil {
-		return x.ContractId
-	}
-	return ""
-}
-
-func (x *SerializableContract) GetRawContractInstance() []byte {
-	if x != nil {
-		return x.RawContractInstance
-	}
-	return nil
-}
-
-func (x *SerializableContract) GetMetadata() *SerializableContract_Metadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
-func (x *SerializableContract) GetLedgerCreateTime() int64 {
-	if x != nil {
-		return x.LedgerCreateTime
-	}
-	return 0
-}
-
-func (x *SerializableContract) GetAuthenticationData() []byte {
-	if x != nil {
-		return x.AuthenticationData
-	}
-	return nil
-}
-
 type GlobalKey struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TemplateId    []byte                 `protobuf:"bytes,1,opt,name=template_id,json=templateId,proto3" json:"template_id,omitempty"`
@@ -111,7 +35,7 @@ type GlobalKey struct {
 
 func (x *GlobalKey) Reset() {
 	*x = GlobalKey{}
-	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -123,7 +47,7 @@ func (x *GlobalKey) String() string {
 func (*GlobalKey) ProtoMessage() {}
 
 func (x *GlobalKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -136,7 +60,7 @@ func (x *GlobalKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GlobalKey.ProtoReflect.Descriptor instead.
 func (*GlobalKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GlobalKey) GetTemplateId() []byte {
@@ -167,91 +91,11 @@ func (x *GlobalKey) GetHash() []byte {
 	return nil
 }
 
-type SerializableContract_Metadata struct {
-	state                    protoimpl.MessageState `protogen:"open.v1"`
-	NonMaintainerSignatories []string               `protobuf:"bytes,1,rep,name=non_maintainer_signatories,json=nonMaintainerSignatories,proto3" json:"non_maintainer_signatories,omitempty"`
-	NonSignatoryStakeholders []string               `protobuf:"bytes,2,rep,name=non_signatory_stakeholders,json=nonSignatoryStakeholders,proto3" json:"non_signatory_stakeholders,omitempty"`
-	Key                      *GlobalKey             `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
-	Maintainers              []string               `protobuf:"bytes,4,rep,name=maintainers,proto3" json:"maintainers,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
-}
-
-func (x *SerializableContract_Metadata) Reset() {
-	*x = SerializableContract_Metadata{}
-	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SerializableContract_Metadata) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SerializableContract_Metadata) ProtoMessage() {}
-
-func (x *SerializableContract_Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SerializableContract_Metadata.ProtoReflect.Descriptor instead.
-func (*SerializableContract_Metadata) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDescGZIP(), []int{0, 0}
-}
-
-func (x *SerializableContract_Metadata) GetNonMaintainerSignatories() []string {
-	if x != nil {
-		return x.NonMaintainerSignatories
-	}
-	return nil
-}
-
-func (x *SerializableContract_Metadata) GetNonSignatoryStakeholders() []string {
-	if x != nil {
-		return x.NonSignatoryStakeholders
-	}
-	return nil
-}
-
-func (x *SerializableContract_Metadata) GetKey() *GlobalKey {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
-
-func (x *SerializableContract_Metadata) GetMaintainers() []string {
-	if x != nil {
-		return x.Maintainers
-	}
-	return nil
-}
-
 var File_com_digitalasset_canton_protocol_v31_common_stable_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDesc = "" +
 	"\n" +
-	"8com/digitalasset/canton/protocol/v31/common_stable.proto\x12$com.digitalasset.canton.protocol.v31\"\x99\x04\n" +
-	"\x14SerializableContract\x12\x1f\n" +
-	"\vcontract_id\x18\x01 \x01(\tR\n" +
-	"contractId\x122\n" +
-	"\x15raw_contract_instance\x18\x02 \x01(\fR\x13rawContractInstance\x12_\n" +
-	"\bmetadata\x18\x03 \x01(\v2C.com.digitalasset.canton.protocol.v31.SerializableContract.MetadataR\bmetadata\x12,\n" +
-	"\x12ledger_create_time\x18\x04 \x01(\x03R\x10ledgerCreateTime\x12/\n" +
-	"\x13authentication_data\x18\x05 \x01(\fR\x12authenticationData\x1a\xeb\x01\n" +
-	"\bMetadata\x12<\n" +
-	"\x1anon_maintainer_signatories\x18\x01 \x03(\tR\x18nonMaintainerSignatories\x12<\n" +
-	"\x1anon_signatory_stakeholders\x18\x02 \x03(\tR\x18nonSignatoryStakeholders\x12A\n" +
-	"\x03key\x18\x03 \x01(\v2/.com.digitalasset.canton.protocol.v31.GlobalKeyR\x03key\x12 \n" +
-	"\vmaintainers\x18\x04 \x03(\tR\vmaintainers\"u\n" +
+	"8com/digitalasset/canton/protocol/v31/common_stable.proto\x12$com.digitalasset.canton.protocol.v31\"u\n" +
 	"\tGlobalKey\x12\x1f\n" +
 	"\vtemplate_id\x18\x01 \x01(\fR\n" +
 	"templateId\x12\x10\n" +
@@ -271,20 +115,16 @@ func file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDescGZIP()
 	return file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_com_digitalasset_canton_protocol_v31_common_stable_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_com_digitalasset_canton_protocol_v31_common_stable_proto_goTypes = []any{
-	(*SerializableContract)(nil),          // 0: com.digitalasset.canton.protocol.v31.SerializableContract
-	(*GlobalKey)(nil),                     // 1: com.digitalasset.canton.protocol.v31.GlobalKey
-	(*SerializableContract_Metadata)(nil), // 2: com.digitalasset.canton.protocol.v31.SerializableContract.Metadata
+	(*GlobalKey)(nil), // 0: com.digitalasset.canton.protocol.v31.GlobalKey
 }
 var file_com_digitalasset_canton_protocol_v31_common_stable_proto_depIdxs = []int32{
-	2, // 0: com.digitalasset.canton.protocol.v31.SerializableContract.metadata:type_name -> com.digitalasset.canton.protocol.v31.SerializableContract.Metadata
-	1, // 1: com.digitalasset.canton.protocol.v31.SerializableContract.Metadata.key:type_name -> com.digitalasset.canton.protocol.v31.GlobalKey
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v31_common_stable_proto_init() }
@@ -298,7 +138,7 @@ func file_com_digitalasset_canton_protocol_v31_common_stable_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v31_common_stable_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

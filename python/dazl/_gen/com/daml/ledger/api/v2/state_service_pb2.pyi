@@ -2,9 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import event_pb2 as _event_pb2
+from . import offset_checkpoint_pb2 as _offset_checkpoint_pb2
 from . import reassignment_pb2 as _reassignment_pb2
 from . import transaction_filter_pb2 as _transaction_filter_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -121,14 +125,18 @@ class GetConnectedSynchronizersResponse(_message.Message):
     def __init__(self, connected_synchronizers: _Optional[_Iterable[_Union[GetConnectedSynchronizersResponse.ConnectedSynchronizer, _Mapping]]] = ...) -> None: ...
 
 class GetLedgerEndRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, synchronizer_id: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class GetLedgerEndResponse(_message.Message):
-    __slots__ = ("offset",)
+    __slots__ = ("offset", "synchronizer_times")
     OFFSET_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_TIMES_FIELD_NUMBER: _ClassVar[int]
     offset: int
-    def __init__(self, offset: _Optional[int] = ...) -> None: ...
+    synchronizer_times: _containers.RepeatedCompositeFieldContainer[_offset_checkpoint_pb2.SynchronizerTime]
+    def __init__(self, offset: _Optional[int] = ..., synchronizer_times: _Optional[_Iterable[_Union[_offset_checkpoint_pb2.SynchronizerTime, _Mapping]]] = ...) -> None: ...
 
 class GetLatestPrunedOffsetsRequest(_message.Message):
     __slots__ = ()
@@ -141,3 +149,17 @@ class GetLatestPrunedOffsetsResponse(_message.Message):
     participant_pruned_up_to_inclusive: int
     all_divulged_contracts_pruned_up_to_inclusive: int
     def __init__(self, participant_pruned_up_to_inclusive: _Optional[int] = ..., all_divulged_contracts_pruned_up_to_inclusive: _Optional[int] = ...) -> None: ...
+
+class ConvertRecordTimeToOffsetRequest(_message.Message):
+    __slots__ = ("record_time", "synchronizer_id")
+    RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    record_time: _timestamp_pb2.Timestamp
+    synchronizer_id: str
+    def __init__(self, record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class ConvertRecordTimeToOffsetResponse(_message.Message):
+    __slots__ = ("offset",)
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    offset: int
+    def __init__(self, offset: _Optional[int] = ...) -> None: ...

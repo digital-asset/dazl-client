@@ -4,9 +4,10 @@
 # isort: skip_file
 
 from .value_pb2 import Identifier, Value, VersionedValue
-from .transaction_pb2 import FatContractInstance, KeyWithMaintainers, Node, ThinContractInstance, Transaction, Versioned
+from .transaction_pb2 import ExternalCallResult, FatContractInstance, KeyWithMaintainers, Node, ThinContractInstance, Transaction, Versioned
 
 __all__ = [
+    "ExternalCallResult",
     "FatContractInstance",
     "Identifier",
     "KeyWithMaintainers",

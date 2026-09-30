@@ -93,6 +93,41 @@ class ParticipantRepairServiceStub:
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuResponse.FromString,
                 _registered_method=True)
+        self.DeleteSynchronizerConnectionConfig = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DeleteSynchronizerConnectionConfig',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeleteSynchronizerConnectionConfigRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeleteSynchronizerConnectionConfigResponse.FromString,
+                _registered_method=True)
+        self.ListPendingOperations = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ListPendingOperations',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ListPendingOperationsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ListPendingOperationsResponse.FromString,
+                _registered_method=True)
+        self.DeletePendingOperation = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DeletePendingOperation',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeletePendingOperationRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeletePendingOperationResponse.FromString,
+                _registered_method=True)
+        self.ReinitializeDigestCommitments = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ReinitializeDigestCommitments',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsResponse.FromString,
+                _registered_method=True)
+        self.ReinitializeDigestCommitmentsStatus = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ReinitializeDigestCommitmentsStatus',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsStatusRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsStatusResponse.FromString,
+                _registered_method=True)
+        self.RunDigestConsistencyCheck = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RunDigestConsistencyCheck',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RunDigestConsistencyCheckRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RunDigestConsistencyCheckResponse.FromString,
+                _registered_method=True)
+        self.DigestConsistencyCheckStatus = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DigestConsistencyCheckStatus',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DigestConsistencyCheckStatusRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DigestConsistencyCheckStatusResponse.FromString,
+                _registered_method=True)
 
 
 class ParticipantRepairServiceServicer:
@@ -164,6 +199,48 @@ class ParticipantRepairServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteSynchronizerConnectionConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPendingOperations(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeletePendingOperation(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReinitializeDigestCommitments(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReinitializeDigestCommitmentsStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RunDigestConsistencyCheck(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DigestConsistencyCheckStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ParticipantRepairServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -221,6 +298,41 @@ def add_ParticipantRepairServiceServicer_to_server(servicer, server):
                     servicer.PerformLateLsu,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuResponse.SerializeToString,
+            ),
+            'DeleteSynchronizerConnectionConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSynchronizerConnectionConfig,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeleteSynchronizerConnectionConfigRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeleteSynchronizerConnectionConfigResponse.SerializeToString,
+            ),
+            'ListPendingOperations': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPendingOperations,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ListPendingOperationsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ListPendingOperationsResponse.SerializeToString,
+            ),
+            'DeletePendingOperation': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeletePendingOperation,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeletePendingOperationRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeletePendingOperationResponse.SerializeToString,
+            ),
+            'ReinitializeDigestCommitments': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReinitializeDigestCommitments,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsResponse.SerializeToString,
+            ),
+            'ReinitializeDigestCommitmentsStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReinitializeDigestCommitmentsStatus,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsStatusRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsStatusResponse.SerializeToString,
+            ),
+            'RunDigestConsistencyCheck': grpc.unary_unary_rpc_method_handler(
+                    servicer.RunDigestConsistencyCheck,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RunDigestConsistencyCheckRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RunDigestConsistencyCheckResponse.SerializeToString,
+            ),
+            'DigestConsistencyCheckStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.DigestConsistencyCheckStatus,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DigestConsistencyCheckStatusRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DigestConsistencyCheckStatusResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -520,6 +632,195 @@ class ParticipantRepairService:
             '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PerformLateLsu',
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.PerformLateLsuResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteSynchronizerConnectionConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DeleteSynchronizerConnectionConfig',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeleteSynchronizerConnectionConfigRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeleteSynchronizerConnectionConfigResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPendingOperations(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ListPendingOperations',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ListPendingOperationsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ListPendingOperationsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeletePendingOperation(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DeletePendingOperation',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeletePendingOperationRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DeletePendingOperationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReinitializeDigestCommitments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ReinitializeDigestCommitments',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReinitializeDigestCommitmentsStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ReinitializeDigestCommitmentsStatus',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsStatusRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.ReinitializeDigestCommitmentsStatusResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RunDigestConsistencyCheck(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RunDigestConsistencyCheck',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RunDigestConsistencyCheckRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.RunDigestConsistencyCheckResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DigestConsistencyCheckStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DigestConsistencyCheckStatus',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DigestConsistencyCheckStatusRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_participant__repair__service__pb2.DigestConsistencyCheckStatusResponse.FromString,
             options,
             channel_credentials,
             insecure,

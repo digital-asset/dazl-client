@@ -5,11 +5,8 @@
 import datetime
 
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
-from . import common_stable_pb2 as _common_stable_pb2
-from . import traffic_control_parameters_pb2 as _traffic_control_parameters_pb2
 from ...v30 import trace_context_pb2 as _trace_context_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
-from google.rpc import status_pb2 as _status_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -85,70 +82,12 @@ class StaticSynchronizerParameters(_message.Message):
     topology_change_delay: _duration_pb2.Duration
     def __init__(self, required_signing_specs: _Optional[_Union[_crypto_pb2.RequiredSigningSpecs, _Mapping]] = ..., required_encryption_specs: _Optional[_Union[_crypto_pb2.RequiredEncryptionSpecs, _Mapping]] = ..., required_symmetric_key_schemes: _Optional[_Iterable[_Union[_crypto_pb2.SymmetricKeyScheme, str]]] = ..., required_hash_algorithms: _Optional[_Iterable[_Union[_crypto_pb2.HashAlgorithm, str]]] = ..., required_crypto_key_formats: _Optional[_Iterable[_Union[_crypto_pb2.CryptoKeyFormat, str]]] = ..., required_signature_formats: _Optional[_Iterable[_Union[_crypto_pb2.SignatureFormat, str]]] = ..., protocol_version: _Optional[int] = ..., serial: _Optional[int] = ..., enable_transparency_checks: _Optional[bool] = ..., topology_change_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
-class Envelope(_message.Message):
-    __slots__ = ("content", "recipients", "signatures")
-    CONTENT_FIELD_NUMBER: _ClassVar[int]
-    RECIPIENTS_FIELD_NUMBER: _ClassVar[int]
-    SIGNATURES_FIELD_NUMBER: _ClassVar[int]
-    content: bytes
-    recipients: Recipients
-    signatures: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.Signature]
-    def __init__(self, content: _Optional[bytes] = ..., recipients: _Optional[_Union[Recipients, _Mapping]] = ..., signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ...) -> None: ...
-
-class Batch(_message.Message):
-    __slots__ = ("envelopes",)
-    ENVELOPES_FIELD_NUMBER: _ClassVar[int]
-    envelopes: _containers.RepeatedCompositeFieldContainer[Envelope]
-    def __init__(self, envelopes: _Optional[_Iterable[_Union[Envelope, _Mapping]]] = ...) -> None: ...
-
 class CompressedBatch(_message.Message):
-    __slots__ = ("algorithm", "compressed_batch")
+    __slots__ = ()
     class CompressionAlgorithm(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         COMPRESSION_ALGORITHM_UNSPECIFIED: _ClassVar[CompressedBatch.CompressionAlgorithm]
         COMPRESSION_ALGORITHM_GZIP: _ClassVar[CompressedBatch.CompressionAlgorithm]
     COMPRESSION_ALGORITHM_UNSPECIFIED: CompressedBatch.CompressionAlgorithm
     COMPRESSION_ALGORITHM_GZIP: CompressedBatch.CompressionAlgorithm
-    ALGORITHM_FIELD_NUMBER: _ClassVar[int]
-    COMPRESSED_BATCH_FIELD_NUMBER: _ClassVar[int]
-    algorithm: CompressedBatch.CompressionAlgorithm
-    compressed_batch: bytes
-    def __init__(self, algorithm: _Optional[_Union[CompressedBatch.CompressionAlgorithm, str]] = ..., compressed_batch: _Optional[bytes] = ...) -> None: ...
-
-class SequencedEvent(_message.Message):
-    __slots__ = ("previous_timestamp", "timestamp", "physical_synchronizer_id", "message_id", "batch", "deliver_error_reason", "topology_timestamp", "traffic_receipt")
-    PREVIOUS_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_ID_FIELD_NUMBER: _ClassVar[int]
-    BATCH_FIELD_NUMBER: _ClassVar[int]
-    DELIVER_ERROR_REASON_FIELD_NUMBER: _ClassVar[int]
-    TOPOLOGY_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-    TRAFFIC_RECEIPT_FIELD_NUMBER: _ClassVar[int]
-    previous_timestamp: int
-    timestamp: int
-    physical_synchronizer_id: str
-    message_id: str
-    batch: CompressedBatch
-    deliver_error_reason: _status_pb2.Status
-    topology_timestamp: int
-    traffic_receipt: _traffic_control_parameters_pb2.TrafficReceipt
-    def __init__(self, previous_timestamp: _Optional[int] = ..., timestamp: _Optional[int] = ..., physical_synchronizer_id: _Optional[str] = ..., message_id: _Optional[str] = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., deliver_error_reason: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., topology_timestamp: _Optional[int] = ..., traffic_receipt: _Optional[_Union[_traffic_control_parameters_pb2.TrafficReceipt, _Mapping]] = ...) -> None: ...
-
-class SubmissionRequest(_message.Message):
-    __slots__ = ("sender", "message_id", "batch", "max_sequencing_time", "topology_timestamp", "aggregation_rule", "submission_cost")
-    SENDER_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_ID_FIELD_NUMBER: _ClassVar[int]
-    BATCH_FIELD_NUMBER: _ClassVar[int]
-    MAX_SEQUENCING_TIME_FIELD_NUMBER: _ClassVar[int]
-    TOPOLOGY_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-    AGGREGATION_RULE_FIELD_NUMBER: _ClassVar[int]
-    SUBMISSION_COST_FIELD_NUMBER: _ClassVar[int]
-    sender: str
-    message_id: str
-    batch: CompressedBatch
-    max_sequencing_time: int
-    topology_timestamp: int
-    aggregation_rule: _common_stable_pb2.AggregationRule
-    submission_cost: SequencingSubmissionCost
-    def __init__(self, sender: _Optional[str] = ..., message_id: _Optional[str] = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., max_sequencing_time: _Optional[int] = ..., topology_timestamp: _Optional[int] = ..., aggregation_rule: _Optional[_Union[_common_stable_pb2.AggregationRule, _Mapping]] = ..., submission_cost: _Optional[_Union[SequencingSubmissionCost, _Mapping]] = ...) -> None: ...
+    def __init__(self) -> None: ...

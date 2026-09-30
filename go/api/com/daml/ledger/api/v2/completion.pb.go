@@ -42,6 +42,7 @@ type Completion struct {
 	Offset              int64                            `protobuf:"varint,10,opt,name=offset,proto3" json:"offset,omitempty"`
 	SynchronizerTime    *SynchronizerTime                `protobuf:"bytes,11,opt,name=synchronizer_time,json=synchronizerTime,proto3" json:"synchronizer_time,omitempty"`
 	PaidTrafficCost     int64                            `protobuf:"varint,12,opt,name=paid_traffic_cost,json=paidTrafficCost,proto3" json:"paid_traffic_cost,omitempty"`
+	TransactionHash     []byte                           `protobuf:"bytes,13,opt,name=transaction_hash,json=transactionHash,proto3,oneof" json:"transaction_hash,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -171,6 +172,13 @@ func (x *Completion) GetPaidTrafficCost() int64 {
 	return 0
 }
 
+func (x *Completion) GetTransactionHash() []byte {
+	if x != nil {
+		return x.TransactionHash
+	}
+	return nil
+}
+
 type isCompletion_DeduplicationPeriod interface {
 	isCompletion_DeduplicationPeriod()
 }
@@ -191,7 +199,7 @@ var File_com_daml_ledger_api_v2_completion_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_completion_proto_rawDesc = "" +
 	"\n" +
-	"'com/daml/ledger/api/v2/completion.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\xd0\x04\n" +
+	"'com/daml/ledger/api/v2/completion.proto\x12\x16com.daml.ledger.api.v2\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a*com/daml/ledger/api/v2/trace_context.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/rpc/status.proto\"\x95\x05\n" +
 	"\n" +
 	"Completion\x12\x1d\n" +
 	"\n" +
@@ -207,8 +215,10 @@ const file_com_daml_ledger_api_v2_completion_proto_rawDesc = "" +
 	"\x06offset\x18\n" +
 	" \x01(\x03R\x06offset\x12U\n" +
 	"\x11synchronizer_time\x18\v \x01(\v2(.com.daml.ledger.api.v2.SynchronizerTimeR\x10synchronizerTime\x12*\n" +
-	"\x11paid_traffic_cost\x18\f \x01(\x03R\x0fpaidTrafficCostB\x16\n" +
-	"\x14deduplication_periodB\x8e\x01\n" +
+	"\x11paid_traffic_cost\x18\f \x01(\x03R\x0fpaidTrafficCost\x12.\n" +
+	"\x10transaction_hash\x18\r \x01(\fH\x01R\x0ftransactionHash\x88\x01\x01B\x16\n" +
+	"\x14deduplication_periodB\x13\n" +
+	"\x11_transaction_hashB\x8e\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x14CompletionOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (

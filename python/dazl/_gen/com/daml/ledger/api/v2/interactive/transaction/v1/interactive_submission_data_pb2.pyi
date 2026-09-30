@@ -12,6 +12,20 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class ExternalCallResult(_message.Message):
+    __slots__ = ("extension_id", "function_id", "config", "input", "output")
+    EXTENSION_ID_FIELD_NUMBER: _ClassVar[int]
+    FUNCTION_ID_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    INPUT_FIELD_NUMBER: _ClassVar[int]
+    OUTPUT_FIELD_NUMBER: _ClassVar[int]
+    extension_id: str
+    function_id: str
+    config: bytes
+    input: bytes
+    output: bytes
+    def __init__(self, extension_id: _Optional[str] = ..., function_id: _Optional[str] = ..., config: _Optional[bytes] = ..., input: _Optional[bytes] = ..., output: _Optional[bytes] = ...) -> None: ...
+
 class Fetch(_message.Message):
     __slots__ = ("lf_version", "contract_id", "package_name", "template_id", "signatories", "stakeholders", "acting_parties", "interface_id", "key", "by_key")
     LF_VERSION_FIELD_NUMBER: _ClassVar[int]
@@ -37,7 +51,7 @@ class Fetch(_message.Message):
     def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ...) -> None: ...
 
 class Exercise(_message.Message):
-    __slots__ = ("lf_version", "contract_id", "package_name", "template_id", "signatories", "stakeholders", "acting_parties", "interface_id", "choice_id", "chosen_value", "consuming", "children", "exercise_result", "choice_observers", "key", "by_key")
+    __slots__ = ("lf_version", "contract_id", "package_name", "template_id", "signatories", "stakeholders", "acting_parties", "interface_id", "choice_id", "chosen_value", "consuming", "children", "exercise_result", "choice_observers", "key", "by_key", "external_call_results")
     LF_VERSION_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     PACKAGE_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -54,6 +68,7 @@ class Exercise(_message.Message):
     CHOICE_OBSERVERS_FIELD_NUMBER: _ClassVar[int]
     KEY_FIELD_NUMBER: _ClassVar[int]
     BY_KEY_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_CALL_RESULTS_FIELD_NUMBER: _ClassVar[int]
     lf_version: str
     contract_id: str
     package_name: str
@@ -70,7 +85,8 @@ class Exercise(_message.Message):
     choice_observers: _containers.RepeatedScalarFieldContainer[str]
     key: _interactive_submission_common_data_pb2.GlobalKeyWithMaintainers
     by_key: bool
-    def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice_id: _Optional[str] = ..., chosen_value: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., consuming: _Optional[bool] = ..., children: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., choice_observers: _Optional[_Iterable[str]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ...) -> None: ...
+    external_call_results: _containers.RepeatedCompositeFieldContainer[ExternalCallResult]
+    def __init__(self, lf_version: _Optional[str] = ..., contract_id: _Optional[str] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., signatories: _Optional[_Iterable[str]] = ..., stakeholders: _Optional[_Iterable[str]] = ..., acting_parties: _Optional[_Iterable[str]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice_id: _Optional[str] = ..., chosen_value: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., consuming: _Optional[bool] = ..., children: _Optional[_Iterable[str]] = ..., exercise_result: _Optional[_Union[_value_pb2.Value, _Mapping]] = ..., choice_observers: _Optional[_Iterable[str]] = ..., key: _Optional[_Union[_interactive_submission_common_data_pb2.GlobalKeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ..., external_call_results: _Optional[_Iterable[_Union[ExternalCallResult, _Mapping]]] = ...) -> None: ...
 
 class Create(_message.Message):
     __slots__ = ("lf_version", "contract_id", "package_name", "template_id", "argument", "signatories", "stakeholders", "key")
