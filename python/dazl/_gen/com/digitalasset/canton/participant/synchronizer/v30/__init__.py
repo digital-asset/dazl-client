@@ -3,8 +3,9 @@
 # fmt: off
 # isort: skip_file
 
-from .synchronizer_pb2 import PendingLsuOperation
+from .synchronizer_pb2 import PendingLsuOperation, PendingOnboardingTransactions
 
 __all__ = [
     "PendingLsuOperation",
+    "PendingOnboardingTransactions",
 ]

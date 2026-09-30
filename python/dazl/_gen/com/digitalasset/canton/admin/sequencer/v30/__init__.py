@@ -3,7 +3,7 @@
 # fmt: off
 # isort: skip_file
 
-from .sequencer_connection_pb2 import SequencerConnection, SequencerConnectionPoolDelays, SequencerConnectionValidation, SequencerConnections, SubmissionRequestAmplification
+from .sequencer_connection_pb2 import SequencerConnection, SequencerConnectionPoolDelays, SequencerConnectionValidation, SequencerConnections, SubmissionRequestAmplification, SubscriptionLivenessLimits
 from .sequencer_status_service_pb2 import SequencerAdminStatus, SequencerHealthStatus, SequencerStatusRequest, SequencerStatusResponse
 from .sequencer_status_service_pb2_grpc import SequencerStatusServiceStub
 
@@ -18,4 +18,5 @@ __all__ = [
     "SequencerStatusResponse",
     "SequencerStatusServiceStub",
     "SubmissionRequestAmplification",
+    "SubscriptionLivenessLimits",
 ]

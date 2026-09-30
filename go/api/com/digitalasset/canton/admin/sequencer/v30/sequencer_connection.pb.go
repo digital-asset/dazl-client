@@ -168,6 +168,7 @@ type SequencerConnections struct {
 	SubmissionRequestAmplification *SubmissionRequestAmplification `protobuf:"bytes,3,opt,name=submission_request_amplification,json=submissionRequestAmplification,proto3" json:"submission_request_amplification,omitempty"`
 	SequencerLivenessMargin        uint32                          `protobuf:"varint,4,opt,name=sequencer_liveness_margin,json=sequencerLivenessMargin,proto3" json:"sequencer_liveness_margin,omitempty"`
 	SequencerConnectionPoolDelays  *SequencerConnectionPoolDelays  `protobuf:"bytes,5,opt,name=sequencer_connection_pool_delays,json=sequencerConnectionPoolDelays,proto3" json:"sequencer_connection_pool_delays,omitempty"`
+	SubscriptionLivenessLimits     *SubscriptionLivenessLimits     `protobuf:"bytes,6,opt,name=subscription_liveness_limits,json=subscriptionLivenessLimits,proto3" json:"subscription_liveness_limits,omitempty"`
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -233,6 +234,13 @@ func (x *SequencerConnections) GetSequencerLivenessMargin() uint32 {
 func (x *SequencerConnections) GetSequencerConnectionPoolDelays() *SequencerConnectionPoolDelays {
 	if x != nil {
 		return x.SequencerConnectionPoolDelays
+	}
+	return nil
+}
+
+func (x *SequencerConnections) GetSubscriptionLivenessLimits() *SubscriptionLivenessLimits {
+	if x != nil {
+		return x.SubscriptionLivenessLimits
 	}
 	return nil
 }
@@ -373,6 +381,58 @@ func (x *SequencerConnectionPoolDelays) GetWarnValidationDelay() *durationpb.Dur
 	return nil
 }
 
+type SubscriptionLivenessLimits struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	MaxTimestampDelta *durationpb.Duration   `protobuf:"bytes,1,opt,name=max_timestamp_delta,json=maxTimestampDelta,proto3" json:"max_timestamp_delta,omitempty"`
+	MaxOrdinalDelta   uint32                 `protobuf:"varint,2,opt,name=max_ordinal_delta,json=maxOrdinalDelta,proto3" json:"max_ordinal_delta,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *SubscriptionLivenessLimits) Reset() {
+	*x = SubscriptionLivenessLimits{}
+	mi := &file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscriptionLivenessLimits) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscriptionLivenessLimits) ProtoMessage() {}
+
+func (x *SubscriptionLivenessLimits) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscriptionLivenessLimits.ProtoReflect.Descriptor instead.
+func (*SubscriptionLivenessLimits) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SubscriptionLivenessLimits) GetMaxTimestampDelta() *durationpb.Duration {
+	if x != nil {
+		return x.MaxTimestampDelta
+	}
+	return nil
+}
+
+func (x *SubscriptionLivenessLimits) GetMaxOrdinalDelta() uint32 {
+	if x != nil {
+		return x.MaxOrdinalDelta
+	}
+	return 0
+}
+
 type SequencerConnection_Grpc struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	Connections             []string               `protobuf:"bytes,1,rep,name=connections,proto3" json:"connections,omitempty"`
@@ -384,7 +444,7 @@ type SequencerConnection_Grpc struct {
 
 func (x *SequencerConnection_Grpc) Reset() {
 	*x = SequencerConnection_Grpc{}
-	mi := &file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -396,7 +456,7 @@ func (x *SequencerConnection_Grpc) String() string {
 func (*SequencerConnection_Grpc) ProtoMessage() {}
 
 func (x *SequencerConnection_Grpc) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -448,13 +508,14 @@ const file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_prot
 	"\x19custom_trust_certificates\x18\x03 \x01(\fH\x00R\x17customTrustCertificates\x88\x01\x01B\x1c\n" +
 	"\x1a_custom_trust_certificatesB\x06\n" +
 	"\x04typeB\x0f\n" +
-	"\r_sequencer_id\"\xb3\x04\n" +
+	"\r_sequencer_id\"\xbf\x05\n" +
 	"\x14SequencerConnections\x12u\n" +
 	"\x15sequencer_connections\x18\x01 \x03(\v2@.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionR\x14sequencerConnections\x12:\n" +
 	"\x19sequencer_trust_threshold\x18\x02 \x01(\rR\x17sequencerTrustThreshold\x12\x95\x01\n" +
 	" submission_request_amplification\x18\x03 \x01(\v2K.com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplificationR\x1esubmissionRequestAmplification\x12:\n" +
 	"\x19sequencer_liveness_margin\x18\x04 \x01(\rR\x17sequencerLivenessMargin\x12\x93\x01\n" +
-	" sequencer_connection_pool_delays\x18\x05 \x01(\v2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelaysR\x1dsequencerConnectionPoolDelays\"\xe0\x02\n" +
+	" sequencer_connection_pool_delays\x18\x05 \x01(\v2J.com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelaysR\x1dsequencerConnectionPoolDelays\x12\x89\x01\n" +
+	"\x1csubscription_liveness_limits\x18\x06 \x01(\v2G.com.digitalasset.canton.admin.sequencer.v30.SubscriptionLivenessLimitsR\x1asubscriptionLivenessLimits\"\xe0\x02\n" +
 	"\x1eSubmissionRequestAmplification\x12\x16\n" +
 	"\x06factor\x18\x01 \x01(\rR\x06factor\x125\n" +
 	"\bpatience\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\bpatience\x12E\n" +
@@ -466,7 +527,10 @@ const file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_prot
 	"\x11min_restart_delay\x18\x01 \x01(\v2\x19.google.protobuf.DurationR\x0fminRestartDelay\x12E\n" +
 	"\x11max_restart_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\x0fmaxRestartDelay\x12W\n" +
 	"\x1asubscription_request_delay\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x18subscriptionRequestDelay\x12M\n" +
-	"\x15warn_validation_delay\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\x13warnValidationDelay*\x89\x02\n" +
+	"\x15warn_validation_delay\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\x13warnValidationDelay\"\x93\x01\n" +
+	"\x1aSubscriptionLivenessLimits\x12I\n" +
+	"\x13max_timestamp_delta\x18\x01 \x01(\v2\x19.google.protobuf.DurationR\x11maxTimestampDelta\x12*\n" +
+	"\x11max_ordinal_delta\x18\x02 \x01(\rR\x0fmaxOrdinalDelta*\x89\x02\n" +
 	"\x1dSequencerConnectionValidation\x12/\n" +
 	"+SEQUENCER_CONNECTION_VALIDATION_UNSPECIFIED\x10\x00\x12,\n" +
 	"(SEQUENCER_CONNECTION_VALIDATION_DISABLED\x10\x01\x12*\n" +
@@ -487,32 +551,35 @@ func file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto
 }
 
 var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_goTypes = []any{
 	(SequencerConnectionValidation)(0),     // 0: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionValidation
 	(*SequencerConnection)(nil),            // 1: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection
 	(*SequencerConnections)(nil),           // 2: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections
 	(*SubmissionRequestAmplification)(nil), // 3: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification
 	(*SequencerConnectionPoolDelays)(nil),  // 4: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays
-	(*SequencerConnection_Grpc)(nil),       // 5: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.Grpc
-	(*durationpb.Duration)(nil),            // 6: google.protobuf.Duration
+	(*SubscriptionLivenessLimits)(nil),     // 5: com.digitalasset.canton.admin.sequencer.v30.SubscriptionLivenessLimits
+	(*SequencerConnection_Grpc)(nil),       // 6: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.Grpc
+	(*durationpb.Duration)(nil),            // 7: google.protobuf.Duration
 }
 var file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_depIdxs = []int32{
-	5,  // 0: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.grpc:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.Grpc
+	6,  // 0: com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.grpc:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection.Grpc
 	1,  // 1: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.sequencer_connections:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnection
 	3,  // 2: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.submission_request_amplification:type_name -> com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification
 	4,  // 3: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.sequencer_connection_pool_delays:type_name -> com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays
-	6,  // 4: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.patience:type_name -> google.protobuf.Duration
-	6,  // 5: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.confirmation_response_patience:type_name -> google.protobuf.Duration
-	6,  // 6: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.min_restart_delay:type_name -> google.protobuf.Duration
-	6,  // 7: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.max_restart_delay:type_name -> google.protobuf.Duration
-	6,  // 8: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.subscription_request_delay:type_name -> google.protobuf.Duration
-	6,  // 9: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.warn_validation_delay:type_name -> google.protobuf.Duration
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	5,  // 4: com.digitalasset.canton.admin.sequencer.v30.SequencerConnections.subscription_liveness_limits:type_name -> com.digitalasset.canton.admin.sequencer.v30.SubscriptionLivenessLimits
+	7,  // 5: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.patience:type_name -> google.protobuf.Duration
+	7,  // 6: com.digitalasset.canton.admin.sequencer.v30.SubmissionRequestAmplification.confirmation_response_patience:type_name -> google.protobuf.Duration
+	7,  // 7: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.min_restart_delay:type_name -> google.protobuf.Duration
+	7,  // 8: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.max_restart_delay:type_name -> google.protobuf.Duration
+	7,  // 9: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.subscription_request_delay:type_name -> google.protobuf.Duration
+	7,  // 10: com.digitalasset.canton.admin.sequencer.v30.SequencerConnectionPoolDelays.warn_validation_delay:type_name -> google.protobuf.Duration
+	7,  // 11: com.digitalasset.canton.admin.sequencer.v30.SubscriptionLivenessLimits.max_timestamp_delta:type_name -> google.protobuf.Duration
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_init() }
@@ -524,14 +591,14 @@ func file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto
 		(*SequencerConnection_Grpc_)(nil),
 	}
 	file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[2].OneofWrappers = []any{}
-	file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[4].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_rawDesc), len(file_com_digitalasset_canton_admin_sequencer_v30_sequencer_connection_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

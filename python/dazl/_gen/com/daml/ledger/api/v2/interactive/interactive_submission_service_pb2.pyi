@@ -28,9 +28,11 @@ class HashingSchemeVersion(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     HASHING_SCHEME_VERSION_UNSPECIFIED: _ClassVar[HashingSchemeVersion]
     HASHING_SCHEME_VERSION_V2: _ClassVar[HashingSchemeVersion]
     HASHING_SCHEME_VERSION_V3: _ClassVar[HashingSchemeVersion]
+    HASHING_SCHEME_VERSION_V4: _ClassVar[HashingSchemeVersion]
 HASHING_SCHEME_VERSION_UNSPECIFIED: HashingSchemeVersion
 HASHING_SCHEME_VERSION_V2: HashingSchemeVersion
 HASHING_SCHEME_VERSION_V3: HashingSchemeVersion
+HASHING_SCHEME_VERSION_V4: HashingSchemeVersion
 
 class CostEstimationHints(_message.Message):
     __slots__ = ("disabled", "expected_signatures")
@@ -40,17 +42,39 @@ class CostEstimationHints(_message.Message):
     expected_signatures: _containers.RepeatedScalarFieldContainer[_crypto_pb2.SigningAlgorithmSpec]
     def __init__(self, disabled: _Optional[bool] = ..., expected_signatures: _Optional[_Iterable[_Union[_crypto_pb2.SigningAlgorithmSpec, str]]] = ...) -> None: ...
 
+class ReassignmentCost(_message.Message):
+    __slots__ = ("source_synchronizer_id", "target_synchronizer_id", "contract_ids", "unassignment_request_traffic_cost_estimation", "unassignment_response_traffic_cost_estimation", "assignment_request_traffic_cost_estimation", "assignment_response_traffic_cost_estimation", "total_reassignment_cost_estimation")
+    SOURCE_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    TARGET_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_IDS_FIELD_NUMBER: _ClassVar[int]
+    UNASSIGNMENT_REQUEST_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
+    UNASSIGNMENT_RESPONSE_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
+    ASSIGNMENT_REQUEST_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
+    ASSIGNMENT_RESPONSE_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_REASSIGNMENT_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
+    source_synchronizer_id: str
+    target_synchronizer_id: str
+    contract_ids: _containers.RepeatedScalarFieldContainer[str]
+    unassignment_request_traffic_cost_estimation: int
+    unassignment_response_traffic_cost_estimation: int
+    assignment_request_traffic_cost_estimation: int
+    assignment_response_traffic_cost_estimation: int
+    total_reassignment_cost_estimation: int
+    def __init__(self, source_synchronizer_id: _Optional[str] = ..., target_synchronizer_id: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., unassignment_request_traffic_cost_estimation: _Optional[int] = ..., unassignment_response_traffic_cost_estimation: _Optional[int] = ..., assignment_request_traffic_cost_estimation: _Optional[int] = ..., assignment_response_traffic_cost_estimation: _Optional[int] = ..., total_reassignment_cost_estimation: _Optional[int] = ...) -> None: ...
+
 class CostEstimation(_message.Message):
-    __slots__ = ("estimation_timestamp", "confirmation_request_traffic_cost_estimation", "confirmation_response_traffic_cost_estimation", "total_traffic_cost_estimation")
+    __slots__ = ("estimation_timestamp", "confirmation_request_traffic_cost_estimation", "confirmation_response_traffic_cost_estimation", "total_traffic_cost_estimation", "reassignment_costs")
     ESTIMATION_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     CONFIRMATION_REQUEST_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
     CONFIRMATION_RESPONSE_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
     TOTAL_TRAFFIC_COST_ESTIMATION_FIELD_NUMBER: _ClassVar[int]
+    REASSIGNMENT_COSTS_FIELD_NUMBER: _ClassVar[int]
     estimation_timestamp: _timestamp_pb2.Timestamp
     confirmation_request_traffic_cost_estimation: int
     confirmation_response_traffic_cost_estimation: int
     total_traffic_cost_estimation: int
-    def __init__(self, estimation_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., confirmation_request_traffic_cost_estimation: _Optional[int] = ..., confirmation_response_traffic_cost_estimation: _Optional[int] = ..., total_traffic_cost_estimation: _Optional[int] = ...) -> None: ...
+    reassignment_costs: _containers.RepeatedCompositeFieldContainer[ReassignmentCost]
+    def __init__(self, estimation_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., confirmation_request_traffic_cost_estimation: _Optional[int] = ..., confirmation_response_traffic_cost_estimation: _Optional[int] = ..., total_traffic_cost_estimation: _Optional[int] = ..., reassignment_costs: _Optional[_Iterable[_Union[ReassignmentCost, _Mapping]]] = ...) -> None: ...
 
 class PrepareSubmissionRequest(_message.Message):
     __slots__ = ("user_id", "command_id", "commands", "min_ledger_time", "max_record_time", "act_as", "read_as", "disclosed_contracts", "synchronizer_id", "package_id_selection_preference", "verbose_hashing", "prefetch_contract_keys", "estimate_traffic_cost", "hashing_scheme_version", "taps_max_passes")
@@ -282,32 +306,6 @@ class DamlTransaction(_message.Message):
     nodes: _containers.RepeatedCompositeFieldContainer[DamlTransaction.Node]
     node_seeds: _containers.RepeatedCompositeFieldContainer[DamlTransaction.NodeSeed]
     def __init__(self, version: _Optional[str] = ..., roots: _Optional[_Iterable[str]] = ..., nodes: _Optional[_Iterable[_Union[DamlTransaction.Node, _Mapping]]] = ..., node_seeds: _Optional[_Iterable[_Union[DamlTransaction.NodeSeed, _Mapping]]] = ...) -> None: ...
-
-class GetPreferredPackageVersionRequest(_message.Message):
-    __slots__ = ("parties", "package_name", "synchronizer_id", "vetting_valid_at")
-    PARTIES_FIELD_NUMBER: _ClassVar[int]
-    PACKAGE_NAME_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    VETTING_VALID_AT_FIELD_NUMBER: _ClassVar[int]
-    parties: _containers.RepeatedScalarFieldContainer[str]
-    package_name: str
-    synchronizer_id: str
-    vetting_valid_at: _timestamp_pb2.Timestamp
-    def __init__(self, parties: _Optional[_Iterable[str]] = ..., package_name: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., vetting_valid_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
-
-class GetPreferredPackageVersionResponse(_message.Message):
-    __slots__ = ("package_preference",)
-    PACKAGE_PREFERENCE_FIELD_NUMBER: _ClassVar[int]
-    package_preference: PackagePreference
-    def __init__(self, package_preference: _Optional[_Union[PackagePreference, _Mapping]] = ...) -> None: ...
-
-class PackagePreference(_message.Message):
-    __slots__ = ("package_reference", "synchronizer_id")
-    PACKAGE_REFERENCE_FIELD_NUMBER: _ClassVar[int]
-    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
-    package_reference: _package_reference_pb2.PackageReference
-    synchronizer_id: str
-    def __init__(self, package_reference: _Optional[_Union[_package_reference_pb2.PackageReference, _Mapping]] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
 
 class PackageVettingRequirement(_message.Message):
     __slots__ = ("parties", "package_name")

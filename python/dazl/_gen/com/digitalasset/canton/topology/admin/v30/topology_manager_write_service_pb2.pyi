@@ -5,6 +5,7 @@
 import datetime
 
 from ....protocol.v30 import topology_pb2 as _topology_pb2
+from ....protocol.v31 import topology_pb2 as _topology_pb2_1
 from . import common_pb2 as _common_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf.internal import containers as _containers
@@ -45,22 +46,32 @@ FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES: ForceFlag
 FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE: ForceFlag
 FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET: ForceFlag
 
+class BaseWriteRequest(_message.Message):
+    __slots__ = ("client_version",)
+    CLIENT_VERSION_FIELD_NUMBER: _ClassVar[int]
+    client_version: str
+    def __init__(self, client_version: _Optional[str] = ...) -> None: ...
+
 class GenerateTransactionsRequest(_message.Message):
-    __slots__ = ("proposals",)
+    __slots__ = ("proposals", "base_request")
     class Proposal(_message.Message):
-        __slots__ = ("operation", "serial", "mapping", "store")
+        __slots__ = ("operation", "serial", "v30", "v31", "store")
         OPERATION_FIELD_NUMBER: _ClassVar[int]
         SERIAL_FIELD_NUMBER: _ClassVar[int]
-        MAPPING_FIELD_NUMBER: _ClassVar[int]
+        V30_FIELD_NUMBER: _ClassVar[int]
+        V31_FIELD_NUMBER: _ClassVar[int]
         STORE_FIELD_NUMBER: _ClassVar[int]
         operation: _topology_pb2.Enums.TopologyChangeOp
         serial: int
-        mapping: _topology_pb2.TopologyMapping
+        v30: _topology_pb2.TopologyMapping
+        v31: _topology_pb2_1.TopologyMapping
         store: _common_pb2.StoreId
-        def __init__(self, operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., serial: _Optional[int] = ..., mapping: _Optional[_Union[_topology_pb2.TopologyMapping, _Mapping]] = ..., store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ...) -> None: ...
+        def __init__(self, operation: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., serial: _Optional[int] = ..., v30: _Optional[_Union[_topology_pb2.TopologyMapping, _Mapping]] = ..., v31: _Optional[_Union[_topology_pb2_1.TopologyMapping, _Mapping]] = ..., store: _Optional[_Union[_common_pb2.StoreId, _Mapping]] = ...) -> None: ...
     PROPOSALS_FIELD_NUMBER: _ClassVar[int]
+    BASE_REQUEST_FIELD_NUMBER: _ClassVar[int]
     proposals: _containers.RepeatedCompositeFieldContainer[GenerateTransactionsRequest.Proposal]
-    def __init__(self, proposals: _Optional[_Iterable[_Union[GenerateTransactionsRequest.Proposal, _Mapping]]] = ...) -> None: ...
+    base_request: BaseWriteRequest
+    def __init__(self, proposals: _Optional[_Iterable[_Union[GenerateTransactionsRequest.Proposal, _Mapping]]] = ..., base_request: _Optional[_Union[BaseWriteRequest, _Mapping]] = ...) -> None: ...
 
 class GenerateTransactionsResponse(_message.Message):
     __slots__ = ("generated_transactions",)
@@ -78,14 +89,16 @@ class GenerateTransactionsResponse(_message.Message):
 class AuthorizeRequest(_message.Message):
     __slots__ = ("proposal", "transaction_hash", "must_fully_authorize", "force_changes", "signed_by", "store", "wait_to_become_effective")
     class Proposal(_message.Message):
-        __slots__ = ("change", "serial", "mapping")
+        __slots__ = ("change", "serial", "v30", "v31")
         CHANGE_FIELD_NUMBER: _ClassVar[int]
         SERIAL_FIELD_NUMBER: _ClassVar[int]
-        MAPPING_FIELD_NUMBER: _ClassVar[int]
+        V30_FIELD_NUMBER: _ClassVar[int]
+        V31_FIELD_NUMBER: _ClassVar[int]
         change: _topology_pb2.Enums.TopologyChangeOp
         serial: int
-        mapping: _topology_pb2.TopologyMapping
-        def __init__(self, change: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., serial: _Optional[int] = ..., mapping: _Optional[_Union[_topology_pb2.TopologyMapping, _Mapping]] = ...) -> None: ...
+        v30: _topology_pb2.TopologyMapping
+        v31: _topology_pb2_1.TopologyMapping
+        def __init__(self, change: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., serial: _Optional[int] = ..., v30: _Optional[_Union[_topology_pb2.TopologyMapping, _Mapping]] = ..., v31: _Optional[_Union[_topology_pb2_1.TopologyMapping, _Mapping]] = ...) -> None: ...
     PROPOSAL_FIELD_NUMBER: _ClassVar[int]
     TRANSACTION_HASH_FIELD_NUMBER: _ClassVar[int]
     MUST_FULLY_AUTHORIZE_FIELD_NUMBER: _ClassVar[int]

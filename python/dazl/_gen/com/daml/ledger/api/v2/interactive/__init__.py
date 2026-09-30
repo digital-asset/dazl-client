@@ -4,7 +4,7 @@
 # isort: skip_file
 
 from .interactive_submission_common_data_pb2 import GlobalKey, GlobalKeyWithMaintainers
-from .interactive_submission_service_pb2 import CostEstimation, CostEstimationHints, DamlTransaction, ExecuteSubmissionAndWaitForTransactionRequest, ExecuteSubmissionAndWaitForTransactionResponse, ExecuteSubmissionAndWaitRequest, ExecuteSubmissionAndWaitResponse, ExecuteSubmissionRequest, ExecuteSubmissionResponse, GetPreferredPackageVersionRequest, GetPreferredPackageVersionResponse, GetPreferredPackagesRequest, GetPreferredPackagesResponse, HashingSchemeVersion, Metadata, MinLedgerTime, PackagePreference, PackageVettingRequirement, PartySignatures, PrepareSubmissionRequest, PrepareSubmissionResponse, PreparedTransaction, SinglePartySignatures
+from .interactive_submission_service_pb2 import CostEstimation, CostEstimationHints, DamlTransaction, ExecuteSubmissionAndWaitForTransactionRequest, ExecuteSubmissionAndWaitForTransactionResponse, ExecuteSubmissionAndWaitRequest, ExecuteSubmissionAndWaitResponse, ExecuteSubmissionRequest, ExecuteSubmissionResponse, GetPreferredPackagesRequest, GetPreferredPackagesResponse, HashingSchemeVersion, Metadata, MinLedgerTime, PackageVettingRequirement, PartySignatures, PrepareSubmissionRequest, PrepareSubmissionResponse, PreparedTransaction, ReassignmentCost, SinglePartySignatures
 from .interactive_submission_service_pb2_grpc import InteractiveSubmissionServiceStub
 
 __all__ = [
@@ -17,8 +17,6 @@ __all__ = [
     "ExecuteSubmissionAndWaitResponse",
     "ExecuteSubmissionRequest",
     "ExecuteSubmissionResponse",
-    "GetPreferredPackageVersionRequest",
-    "GetPreferredPackageVersionResponse",
     "GetPreferredPackagesRequest",
     "GetPreferredPackagesResponse",
     "GlobalKey",
@@ -27,11 +25,11 @@ __all__ = [
     "InteractiveSubmissionServiceStub",
     "Metadata",
     "MinLedgerTime",
-    "PackagePreference",
     "PackageVettingRequirement",
     "PartySignatures",
     "PrepareSubmissionRequest",
     "PrepareSubmissionResponse",
     "PreparedTransaction",
+    "ReassignmentCost",
     "SinglePartySignatures",
 ]

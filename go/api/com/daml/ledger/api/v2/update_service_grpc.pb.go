@@ -24,6 +24,7 @@ const (
 	UpdateService_GetUpdates_FullMethodName        = "/com.daml.ledger.api.v2.UpdateService/GetUpdates"
 	UpdateService_GetUpdateByOffset_FullMethodName = "/com.daml.ledger.api.v2.UpdateService/GetUpdateByOffset"
 	UpdateService_GetUpdateById_FullMethodName     = "/com.daml.ledger.api.v2.UpdateService/GetUpdateById"
+	UpdateService_GetUpdateByHash_FullMethodName   = "/com.daml.ledger.api.v2.UpdateService/GetUpdateByHash"
 	UpdateService_GetUpdatesPage_FullMethodName    = "/com.daml.ledger.api.v2.UpdateService/GetUpdatesPage"
 )
 
@@ -34,6 +35,7 @@ type UpdateServiceClient interface {
 	GetUpdates(ctx context.Context, in *GetUpdatesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetUpdatesResponse], error)
 	GetUpdateByOffset(ctx context.Context, in *GetUpdateByOffsetRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error)
 	GetUpdateById(ctx context.Context, in *GetUpdateByIdRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error)
+	GetUpdateByHash(ctx context.Context, in *GetUpdateByHashRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error)
 	GetUpdatesPage(ctx context.Context, in *GetUpdatesPageRequest, opts ...grpc.CallOption) (*GetUpdatesPageResponse, error)
 }
 
@@ -84,6 +86,16 @@ func (c *updateServiceClient) GetUpdateById(ctx context.Context, in *GetUpdateBy
 	return out, nil
 }
 
+func (c *updateServiceClient) GetUpdateByHash(ctx context.Context, in *GetUpdateByHashRequest, opts ...grpc.CallOption) (*GetUpdateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUpdateResponse)
+	err := c.cc.Invoke(ctx, UpdateService_GetUpdateByHash_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *updateServiceClient) GetUpdatesPage(ctx context.Context, in *GetUpdatesPageRequest, opts ...grpc.CallOption) (*GetUpdatesPageResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUpdatesPageResponse)
@@ -101,6 +113,7 @@ type UpdateServiceServer interface {
 	GetUpdates(*GetUpdatesRequest, grpc.ServerStreamingServer[GetUpdatesResponse]) error
 	GetUpdateByOffset(context.Context, *GetUpdateByOffsetRequest) (*GetUpdateResponse, error)
 	GetUpdateById(context.Context, *GetUpdateByIdRequest) (*GetUpdateResponse, error)
+	GetUpdateByHash(context.Context, *GetUpdateByHashRequest) (*GetUpdateResponse, error)
 	GetUpdatesPage(context.Context, *GetUpdatesPageRequest) (*GetUpdatesPageResponse, error)
 	mustEmbedUnimplementedUpdateServiceServer()
 }
@@ -120,6 +133,9 @@ func (UnimplementedUpdateServiceServer) GetUpdateByOffset(context.Context, *GetU
 }
 func (UnimplementedUpdateServiceServer) GetUpdateById(context.Context, *GetUpdateByIdRequest) (*GetUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUpdateById not implemented")
+}
+func (UnimplementedUpdateServiceServer) GetUpdateByHash(context.Context, *GetUpdateByHashRequest) (*GetUpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUpdateByHash not implemented")
 }
 func (UnimplementedUpdateServiceServer) GetUpdatesPage(context.Context, *GetUpdatesPageRequest) (*GetUpdatesPageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUpdatesPage not implemented")
@@ -192,6 +208,24 @@ func _UpdateService_GetUpdateById_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UpdateService_GetUpdateByHash_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUpdateByHashRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UpdateServiceServer).GetUpdateByHash(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UpdateService_GetUpdateByHash_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UpdateServiceServer).GetUpdateByHash(ctx, req.(*GetUpdateByHashRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UpdateService_GetUpdatesPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUpdatesPageRequest)
 	if err := dec(in); err != nil {
@@ -224,6 +258,10 @@ var UpdateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUpdateById",
 			Handler:    _UpdateService_GetUpdateById_Handler,
+		},
+		{
+			MethodName: "GetUpdateByHash",
+			Handler:    _UpdateService_GetUpdateByHash_Handler,
 		},
 		{
 			MethodName: "GetUpdatesPage",

@@ -526,6 +526,82 @@ func (x *KeyWithMaintainers) GetHash() []byte {
 	return nil
 }
 
+type ExternalCallResult struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExtensionId   string                 `protobuf:"bytes,1,opt,name=extension_id,json=extensionId,proto3" json:"extension_id,omitempty"`
+	FunctionId    string                 `protobuf:"bytes,2,opt,name=function_id,json=functionId,proto3" json:"function_id,omitempty"`
+	Config        []byte                 `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
+	Input         []byte                 `protobuf:"bytes,4,opt,name=input,proto3" json:"input,omitempty"`
+	Output        []byte                 `protobuf:"bytes,5,opt,name=output,proto3" json:"output,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExternalCallResult) Reset() {
+	*x = ExternalCallResult{}
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExternalCallResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExternalCallResult) ProtoMessage() {}
+
+func (x *ExternalCallResult) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExternalCallResult.ProtoReflect.Descriptor instead.
+func (*ExternalCallResult) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_daml_lf_transaction_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ExternalCallResult) GetExtensionId() string {
+	if x != nil {
+		return x.ExtensionId
+	}
+	return ""
+}
+
+func (x *ExternalCallResult) GetFunctionId() string {
+	if x != nil {
+		return x.FunctionId
+	}
+	return ""
+}
+
+func (x *ExternalCallResult) GetConfig() []byte {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
+func (x *ExternalCallResult) GetInput() []byte {
+	if x != nil {
+		return x.Input
+	}
+	return nil
+}
+
+func (x *ExternalCallResult) GetOutput() []byte {
+	if x != nil {
+		return x.Output
+	}
+	return nil
+}
+
 type Node_Fetch struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
 	ContractId               []byte                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
@@ -543,7 +619,7 @@ type Node_Fetch struct {
 
 func (x *Node_Fetch) Reset() {
 	*x = Node_Fetch{}
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[6]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -555,7 +631,7 @@ func (x *Node_Fetch) String() string {
 func (*Node_Fetch) ProtoMessage() {}
 
 func (x *Node_Fetch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[6]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -635,23 +711,24 @@ func (x *Node_Fetch) GetByKey() bool {
 }
 
 type Node_Exercise struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Fetch         *Node_Fetch            `protobuf:"bytes,1,opt,name=fetch,proto3" json:"fetch,omitempty"`
-	InterfaceId   *value.Identifier      `protobuf:"bytes,2,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
-	Choice        string                 `protobuf:"bytes,3,opt,name=choice,proto3" json:"choice,omitempty"`
-	Arg           []byte                 `protobuf:"bytes,4,opt,name=arg,proto3" json:"arg,omitempty"`
-	Consuming     bool                   `protobuf:"varint,5,opt,name=consuming,proto3" json:"consuming,omitempty"`
-	Children      []string               `protobuf:"bytes,6,rep,name=children,proto3" json:"children,omitempty"`
-	Result        []byte                 `protobuf:"bytes,7,opt,name=result,proto3" json:"result,omitempty"`
-	Observers     []string               `protobuf:"bytes,8,rep,name=observers,proto3" json:"observers,omitempty"`
-	Authorizers   []string               `protobuf:"bytes,1001,rep,name=authorizers,proto3" json:"authorizers,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Fetch               *Node_Fetch            `protobuf:"bytes,1,opt,name=fetch,proto3" json:"fetch,omitempty"`
+	InterfaceId         *value.Identifier      `protobuf:"bytes,2,opt,name=interface_id,json=interfaceId,proto3" json:"interface_id,omitempty"`
+	Choice              string                 `protobuf:"bytes,3,opt,name=choice,proto3" json:"choice,omitempty"`
+	Arg                 []byte                 `protobuf:"bytes,4,opt,name=arg,proto3" json:"arg,omitempty"`
+	Consuming           bool                   `protobuf:"varint,5,opt,name=consuming,proto3" json:"consuming,omitempty"`
+	Children            []string               `protobuf:"bytes,6,rep,name=children,proto3" json:"children,omitempty"`
+	Result              []byte                 `protobuf:"bytes,7,opt,name=result,proto3" json:"result,omitempty"`
+	Observers           []string               `protobuf:"bytes,8,rep,name=observers,proto3" json:"observers,omitempty"`
+	Authorizers         []string               `protobuf:"bytes,1001,rep,name=authorizers,proto3" json:"authorizers,omitempty"`
+	ExternalCallResults []*ExternalCallResult  `protobuf:"bytes,9,rep,name=external_call_results,json=externalCallResults,proto3" json:"external_call_results,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Node_Exercise) Reset() {
 	*x = Node_Exercise{}
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[7]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -663,7 +740,7 @@ func (x *Node_Exercise) String() string {
 func (*Node_Exercise) ProtoMessage() {}
 
 func (x *Node_Exercise) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[7]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -742,6 +819,13 @@ func (x *Node_Exercise) GetAuthorizers() []string {
 	return nil
 }
 
+func (x *Node_Exercise) GetExternalCallResults() []*ExternalCallResult {
+	if x != nil {
+		return x.ExternalCallResults
+	}
+	return nil
+}
+
 type Node_Rollback struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Children      []string               `protobuf:"bytes,1,rep,name=children,proto3" json:"children,omitempty"`
@@ -751,7 +835,7 @@ type Node_Rollback struct {
 
 func (x *Node_Rollback) Reset() {
 	*x = Node_Rollback{}
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[8]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -763,7 +847,7 @@ func (x *Node_Rollback) String() string {
 func (*Node_Rollback) ProtoMessage() {}
 
 func (x *Node_Rollback) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[8]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -799,7 +883,7 @@ type Node_QueryByKey struct {
 
 func (x *Node_QueryByKey) Reset() {
 	*x = Node_QueryByKey{}
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[9]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -811,7 +895,7 @@ func (x *Node_QueryByKey) String() string {
 func (*Node_QueryByKey) ProtoMessage() {}
 
 func (x *Node_QueryByKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[9]
+	mi := &file_com_digitalasset_daml_lf_transaction_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -876,7 +960,7 @@ const file_com_digitalasset_daml_lf_transaction_proto_rawDesc = "" +
 	"\vtemplate_id\x18\x01 \x01(\v2*.com.digitalasset.daml.lf.value.IdentifierR\n" +
 	"templateId\x12S\n" +
 	"\rarg_versioned\x18\x02 \x01(\v2..com.digitalasset.daml.lf.value.VersionedValueR\fargVersioned\x12\x1c\n" +
-	"\tagreement\x18\x03 \x01(\tR\tagreementJ\x04\b\x05\x10\x06\"\x9a\r\n" +
+	"\tagreement\x18\x03 \x01(\tR\tagreementJ\x04\b\x05\x10\x06\"\x88\x0e\n" +
 	"\x04Node\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x17\n" +
 	"\anode_id\x18\x02 \x01(\tR\x06nodeId\x12S\n" +
@@ -897,7 +981,7 @@ const file_com_digitalasset_daml_lf_transaction_proto_rawDesc = "" +
 	"\x1anon_signatory_stakeholders\x18\x05 \x03(\tR\x18nonSignatoryStakeholders\x12\x16\n" +
 	"\x06actors\x18\x06 \x03(\tR\x06actors\x12j\n" +
 	"\x14key_with_maintainers\x18\b \x01(\v28.com.digitalasset.daml.lf.transaction.KeyWithMaintainersR\x12keyWithMaintainers\x12\x15\n" +
-	"\x06by_key\x18\t \x01(\bR\x05byKey\x1a\xde\x02\n" +
+	"\x06by_key\x18\t \x01(\bR\x05byKey\x1a\xcc\x03\n" +
 	"\bExercise\x12F\n" +
 	"\x05fetch\x18\x01 \x01(\v20.com.digitalasset.daml.lf.transaction.Node.FetchR\x05fetch\x12M\n" +
 	"\finterface_id\x18\x02 \x01(\v2*.com.digitalasset.daml.lf.value.IdentifierR\vinterfaceId\x12\x16\n" +
@@ -907,7 +991,8 @@ const file_com_digitalasset_daml_lf_transaction_proto_rawDesc = "" +
 	"\bchildren\x18\x06 \x03(\tR\bchildren\x12\x16\n" +
 	"\x06result\x18\a \x01(\fR\x06result\x12\x1c\n" +
 	"\tobservers\x18\b \x03(\tR\tobservers\x12!\n" +
-	"\vauthorizers\x18\xe9\a \x03(\tR\vauthorizers\x1a&\n" +
+	"\vauthorizers\x18\xe9\a \x03(\tR\vauthorizers\x12l\n" +
+	"\x15external_call_results\x18\t \x03(\v28.com.digitalasset.daml.lf.transaction.ExternalCallResultR\x13externalCallResults\x1a&\n" +
 	"\bRollback\x12\x1a\n" +
 	"\bchildren\x18\x01 \x03(\tR\bchildren\x1a\xa7\x02\n" +
 	"\n" +
@@ -941,7 +1026,14 @@ const file_com_digitalasset_daml_lf_transaction_proto_rawDesc = "" +
 	"\x12KeyWithMaintainers\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\fR\x03key\x12 \n" +
 	"\vmaintainers\x18\x02 \x03(\tR\vmaintainers\x12\x12\n" +
-	"\x04hash\x18\x03 \x01(\fR\x04hashB{\n" +
+	"\x04hash\x18\x03 \x01(\fR\x04hash\"\x9e\x01\n" +
+	"\x12ExternalCallResult\x12!\n" +
+	"\fextension_id\x18\x01 \x01(\tR\vextensionId\x12\x1f\n" +
+	"\vfunction_id\x18\x02 \x01(\tR\n" +
+	"functionId\x12\x16\n" +
+	"\x06config\x18\x03 \x01(\fR\x06config\x12\x14\n" +
+	"\x05input\x18\x04 \x01(\fR\x05input\x12\x16\n" +
+	"\x06output\x18\x05 \x01(\fR\x06outputB{\n" +
 	"$com.digitalasset.daml.lf.transactionZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/daml/lf/transactionb\x06proto3"
 
 var (
@@ -956,7 +1048,7 @@ func file_com_digitalasset_daml_lf_transaction_proto_rawDescGZIP() []byte {
 	return file_com_digitalasset_daml_lf_transaction_proto_rawDescData
 }
 
-var file_com_digitalasset_daml_lf_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_com_digitalasset_daml_lf_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_com_digitalasset_daml_lf_transaction_proto_goTypes = []any{
 	(*Transaction)(nil),          // 0: com.digitalasset.daml.lf.transaction.Transaction
 	(*ThinContractInstance)(nil), // 1: com.digitalasset.daml.lf.transaction.ThinContractInstance
@@ -964,36 +1056,38 @@ var file_com_digitalasset_daml_lf_transaction_proto_goTypes = []any{
 	(*Versioned)(nil),            // 3: com.digitalasset.daml.lf.transaction.Versioned
 	(*FatContractInstance)(nil),  // 4: com.digitalasset.daml.lf.transaction.FatContractInstance
 	(*KeyWithMaintainers)(nil),   // 5: com.digitalasset.daml.lf.transaction.KeyWithMaintainers
-	(*Node_Fetch)(nil),           // 6: com.digitalasset.daml.lf.transaction.Node.Fetch
-	(*Node_Exercise)(nil),        // 7: com.digitalasset.daml.lf.transaction.Node.Exercise
-	(*Node_Rollback)(nil),        // 8: com.digitalasset.daml.lf.transaction.Node.Rollback
-	(*Node_QueryByKey)(nil),      // 9: com.digitalasset.daml.lf.transaction.Node.QueryByKey
-	(*value.Identifier)(nil),     // 10: com.digitalasset.daml.lf.value.Identifier
-	(*value.VersionedValue)(nil), // 11: com.digitalasset.daml.lf.value.VersionedValue
+	(*ExternalCallResult)(nil),   // 6: com.digitalasset.daml.lf.transaction.ExternalCallResult
+	(*Node_Fetch)(nil),           // 7: com.digitalasset.daml.lf.transaction.Node.Fetch
+	(*Node_Exercise)(nil),        // 8: com.digitalasset.daml.lf.transaction.Node.Exercise
+	(*Node_Rollback)(nil),        // 9: com.digitalasset.daml.lf.transaction.Node.Rollback
+	(*Node_QueryByKey)(nil),      // 10: com.digitalasset.daml.lf.transaction.Node.QueryByKey
+	(*value.Identifier)(nil),     // 11: com.digitalasset.daml.lf.value.Identifier
+	(*value.VersionedValue)(nil), // 12: com.digitalasset.daml.lf.value.VersionedValue
 }
 var file_com_digitalasset_daml_lf_transaction_proto_depIdxs = []int32{
 	2,  // 0: com.digitalasset.daml.lf.transaction.Transaction.nodes:type_name -> com.digitalasset.daml.lf.transaction.Node
-	10, // 1: com.digitalasset.daml.lf.transaction.ThinContractInstance.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
-	11, // 2: com.digitalasset.daml.lf.transaction.ThinContractInstance.arg_versioned:type_name -> com.digitalasset.daml.lf.value.VersionedValue
+	11, // 1: com.digitalasset.daml.lf.transaction.ThinContractInstance.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
+	12, // 2: com.digitalasset.daml.lf.transaction.ThinContractInstance.arg_versioned:type_name -> com.digitalasset.daml.lf.value.VersionedValue
 	4,  // 3: com.digitalasset.daml.lf.transaction.Node.create:type_name -> com.digitalasset.daml.lf.transaction.FatContractInstance
-	6,  // 4: com.digitalasset.daml.lf.transaction.Node.fetch:type_name -> com.digitalasset.daml.lf.transaction.Node.Fetch
-	7,  // 5: com.digitalasset.daml.lf.transaction.Node.exercise:type_name -> com.digitalasset.daml.lf.transaction.Node.Exercise
-	8,  // 6: com.digitalasset.daml.lf.transaction.Node.rollback:type_name -> com.digitalasset.daml.lf.transaction.Node.Rollback
-	9,  // 7: com.digitalasset.daml.lf.transaction.Node.query_by_key:type_name -> com.digitalasset.daml.lf.transaction.Node.QueryByKey
-	10, // 8: com.digitalasset.daml.lf.transaction.FatContractInstance.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
+	7,  // 4: com.digitalasset.daml.lf.transaction.Node.fetch:type_name -> com.digitalasset.daml.lf.transaction.Node.Fetch
+	8,  // 5: com.digitalasset.daml.lf.transaction.Node.exercise:type_name -> com.digitalasset.daml.lf.transaction.Node.Exercise
+	9,  // 6: com.digitalasset.daml.lf.transaction.Node.rollback:type_name -> com.digitalasset.daml.lf.transaction.Node.Rollback
+	10, // 7: com.digitalasset.daml.lf.transaction.Node.query_by_key:type_name -> com.digitalasset.daml.lf.transaction.Node.QueryByKey
+	11, // 8: com.digitalasset.daml.lf.transaction.FatContractInstance.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
 	5,  // 9: com.digitalasset.daml.lf.transaction.FatContractInstance.contract_key_with_maintainers:type_name -> com.digitalasset.daml.lf.transaction.KeyWithMaintainers
-	10, // 10: com.digitalasset.daml.lf.transaction.Node.Fetch.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
-	10, // 11: com.digitalasset.daml.lf.transaction.Node.Fetch.interface_id:type_name -> com.digitalasset.daml.lf.value.Identifier
+	11, // 10: com.digitalasset.daml.lf.transaction.Node.Fetch.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
+	11, // 11: com.digitalasset.daml.lf.transaction.Node.Fetch.interface_id:type_name -> com.digitalasset.daml.lf.value.Identifier
 	5,  // 12: com.digitalasset.daml.lf.transaction.Node.Fetch.key_with_maintainers:type_name -> com.digitalasset.daml.lf.transaction.KeyWithMaintainers
-	6,  // 13: com.digitalasset.daml.lf.transaction.Node.Exercise.fetch:type_name -> com.digitalasset.daml.lf.transaction.Node.Fetch
-	10, // 14: com.digitalasset.daml.lf.transaction.Node.Exercise.interface_id:type_name -> com.digitalasset.daml.lf.value.Identifier
-	10, // 15: com.digitalasset.daml.lf.transaction.Node.QueryByKey.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
-	5,  // 16: com.digitalasset.daml.lf.transaction.Node.QueryByKey.key_with_maintainers:type_name -> com.digitalasset.daml.lf.transaction.KeyWithMaintainers
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	7,  // 13: com.digitalasset.daml.lf.transaction.Node.Exercise.fetch:type_name -> com.digitalasset.daml.lf.transaction.Node.Fetch
+	11, // 14: com.digitalasset.daml.lf.transaction.Node.Exercise.interface_id:type_name -> com.digitalasset.daml.lf.value.Identifier
+	6,  // 15: com.digitalasset.daml.lf.transaction.Node.Exercise.external_call_results:type_name -> com.digitalasset.daml.lf.transaction.ExternalCallResult
+	11, // 16: com.digitalasset.daml.lf.transaction.Node.QueryByKey.template_id:type_name -> com.digitalasset.daml.lf.value.Identifier
+	5,  // 17: com.digitalasset.daml.lf.transaction.Node.QueryByKey.key_with_maintainers:type_name -> com.digitalasset.daml.lf.transaction.KeyWithMaintainers
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_daml_lf_transaction_proto_init() }
@@ -1014,7 +1108,7 @@ func file_com_digitalasset_daml_lf_transaction_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_daml_lf_transaction_proto_rawDesc), len(file_com_digitalasset_daml_lf_transaction_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

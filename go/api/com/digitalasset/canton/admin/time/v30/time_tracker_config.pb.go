@@ -29,6 +29,7 @@ type TimeProofRequestConfig struct {
 	InitialRetryDelay  *durationpb.Duration   `protobuf:"bytes,1,opt,name=initial_retry_delay,json=initialRetryDelay,proto3" json:"initial_retry_delay,omitempty"`
 	MaxRetryDelay      *durationpb.Duration   `protobuf:"bytes,2,opt,name=max_retry_delay,json=maxRetryDelay,proto3" json:"max_retry_delay,omitempty"`
 	MaxSequencingDelay *durationpb.Duration   `protobuf:"bytes,3,opt,name=max_sequencing_delay,json=maxSequencingDelay,proto3" json:"max_sequencing_delay,omitempty"`
+	RequestTimeout     *durationpb.Duration   `protobuf:"bytes,4,opt,name=request_timeout,json=requestTimeout,proto3" json:"request_timeout,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -80,6 +81,13 @@ func (x *TimeProofRequestConfig) GetMaxRetryDelay() *durationpb.Duration {
 func (x *TimeProofRequestConfig) GetMaxSequencingDelay() *durationpb.Duration {
 	if x != nil {
 		return x.MaxSequencingDelay
+	}
+	return nil
+}
+
+func (x *TimeProofRequestConfig) GetRequestTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.RequestTimeout
 	}
 	return nil
 }
@@ -156,11 +164,12 @@ var File_com_digitalasset_canton_admin_time_v30_time_tracker_config_proto protor
 
 const file_com_digitalasset_canton_admin_time_v30_time_tracker_config_proto_rawDesc = "" +
 	"\n" +
-	"@com/digitalasset/canton/admin/time/v30/time_tracker_config.proto\x12&com.digitalasset.canton.admin.time.v30\x1a\x1egoogle/protobuf/duration.proto\"\xf3\x01\n" +
+	"@com/digitalasset/canton/admin/time/v30/time_tracker_config.proto\x12&com.digitalasset.canton.admin.time.v30\x1a\x1egoogle/protobuf/duration.proto\"\xb7\x02\n" +
 	"\x16TimeProofRequestConfig\x12I\n" +
 	"\x13initial_retry_delay\x18\x01 \x01(\v2\x19.google.protobuf.DurationR\x11initialRetryDelay\x12A\n" +
 	"\x0fmax_retry_delay\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\rmaxRetryDelay\x12K\n" +
-	"\x14max_sequencing_delay\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x12maxSequencingDelay\"\xf6\x02\n" +
+	"\x14max_sequencing_delay\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x12maxSequencingDelay\x12B\n" +
+	"\x0frequest_timeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\x0erequestTimeout\"\xf6\x02\n" +
 	"\x1dSynchronizerTimeTrackerConfig\x12J\n" +
 	"\x13observation_latency\x18\x01 \x01(\v2\x19.google.protobuf.DurationR\x12observationLatency\x12F\n" +
 	"\x11patience_duration\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\x10patienceDuration\x12S\n" +
@@ -189,15 +198,16 @@ var file_com_digitalasset_canton_admin_time_v30_time_tracker_config_proto_depIdx
 	2, // 0: com.digitalasset.canton.admin.time.v30.TimeProofRequestConfig.initial_retry_delay:type_name -> google.protobuf.Duration
 	2, // 1: com.digitalasset.canton.admin.time.v30.TimeProofRequestConfig.max_retry_delay:type_name -> google.protobuf.Duration
 	2, // 2: com.digitalasset.canton.admin.time.v30.TimeProofRequestConfig.max_sequencing_delay:type_name -> google.protobuf.Duration
-	2, // 3: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.observation_latency:type_name -> google.protobuf.Duration
-	2, // 4: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.patience_duration:type_name -> google.protobuf.Duration
-	2, // 5: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.min_observation_duration:type_name -> google.protobuf.Duration
-	0, // 6: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.time_proof_request:type_name -> com.digitalasset.canton.admin.time.v30.TimeProofRequestConfig
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	2, // 3: com.digitalasset.canton.admin.time.v30.TimeProofRequestConfig.request_timeout:type_name -> google.protobuf.Duration
+	2, // 4: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.observation_latency:type_name -> google.protobuf.Duration
+	2, // 5: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.patience_duration:type_name -> google.protobuf.Duration
+	2, // 6: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.min_observation_duration:type_name -> google.protobuf.Duration
+	0, // 7: com.digitalasset.canton.admin.time.v30.SynchronizerTimeTrackerConfig.time_proof_request:type_name -> com.digitalasset.canton.admin.time.v30.TimeProofRequestConfig
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_time_v30_time_tracker_config_proto_init() }

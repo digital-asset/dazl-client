@@ -6,6 +6,8 @@ import datetime
 
 from ....protocol.v30 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v30 import traffic_control_parameters_pb2 as _traffic_control_parameters_pb2
+from ....protocol.v31 import sequencing_pb2 as _sequencing_pb2_1
+from ....protocol.v32 import sequencing_pb2 as _sequencing_pb2_1_1
 from . import sequencer_initialization_snapshot_pb2 as _sequencer_initialization_snapshot_pb2
 from ....topology.admin.v30 import common_pb2 as _common_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
@@ -197,14 +199,18 @@ class OnboardingStateResponse(_message.Message):
     def __init__(self, onboarding_state_for_sequencer: _Optional[bytes] = ...) -> None: ...
 
 class OnboardingStateForSequencer(_message.Message):
-    __slots__ = ("topology_snapshot", "static_synchronizer_parameters", "sequencer_snapshot")
+    __slots__ = ("topology_snapshot", "v30", "v31", "v32", "sequencer_snapshot")
     TOPOLOGY_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
-    STATIC_SYNCHRONIZER_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
+    V30_FIELD_NUMBER: _ClassVar[int]
+    V31_FIELD_NUMBER: _ClassVar[int]
+    V32_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
     topology_snapshot: _common_pb2.TopologyTransactions
-    static_synchronizer_parameters: _sequencing_pb2.StaticSynchronizerParameters
+    v30: _sequencing_pb2.StaticSynchronizerParameters
+    v31: _sequencing_pb2_1.StaticSynchronizerParameters
+    v32: _sequencing_pb2_1_1.StaticSynchronizerParameters
     sequencer_snapshot: _sequencer_initialization_snapshot_pb2.SequencerSnapshot
-    def __init__(self, topology_snapshot: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ..., static_synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., sequencer_snapshot: _Optional[_Union[_sequencer_initialization_snapshot_pb2.SequencerSnapshot, _Mapping]] = ...) -> None: ...
+    def __init__(self, topology_snapshot: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ..., v30: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., v31: _Optional[_Union[_sequencing_pb2_1.StaticSynchronizerParameters, _Mapping]] = ..., v32: _Optional[_Union[_sequencing_pb2_1_1.StaticSynchronizerParameters, _Mapping]] = ..., sequencer_snapshot: _Optional[_Union[_sequencer_initialization_snapshot_pb2.SequencerSnapshot, _Mapping]] = ...) -> None: ...
 
 class OnboardingStateV2Request(_message.Message):
     __slots__ = ("sequencer_uid", "timestamp")

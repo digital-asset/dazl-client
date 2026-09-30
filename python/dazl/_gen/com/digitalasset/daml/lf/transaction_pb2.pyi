@@ -57,7 +57,7 @@ class Node(_message.Message):
         by_key: bool
         def __init__(self, contract_id: _Optional[bytes] = ..., package_name: _Optional[str] = ..., template_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., non_maintainer_signatories: _Optional[_Iterable[str]] = ..., non_signatory_stakeholders: _Optional[_Iterable[str]] = ..., actors: _Optional[_Iterable[str]] = ..., key_with_maintainers: _Optional[_Union[KeyWithMaintainers, _Mapping]] = ..., by_key: _Optional[bool] = ...) -> None: ...
     class Exercise(_message.Message):
-        __slots__ = ("fetch", "interface_id", "choice", "arg", "consuming", "children", "result", "observers", "authorizers")
+        __slots__ = ("fetch", "interface_id", "choice", "arg", "consuming", "children", "result", "observers", "authorizers", "external_call_results")
         FETCH_FIELD_NUMBER: _ClassVar[int]
         INTERFACE_ID_FIELD_NUMBER: _ClassVar[int]
         CHOICE_FIELD_NUMBER: _ClassVar[int]
@@ -67,6 +67,7 @@ class Node(_message.Message):
         RESULT_FIELD_NUMBER: _ClassVar[int]
         OBSERVERS_FIELD_NUMBER: _ClassVar[int]
         AUTHORIZERS_FIELD_NUMBER: _ClassVar[int]
+        EXTERNAL_CALL_RESULTS_FIELD_NUMBER: _ClassVar[int]
         fetch: Node.Fetch
         interface_id: _value_pb2.Identifier
         choice: str
@@ -76,7 +77,8 @@ class Node(_message.Message):
         result: bytes
         observers: _containers.RepeatedScalarFieldContainer[str]
         authorizers: _containers.RepeatedScalarFieldContainer[str]
-        def __init__(self, fetch: _Optional[_Union[Node.Fetch, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., arg: _Optional[bytes] = ..., consuming: _Optional[bool] = ..., children: _Optional[_Iterable[str]] = ..., result: _Optional[bytes] = ..., observers: _Optional[_Iterable[str]] = ..., authorizers: _Optional[_Iterable[str]] = ...) -> None: ...
+        external_call_results: _containers.RepeatedCompositeFieldContainer[ExternalCallResult]
+        def __init__(self, fetch: _Optional[_Union[Node.Fetch, _Mapping]] = ..., interface_id: _Optional[_Union[_value_pb2.Identifier, _Mapping]] = ..., choice: _Optional[str] = ..., arg: _Optional[bytes] = ..., consuming: _Optional[bool] = ..., children: _Optional[_Iterable[str]] = ..., result: _Optional[bytes] = ..., observers: _Optional[_Iterable[str]] = ..., authorizers: _Optional[_Iterable[str]] = ..., external_call_results: _Optional[_Iterable[_Union[ExternalCallResult, _Mapping]]] = ...) -> None: ...
     class Rollback(_message.Message):
         __slots__ = ("children",)
         CHILDREN_FIELD_NUMBER: _ClassVar[int]
@@ -152,3 +154,17 @@ class KeyWithMaintainers(_message.Message):
     maintainers: _containers.RepeatedScalarFieldContainer[str]
     hash: bytes
     def __init__(self, key: _Optional[bytes] = ..., maintainers: _Optional[_Iterable[str]] = ..., hash: _Optional[bytes] = ...) -> None: ...
+
+class ExternalCallResult(_message.Message):
+    __slots__ = ("extension_id", "function_id", "config", "input", "output")
+    EXTENSION_ID_FIELD_NUMBER: _ClassVar[int]
+    FUNCTION_ID_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_FIELD_NUMBER: _ClassVar[int]
+    INPUT_FIELD_NUMBER: _ClassVar[int]
+    OUTPUT_FIELD_NUMBER: _ClassVar[int]
+    extension_id: str
+    function_id: str
+    config: bytes
+    input: bytes
+    output: bytes
+    def __init__(self, extension_id: _Optional[str] = ..., function_id: _Optional[str] = ..., config: _Optional[bytes] = ..., input: _Optional[bytes] = ..., output: _Optional[bytes] = ...) -> None: ...

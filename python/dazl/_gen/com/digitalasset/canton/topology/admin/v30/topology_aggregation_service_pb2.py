@@ -31,7 +31,7 @@ from ....protocol.v30 import topology_pb2 as com_dot_digitalasset_dot_canton_dot
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nMcom/digitalasset/canton/topology/admin/v30/topology_aggregation_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a\x33\x63om/digitalasset/canton/protocol/v30/topology.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd8\x01\n\x12ListPartiesRequest\x12/\n\x05\x61s_of\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x61sOf\x12\x14\n\x05limit\x18\x02 \x01(\x05R\x05limit\x12)\n\x10synchronizer_ids\x18\x03 \x03(\tR\x0fsynchronizerIds\x12!\n\x0c\x66ilter_party\x18\x04 \x01(\tR\x0b\x66ilterParty\x12-\n\x12\x66ilter_participant\x18\x05 \x01(\tR\x11\x66ilterParticipant\"\xe6\x05\n\x13ListPartiesResponse\x12`\n\x07results\x18\x02 \x03(\x0b\x32\x46.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.ResultR\x07results\x1a\xec\x04\n\x06Result\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12\x83\x01\n\x0cparticipants\x18\x02 \x03(\x0b\x32_.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizersR\x0cparticipants\x1a\xc5\x03\n\x18ParticipantSynchronizers\x12\'\n\x0fparticipant_uid\x18\x01 \x01(\tR\x0eparticipantUid\x12\x9d\x01\n\rsynchronizers\x18\x02 \x03(\x0b\x32w.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissionsR\rsynchronizers\x1a\xdf\x01\n\x17SynchronizerPermissions\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12\x61\n\npermission\x18\x02 \x01(\x0e\x32\x41.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\npermission\x12\x38\n\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\"\xec\x01\n\x14ListKeyOwnersRequest\x12/\n\x05\x61s_of\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x61sOf\x12\x14\n\x05limit\x18\x02 \x01(\x05R\x05limit\x12)\n\x10synchronizer_ids\x18\x03 \x03(\tR\x0fsynchronizerIds\x12\x31\n\x15\x66ilter_key_owner_type\x18\x04 \x01(\tR\x12\x66ilterKeyOwnerType\x12/\n\x14\x66ilter_key_owner_uid\x18\x05 \x01(\tR\x11\x66ilterKeyOwnerUid\"\xc1\x03\n\x15ListKeyOwnersResponse\x12\x62\n\x07results\x18\x01 \x03(\x0b\x32H.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.ResultR\x07results\x1a\xc3\x02\n\x06Result\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12\x1b\n\tkey_owner\x18\x02 \x01(\tR\x08keyOwner\x12W\n\x0csigning_keys\x18\x03 \x03(\x0b\x32\x34.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\x0bsigningKeys\x12`\n\x0f\x65ncryption_keys\x18\x04 \x03(\x0b\x32\x37.com.digitalasset.canton.crypto.v30.EncryptionPublicKeyR\x0e\x65ncryptionKeys\x12\x38\n\x18physical_synchronizer_id\x18\x05 \x01(\tR\x16physicalSynchronizerId2\xc4\x02\n\x1aTopologyAggregationService\x12\x8e\x01\n\x0bListParties\x12>.com.digitalasset.canton.topology.admin.v30.ListPartiesRequest\x1a?.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse\x12\x94\x01\n\rListKeyOwners\x12@.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest\x1a\x41.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponseB[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nMcom/digitalasset/canton/topology/admin/v30/topology_aggregation_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a\x33\x63om/digitalasset/canton/protocol/v30/topology.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"?\n\x16\x42\x61seAggregationRequest\x12%\n\x0e\x63lient_version\x18\x01 \x01(\tR\rclientVersion\"\xd8\x01\n\x12ListPartiesRequest\x12/\n\x05\x61s_of\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x61sOf\x12\x14\n\x05limit\x18\x02 \x01(\x05R\x05limit\x12)\n\x10synchronizer_ids\x18\x03 \x03(\tR\x0fsynchronizerIds\x12!\n\x0c\x66ilter_party\x18\x04 \x01(\tR\x0b\x66ilterParty\x12-\n\x12\x66ilter_participant\x18\x05 \x01(\tR\x11\x66ilterParticipant\"\xe6\x05\n\x13ListPartiesResponse\x12`\n\x07results\x18\x02 \x03(\x0b\x32\x46.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.ResultR\x07results\x1a\xec\x04\n\x06Result\x12\x14\n\x05party\x18\x01 \x01(\tR\x05party\x12\x83\x01\n\x0cparticipants\x18\x02 \x03(\x0b\x32_.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizersR\x0cparticipants\x1a\xc5\x03\n\x18ParticipantSynchronizers\x12\'\n\x0fparticipant_uid\x18\x01 \x01(\tR\x0eparticipantUid\x12\x9d\x01\n\rsynchronizers\x18\x02 \x03(\x0b\x32w.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissionsR\rsynchronizers\x1a\xdf\x01\n\x17SynchronizerPermissions\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12\x61\n\npermission\x18\x02 \x01(\x0e\x32\x41.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\npermission\x12\x38\n\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\"\x8d\x03\n\x14ListKeyOwnersRequest\x12/\n\x05\x61s_of\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04\x61sOf\x12\x14\n\x05limit\x18\x02 \x01(\x05R\x05limit\x12)\n\x10synchronizer_ids\x18\x03 \x03(\tR\x0fsynchronizerIds\x12\x31\n\x15\x66ilter_key_owner_type\x18\x04 \x01(\tR\x12\x66ilterKeyOwnerType\x12/\n\x14\x66ilter_key_owner_uid\x18\x05 \x01(\tR\x11\x66ilterKeyOwnerUid\x12\x81\x01\n\x18\x62\x61se_aggregation_request\x18\x06 \x01(\x0b\x32\x42.com.digitalasset.canton.topology.admin.v30.BaseAggregationRequestH\x00R\x16\x62\x61seAggregationRequest\x88\x01\x01\x42\x1b\n\x19_base_aggregation_request\"\xc8\x03\n\x15ListKeyOwnersResponse\x12\x62\n\x07results\x18\x01 \x03(\x0b\x32H.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.ResultR\x07results\x1a\xca\x02\n\x06Result\x12\'\n\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12\x1b\n\tkey_owner\x18\x02 \x01(\tR\x08keyOwner\x12^\n\x10signing_keys_v30\x18\x03 \x03(\x0b\x32\x34.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\x0esigningKeysV30\x12`\n\x0f\x65ncryption_keys\x18\x04 \x03(\x0b\x32\x37.com.digitalasset.canton.crypto.v30.EncryptionPublicKeyR\x0e\x65ncryptionKeys\x12\x38\n\x18physical_synchronizer_id\x18\x05 \x01(\tR\x16physicalSynchronizerId2\xc4\x02\n\x1aTopologyAggregationService\x12\x8e\x01\n\x0bListParties\x12>.com.digitalasset.canton.topology.admin.v30.ListPartiesRequest\x1a?.com.digitalasset.canton.topology.admin.v30.ListPartiesResponse\x12\x94\x01\n\rListKeyOwners\x12@.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest\x1a\x41.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponseB[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,22 +39,24 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'com.digitalasset.canton.top
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30'
-  _globals['_LISTPARTIESREQUEST']._serialized_start=261
-  _globals['_LISTPARTIESREQUEST']._serialized_end=477
-  _globals['_LISTPARTIESRESPONSE']._serialized_start=480
-  _globals['_LISTPARTIESRESPONSE']._serialized_end=1222
-  _globals['_LISTPARTIESRESPONSE_RESULT']._serialized_start=602
-  _globals['_LISTPARTIESRESPONSE_RESULT']._serialized_end=1222
-  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS']._serialized_start=769
-  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS']._serialized_end=1222
-  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS_SYNCHRONIZERPERMISSIONS']._serialized_start=999
-  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS_SYNCHRONIZERPERMISSIONS']._serialized_end=1222
-  _globals['_LISTKEYOWNERSREQUEST']._serialized_start=1225
-  _globals['_LISTKEYOWNERSREQUEST']._serialized_end=1461
-  _globals['_LISTKEYOWNERSRESPONSE']._serialized_start=1464
-  _globals['_LISTKEYOWNERSRESPONSE']._serialized_end=1913
-  _globals['_LISTKEYOWNERSRESPONSE_RESULT']._serialized_start=1590
-  _globals['_LISTKEYOWNERSRESPONSE_RESULT']._serialized_end=1913
-  _globals['_TOPOLOGYAGGREGATIONSERVICE']._serialized_start=1916
-  _globals['_TOPOLOGYAGGREGATIONSERVICE']._serialized_end=2240
+  _globals['_BASEAGGREGATIONREQUEST']._serialized_start=260
+  _globals['_BASEAGGREGATIONREQUEST']._serialized_end=323
+  _globals['_LISTPARTIESREQUEST']._serialized_start=326
+  _globals['_LISTPARTIESREQUEST']._serialized_end=542
+  _globals['_LISTPARTIESRESPONSE']._serialized_start=545
+  _globals['_LISTPARTIESRESPONSE']._serialized_end=1287
+  _globals['_LISTPARTIESRESPONSE_RESULT']._serialized_start=667
+  _globals['_LISTPARTIESRESPONSE_RESULT']._serialized_end=1287
+  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS']._serialized_start=834
+  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS']._serialized_end=1287
+  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS_SYNCHRONIZERPERMISSIONS']._serialized_start=1064
+  _globals['_LISTPARTIESRESPONSE_RESULT_PARTICIPANTSYNCHRONIZERS_SYNCHRONIZERPERMISSIONS']._serialized_end=1287
+  _globals['_LISTKEYOWNERSREQUEST']._serialized_start=1290
+  _globals['_LISTKEYOWNERSREQUEST']._serialized_end=1687
+  _globals['_LISTKEYOWNERSRESPONSE']._serialized_start=1690
+  _globals['_LISTKEYOWNERSRESPONSE']._serialized_end=2146
+  _globals['_LISTKEYOWNERSRESPONSE_RESULT']._serialized_start=1816
+  _globals['_LISTKEYOWNERSRESPONSE_RESULT']._serialized_end=2146
+  _globals['_TOPOLOGYAGGREGATIONSERVICE']._serialized_start=2149
+  _globals['_TOPOLOGYAGGREGATIONSERVICE']._serialized_end=2473
 # @@protoc_insertion_point(module_scope)

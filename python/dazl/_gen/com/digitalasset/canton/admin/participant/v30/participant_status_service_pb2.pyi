@@ -3,6 +3,7 @@
 # fmt: off
 # isort: skip_file
 from ...health.v30 import status_service_pb2 as _status_service_pb2
+from ....topology.admin.v30 import common_pb2 as _common_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -13,8 +14,10 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ParticipantStatusRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: _common_pb2.Synchronizer
+    def __init__(self, synchronizer_id: _Optional[_Union[_common_pb2.Synchronizer, _Mapping]] = ...) -> None: ...
 
 class ConnectedSynchronizer(_message.Message):
     __slots__ = ("physical_synchronizer_id", "health")

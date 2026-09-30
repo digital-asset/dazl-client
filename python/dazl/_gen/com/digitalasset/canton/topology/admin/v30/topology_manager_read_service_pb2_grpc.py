@@ -153,6 +153,11 @@ class TopologyManagerReadServiceStub:
                 request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateResponse.FromString,
                 _registered_method=True)
+        self.GenerateOnboardingTopologyTransactions = channel.unary_unary(
+                '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenerateOnboardingTopologyTransactions',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenerateOnboardingTopologyTransactionsRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenerateOnboardingTopologyTransactionsResponse.FromString,
+                _registered_method=True)
 
 
 class TopologyManagerReadServiceServicer:
@@ -296,6 +301,12 @@ class TopologyManagerReadServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GenerateOnboardingTopologyTransactions(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -413,6 +424,11 @@ def add_TopologyManagerReadServiceServicer_to_server(servicer, server):
                     servicer.SequencerLsuState,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateResponse.SerializeToString,
+            ),
+            'GenerateOnboardingTopologyTransactions': grpc.unary_unary_rpc_method_handler(
+                    servicer.GenerateOnboardingTopologyTransactions,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenerateOnboardingTopologyTransactionsRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenerateOnboardingTopologyTransactionsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1036,6 +1052,33 @@ class TopologyManagerReadService:
             '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/SequencerLsuState',
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.SequencerLsuStateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GenerateOnboardingTopologyTransactions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenerateOnboardingTopologyTransactions',
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenerateOnboardingTopologyTransactionsRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_topology_dot_admin_dot_v30_dot_topology__manager__read__service__pb2.GenerateOnboardingTopologyTransactionsResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -25,7 +25,6 @@ const (
 	InteractiveSubmissionService_ExecuteSubmission_FullMethodName                      = "/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmission"
 	InteractiveSubmissionService_ExecuteSubmissionAndWait_FullMethodName               = "/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmissionAndWait"
 	InteractiveSubmissionService_ExecuteSubmissionAndWaitForTransaction_FullMethodName = "/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmissionAndWaitForTransaction"
-	InteractiveSubmissionService_GetPreferredPackageVersion_FullMethodName             = "/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/GetPreferredPackageVersion"
 	InteractiveSubmissionService_GetPreferredPackages_FullMethodName                   = "/com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/GetPreferredPackages"
 )
 
@@ -37,7 +36,6 @@ type InteractiveSubmissionServiceClient interface {
 	ExecuteSubmission(ctx context.Context, in *ExecuteSubmissionRequest, opts ...grpc.CallOption) (*ExecuteSubmissionResponse, error)
 	ExecuteSubmissionAndWait(ctx context.Context, in *ExecuteSubmissionAndWaitRequest, opts ...grpc.CallOption) (*ExecuteSubmissionAndWaitResponse, error)
 	ExecuteSubmissionAndWaitForTransaction(ctx context.Context, in *ExecuteSubmissionAndWaitForTransactionRequest, opts ...grpc.CallOption) (*ExecuteSubmissionAndWaitForTransactionResponse, error)
-	GetPreferredPackageVersion(ctx context.Context, in *GetPreferredPackageVersionRequest, opts ...grpc.CallOption) (*GetPreferredPackageVersionResponse, error)
 	GetPreferredPackages(ctx context.Context, in *GetPreferredPackagesRequest, opts ...grpc.CallOption) (*GetPreferredPackagesResponse, error)
 }
 
@@ -89,16 +87,6 @@ func (c *interactiveSubmissionServiceClient) ExecuteSubmissionAndWaitForTransact
 	return out, nil
 }
 
-func (c *interactiveSubmissionServiceClient) GetPreferredPackageVersion(ctx context.Context, in *GetPreferredPackageVersionRequest, opts ...grpc.CallOption) (*GetPreferredPackageVersionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetPreferredPackageVersionResponse)
-	err := c.cc.Invoke(ctx, InteractiveSubmissionService_GetPreferredPackageVersion_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *interactiveSubmissionServiceClient) GetPreferredPackages(ctx context.Context, in *GetPreferredPackagesRequest, opts ...grpc.CallOption) (*GetPreferredPackagesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetPreferredPackagesResponse)
@@ -117,7 +105,6 @@ type InteractiveSubmissionServiceServer interface {
 	ExecuteSubmission(context.Context, *ExecuteSubmissionRequest) (*ExecuteSubmissionResponse, error)
 	ExecuteSubmissionAndWait(context.Context, *ExecuteSubmissionAndWaitRequest) (*ExecuteSubmissionAndWaitResponse, error)
 	ExecuteSubmissionAndWaitForTransaction(context.Context, *ExecuteSubmissionAndWaitForTransactionRequest) (*ExecuteSubmissionAndWaitForTransactionResponse, error)
-	GetPreferredPackageVersion(context.Context, *GetPreferredPackageVersionRequest) (*GetPreferredPackageVersionResponse, error)
 	GetPreferredPackages(context.Context, *GetPreferredPackagesRequest) (*GetPreferredPackagesResponse, error)
 	mustEmbedUnimplementedInteractiveSubmissionServiceServer()
 }
@@ -140,9 +127,6 @@ func (UnimplementedInteractiveSubmissionServiceServer) ExecuteSubmissionAndWait(
 }
 func (UnimplementedInteractiveSubmissionServiceServer) ExecuteSubmissionAndWaitForTransaction(context.Context, *ExecuteSubmissionAndWaitForTransactionRequest) (*ExecuteSubmissionAndWaitForTransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExecuteSubmissionAndWaitForTransaction not implemented")
-}
-func (UnimplementedInteractiveSubmissionServiceServer) GetPreferredPackageVersion(context.Context, *GetPreferredPackageVersionRequest) (*GetPreferredPackageVersionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPreferredPackageVersion not implemented")
 }
 func (UnimplementedInteractiveSubmissionServiceServer) GetPreferredPackages(context.Context, *GetPreferredPackagesRequest) (*GetPreferredPackagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPreferredPackages not implemented")
@@ -241,24 +225,6 @@ func _InteractiveSubmissionService_ExecuteSubmissionAndWaitForTransaction_Handle
 	return interceptor(ctx, in, info, handler)
 }
 
-func _InteractiveSubmissionService_GetPreferredPackageVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPreferredPackageVersionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(InteractiveSubmissionServiceServer).GetPreferredPackageVersion(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: InteractiveSubmissionService_GetPreferredPackageVersion_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InteractiveSubmissionServiceServer).GetPreferredPackageVersion(ctx, req.(*GetPreferredPackageVersionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _InteractiveSubmissionService_GetPreferredPackages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetPreferredPackagesRequest)
 	if err := dec(in); err != nil {
@@ -299,10 +265,6 @@ var InteractiveSubmissionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExecuteSubmissionAndWaitForTransaction",
 			Handler:    _InteractiveSubmissionService_ExecuteSubmissionAndWaitForTransaction_Handler,
-		},
-		{
-			MethodName: "GetPreferredPackageVersion",
-			Handler:    _InteractiveSubmissionService_GetPreferredPackageVersion_Handler,
 		},
 		{
 			MethodName: "GetPreferredPackages",

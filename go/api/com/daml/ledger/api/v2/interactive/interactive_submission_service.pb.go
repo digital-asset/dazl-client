@@ -34,6 +34,7 @@ const (
 	HashingSchemeVersion_HASHING_SCHEME_VERSION_UNSPECIFIED HashingSchemeVersion = 0
 	HashingSchemeVersion_HASHING_SCHEME_VERSION_V2          HashingSchemeVersion = 2
 	HashingSchemeVersion_HASHING_SCHEME_VERSION_V3          HashingSchemeVersion = 3
+	HashingSchemeVersion_HASHING_SCHEME_VERSION_V4          HashingSchemeVersion = 4
 )
 
 // Enum value maps for HashingSchemeVersion.
@@ -42,11 +43,13 @@ var (
 		0: "HASHING_SCHEME_VERSION_UNSPECIFIED",
 		2: "HASHING_SCHEME_VERSION_V2",
 		3: "HASHING_SCHEME_VERSION_V3",
+		4: "HASHING_SCHEME_VERSION_V4",
 	}
 	HashingSchemeVersion_value = map[string]int32{
 		"HASHING_SCHEME_VERSION_UNSPECIFIED": 0,
 		"HASHING_SCHEME_VERSION_V2":          2,
 		"HASHING_SCHEME_VERSION_V3":          3,
+		"HASHING_SCHEME_VERSION_V4":          4,
 	}
 )
 
@@ -129,19 +132,120 @@ func (x *CostEstimationHints) GetExpectedSignatures() []v2.SigningAlgorithmSpec 
 	return nil
 }
 
+type ReassignmentCost struct {
+	state                                     protoimpl.MessageState `protogen:"open.v1"`
+	SourceSynchronizerId                      string                 `protobuf:"bytes,1,opt,name=source_synchronizer_id,json=sourceSynchronizerId,proto3" json:"source_synchronizer_id,omitempty"`
+	TargetSynchronizerId                      string                 `protobuf:"bytes,2,opt,name=target_synchronizer_id,json=targetSynchronizerId,proto3" json:"target_synchronizer_id,omitempty"`
+	ContractIds                               []string               `protobuf:"bytes,3,rep,name=contract_ids,json=contractIds,proto3" json:"contract_ids,omitempty"`
+	UnassignmentRequestTrafficCostEstimation  uint64                 `protobuf:"varint,4,opt,name=unassignment_request_traffic_cost_estimation,json=unassignmentRequestTrafficCostEstimation,proto3" json:"unassignment_request_traffic_cost_estimation,omitempty"`
+	UnassignmentResponseTrafficCostEstimation uint64                 `protobuf:"varint,5,opt,name=unassignment_response_traffic_cost_estimation,json=unassignmentResponseTrafficCostEstimation,proto3" json:"unassignment_response_traffic_cost_estimation,omitempty"`
+	AssignmentRequestTrafficCostEstimation    uint64                 `protobuf:"varint,6,opt,name=assignment_request_traffic_cost_estimation,json=assignmentRequestTrafficCostEstimation,proto3" json:"assignment_request_traffic_cost_estimation,omitempty"`
+	AssignmentResponseTrafficCostEstimation   uint64                 `protobuf:"varint,7,opt,name=assignment_response_traffic_cost_estimation,json=assignmentResponseTrafficCostEstimation,proto3" json:"assignment_response_traffic_cost_estimation,omitempty"`
+	TotalReassignmentCostEstimation           uint64                 `protobuf:"varint,8,opt,name=total_reassignment_cost_estimation,json=totalReassignmentCostEstimation,proto3" json:"total_reassignment_cost_estimation,omitempty"`
+	unknownFields                             protoimpl.UnknownFields
+	sizeCache                                 protoimpl.SizeCache
+}
+
+func (x *ReassignmentCost) Reset() {
+	*x = ReassignmentCost{}
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReassignmentCost) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReassignmentCost) ProtoMessage() {}
+
+func (x *ReassignmentCost) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReassignmentCost.ProtoReflect.Descriptor instead.
+func (*ReassignmentCost) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ReassignmentCost) GetSourceSynchronizerId() string {
+	if x != nil {
+		return x.SourceSynchronizerId
+	}
+	return ""
+}
+
+func (x *ReassignmentCost) GetTargetSynchronizerId() string {
+	if x != nil {
+		return x.TargetSynchronizerId
+	}
+	return ""
+}
+
+func (x *ReassignmentCost) GetContractIds() []string {
+	if x != nil {
+		return x.ContractIds
+	}
+	return nil
+}
+
+func (x *ReassignmentCost) GetUnassignmentRequestTrafficCostEstimation() uint64 {
+	if x != nil {
+		return x.UnassignmentRequestTrafficCostEstimation
+	}
+	return 0
+}
+
+func (x *ReassignmentCost) GetUnassignmentResponseTrafficCostEstimation() uint64 {
+	if x != nil {
+		return x.UnassignmentResponseTrafficCostEstimation
+	}
+	return 0
+}
+
+func (x *ReassignmentCost) GetAssignmentRequestTrafficCostEstimation() uint64 {
+	if x != nil {
+		return x.AssignmentRequestTrafficCostEstimation
+	}
+	return 0
+}
+
+func (x *ReassignmentCost) GetAssignmentResponseTrafficCostEstimation() uint64 {
+	if x != nil {
+		return x.AssignmentResponseTrafficCostEstimation
+	}
+	return 0
+}
+
+func (x *ReassignmentCost) GetTotalReassignmentCostEstimation() uint64 {
+	if x != nil {
+		return x.TotalReassignmentCostEstimation
+	}
+	return 0
+}
+
 type CostEstimation struct {
 	state                                     protoimpl.MessageState `protogen:"open.v1"`
 	EstimationTimestamp                       *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=estimation_timestamp,json=estimationTimestamp,proto3" json:"estimation_timestamp,omitempty"`
 	ConfirmationRequestTrafficCostEstimation  uint64                 `protobuf:"varint,2,opt,name=confirmation_request_traffic_cost_estimation,json=confirmationRequestTrafficCostEstimation,proto3" json:"confirmation_request_traffic_cost_estimation,omitempty"`
 	ConfirmationResponseTrafficCostEstimation uint64                 `protobuf:"varint,3,opt,name=confirmation_response_traffic_cost_estimation,json=confirmationResponseTrafficCostEstimation,proto3" json:"confirmation_response_traffic_cost_estimation,omitempty"`
 	TotalTrafficCostEstimation                uint64                 `protobuf:"varint,4,opt,name=total_traffic_cost_estimation,json=totalTrafficCostEstimation,proto3" json:"total_traffic_cost_estimation,omitempty"`
+	ReassignmentCosts                         []*ReassignmentCost    `protobuf:"bytes,5,rep,name=reassignment_costs,json=reassignmentCosts,proto3" json:"reassignment_costs,omitempty"`
 	unknownFields                             protoimpl.UnknownFields
 	sizeCache                                 protoimpl.SizeCache
 }
 
 func (x *CostEstimation) Reset() {
 	*x = CostEstimation{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -153,7 +257,7 @@ func (x *CostEstimation) String() string {
 func (*CostEstimation) ProtoMessage() {}
 
 func (x *CostEstimation) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[1]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -166,7 +270,7 @@ func (x *CostEstimation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CostEstimation.ProtoReflect.Descriptor instead.
 func (*CostEstimation) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{1}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CostEstimation) GetEstimationTimestamp() *timestamppb.Timestamp {
@@ -197,6 +301,13 @@ func (x *CostEstimation) GetTotalTrafficCostEstimation() uint64 {
 	return 0
 }
 
+func (x *CostEstimation) GetReassignmentCosts() []*ReassignmentCost {
+	if x != nil {
+		return x.ReassignmentCosts
+	}
+	return nil
+}
+
 type PrepareSubmissionRequest struct {
 	state                        protoimpl.MessageState    `protogen:"open.v1"`
 	UserId                       string                    `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
@@ -220,7 +331,7 @@ type PrepareSubmissionRequest struct {
 
 func (x *PrepareSubmissionRequest) Reset() {
 	*x = PrepareSubmissionRequest{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -232,7 +343,7 @@ func (x *PrepareSubmissionRequest) String() string {
 func (*PrepareSubmissionRequest) ProtoMessage() {}
 
 func (x *PrepareSubmissionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[2]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -245,7 +356,7 @@ func (x *PrepareSubmissionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrepareSubmissionRequest.ProtoReflect.Descriptor instead.
 func (*PrepareSubmissionRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{2}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *PrepareSubmissionRequest) GetUserId() string {
@@ -366,7 +477,7 @@ type PrepareSubmissionResponse struct {
 
 func (x *PrepareSubmissionResponse) Reset() {
 	*x = PrepareSubmissionResponse{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -378,7 +489,7 @@ func (x *PrepareSubmissionResponse) String() string {
 func (*PrepareSubmissionResponse) ProtoMessage() {}
 
 func (x *PrepareSubmissionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[3]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -391,7 +502,7 @@ func (x *PrepareSubmissionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrepareSubmissionResponse.ProtoReflect.Descriptor instead.
 func (*PrepareSubmissionResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{3}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PrepareSubmissionResponse) GetPreparedTransaction() *PreparedTransaction {
@@ -439,7 +550,7 @@ type SinglePartySignatures struct {
 
 func (x *SinglePartySignatures) Reset() {
 	*x = SinglePartySignatures{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -451,7 +562,7 @@ func (x *SinglePartySignatures) String() string {
 func (*SinglePartySignatures) ProtoMessage() {}
 
 func (x *SinglePartySignatures) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[4]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -464,7 +575,7 @@ func (x *SinglePartySignatures) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SinglePartySignatures.ProtoReflect.Descriptor instead.
 func (*SinglePartySignatures) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{4}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SinglePartySignatures) GetParty() string {
@@ -490,7 +601,7 @@ type PartySignatures struct {
 
 func (x *PartySignatures) Reset() {
 	*x = PartySignatures{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[5]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -502,7 +613,7 @@ func (x *PartySignatures) String() string {
 func (*PartySignatures) ProtoMessage() {}
 
 func (x *PartySignatures) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[5]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -515,7 +626,7 @@ func (x *PartySignatures) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PartySignatures.ProtoReflect.Descriptor instead.
 func (*PartySignatures) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{5}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PartySignatures) GetSignatures() []*SinglePartySignatures {
@@ -544,7 +655,7 @@ type ExecuteSubmissionRequest struct {
 
 func (x *ExecuteSubmissionRequest) Reset() {
 	*x = ExecuteSubmissionRequest{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[6]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -556,7 +667,7 @@ func (x *ExecuteSubmissionRequest) String() string {
 func (*ExecuteSubmissionRequest) ProtoMessage() {}
 
 func (x *ExecuteSubmissionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[6]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -569,7 +680,7 @@ func (x *ExecuteSubmissionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExecuteSubmissionRequest.ProtoReflect.Descriptor instead.
 func (*ExecuteSubmissionRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{6}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ExecuteSubmissionRequest) GetPreparedTransaction() *PreparedTransaction {
@@ -665,7 +776,7 @@ type ExecuteSubmissionResponse struct {
 
 func (x *ExecuteSubmissionResponse) Reset() {
 	*x = ExecuteSubmissionResponse{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[7]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -677,7 +788,7 @@ func (x *ExecuteSubmissionResponse) String() string {
 func (*ExecuteSubmissionResponse) ProtoMessage() {}
 
 func (x *ExecuteSubmissionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[7]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -690,7 +801,7 @@ func (x *ExecuteSubmissionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExecuteSubmissionResponse.ProtoReflect.Descriptor instead.
 func (*ExecuteSubmissionResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{7}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{8}
 }
 
 type ExecuteSubmissionAndWaitRequest struct {
@@ -712,7 +823,7 @@ type ExecuteSubmissionAndWaitRequest struct {
 
 func (x *ExecuteSubmissionAndWaitRequest) Reset() {
 	*x = ExecuteSubmissionAndWaitRequest{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[8]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -724,7 +835,7 @@ func (x *ExecuteSubmissionAndWaitRequest) String() string {
 func (*ExecuteSubmissionAndWaitRequest) ProtoMessage() {}
 
 func (x *ExecuteSubmissionAndWaitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[8]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -737,7 +848,7 @@ func (x *ExecuteSubmissionAndWaitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExecuteSubmissionAndWaitRequest.ProtoReflect.Descriptor instead.
 func (*ExecuteSubmissionAndWaitRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{8}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ExecuteSubmissionAndWaitRequest) GetPreparedTransaction() *PreparedTransaction {
@@ -835,7 +946,7 @@ type ExecuteSubmissionAndWaitResponse struct {
 
 func (x *ExecuteSubmissionAndWaitResponse) Reset() {
 	*x = ExecuteSubmissionAndWaitResponse{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[9]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -847,7 +958,7 @@ func (x *ExecuteSubmissionAndWaitResponse) String() string {
 func (*ExecuteSubmissionAndWaitResponse) ProtoMessage() {}
 
 func (x *ExecuteSubmissionAndWaitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[9]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -860,7 +971,7 @@ func (x *ExecuteSubmissionAndWaitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExecuteSubmissionAndWaitResponse.ProtoReflect.Descriptor instead.
 func (*ExecuteSubmissionAndWaitResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{9}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ExecuteSubmissionAndWaitResponse) GetUpdateId() string {
@@ -897,7 +1008,7 @@ type ExecuteSubmissionAndWaitForTransactionRequest struct {
 
 func (x *ExecuteSubmissionAndWaitForTransactionRequest) Reset() {
 	*x = ExecuteSubmissionAndWaitForTransactionRequest{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[10]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -909,7 +1020,7 @@ func (x *ExecuteSubmissionAndWaitForTransactionRequest) String() string {
 func (*ExecuteSubmissionAndWaitForTransactionRequest) ProtoMessage() {}
 
 func (x *ExecuteSubmissionAndWaitForTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[10]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -922,7 +1033,7 @@ func (x *ExecuteSubmissionAndWaitForTransactionRequest) ProtoReflect() protorefl
 
 // Deprecated: Use ExecuteSubmissionAndWaitForTransactionRequest.ProtoReflect.Descriptor instead.
 func (*ExecuteSubmissionAndWaitForTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{10}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ExecuteSubmissionAndWaitForTransactionRequest) GetPreparedTransaction() *PreparedTransaction {
@@ -1026,7 +1137,7 @@ type ExecuteSubmissionAndWaitForTransactionResponse struct {
 
 func (x *ExecuteSubmissionAndWaitForTransactionResponse) Reset() {
 	*x = ExecuteSubmissionAndWaitForTransactionResponse{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[11]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1038,7 +1149,7 @@ func (x *ExecuteSubmissionAndWaitForTransactionResponse) String() string {
 func (*ExecuteSubmissionAndWaitForTransactionResponse) ProtoMessage() {}
 
 func (x *ExecuteSubmissionAndWaitForTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[11]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1051,7 +1162,7 @@ func (x *ExecuteSubmissionAndWaitForTransactionResponse) ProtoReflect() protoref
 
 // Deprecated: Use ExecuteSubmissionAndWaitForTransactionResponse.ProtoReflect.Descriptor instead.
 func (*ExecuteSubmissionAndWaitForTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{11}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ExecuteSubmissionAndWaitForTransactionResponse) GetTransaction() *v2.Transaction {
@@ -1074,7 +1185,7 @@ type MinLedgerTime struct {
 
 func (x *MinLedgerTime) Reset() {
 	*x = MinLedgerTime{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[12]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1086,7 +1197,7 @@ func (x *MinLedgerTime) String() string {
 func (*MinLedgerTime) ProtoMessage() {}
 
 func (x *MinLedgerTime) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[12]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1099,7 +1210,7 @@ func (x *MinLedgerTime) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MinLedgerTime.ProtoReflect.Descriptor instead.
 func (*MinLedgerTime) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{12}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *MinLedgerTime) GetTime() isMinLedgerTime_Time {
@@ -1153,7 +1264,7 @@ type PreparedTransaction struct {
 
 func (x *PreparedTransaction) Reset() {
 	*x = PreparedTransaction{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[13]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1165,7 +1276,7 @@ func (x *PreparedTransaction) String() string {
 func (*PreparedTransaction) ProtoMessage() {}
 
 func (x *PreparedTransaction) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[13]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1178,7 +1289,7 @@ func (x *PreparedTransaction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreparedTransaction.ProtoReflect.Descriptor instead.
 func (*PreparedTransaction) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{13}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PreparedTransaction) GetTransaction() *DamlTransaction {
@@ -1214,7 +1325,7 @@ type Metadata struct {
 
 func (x *Metadata) Reset() {
 	*x = Metadata{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[14]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1226,7 +1337,7 @@ func (x *Metadata) String() string {
 func (*Metadata) ProtoMessage() {}
 
 func (x *Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[14]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1239,7 +1350,7 @@ func (x *Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata.ProtoReflect.Descriptor instead.
 func (*Metadata) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{14}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Metadata) GetSubmitterInfo() *Metadata_SubmitterInfo {
@@ -1325,7 +1436,7 @@ type DamlTransaction struct {
 
 func (x *DamlTransaction) Reset() {
 	*x = DamlTransaction{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[15]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1337,7 +1448,7 @@ func (x *DamlTransaction) String() string {
 func (*DamlTransaction) ProtoMessage() {}
 
 func (x *DamlTransaction) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[15]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1350,7 +1461,7 @@ func (x *DamlTransaction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DamlTransaction.ProtoReflect.Descriptor instead.
 func (*DamlTransaction) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DamlTransaction) GetVersion() string {
@@ -1381,170 +1492,6 @@ func (x *DamlTransaction) GetNodeSeeds() []*DamlTransaction_NodeSeed {
 	return nil
 }
 
-type GetPreferredPackageVersionRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Parties        []string               `protobuf:"bytes,1,rep,name=parties,proto3" json:"parties,omitempty"`
-	PackageName    string                 `protobuf:"bytes,2,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	SynchronizerId string                 `protobuf:"bytes,3,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
-	VettingValidAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=vetting_valid_at,json=vettingValidAt,proto3" json:"vetting_valid_at,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *GetPreferredPackageVersionRequest) Reset() {
-	*x = GetPreferredPackageVersionRequest{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetPreferredPackageVersionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetPreferredPackageVersionRequest) ProtoMessage() {}
-
-func (x *GetPreferredPackageVersionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetPreferredPackageVersionRequest.ProtoReflect.Descriptor instead.
-func (*GetPreferredPackageVersionRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *GetPreferredPackageVersionRequest) GetParties() []string {
-	if x != nil {
-		return x.Parties
-	}
-	return nil
-}
-
-func (x *GetPreferredPackageVersionRequest) GetPackageName() string {
-	if x != nil {
-		return x.PackageName
-	}
-	return ""
-}
-
-func (x *GetPreferredPackageVersionRequest) GetSynchronizerId() string {
-	if x != nil {
-		return x.SynchronizerId
-	}
-	return ""
-}
-
-func (x *GetPreferredPackageVersionRequest) GetVettingValidAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.VettingValidAt
-	}
-	return nil
-}
-
-type GetPreferredPackageVersionResponse struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	PackagePreference *PackagePreference     `protobuf:"bytes,1,opt,name=package_preference,json=packagePreference,proto3" json:"package_preference,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *GetPreferredPackageVersionResponse) Reset() {
-	*x = GetPreferredPackageVersionResponse{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetPreferredPackageVersionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetPreferredPackageVersionResponse) ProtoMessage() {}
-
-func (x *GetPreferredPackageVersionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetPreferredPackageVersionResponse.ProtoReflect.Descriptor instead.
-func (*GetPreferredPackageVersionResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *GetPreferredPackageVersionResponse) GetPackagePreference() *PackagePreference {
-	if x != nil {
-		return x.PackagePreference
-	}
-	return nil
-}
-
-type PackagePreference struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	PackageReference *v2.PackageReference   `protobuf:"bytes,1,opt,name=package_reference,json=packageReference,proto3" json:"package_reference,omitempty"`
-	SynchronizerId   string                 `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *PackagePreference) Reset() {
-	*x = PackagePreference{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PackagePreference) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PackagePreference) ProtoMessage() {}
-
-func (x *PackagePreference) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PackagePreference.ProtoReflect.Descriptor instead.
-func (*PackagePreference) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *PackagePreference) GetPackageReference() *v2.PackageReference {
-	if x != nil {
-		return x.PackageReference
-	}
-	return nil
-}
-
-func (x *PackagePreference) GetSynchronizerId() string {
-	if x != nil {
-		return x.SynchronizerId
-	}
-	return ""
-}
-
 type PackageVettingRequirement struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Parties       []string               `protobuf:"bytes,1,rep,name=parties,proto3" json:"parties,omitempty"`
@@ -1555,7 +1502,7 @@ type PackageVettingRequirement struct {
 
 func (x *PackageVettingRequirement) Reset() {
 	*x = PackageVettingRequirement{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[19]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1567,7 +1514,7 @@ func (x *PackageVettingRequirement) String() string {
 func (*PackageVettingRequirement) ProtoMessage() {}
 
 func (x *PackageVettingRequirement) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[19]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1580,7 +1527,7 @@ func (x *PackageVettingRequirement) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PackageVettingRequirement.ProtoReflect.Descriptor instead.
 func (*PackageVettingRequirement) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{19}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *PackageVettingRequirement) GetParties() []string {
@@ -1608,7 +1555,7 @@ type GetPreferredPackagesRequest struct {
 
 func (x *GetPreferredPackagesRequest) Reset() {
 	*x = GetPreferredPackagesRequest{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[20]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1620,7 +1567,7 @@ func (x *GetPreferredPackagesRequest) String() string {
 func (*GetPreferredPackagesRequest) ProtoMessage() {}
 
 func (x *GetPreferredPackagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[20]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1633,7 +1580,7 @@ func (x *GetPreferredPackagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPreferredPackagesRequest.ProtoReflect.Descriptor instead.
 func (*GetPreferredPackagesRequest) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{20}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GetPreferredPackagesRequest) GetPackageVettingRequirements() []*PackageVettingRequirement {
@@ -1667,7 +1614,7 @@ type GetPreferredPackagesResponse struct {
 
 func (x *GetPreferredPackagesResponse) Reset() {
 	*x = GetPreferredPackagesResponse{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[21]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1679,7 +1626,7 @@ func (x *GetPreferredPackagesResponse) String() string {
 func (*GetPreferredPackagesResponse) ProtoMessage() {}
 
 func (x *GetPreferredPackagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[21]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1692,7 +1639,7 @@ func (x *GetPreferredPackagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPreferredPackagesResponse.ProtoReflect.Descriptor instead.
 func (*GetPreferredPackagesResponse) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{21}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetPreferredPackagesResponse) GetPackageReferences() []*v2.PackageReference {
@@ -1719,7 +1666,7 @@ type Metadata_SubmitterInfo struct {
 
 func (x *Metadata_SubmitterInfo) Reset() {
 	*x = Metadata_SubmitterInfo{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[22]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1731,7 +1678,7 @@ func (x *Metadata_SubmitterInfo) String() string {
 func (*Metadata_SubmitterInfo) ProtoMessage() {}
 
 func (x *Metadata_SubmitterInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[22]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1744,7 +1691,7 @@ func (x *Metadata_SubmitterInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata_SubmitterInfo.ProtoReflect.Descriptor instead.
 func (*Metadata_SubmitterInfo) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{14, 0}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15, 0}
 }
 
 func (x *Metadata_SubmitterInfo) GetActAs() []string {
@@ -1773,7 +1720,7 @@ type Metadata_GlobalKeyMappingEntry struct {
 
 func (x *Metadata_GlobalKeyMappingEntry) Reset() {
 	*x = Metadata_GlobalKeyMappingEntry{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[23]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1785,7 +1732,7 @@ func (x *Metadata_GlobalKeyMappingEntry) String() string {
 func (*Metadata_GlobalKeyMappingEntry) ProtoMessage() {}
 
 func (x *Metadata_GlobalKeyMappingEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[23]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1798,7 +1745,7 @@ func (x *Metadata_GlobalKeyMappingEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata_GlobalKeyMappingEntry.ProtoReflect.Descriptor instead.
 func (*Metadata_GlobalKeyMappingEntry) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{14, 1}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15, 1}
 }
 
 // Deprecated: Marked as deprecated in com/daml/ledger/api/v2/interactive/interactive_submission_service.proto.
@@ -1831,7 +1778,7 @@ type Metadata_InputContract struct {
 
 func (x *Metadata_InputContract) Reset() {
 	*x = Metadata_InputContract{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[24]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1843,7 +1790,7 @@ func (x *Metadata_InputContract) String() string {
 func (*Metadata_InputContract) ProtoMessage() {}
 
 func (x *Metadata_InputContract) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[24]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1856,7 +1803,7 @@ func (x *Metadata_InputContract) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata_InputContract.ProtoReflect.Descriptor instead.
 func (*Metadata_InputContract) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{14, 2}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15, 2}
 }
 
 func (x *Metadata_InputContract) GetContract() isMetadata_InputContract_Contract {
@@ -1909,7 +1856,7 @@ type DamlTransaction_NodeSeed struct {
 
 func (x *DamlTransaction_NodeSeed) Reset() {
 	*x = DamlTransaction_NodeSeed{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[25]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1921,7 +1868,7 @@ func (x *DamlTransaction_NodeSeed) String() string {
 func (*DamlTransaction_NodeSeed) ProtoMessage() {}
 
 func (x *DamlTransaction_NodeSeed) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[25]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1934,7 +1881,7 @@ func (x *DamlTransaction_NodeSeed) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DamlTransaction_NodeSeed.ProtoReflect.Descriptor instead.
 func (*DamlTransaction_NodeSeed) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15, 0}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{16, 0}
 }
 
 func (x *DamlTransaction_NodeSeed) GetNodeId() int32 {
@@ -1964,7 +1911,7 @@ type DamlTransaction_Node struct {
 
 func (x *DamlTransaction_Node) Reset() {
 	*x = DamlTransaction_Node{}
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[26]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1976,7 +1923,7 @@ func (x *DamlTransaction_Node) String() string {
 func (*DamlTransaction_Node) ProtoMessage() {}
 
 func (x *DamlTransaction_Node) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[26]
+	mi := &file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1989,7 +1936,7 @@ func (x *DamlTransaction_Node) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DamlTransaction_Node.ProtoReflect.Descriptor instead.
 func (*DamlTransaction_Node) Descriptor() ([]byte, []int) {
-	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{15, 1}
+	return file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDescGZIP(), []int{16, 1}
 }
 
 func (x *DamlTransaction_Node) GetNodeId() string {
@@ -2032,12 +1979,22 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"Gcom/daml/ledger/api/v2/interactive/interactive_submission_service.proto\x12\"com.daml.ledger.api.v2.interactive\x1a%com/daml/ledger/api/v2/commands.proto\x1a#com/daml/ledger/api/v2/crypto.proto\x1aKcom/daml/ledger/api/v2/interactive/interactive_submission_common_data.proto\x1aScom/daml/ledger/api/v2/interactive/transaction/v1/interactive_submission_data.proto\x1a.com/daml/ledger/api/v2/package_reference.proto\x1a(com/daml/ledger/api/v2/transaction.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\x1a\"com/daml/ledger/api/v2/value.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x01\n" +
 	"\x13CostEstimationHints\x12\x1a\n" +
 	"\bdisabled\x18\x01 \x01(\bR\bdisabled\x12]\n" +
-	"\x13expected_signatures\x18\x02 \x03(\x0e2,.com.daml.ledger.api.v2.SigningAlgorithmSpecR\x12expectedSignatures\"\xe4\x02\n" +
+	"\x13expected_signatures\x18\x02 \x03(\x0e2,.com.daml.ledger.api.v2.SigningAlgorithmSpecR\x12expectedSignatures\"\xea\x04\n" +
+	"\x10ReassignmentCost\x124\n" +
+	"\x16source_synchronizer_id\x18\x01 \x01(\tR\x14sourceSynchronizerId\x124\n" +
+	"\x16target_synchronizer_id\x18\x02 \x01(\tR\x14targetSynchronizerId\x12!\n" +
+	"\fcontract_ids\x18\x03 \x03(\tR\vcontractIds\x12^\n" +
+	",unassignment_request_traffic_cost_estimation\x18\x04 \x01(\x04R(unassignmentRequestTrafficCostEstimation\x12`\n" +
+	"-unassignment_response_traffic_cost_estimation\x18\x05 \x01(\x04R)unassignmentResponseTrafficCostEstimation\x12Z\n" +
+	"*assignment_request_traffic_cost_estimation\x18\x06 \x01(\x04R&assignmentRequestTrafficCostEstimation\x12\\\n" +
+	"+assignment_response_traffic_cost_estimation\x18\a \x01(\x04R'assignmentResponseTrafficCostEstimation\x12K\n" +
+	"\"total_reassignment_cost_estimation\x18\b \x01(\x04R\x1ftotalReassignmentCostEstimation\"\xc9\x03\n" +
 	"\x0eCostEstimation\x12M\n" +
 	"\x14estimation_timestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x13estimationTimestamp\x12^\n" +
 	",confirmation_request_traffic_cost_estimation\x18\x02 \x01(\x04R(confirmationRequestTrafficCostEstimation\x12`\n" +
 	"-confirmation_response_traffic_cost_estimation\x18\x03 \x01(\x04R)confirmationResponseTrafficCostEstimation\x12A\n" +
-	"\x1dtotal_traffic_cost_estimation\x18\x04 \x01(\x04R\x1atotalTrafficCostEstimation\"\xac\b\n" +
+	"\x1dtotal_traffic_cost_estimation\x18\x04 \x01(\x04R\x1atotalTrafficCostEstimation\x12c\n" +
+	"\x12reassignment_costs\x18\x05 \x03(\v24.com.daml.ledger.api.v2.interactive.ReassignmentCostR\x11reassignmentCosts\"\xac\b\n" +
 	"\x18PrepareSubmissionRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1d\n" +
 	"\n" +
@@ -2164,17 +2121,7 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x04Node\x12\x17\n" +
 	"\anode_id\x18\x01 \x01(\tR\x06nodeId\x12J\n" +
 	"\x02v1\x18\xe8\a \x01(\v27.com.daml.ledger.api.v2.interactive.transaction.v1.NodeH\x00R\x02v1B\x10\n" +
-	"\x0eversioned_node\"\xcf\x01\n" +
-	"!GetPreferredPackageVersionRequest\x12\x18\n" +
-	"\aparties\x18\x01 \x03(\tR\aparties\x12!\n" +
-	"\fpackage_name\x18\x02 \x01(\tR\vpackageName\x12'\n" +
-	"\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x12D\n" +
-	"\x10vetting_valid_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0evettingValidAt\"\x8a\x01\n" +
-	"\"GetPreferredPackageVersionResponse\x12d\n" +
-	"\x12package_preference\x18\x01 \x01(\v25.com.daml.ledger.api.v2.interactive.PackagePreferenceR\x11packagePreference\"\x93\x01\n" +
-	"\x11PackagePreference\x12U\n" +
-	"\x11package_reference\x18\x01 \x01(\v2(.com.daml.ledger.api.v2.PackageReferenceR\x10packageReference\x12'\n" +
-	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\"X\n" +
+	"\x0eversioned_node\"X\n" +
 	"\x19PackageVettingRequirement\x12\x18\n" +
 	"\aparties\x18\x01 \x03(\tR\aparties\x12!\n" +
 	"\fpackage_name\x18\x02 \x01(\tR\vpackageName\"\x8d\x02\n" +
@@ -2184,17 +2131,17 @@ const file_com_daml_ledger_api_v2_interactive_interactive_submission_service_pro
 	"\x10vetting_valid_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0evettingValidAt\"\xa0\x01\n" +
 	"\x1cGetPreferredPackagesResponse\x12W\n" +
 	"\x12package_references\x18\x01 \x03(\v2(.com.daml.ledger.api.v2.PackageReferenceR\x11packageReferences\x12'\n" +
-	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId*\x82\x01\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId*\xa1\x01\n" +
 	"\x14HashingSchemeVersion\x12&\n" +
 	"\"HASHING_SCHEME_VERSION_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19HASHING_SCHEME_VERSION_V2\x10\x02\x12\x1d\n" +
-	"\x19HASHING_SCHEME_VERSION_V3\x10\x03\"\x04\b\x01\x10\x012\x88\b\n" +
+	"\x19HASHING_SCHEME_VERSION_V3\x10\x03\x12\x1d\n" +
+	"\x19HASHING_SCHEME_VERSION_V4\x10\x04\"\x04\b\x01\x10\x012\xda\x06\n" +
 	"\x1cInteractiveSubmissionService\x12\x90\x01\n" +
 	"\x11PrepareSubmission\x12<.com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest\x1a=.com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse\x12\x90\x01\n" +
 	"\x11ExecuteSubmission\x12<.com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest\x1a=.com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse\x12\xa5\x01\n" +
 	"\x18ExecuteSubmissionAndWait\x12C.com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest\x1aD.com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse\x12\xcf\x01\n" +
-	"&ExecuteSubmissionAndWaitForTransaction\x12Q.com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest\x1aR.com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse\x12\xab\x01\n" +
-	"\x1aGetPreferredPackageVersion\x12E.com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest\x1aF.com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse\x12\x99\x01\n" +
+	"&ExecuteSubmissionAndWaitForTransaction\x12Q.com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest\x1aR.com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse\x12\x99\x01\n" +
 	"\x14GetPreferredPackages\x12?.com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest\x1a@.com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponseB\xc4\x01\n" +
 	"\"com.daml.ledger.api.v2.interactiveB&InteractiveSubmissionServiceOuterClassZQgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2/interactive\xaa\x02\"Com.Daml.Ledger.Api.V2.Interactiveb\x06proto3"
 
@@ -2211,119 +2158,113 @@ func file_com_daml_ledger_api_v2_interactive_interactive_submission_service_prot
 }
 
 var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_goTypes = []any{
 	(HashingSchemeVersion)(0),                              // 0: com.daml.ledger.api.v2.interactive.HashingSchemeVersion
 	(*CostEstimationHints)(nil),                            // 1: com.daml.ledger.api.v2.interactive.CostEstimationHints
-	(*CostEstimation)(nil),                                 // 2: com.daml.ledger.api.v2.interactive.CostEstimation
-	(*PrepareSubmissionRequest)(nil),                       // 3: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest
-	(*PrepareSubmissionResponse)(nil),                      // 4: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse
-	(*SinglePartySignatures)(nil),                          // 5: com.daml.ledger.api.v2.interactive.SinglePartySignatures
-	(*PartySignatures)(nil),                                // 6: com.daml.ledger.api.v2.interactive.PartySignatures
-	(*ExecuteSubmissionRequest)(nil),                       // 7: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest
-	(*ExecuteSubmissionResponse)(nil),                      // 8: com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse
-	(*ExecuteSubmissionAndWaitRequest)(nil),                // 9: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest
-	(*ExecuteSubmissionAndWaitResponse)(nil),               // 10: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse
-	(*ExecuteSubmissionAndWaitForTransactionRequest)(nil),  // 11: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest
-	(*ExecuteSubmissionAndWaitForTransactionResponse)(nil), // 12: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse
-	(*MinLedgerTime)(nil),                                  // 13: com.daml.ledger.api.v2.interactive.MinLedgerTime
-	(*PreparedTransaction)(nil),                            // 14: com.daml.ledger.api.v2.interactive.PreparedTransaction
-	(*Metadata)(nil),                                       // 15: com.daml.ledger.api.v2.interactive.Metadata
-	(*DamlTransaction)(nil),                                // 16: com.daml.ledger.api.v2.interactive.DamlTransaction
-	(*GetPreferredPackageVersionRequest)(nil),              // 17: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest
-	(*GetPreferredPackageVersionResponse)(nil),             // 18: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse
-	(*PackagePreference)(nil),                              // 19: com.daml.ledger.api.v2.interactive.PackagePreference
-	(*PackageVettingRequirement)(nil),                      // 20: com.daml.ledger.api.v2.interactive.PackageVettingRequirement
-	(*GetPreferredPackagesRequest)(nil),                    // 21: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest
-	(*GetPreferredPackagesResponse)(nil),                   // 22: com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse
-	(*Metadata_SubmitterInfo)(nil),                         // 23: com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfo
-	(*Metadata_GlobalKeyMappingEntry)(nil),                 // 24: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry
-	(*Metadata_InputContract)(nil),                         // 25: com.daml.ledger.api.v2.interactive.Metadata.InputContract
-	(*DamlTransaction_NodeSeed)(nil),                       // 26: com.daml.ledger.api.v2.interactive.DamlTransaction.NodeSeed
-	(*DamlTransaction_Node)(nil),                           // 27: com.daml.ledger.api.v2.interactive.DamlTransaction.Node
-	(v2.SigningAlgorithmSpec)(0),                           // 28: com.daml.ledger.api.v2.SigningAlgorithmSpec
-	(*timestamppb.Timestamp)(nil),                          // 29: google.protobuf.Timestamp
-	(*v2.Command)(nil),                                     // 30: com.daml.ledger.api.v2.Command
-	(*v2.DisclosedContract)(nil),                           // 31: com.daml.ledger.api.v2.DisclosedContract
-	(*v2.PrefetchContractKey)(nil),                         // 32: com.daml.ledger.api.v2.PrefetchContractKey
-	(*v2.Signature)(nil),                                   // 33: com.daml.ledger.api.v2.Signature
-	(*durationpb.Duration)(nil),                            // 34: google.protobuf.Duration
-	(*v2.TransactionFormat)(nil),                           // 35: com.daml.ledger.api.v2.TransactionFormat
-	(*v2.Transaction)(nil),                                 // 36: com.daml.ledger.api.v2.Transaction
-	(*v2.PackageReference)(nil),                            // 37: com.daml.ledger.api.v2.PackageReference
-	(*common.GlobalKey)(nil),                               // 38: com.daml.ledger.api.v2.interactive.GlobalKey
-	(*v2.Value)(nil),                                       // 39: com.daml.ledger.api.v2.Value
-	(*v1.Create)(nil),                                      // 40: com.daml.ledger.api.v2.interactive.transaction.v1.Create
-	(*v1.Node)(nil),                                        // 41: com.daml.ledger.api.v2.interactive.transaction.v1.Node
+	(*ReassignmentCost)(nil),                               // 2: com.daml.ledger.api.v2.interactive.ReassignmentCost
+	(*CostEstimation)(nil),                                 // 3: com.daml.ledger.api.v2.interactive.CostEstimation
+	(*PrepareSubmissionRequest)(nil),                       // 4: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest
+	(*PrepareSubmissionResponse)(nil),                      // 5: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse
+	(*SinglePartySignatures)(nil),                          // 6: com.daml.ledger.api.v2.interactive.SinglePartySignatures
+	(*PartySignatures)(nil),                                // 7: com.daml.ledger.api.v2.interactive.PartySignatures
+	(*ExecuteSubmissionRequest)(nil),                       // 8: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest
+	(*ExecuteSubmissionResponse)(nil),                      // 9: com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse
+	(*ExecuteSubmissionAndWaitRequest)(nil),                // 10: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest
+	(*ExecuteSubmissionAndWaitResponse)(nil),               // 11: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse
+	(*ExecuteSubmissionAndWaitForTransactionRequest)(nil),  // 12: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest
+	(*ExecuteSubmissionAndWaitForTransactionResponse)(nil), // 13: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse
+	(*MinLedgerTime)(nil),                                  // 14: com.daml.ledger.api.v2.interactive.MinLedgerTime
+	(*PreparedTransaction)(nil),                            // 15: com.daml.ledger.api.v2.interactive.PreparedTransaction
+	(*Metadata)(nil),                                       // 16: com.daml.ledger.api.v2.interactive.Metadata
+	(*DamlTransaction)(nil),                                // 17: com.daml.ledger.api.v2.interactive.DamlTransaction
+	(*PackageVettingRequirement)(nil),                      // 18: com.daml.ledger.api.v2.interactive.PackageVettingRequirement
+	(*GetPreferredPackagesRequest)(nil),                    // 19: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest
+	(*GetPreferredPackagesResponse)(nil),                   // 20: com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse
+	(*Metadata_SubmitterInfo)(nil),                         // 21: com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfo
+	(*Metadata_GlobalKeyMappingEntry)(nil),                 // 22: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry
+	(*Metadata_InputContract)(nil),                         // 23: com.daml.ledger.api.v2.interactive.Metadata.InputContract
+	(*DamlTransaction_NodeSeed)(nil),                       // 24: com.daml.ledger.api.v2.interactive.DamlTransaction.NodeSeed
+	(*DamlTransaction_Node)(nil),                           // 25: com.daml.ledger.api.v2.interactive.DamlTransaction.Node
+	(v2.SigningAlgorithmSpec)(0),                           // 26: com.daml.ledger.api.v2.SigningAlgorithmSpec
+	(*timestamppb.Timestamp)(nil),                          // 27: google.protobuf.Timestamp
+	(*v2.Command)(nil),                                     // 28: com.daml.ledger.api.v2.Command
+	(*v2.DisclosedContract)(nil),                           // 29: com.daml.ledger.api.v2.DisclosedContract
+	(*v2.PrefetchContractKey)(nil),                         // 30: com.daml.ledger.api.v2.PrefetchContractKey
+	(*v2.Signature)(nil),                                   // 31: com.daml.ledger.api.v2.Signature
+	(*durationpb.Duration)(nil),                            // 32: google.protobuf.Duration
+	(*v2.TransactionFormat)(nil),                           // 33: com.daml.ledger.api.v2.TransactionFormat
+	(*v2.Transaction)(nil),                                 // 34: com.daml.ledger.api.v2.Transaction
+	(*v2.PackageReference)(nil),                            // 35: com.daml.ledger.api.v2.PackageReference
+	(*common.GlobalKey)(nil),                               // 36: com.daml.ledger.api.v2.interactive.GlobalKey
+	(*v2.Value)(nil),                                       // 37: com.daml.ledger.api.v2.Value
+	(*v1.Create)(nil),                                      // 38: com.daml.ledger.api.v2.interactive.transaction.v1.Create
+	(*v1.Node)(nil),                                        // 39: com.daml.ledger.api.v2.interactive.transaction.v1.Node
 }
 var file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_depIdxs = []int32{
-	28, // 0: com.daml.ledger.api.v2.interactive.CostEstimationHints.expected_signatures:type_name -> com.daml.ledger.api.v2.SigningAlgorithmSpec
-	29, // 1: com.daml.ledger.api.v2.interactive.CostEstimation.estimation_timestamp:type_name -> google.protobuf.Timestamp
-	30, // 2: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.commands:type_name -> com.daml.ledger.api.v2.Command
-	13, // 3: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	29, // 4: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.max_record_time:type_name -> google.protobuf.Timestamp
-	31, // 5: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.disclosed_contracts:type_name -> com.daml.ledger.api.v2.DisclosedContract
-	32, // 6: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.prefetch_contract_keys:type_name -> com.daml.ledger.api.v2.PrefetchContractKey
-	1,  // 7: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.estimate_traffic_cost:type_name -> com.daml.ledger.api.v2.interactive.CostEstimationHints
-	0,  // 8: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	14, // 9: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	0,  // 10: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	2,  // 11: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.cost_estimation:type_name -> com.daml.ledger.api.v2.interactive.CostEstimation
-	33, // 12: com.daml.ledger.api.v2.interactive.SinglePartySignatures.signatures:type_name -> com.daml.ledger.api.v2.Signature
-	5,  // 13: com.daml.ledger.api.v2.interactive.PartySignatures.signatures:type_name -> com.daml.ledger.api.v2.interactive.SinglePartySignatures
-	14, // 14: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	6,  // 15: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
-	34, // 16: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.deduplication_duration:type_name -> google.protobuf.Duration
-	0,  // 17: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	13, // 18: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	14, // 19: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	6,  // 20: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
-	34, // 21: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.deduplication_duration:type_name -> google.protobuf.Duration
-	0,  // 22: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	13, // 23: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	14, // 24: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
-	6,  // 25: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
-	34, // 26: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.deduplication_duration:type_name -> google.protobuf.Duration
-	0,  // 27: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
-	13, // 28: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
-	35, // 29: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
-	36, // 30: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
-	29, // 31: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_abs:type_name -> google.protobuf.Timestamp
-	34, // 32: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_rel:type_name -> google.protobuf.Duration
-	16, // 33: com.daml.ledger.api.v2.interactive.PreparedTransaction.transaction:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction
-	15, // 34: com.daml.ledger.api.v2.interactive.PreparedTransaction.metadata:type_name -> com.daml.ledger.api.v2.interactive.Metadata
-	23, // 35: com.daml.ledger.api.v2.interactive.Metadata.submitter_info:type_name -> com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfo
-	25, // 36: com.daml.ledger.api.v2.interactive.Metadata.input_contracts:type_name -> com.daml.ledger.api.v2.interactive.Metadata.InputContract
-	24, // 37: com.daml.ledger.api.v2.interactive.Metadata.global_key_mapping:type_name -> com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry
-	27, // 38: com.daml.ledger.api.v2.interactive.DamlTransaction.nodes:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.Node
-	26, // 39: com.daml.ledger.api.v2.interactive.DamlTransaction.node_seeds:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.NodeSeed
-	29, // 40: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
-	19, // 41: com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse.package_preference:type_name -> com.daml.ledger.api.v2.interactive.PackagePreference
-	37, // 42: com.daml.ledger.api.v2.interactive.PackagePreference.package_reference:type_name -> com.daml.ledger.api.v2.PackageReference
-	20, // 43: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.package_vetting_requirements:type_name -> com.daml.ledger.api.v2.interactive.PackageVettingRequirement
-	29, // 44: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
-	37, // 45: com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse.package_references:type_name -> com.daml.ledger.api.v2.PackageReference
-	38, // 46: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKey
-	39, // 47: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.value:type_name -> com.daml.ledger.api.v2.Value
-	40, // 48: com.daml.ledger.api.v2.interactive.Metadata.InputContract.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Create
-	41, // 49: com.daml.ledger.api.v2.interactive.DamlTransaction.Node.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Node
-	3,  // 50: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:input_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest
-	7,  // 51: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest
-	9,  // 52: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest
-	11, // 53: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest
-	17, // 54: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackageVersion:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionRequest
-	21, // 55: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest
-	4,  // 56: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:output_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse
-	8,  // 57: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse
-	10, // 58: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse
-	12, // 59: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse
-	18, // 60: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackageVersion:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackageVersionResponse
-	22, // 61: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse
-	56, // [56:62] is the sub-list for method output_type
-	50, // [50:56] is the sub-list for method input_type
-	50, // [50:50] is the sub-list for extension type_name
-	50, // [50:50] is the sub-list for extension extendee
-	0,  // [0:50] is the sub-list for field type_name
+	26, // 0: com.daml.ledger.api.v2.interactive.CostEstimationHints.expected_signatures:type_name -> com.daml.ledger.api.v2.SigningAlgorithmSpec
+	27, // 1: com.daml.ledger.api.v2.interactive.CostEstimation.estimation_timestamp:type_name -> google.protobuf.Timestamp
+	2,  // 2: com.daml.ledger.api.v2.interactive.CostEstimation.reassignment_costs:type_name -> com.daml.ledger.api.v2.interactive.ReassignmentCost
+	28, // 3: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.commands:type_name -> com.daml.ledger.api.v2.Command
+	14, // 4: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	27, // 5: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.max_record_time:type_name -> google.protobuf.Timestamp
+	29, // 6: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.disclosed_contracts:type_name -> com.daml.ledger.api.v2.DisclosedContract
+	30, // 7: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.prefetch_contract_keys:type_name -> com.daml.ledger.api.v2.PrefetchContractKey
+	1,  // 8: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.estimate_traffic_cost:type_name -> com.daml.ledger.api.v2.interactive.CostEstimationHints
+	0,  // 9: com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	15, // 10: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	0,  // 11: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	3,  // 12: com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse.cost_estimation:type_name -> com.daml.ledger.api.v2.interactive.CostEstimation
+	31, // 13: com.daml.ledger.api.v2.interactive.SinglePartySignatures.signatures:type_name -> com.daml.ledger.api.v2.Signature
+	6,  // 14: com.daml.ledger.api.v2.interactive.PartySignatures.signatures:type_name -> com.daml.ledger.api.v2.interactive.SinglePartySignatures
+	15, // 15: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	7,  // 16: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
+	32, // 17: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.deduplication_duration:type_name -> google.protobuf.Duration
+	0,  // 18: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	14, // 19: com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	15, // 20: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	7,  // 21: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
+	32, // 22: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.deduplication_duration:type_name -> google.protobuf.Duration
+	0,  // 23: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	14, // 24: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	15, // 25: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.prepared_transaction:type_name -> com.daml.ledger.api.v2.interactive.PreparedTransaction
+	7,  // 26: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.party_signatures:type_name -> com.daml.ledger.api.v2.interactive.PartySignatures
+	32, // 27: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.deduplication_duration:type_name -> google.protobuf.Duration
+	0,  // 28: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.hashing_scheme_version:type_name -> com.daml.ledger.api.v2.interactive.HashingSchemeVersion
+	14, // 29: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.min_ledger_time:type_name -> com.daml.ledger.api.v2.interactive.MinLedgerTime
+	33, // 30: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest.transaction_format:type_name -> com.daml.ledger.api.v2.TransactionFormat
+	34, // 31: com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse.transaction:type_name -> com.daml.ledger.api.v2.Transaction
+	27, // 32: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_abs:type_name -> google.protobuf.Timestamp
+	32, // 33: com.daml.ledger.api.v2.interactive.MinLedgerTime.min_ledger_time_rel:type_name -> google.protobuf.Duration
+	17, // 34: com.daml.ledger.api.v2.interactive.PreparedTransaction.transaction:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction
+	16, // 35: com.daml.ledger.api.v2.interactive.PreparedTransaction.metadata:type_name -> com.daml.ledger.api.v2.interactive.Metadata
+	21, // 36: com.daml.ledger.api.v2.interactive.Metadata.submitter_info:type_name -> com.daml.ledger.api.v2.interactive.Metadata.SubmitterInfo
+	23, // 37: com.daml.ledger.api.v2.interactive.Metadata.input_contracts:type_name -> com.daml.ledger.api.v2.interactive.Metadata.InputContract
+	22, // 38: com.daml.ledger.api.v2.interactive.Metadata.global_key_mapping:type_name -> com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry
+	25, // 39: com.daml.ledger.api.v2.interactive.DamlTransaction.nodes:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.Node
+	24, // 40: com.daml.ledger.api.v2.interactive.DamlTransaction.node_seeds:type_name -> com.daml.ledger.api.v2.interactive.DamlTransaction.NodeSeed
+	18, // 41: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.package_vetting_requirements:type_name -> com.daml.ledger.api.v2.interactive.PackageVettingRequirement
+	27, // 42: com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest.vetting_valid_at:type_name -> google.protobuf.Timestamp
+	35, // 43: com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse.package_references:type_name -> com.daml.ledger.api.v2.PackageReference
+	36, // 44: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.key:type_name -> com.daml.ledger.api.v2.interactive.GlobalKey
+	37, // 45: com.daml.ledger.api.v2.interactive.Metadata.GlobalKeyMappingEntry.value:type_name -> com.daml.ledger.api.v2.Value
+	38, // 46: com.daml.ledger.api.v2.interactive.Metadata.InputContract.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Create
+	39, // 47: com.daml.ledger.api.v2.interactive.DamlTransaction.Node.v1:type_name -> com.daml.ledger.api.v2.interactive.transaction.v1.Node
+	4,  // 48: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:input_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionRequest
+	8,  // 49: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionRequest
+	10, // 50: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitRequest
+	12, // 51: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:input_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionRequest
+	19, // 52: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:input_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesRequest
+	5,  // 53: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.PrepareSubmission:output_type -> com.daml.ledger.api.v2.interactive.PrepareSubmissionResponse
+	9,  // 54: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmission:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionResponse
+	11, // 55: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWait:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitResponse
+	13, // 56: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.ExecuteSubmissionAndWaitForTransaction:output_type -> com.daml.ledger.api.v2.interactive.ExecuteSubmissionAndWaitForTransactionResponse
+	20, // 57: com.daml.ledger.api.v2.interactive.InteractiveSubmissionService.GetPreferredPackages:output_type -> com.daml.ledger.api.v2.interactive.GetPreferredPackagesResponse
+	53, // [53:58] is the sub-list for method output_type
+	48, // [48:53] is the sub-list for method input_type
+	48, // [48:48] is the sub-list for extension type_name
+	48, // [48:48] is the sub-list for extension extendee
+	0,  // [0:48] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_init() }
@@ -2331,30 +2272,30 @@ func file_com_daml_ledger_api_v2_interactive_interactive_submission_service_prot
 	if File_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto != nil {
 		return
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[2].OneofWrappers = []any{}
 	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[3].OneofWrappers = []any{}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[6].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[4].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[7].OneofWrappers = []any{
 		(*ExecuteSubmissionRequest_DeduplicationDuration)(nil),
 		(*ExecuteSubmissionRequest_DeduplicationOffset)(nil),
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[8].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[9].OneofWrappers = []any{
 		(*ExecuteSubmissionAndWaitRequest_DeduplicationDuration)(nil),
 		(*ExecuteSubmissionAndWaitRequest_DeduplicationOffset)(nil),
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[10].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[11].OneofWrappers = []any{
 		(*ExecuteSubmissionAndWaitForTransactionRequest_DeduplicationDuration)(nil),
 		(*ExecuteSubmissionAndWaitForTransactionRequest_DeduplicationOffset)(nil),
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[12].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[13].OneofWrappers = []any{
 		(*MinLedgerTime_MinLedgerTimeAbs)(nil),
 		(*MinLedgerTime_MinLedgerTimeRel)(nil),
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[14].OneofWrappers = []any{}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[23].OneofWrappers = []any{}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[24].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[15].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[21].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[22].OneofWrappers = []any{
 		(*Metadata_InputContract_V1)(nil),
 	}
-	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[26].OneofWrappers = []any{
+	file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_msgTypes[24].OneofWrappers = []any{
 		(*DamlTransaction_Node_V1)(nil),
 	}
 	type x struct{}
@@ -2363,7 +2304,7 @@ func file_com_daml_ledger_api_v2_interactive_interactive_submission_service_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_interactive_interactive_submission_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   27,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
