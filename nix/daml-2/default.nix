@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     sha256 = "sha256:1vxizb7d24rq2njb4c2v33zb16m9zvsi7hpcwkzzm8kq76imm1mj";
   } else {
     url = "https://github.com/digital-asset/daml/releases/download/v${version}/daml-sdk-${version}-linux.tar.gz";
-    sha256 = "03w8zfs9j5dx4hrf0lm19jsbfhvsimqb8wba5az1f6s3qd776j4r";
+    sha256 = "sha256:0jkl243jb6dfnrq3ibx92l471ip93ccwxrlx7gq5pjgspiqwcv5f";
   });
   dontUnpack = true;
   buildPhase = ''
