@@ -24,6 +24,7 @@ const (
 	PartyManagementService_AddPartyAsync_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyAsync"
 	PartyManagementService_AddPartyWithAcsAsync_FullMethodName        = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/AddPartyWithAcsAsync"
 	PartyManagementService_GetAddPartyStatus_FullMethodName           = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAddPartyStatus"
+	PartyManagementService_GetAcsReplicationStatus_FullMethodName     = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAcsReplicationStatus"
 	PartyManagementService_ExportPartyAcs_FullMethodName              = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportPartyAcs"
 	PartyManagementService_ImportPartyAcs_FullMethodName              = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ImportPartyAcs"
 	PartyManagementService_GetHighestOffsetByTimestamp_FullMethodName = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetHighestOffsetByTimestamp"
@@ -37,6 +38,7 @@ type PartyManagementServiceClient interface {
 	AddPartyAsync(ctx context.Context, in *AddPartyAsyncRequest, opts ...grpc.CallOption) (*AddPartyAsyncResponse, error)
 	AddPartyWithAcsAsync(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse], error)
 	GetAddPartyStatus(ctx context.Context, in *GetAddPartyStatusRequest, opts ...grpc.CallOption) (*GetAddPartyStatusResponse, error)
+	GetAcsReplicationStatus(ctx context.Context, in *GetAcsReplicationStatusRequest, opts ...grpc.CallOption) (*GetAcsReplicationStatusResponse, error)
 	ExportPartyAcs(ctx context.Context, in *ExportPartyAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ExportPartyAcsResponse], error)
 	ImportPartyAcs(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportPartyAcsRequest, ImportPartyAcsResponse], error)
 	GetHighestOffsetByTimestamp(ctx context.Context, in *GetHighestOffsetByTimestampRequest, opts ...grpc.CallOption) (*GetHighestOffsetByTimestampResponse, error)
@@ -78,6 +80,16 @@ func (c *partyManagementServiceClient) GetAddPartyStatus(ctx context.Context, in
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAddPartyStatusResponse)
 	err := c.cc.Invoke(ctx, PartyManagementService_GetAddPartyStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *partyManagementServiceClient) GetAcsReplicationStatus(ctx context.Context, in *GetAcsReplicationStatusRequest, opts ...grpc.CallOption) (*GetAcsReplicationStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAcsReplicationStatusResponse)
+	err := c.cc.Invoke(ctx, PartyManagementService_GetAcsReplicationStatus_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -143,6 +155,7 @@ type PartyManagementServiceServer interface {
 	AddPartyAsync(context.Context, *AddPartyAsyncRequest) (*AddPartyAsyncResponse, error)
 	AddPartyWithAcsAsync(grpc.ClientStreamingServer[AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse]) error
 	GetAddPartyStatus(context.Context, *GetAddPartyStatusRequest) (*GetAddPartyStatusResponse, error)
+	GetAcsReplicationStatus(context.Context, *GetAcsReplicationStatusRequest) (*GetAcsReplicationStatusResponse, error)
 	ExportPartyAcs(*ExportPartyAcsRequest, grpc.ServerStreamingServer[ExportPartyAcsResponse]) error
 	ImportPartyAcs(grpc.ClientStreamingServer[ImportPartyAcsRequest, ImportPartyAcsResponse]) error
 	GetHighestOffsetByTimestamp(context.Context, *GetHighestOffsetByTimestampRequest) (*GetHighestOffsetByTimestampResponse, error)
@@ -165,6 +178,9 @@ func (UnimplementedPartyManagementServiceServer) AddPartyWithAcsAsync(grpc.Clien
 }
 func (UnimplementedPartyManagementServiceServer) GetAddPartyStatus(context.Context, *GetAddPartyStatusRequest) (*GetAddPartyStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAddPartyStatus not implemented")
+}
+func (UnimplementedPartyManagementServiceServer) GetAcsReplicationStatus(context.Context, *GetAcsReplicationStatusRequest) (*GetAcsReplicationStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAcsReplicationStatus not implemented")
 }
 func (UnimplementedPartyManagementServiceServer) ExportPartyAcs(*ExportPartyAcsRequest, grpc.ServerStreamingServer[ExportPartyAcsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method ExportPartyAcs not implemented")
@@ -243,6 +259,24 @@ func _PartyManagementService_GetAddPartyStatus_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyManagementService_GetAcsReplicationStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAcsReplicationStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyManagementServiceServer).GetAcsReplicationStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PartyManagementService_GetAcsReplicationStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyManagementServiceServer).GetAcsReplicationStatus(ctx, req.(*GetAcsReplicationStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PartyManagementService_ExportPartyAcs_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ExportPartyAcsRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -311,6 +345,10 @@ var PartyManagementService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAddPartyStatus",
 			Handler:    _PartyManagementService_GetAddPartyStatus_Handler,
+		},
+		{
+			MethodName: "GetAcsReplicationStatus",
+			Handler:    _PartyManagementService_GetAcsReplicationStatus_Handler,
 		},
 		{
 			MethodName: "GetHighestOffsetByTimestamp",

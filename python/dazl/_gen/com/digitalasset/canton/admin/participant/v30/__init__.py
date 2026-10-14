@@ -19,7 +19,7 @@ from .participant_repair_service_pb2 import ChangeAssignationRequest, ChangeAssi
 from .participant_repair_service_pb2_grpc import ParticipantRepairServiceStub
 from .ping_pong_service_pb2 import PingFailure, PingRequest, PingResponse, PingSuccess
 from .ping_pong_service_pb2_grpc import PingServiceStub
-from .party_management_service_pb2 import AddPartyArguments, AddPartyAsyncRequest, AddPartyAsyncResponse, AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse, ClearPartyOnboardingFlagRequest, ClearPartyOnboardingFlagResponse, ExportPartyAcsRequest, ExportPartyAcsResponse, GetAddPartyStatusRequest, GetAddPartyStatusResponse, GetHighestOffsetByTimestampRequest, GetHighestOffsetByTimestampResponse, ImportPartyAcsRequest, ImportPartyAcsResponse, ParticipantPermission, PartyReplicationStatus
+from .party_management_service_pb2 import AcsReplicationStatus, AddPartyArguments, AddPartyAsyncRequest, AddPartyAsyncResponse, AddPartyWithAcsAsyncRequest, AddPartyWithAcsAsyncResponse, ClearPartyOnboardingFlagRequest, ClearPartyOnboardingFlagResponse, ExportPartyAcsRequest, ExportPartyAcsResponse, GetAcsReplicationStatusRequest, GetAcsReplicationStatusResponse, GetAddPartyStatusRequest, GetAddPartyStatusResponse, GetHighestOffsetByTimestampRequest, GetHighestOffsetByTimestampResponse, ImportPartyAcsRequest, ImportPartyAcsResponse, ParticipantPermission, PartyReplicationStatus
 from .party_management_service_pb2_grpc import PartyManagementServiceStub
 from .pruning_service_pb2 import GetSafePruningOffsetRequest, GetSafePruningOffsetResponse, PruneRequest, PruneResponse, SafeToPruneCommitmentState
 from .pruning_service_pb2_grpc import PruningServiceStub
@@ -30,6 +30,7 @@ from .participant_replication_service_pb2 import SetPassiveRequest, SetPassiveRe
 from .participant_replication_service_pb2_grpc import ParticipantReplicationServiceStub
 
 __all__ = [
+    "AcsReplicationStatus",
     "ActiveContract",
     "AddPartyArguments",
     "AddPartyAsyncRequest",
@@ -67,6 +68,8 @@ __all__ = [
     "ExportAcsTargetSynchronizer",
     "ExportPartyAcsRequest",
     "ExportPartyAcsResponse",
+    "GetAcsReplicationStatusRequest",
+    "GetAcsReplicationStatusResponse",
     "GetAddPartyStatusRequest",
     "GetAddPartyStatusResponse",
     "GetConfigForSlowCounterParticipantsRequest",

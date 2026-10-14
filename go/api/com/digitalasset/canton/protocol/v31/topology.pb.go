@@ -9,8 +9,8 @@
 package v31
 
 import (
-	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v30"
-	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
+	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v30"
+	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,13 +25,67 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type PartyToParticipant_HostingParticipant_HostingState int32
+
+const (
+	PartyToParticipant_HostingParticipant_HOSTING_STATE_UNSPECIFIED PartyToParticipant_HostingParticipant_HostingState = 0
+	PartyToParticipant_HostingParticipant_HOSTING_STATE_NOMINATED   PartyToParticipant_HostingParticipant_HostingState = 1
+	PartyToParticipant_HostingParticipant_HOSTING_STATE_FREEZING    PartyToParticipant_HostingParticipant_HostingState = 2
+	PartyToParticipant_HostingParticipant_HOSTING_STATE_ONBOARDING  PartyToParticipant_HostingParticipant_HostingState = 3
+	PartyToParticipant_HostingParticipant_HOSTING_STATE_ACTIVE      PartyToParticipant_HostingParticipant_HostingState = 4
+)
+
+// Enum value maps for PartyToParticipant_HostingParticipant_HostingState.
+var (
+	PartyToParticipant_HostingParticipant_HostingState_name = map[int32]string{
+		0: "HOSTING_STATE_UNSPECIFIED",
+		1: "HOSTING_STATE_NOMINATED",
+		2: "HOSTING_STATE_FREEZING",
+		3: "HOSTING_STATE_ONBOARDING",
+		4: "HOSTING_STATE_ACTIVE",
+	}
+	PartyToParticipant_HostingParticipant_HostingState_value = map[string]int32{
+		"HOSTING_STATE_UNSPECIFIED": 0,
+		"HOSTING_STATE_NOMINATED":   1,
+		"HOSTING_STATE_FREEZING":    2,
+		"HOSTING_STATE_ONBOARDING":  3,
+		"HOSTING_STATE_ACTIVE":      4,
+	}
+)
+
+func (x PartyToParticipant_HostingParticipant_HostingState) Enum() *PartyToParticipant_HostingParticipant_HostingState {
+	p := new(PartyToParticipant_HostingParticipant_HostingState)
+	*p = x
+	return p
+}
+
+func (x PartyToParticipant_HostingParticipant_HostingState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PartyToParticipant_HostingParticipant_HostingState) Descriptor() protoreflect.EnumDescriptor {
+	return file_com_digitalasset_canton_protocol_v31_topology_proto_enumTypes[0].Descriptor()
+}
+
+func (PartyToParticipant_HostingParticipant_HostingState) Type() protoreflect.EnumType {
+	return &file_com_digitalasset_canton_protocol_v31_topology_proto_enumTypes[0]
+}
+
+func (x PartyToParticipant_HostingParticipant_HostingState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PartyToParticipant_HostingParticipant_HostingState.Descriptor instead.
+func (PartyToParticipant_HostingParticipant_HostingState) EnumDescriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v31_topology_proto_rawDescGZIP(), []int{0, 0, 0}
+}
+
 type PartyToParticipant struct {
-	state            protoimpl.MessageState                       `protogen:"open.v1"`
-	Party            string                                       `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
-	Threshold        uint32                                       `protobuf:"varint,2,opt,name=threshold,proto3" json:"threshold,omitempty"`
-	Participants     []*v30.PartyToParticipant_HostingParticipant `protobuf:"bytes,3,rep,name=participants,proto3" json:"participants,omitempty"`
-	PartySigningKeys *v301.SigningKeysWithThreshold               `protobuf:"bytes,4,opt,name=party_signing_keys,json=partySigningKeys,proto3,oneof" json:"party_signing_keys,omitempty"`
-	IsOffline        bool                                         `protobuf:"varint,5,opt,name=is_offline,json=isOffline,proto3" json:"is_offline,omitempty"`
+	state            protoimpl.MessageState                   `protogen:"open.v1"`
+	Party            string                                   `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
+	Threshold        uint32                                   `protobuf:"varint,2,opt,name=threshold,proto3" json:"threshold,omitempty"`
+	Participants     []*PartyToParticipant_HostingParticipant `protobuf:"bytes,3,rep,name=participants,proto3" json:"participants,omitempty"`
+	PartySigningKeys *v30.SigningKeysWithThreshold            `protobuf:"bytes,4,opt,name=party_signing_keys,json=partySigningKeys,proto3,oneof" json:"party_signing_keys,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -80,25 +134,18 @@ func (x *PartyToParticipant) GetThreshold() uint32 {
 	return 0
 }
 
-func (x *PartyToParticipant) GetParticipants() []*v30.PartyToParticipant_HostingParticipant {
+func (x *PartyToParticipant) GetParticipants() []*PartyToParticipant_HostingParticipant {
 	if x != nil {
 		return x.Participants
 	}
 	return nil
 }
 
-func (x *PartyToParticipant) GetPartySigningKeys() *v301.SigningKeysWithThreshold {
+func (x *PartyToParticipant) GetPartySigningKeys() *v30.SigningKeysWithThreshold {
 	if x != nil {
 		return x.PartySigningKeys
 	}
 	return nil
-}
-
-func (x *PartyToParticipant) GetIsOffline() bool {
-	if x != nil {
-		return x.IsOffline
-	}
-	return false
 }
 
 type TopologyMapping struct {
@@ -162,7 +209,7 @@ func (x *TopologyMapping) GetMapping() isTopologyMapping_Mapping {
 	return nil
 }
 
-func (x *TopologyMapping) GetNamespaceDelegation() *v30.NamespaceDelegation {
+func (x *TopologyMapping) GetNamespaceDelegation() *v301.NamespaceDelegation {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_NamespaceDelegation); ok {
 			return x.NamespaceDelegation
@@ -171,7 +218,7 @@ func (x *TopologyMapping) GetNamespaceDelegation() *v30.NamespaceDelegation {
 	return nil
 }
 
-func (x *TopologyMapping) GetDecentralizedNamespaceDefinition() *v30.DecentralizedNamespaceDefinition {
+func (x *TopologyMapping) GetDecentralizedNamespaceDefinition() *v301.DecentralizedNamespaceDefinition {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_DecentralizedNamespaceDefinition); ok {
 			return x.DecentralizedNamespaceDefinition
@@ -180,7 +227,7 @@ func (x *TopologyMapping) GetDecentralizedNamespaceDefinition() *v30.Decentraliz
 	return nil
 }
 
-func (x *TopologyMapping) GetOwnerToKeyMapping() *v30.OwnerToKeyMapping {
+func (x *TopologyMapping) GetOwnerToKeyMapping() *v301.OwnerToKeyMapping {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_OwnerToKeyMapping); ok {
 			return x.OwnerToKeyMapping
@@ -189,7 +236,7 @@ func (x *TopologyMapping) GetOwnerToKeyMapping() *v30.OwnerToKeyMapping {
 	return nil
 }
 
-func (x *TopologyMapping) GetSynchronizerTrustCertificate() *v30.SynchronizerTrustCertificate {
+func (x *TopologyMapping) GetSynchronizerTrustCertificate() *v301.SynchronizerTrustCertificate {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SynchronizerTrustCertificate); ok {
 			return x.SynchronizerTrustCertificate
@@ -198,7 +245,7 @@ func (x *TopologyMapping) GetSynchronizerTrustCertificate() *v30.SynchronizerTru
 	return nil
 }
 
-func (x *TopologyMapping) GetParticipantPermission() *v30.ParticipantSynchronizerPermission {
+func (x *TopologyMapping) GetParticipantPermission() *v301.ParticipantSynchronizerPermission {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_ParticipantPermission); ok {
 			return x.ParticipantPermission
@@ -207,7 +254,7 @@ func (x *TopologyMapping) GetParticipantPermission() *v30.ParticipantSynchronize
 	return nil
 }
 
-func (x *TopologyMapping) GetPartyHostingLimits() *v30.PartyHostingLimits {
+func (x *TopologyMapping) GetPartyHostingLimits() *v301.PartyHostingLimits {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_PartyHostingLimits); ok {
 			return x.PartyHostingLimits
@@ -216,7 +263,7 @@ func (x *TopologyMapping) GetPartyHostingLimits() *v30.PartyHostingLimits {
 	return nil
 }
 
-func (x *TopologyMapping) GetVettedPackages() *v30.VettedPackages {
+func (x *TopologyMapping) GetVettedPackages() *v301.VettedPackages {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_VettedPackages); ok {
 			return x.VettedPackages
@@ -234,7 +281,7 @@ func (x *TopologyMapping) GetPartyToParticipant() *PartyToParticipant {
 	return nil
 }
 
-func (x *TopologyMapping) GetSynchronizerParametersState() *v30.SynchronizerParametersState {
+func (x *TopologyMapping) GetSynchronizerParametersState() *v301.SynchronizerParametersState {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SynchronizerParametersState); ok {
 			return x.SynchronizerParametersState
@@ -243,7 +290,7 @@ func (x *TopologyMapping) GetSynchronizerParametersState() *v30.SynchronizerPara
 	return nil
 }
 
-func (x *TopologyMapping) GetMediatorSynchronizerState() *v30.MediatorSynchronizerState {
+func (x *TopologyMapping) GetMediatorSynchronizerState() *v301.MediatorSynchronizerState {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_MediatorSynchronizerState); ok {
 			return x.MediatorSynchronizerState
@@ -252,7 +299,7 @@ func (x *TopologyMapping) GetMediatorSynchronizerState() *v30.MediatorSynchroniz
 	return nil
 }
 
-func (x *TopologyMapping) GetSequencerSynchronizerState() *v30.SequencerSynchronizerState {
+func (x *TopologyMapping) GetSequencerSynchronizerState() *v301.SequencerSynchronizerState {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SequencerSynchronizerState); ok {
 			return x.SequencerSynchronizerState
@@ -261,7 +308,7 @@ func (x *TopologyMapping) GetSequencerSynchronizerState() *v30.SequencerSynchron
 	return nil
 }
 
-func (x *TopologyMapping) GetSequencingDynamicParametersState() *v30.DynamicSequencingParametersState {
+func (x *TopologyMapping) GetSequencingDynamicParametersState() *v301.DynamicSequencingParametersState {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SequencingDynamicParametersState); ok {
 			return x.SequencingDynamicParametersState
@@ -271,7 +318,7 @@ func (x *TopologyMapping) GetSequencingDynamicParametersState() *v30.DynamicSequ
 }
 
 // Deprecated: Marked as deprecated in com/digitalasset/canton/protocol/v31/topology.proto.
-func (x *TopologyMapping) GetPartyToKeyMapping() *v30.PartyToKeyMapping {
+func (x *TopologyMapping) GetPartyToKeyMapping() *v301.PartyToKeyMapping {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_PartyToKeyMapping); ok {
 			return x.PartyToKeyMapping
@@ -280,7 +327,7 @@ func (x *TopologyMapping) GetPartyToKeyMapping() *v30.PartyToKeyMapping {
 	return nil
 }
 
-func (x *TopologyMapping) GetSynchronizerUpgradeAnnouncement() *v30.LsuAnnouncement {
+func (x *TopologyMapping) GetSynchronizerUpgradeAnnouncement() *v301.LsuAnnouncement {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SynchronizerUpgradeAnnouncement); ok {
 			return x.SynchronizerUpgradeAnnouncement
@@ -289,7 +336,7 @@ func (x *TopologyMapping) GetSynchronizerUpgradeAnnouncement() *v30.LsuAnnouncem
 	return nil
 }
 
-func (x *TopologyMapping) GetSequencerConnectionSuccessor() *v30.LsuSequencerConnectionSuccessor {
+func (x *TopologyMapping) GetSequencerConnectionSuccessor() *v301.LsuSequencerConnectionSuccessor {
 	if x != nil {
 		if x, ok := x.Mapping.(*TopologyMapping_SequencerConnectionSuccessor); ok {
 			return x.SequencerConnectionSuccessor
@@ -303,31 +350,31 @@ type isTopologyMapping_Mapping interface {
 }
 
 type TopologyMapping_NamespaceDelegation struct {
-	NamespaceDelegation *v30.NamespaceDelegation `protobuf:"bytes,1,opt,name=namespace_delegation,json=namespaceDelegation,proto3,oneof"`
+	NamespaceDelegation *v301.NamespaceDelegation `protobuf:"bytes,1,opt,name=namespace_delegation,json=namespaceDelegation,proto3,oneof"`
 }
 
 type TopologyMapping_DecentralizedNamespaceDefinition struct {
-	DecentralizedNamespaceDefinition *v30.DecentralizedNamespaceDefinition `protobuf:"bytes,2,opt,name=decentralized_namespace_definition,json=decentralizedNamespaceDefinition,proto3,oneof"`
+	DecentralizedNamespaceDefinition *v301.DecentralizedNamespaceDefinition `protobuf:"bytes,2,opt,name=decentralized_namespace_definition,json=decentralizedNamespaceDefinition,proto3,oneof"`
 }
 
 type TopologyMapping_OwnerToKeyMapping struct {
-	OwnerToKeyMapping *v30.OwnerToKeyMapping `protobuf:"bytes,3,opt,name=owner_to_key_mapping,json=ownerToKeyMapping,proto3,oneof"`
+	OwnerToKeyMapping *v301.OwnerToKeyMapping `protobuf:"bytes,3,opt,name=owner_to_key_mapping,json=ownerToKeyMapping,proto3,oneof"`
 }
 
 type TopologyMapping_SynchronizerTrustCertificate struct {
-	SynchronizerTrustCertificate *v30.SynchronizerTrustCertificate `protobuf:"bytes,4,opt,name=synchronizer_trust_certificate,json=synchronizerTrustCertificate,proto3,oneof"`
+	SynchronizerTrustCertificate *v301.SynchronizerTrustCertificate `protobuf:"bytes,4,opt,name=synchronizer_trust_certificate,json=synchronizerTrustCertificate,proto3,oneof"`
 }
 
 type TopologyMapping_ParticipantPermission struct {
-	ParticipantPermission *v30.ParticipantSynchronizerPermission `protobuf:"bytes,5,opt,name=participant_permission,json=participantPermission,proto3,oneof"`
+	ParticipantPermission *v301.ParticipantSynchronizerPermission `protobuf:"bytes,5,opt,name=participant_permission,json=participantPermission,proto3,oneof"`
 }
 
 type TopologyMapping_PartyHostingLimits struct {
-	PartyHostingLimits *v30.PartyHostingLimits `protobuf:"bytes,6,opt,name=party_hosting_limits,json=partyHostingLimits,proto3,oneof"`
+	PartyHostingLimits *v301.PartyHostingLimits `protobuf:"bytes,6,opt,name=party_hosting_limits,json=partyHostingLimits,proto3,oneof"`
 }
 
 type TopologyMapping_VettedPackages struct {
-	VettedPackages *v30.VettedPackages `protobuf:"bytes,7,opt,name=vetted_packages,json=vettedPackages,proto3,oneof"`
+	VettedPackages *v301.VettedPackages `protobuf:"bytes,7,opt,name=vetted_packages,json=vettedPackages,proto3,oneof"`
 }
 
 type TopologyMapping_PartyToParticipant struct {
@@ -335,32 +382,32 @@ type TopologyMapping_PartyToParticipant struct {
 }
 
 type TopologyMapping_SynchronizerParametersState struct {
-	SynchronizerParametersState *v30.SynchronizerParametersState `protobuf:"bytes,9,opt,name=synchronizer_parameters_state,json=synchronizerParametersState,proto3,oneof"`
+	SynchronizerParametersState *v301.SynchronizerParametersState `protobuf:"bytes,9,opt,name=synchronizer_parameters_state,json=synchronizerParametersState,proto3,oneof"`
 }
 
 type TopologyMapping_MediatorSynchronizerState struct {
-	MediatorSynchronizerState *v30.MediatorSynchronizerState `protobuf:"bytes,10,opt,name=mediator_synchronizer_state,json=mediatorSynchronizerState,proto3,oneof"`
+	MediatorSynchronizerState *v301.MediatorSynchronizerState `protobuf:"bytes,10,opt,name=mediator_synchronizer_state,json=mediatorSynchronizerState,proto3,oneof"`
 }
 
 type TopologyMapping_SequencerSynchronizerState struct {
-	SequencerSynchronizerState *v30.SequencerSynchronizerState `protobuf:"bytes,11,opt,name=sequencer_synchronizer_state,json=sequencerSynchronizerState,proto3,oneof"`
+	SequencerSynchronizerState *v301.SequencerSynchronizerState `protobuf:"bytes,11,opt,name=sequencer_synchronizer_state,json=sequencerSynchronizerState,proto3,oneof"`
 }
 
 type TopologyMapping_SequencingDynamicParametersState struct {
-	SequencingDynamicParametersState *v30.DynamicSequencingParametersState `protobuf:"bytes,12,opt,name=sequencing_dynamic_parameters_state,json=sequencingDynamicParametersState,proto3,oneof"`
+	SequencingDynamicParametersState *v301.DynamicSequencingParametersState `protobuf:"bytes,12,opt,name=sequencing_dynamic_parameters_state,json=sequencingDynamicParametersState,proto3,oneof"`
 }
 
 type TopologyMapping_PartyToKeyMapping struct {
 	// Deprecated: Marked as deprecated in com/digitalasset/canton/protocol/v31/topology.proto.
-	PartyToKeyMapping *v30.PartyToKeyMapping `protobuf:"bytes,13,opt,name=party_to_key_mapping,json=partyToKeyMapping,proto3,oneof"`
+	PartyToKeyMapping *v301.PartyToKeyMapping `protobuf:"bytes,13,opt,name=party_to_key_mapping,json=partyToKeyMapping,proto3,oneof"`
 }
 
 type TopologyMapping_SynchronizerUpgradeAnnouncement struct {
-	SynchronizerUpgradeAnnouncement *v30.LsuAnnouncement `protobuf:"bytes,14,opt,name=synchronizer_upgrade_announcement,json=synchronizerUpgradeAnnouncement,proto3,oneof"`
+	SynchronizerUpgradeAnnouncement *v301.LsuAnnouncement `protobuf:"bytes,14,opt,name=synchronizer_upgrade_announcement,json=synchronizerUpgradeAnnouncement,proto3,oneof"`
 }
 
 type TopologyMapping_SequencerConnectionSuccessor struct {
-	SequencerConnectionSuccessor *v30.LsuSequencerConnectionSuccessor `protobuf:"bytes,15,opt,name=sequencer_connection_successor,json=sequencerConnectionSuccessor,proto3,oneof"`
+	SequencerConnectionSuccessor *v301.LsuSequencerConnectionSuccessor `protobuf:"bytes,15,opt,name=sequencer_connection_successor,json=sequencerConnectionSuccessor,proto3,oneof"`
 }
 
 func (*TopologyMapping_NamespaceDelegation) isTopologyMapping_Mapping() {}
@@ -394,10 +441,10 @@ func (*TopologyMapping_SynchronizerUpgradeAnnouncement) isTopologyMapping_Mappin
 func (*TopologyMapping_SequencerConnectionSuccessor) isTopologyMapping_Mapping() {}
 
 type TopologyTransaction struct {
-	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Operation     v30.Enums_TopologyChangeOp `protobuf:"varint,1,opt,name=operation,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_TopologyChangeOp" json:"operation,omitempty"`
-	Serial        uint32                     `protobuf:"varint,2,opt,name=serial,proto3" json:"serial,omitempty"`
-	Mapping       *TopologyMapping           `protobuf:"bytes,3,opt,name=mapping,proto3" json:"mapping,omitempty"`
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	Operation     v301.Enums_TopologyChangeOp `protobuf:"varint,1,opt,name=operation,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_TopologyChangeOp" json:"operation,omitempty"`
+	Serial        uint32                      `protobuf:"varint,2,opt,name=serial,proto3" json:"serial,omitempty"`
+	Mapping       *TopologyMapping            `protobuf:"bytes,3,opt,name=mapping,proto3" json:"mapping,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -432,11 +479,11 @@ func (*TopologyTransaction) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_protocol_v31_topology_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *TopologyTransaction) GetOperation() v30.Enums_TopologyChangeOp {
+func (x *TopologyTransaction) GetOperation() v301.Enums_TopologyChangeOp {
 	if x != nil {
 		return x.Operation
 	}
-	return v30.Enums_TopologyChangeOp(0)
+	return v301.Enums_TopologyChangeOp(0)
 }
 
 func (x *TopologyTransaction) GetSerial() uint32 {
@@ -453,18 +500,88 @@ func (x *TopologyTransaction) GetMapping() *TopologyMapping {
 	return nil
 }
 
+type PartyToParticipant_HostingParticipant struct {
+	state          protoimpl.MessageState                             `protogen:"open.v1"`
+	ParticipantUid string                                             `protobuf:"bytes,1,opt,name=participant_uid,json=participantUid,proto3" json:"participant_uid,omitempty"`
+	Permission     v301.Enums_ParticipantPermission                   `protobuf:"varint,2,opt,name=permission,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_ParticipantPermission" json:"permission,omitempty"`
+	State          PartyToParticipant_HostingParticipant_HostingState `protobuf:"varint,3,opt,name=state,proto3,enum=com.digitalasset.canton.protocol.v31.PartyToParticipant_HostingParticipant_HostingState" json:"state,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PartyToParticipant_HostingParticipant) Reset() {
+	*x = PartyToParticipant_HostingParticipant{}
+	mi := &file_com_digitalasset_canton_protocol_v31_topology_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartyToParticipant_HostingParticipant) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartyToParticipant_HostingParticipant) ProtoMessage() {}
+
+func (x *PartyToParticipant_HostingParticipant) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_protocol_v31_topology_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartyToParticipant_HostingParticipant.ProtoReflect.Descriptor instead.
+func (*PartyToParticipant_HostingParticipant) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_protocol_v31_topology_proto_rawDescGZIP(), []int{0, 0}
+}
+
+func (x *PartyToParticipant_HostingParticipant) GetParticipantUid() string {
+	if x != nil {
+		return x.ParticipantUid
+	}
+	return ""
+}
+
+func (x *PartyToParticipant_HostingParticipant) GetPermission() v301.Enums_ParticipantPermission {
+	if x != nil {
+		return x.Permission
+	}
+	return v301.Enums_ParticipantPermission(0)
+}
+
+func (x *PartyToParticipant_HostingParticipant) GetState() PartyToParticipant_HostingParticipant_HostingState {
+	if x != nil {
+		return x.State
+	}
+	return PartyToParticipant_HostingParticipant_HOSTING_STATE_UNSPECIFIED
+}
+
 var File_com_digitalasset_canton_protocol_v31_topology_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_protocol_v31_topology_proto_rawDesc = "" +
 	"\n" +
-	"3com/digitalasset/canton/protocol/v31/topology.proto\x12$com.digitalasset.canton.protocol.v31\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xe0\x02\n" +
+	"3com/digitalasset/canton/protocol/v31/topology.proto\x12$com.digitalasset.canton.protocol.v31\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xf5\x05\n" +
 	"\x12PartyToParticipant\x12\x14\n" +
 	"\x05party\x18\x01 \x01(\tR\x05party\x12\x1c\n" +
 	"\tthreshold\x18\x02 \x01(\rR\tthreshold\x12o\n" +
-	"\fparticipants\x18\x03 \x03(\v2K.com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipantR\fparticipants\x12o\n" +
-	"\x12party_signing_keys\x18\x04 \x01(\v2<.com.digitalasset.canton.crypto.v30.SigningKeysWithThresholdH\x00R\x10partySigningKeys\x88\x01\x01\x12\x1d\n" +
+	"\fparticipants\x18\x03 \x03(\v2K.com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipantR\fparticipants\x12o\n" +
+	"\x12party_signing_keys\x18\x04 \x01(\v2<.com.digitalasset.canton.crypto.v30.SigningKeysWithThresholdH\x00R\x10partySigningKeys\x88\x01\x01\x1a\xb1\x03\n" +
+	"\x12HostingParticipant\x12'\n" +
+	"\x0fparticipant_uid\x18\x01 \x01(\tR\x0eparticipantUid\x12a\n" +
 	"\n" +
-	"is_offline\x18\x05 \x01(\bR\tisOfflineB\x15\n" +
+	"permission\x18\x02 \x01(\x0e2A.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\n" +
+	"permission\x12n\n" +
+	"\x05state\x18\x03 \x01(\x0e2X.com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant.HostingStateR\x05state\"\x9e\x01\n" +
+	"\fHostingState\x12\x1d\n" +
+	"\x19HOSTING_STATE_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17HOSTING_STATE_NOMINATED\x10\x01\x12\x1a\n" +
+	"\x16HOSTING_STATE_FREEZING\x10\x02\x12\x1c\n" +
+	"\x18HOSTING_STATE_ONBOARDING\x10\x03\x12\x18\n" +
+	"\x14HOSTING_STATE_ACTIVE\x10\x04B\x15\n" +
 	"\x13_party_signing_keys\"\x93\x0f\n" +
 	"\x0fTopologyMapping\x12n\n" +
 	"\x14namespace_delegation\x18\x01 \x01(\v29.com.digitalasset.canton.protocol.v30.NamespaceDelegationH\x00R\x13namespaceDelegation\x12\x96\x01\n" +
@@ -501,54 +618,59 @@ func file_com_digitalasset_canton_protocol_v31_topology_proto_rawDescGZIP() []by
 	return file_com_digitalasset_canton_protocol_v31_topology_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_protocol_v31_topology_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_com_digitalasset_canton_protocol_v31_topology_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_com_digitalasset_canton_protocol_v31_topology_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_com_digitalasset_canton_protocol_v31_topology_proto_goTypes = []any{
-	(*PartyToParticipant)(nil),                        // 0: com.digitalasset.canton.protocol.v31.PartyToParticipant
-	(*TopologyMapping)(nil),                           // 1: com.digitalasset.canton.protocol.v31.TopologyMapping
-	(*TopologyTransaction)(nil),                       // 2: com.digitalasset.canton.protocol.v31.TopologyTransaction
-	(*v30.PartyToParticipant_HostingParticipant)(nil), // 3: com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant
-	(*v301.SigningKeysWithThreshold)(nil),             // 4: com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
-	(*v30.NamespaceDelegation)(nil),                   // 5: com.digitalasset.canton.protocol.v30.NamespaceDelegation
-	(*v30.DecentralizedNamespaceDefinition)(nil),      // 6: com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
-	(*v30.OwnerToKeyMapping)(nil),                     // 7: com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
-	(*v30.SynchronizerTrustCertificate)(nil),          // 8: com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
-	(*v30.ParticipantSynchronizerPermission)(nil),     // 9: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
-	(*v30.PartyHostingLimits)(nil),                    // 10: com.digitalasset.canton.protocol.v30.PartyHostingLimits
-	(*v30.VettedPackages)(nil),                        // 11: com.digitalasset.canton.protocol.v30.VettedPackages
-	(*v30.SynchronizerParametersState)(nil),           // 12: com.digitalasset.canton.protocol.v30.SynchronizerParametersState
-	(*v30.MediatorSynchronizerState)(nil),             // 13: com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
-	(*v30.SequencerSynchronizerState)(nil),            // 14: com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
-	(*v30.DynamicSequencingParametersState)(nil),      // 15: com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState
-	(*v30.PartyToKeyMapping)(nil),                     // 16: com.digitalasset.canton.protocol.v30.PartyToKeyMapping
-	(*v30.LsuAnnouncement)(nil),                       // 17: com.digitalasset.canton.protocol.v30.LsuAnnouncement
-	(*v30.LsuSequencerConnectionSuccessor)(nil),       // 18: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
-	(v30.Enums_TopologyChangeOp)(0),                   // 19: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	(PartyToParticipant_HostingParticipant_HostingState)(0), // 0: com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant.HostingState
+	(*PartyToParticipant)(nil),                              // 1: com.digitalasset.canton.protocol.v31.PartyToParticipant
+	(*TopologyMapping)(nil),                                 // 2: com.digitalasset.canton.protocol.v31.TopologyMapping
+	(*TopologyTransaction)(nil),                             // 3: com.digitalasset.canton.protocol.v31.TopologyTransaction
+	(*PartyToParticipant_HostingParticipant)(nil),           // 4: com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant
+	(*v30.SigningKeysWithThreshold)(nil),                    // 5: com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
+	(*v301.NamespaceDelegation)(nil),                        // 6: com.digitalasset.canton.protocol.v30.NamespaceDelegation
+	(*v301.DecentralizedNamespaceDefinition)(nil),           // 7: com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
+	(*v301.OwnerToKeyMapping)(nil),                          // 8: com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
+	(*v301.SynchronizerTrustCertificate)(nil),               // 9: com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
+	(*v301.ParticipantSynchronizerPermission)(nil),          // 10: com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
+	(*v301.PartyHostingLimits)(nil),                         // 11: com.digitalasset.canton.protocol.v30.PartyHostingLimits
+	(*v301.VettedPackages)(nil),                             // 12: com.digitalasset.canton.protocol.v30.VettedPackages
+	(*v301.SynchronizerParametersState)(nil),                // 13: com.digitalasset.canton.protocol.v30.SynchronizerParametersState
+	(*v301.MediatorSynchronizerState)(nil),                  // 14: com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
+	(*v301.SequencerSynchronizerState)(nil),                 // 15: com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
+	(*v301.DynamicSequencingParametersState)(nil),           // 16: com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState
+	(*v301.PartyToKeyMapping)(nil),                          // 17: com.digitalasset.canton.protocol.v30.PartyToKeyMapping
+	(*v301.LsuAnnouncement)(nil),                            // 18: com.digitalasset.canton.protocol.v30.LsuAnnouncement
+	(*v301.LsuSequencerConnectionSuccessor)(nil),            // 19: com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
+	(v301.Enums_TopologyChangeOp)(0),                        // 20: com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	(v301.Enums_ParticipantPermission)(0),                   // 21: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
 }
 var file_com_digitalasset_canton_protocol_v31_topology_proto_depIdxs = []int32{
-	3,  // 0: com.digitalasset.canton.protocol.v31.PartyToParticipant.participants:type_name -> com.digitalasset.canton.protocol.v30.PartyToParticipant.HostingParticipant
-	4,  // 1: com.digitalasset.canton.protocol.v31.PartyToParticipant.party_signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
-	5,  // 2: com.digitalasset.canton.protocol.v31.TopologyMapping.namespace_delegation:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation
-	6,  // 3: com.digitalasset.canton.protocol.v31.TopologyMapping.decentralized_namespace_definition:type_name -> com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
-	7,  // 4: com.digitalasset.canton.protocol.v31.TopologyMapping.owner_to_key_mapping:type_name -> com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
-	8,  // 5: com.digitalasset.canton.protocol.v31.TopologyMapping.synchronizer_trust_certificate:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
-	9,  // 6: com.digitalasset.canton.protocol.v31.TopologyMapping.participant_permission:type_name -> com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
-	10, // 7: com.digitalasset.canton.protocol.v31.TopologyMapping.party_hosting_limits:type_name -> com.digitalasset.canton.protocol.v30.PartyHostingLimits
-	11, // 8: com.digitalasset.canton.protocol.v31.TopologyMapping.vetted_packages:type_name -> com.digitalasset.canton.protocol.v30.VettedPackages
-	0,  // 9: com.digitalasset.canton.protocol.v31.TopologyMapping.party_to_participant:type_name -> com.digitalasset.canton.protocol.v31.PartyToParticipant
-	12, // 10: com.digitalasset.canton.protocol.v31.TopologyMapping.synchronizer_parameters_state:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerParametersState
-	13, // 11: com.digitalasset.canton.protocol.v31.TopologyMapping.mediator_synchronizer_state:type_name -> com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
-	14, // 12: com.digitalasset.canton.protocol.v31.TopologyMapping.sequencer_synchronizer_state:type_name -> com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
-	15, // 13: com.digitalasset.canton.protocol.v31.TopologyMapping.sequencing_dynamic_parameters_state:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState
-	16, // 14: com.digitalasset.canton.protocol.v31.TopologyMapping.party_to_key_mapping:type_name -> com.digitalasset.canton.protocol.v30.PartyToKeyMapping
-	17, // 15: com.digitalasset.canton.protocol.v31.TopologyMapping.synchronizer_upgrade_announcement:type_name -> com.digitalasset.canton.protocol.v30.LsuAnnouncement
-	18, // 16: com.digitalasset.canton.protocol.v31.TopologyMapping.sequencer_connection_successor:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
-	19, // 17: com.digitalasset.canton.protocol.v31.TopologyTransaction.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
-	1,  // 18: com.digitalasset.canton.protocol.v31.TopologyTransaction.mapping:type_name -> com.digitalasset.canton.protocol.v31.TopologyMapping
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	4,  // 0: com.digitalasset.canton.protocol.v31.PartyToParticipant.participants:type_name -> com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant
+	5,  // 1: com.digitalasset.canton.protocol.v31.PartyToParticipant.party_signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningKeysWithThreshold
+	6,  // 2: com.digitalasset.canton.protocol.v31.TopologyMapping.namespace_delegation:type_name -> com.digitalasset.canton.protocol.v30.NamespaceDelegation
+	7,  // 3: com.digitalasset.canton.protocol.v31.TopologyMapping.decentralized_namespace_definition:type_name -> com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinition
+	8,  // 4: com.digitalasset.canton.protocol.v31.TopologyMapping.owner_to_key_mapping:type_name -> com.digitalasset.canton.protocol.v30.OwnerToKeyMapping
+	9,  // 5: com.digitalasset.canton.protocol.v31.TopologyMapping.synchronizer_trust_certificate:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificate
+	10, // 6: com.digitalasset.canton.protocol.v31.TopologyMapping.participant_permission:type_name -> com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermission
+	11, // 7: com.digitalasset.canton.protocol.v31.TopologyMapping.party_hosting_limits:type_name -> com.digitalasset.canton.protocol.v30.PartyHostingLimits
+	12, // 8: com.digitalasset.canton.protocol.v31.TopologyMapping.vetted_packages:type_name -> com.digitalasset.canton.protocol.v30.VettedPackages
+	1,  // 9: com.digitalasset.canton.protocol.v31.TopologyMapping.party_to_participant:type_name -> com.digitalasset.canton.protocol.v31.PartyToParticipant
+	13, // 10: com.digitalasset.canton.protocol.v31.TopologyMapping.synchronizer_parameters_state:type_name -> com.digitalasset.canton.protocol.v30.SynchronizerParametersState
+	14, // 11: com.digitalasset.canton.protocol.v31.TopologyMapping.mediator_synchronizer_state:type_name -> com.digitalasset.canton.protocol.v30.MediatorSynchronizerState
+	15, // 12: com.digitalasset.canton.protocol.v31.TopologyMapping.sequencer_synchronizer_state:type_name -> com.digitalasset.canton.protocol.v30.SequencerSynchronizerState
+	16, // 13: com.digitalasset.canton.protocol.v31.TopologyMapping.sequencing_dynamic_parameters_state:type_name -> com.digitalasset.canton.protocol.v30.DynamicSequencingParametersState
+	17, // 14: com.digitalasset.canton.protocol.v31.TopologyMapping.party_to_key_mapping:type_name -> com.digitalasset.canton.protocol.v30.PartyToKeyMapping
+	18, // 15: com.digitalasset.canton.protocol.v31.TopologyMapping.synchronizer_upgrade_announcement:type_name -> com.digitalasset.canton.protocol.v30.LsuAnnouncement
+	19, // 16: com.digitalasset.canton.protocol.v31.TopologyMapping.sequencer_connection_successor:type_name -> com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessor
+	20, // 17: com.digitalasset.canton.protocol.v31.TopologyTransaction.operation:type_name -> com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOp
+	2,  // 18: com.digitalasset.canton.protocol.v31.TopologyTransaction.mapping:type_name -> com.digitalasset.canton.protocol.v31.TopologyMapping
+	21, // 19: com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant.permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	0,  // 20: com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant.state:type_name -> com.digitalasset.canton.protocol.v31.PartyToParticipant.HostingParticipant.HostingState
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v31_topology_proto_init() }
@@ -579,13 +701,14 @@ func file_com_digitalasset_canton_protocol_v31_topology_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v31_topology_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v31_topology_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   3,
+			NumEnums:      1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_com_digitalasset_canton_protocol_v31_topology_proto_goTypes,
 		DependencyIndexes: file_com_digitalasset_canton_protocol_v31_topology_proto_depIdxs,
+		EnumInfos:         file_com_digitalasset_canton_protocol_v31_topology_proto_enumTypes,
 		MessageInfos:      file_com_digitalasset_canton_protocol_v31_topology_proto_msgTypes,
 	}.Build()
 	File_com_digitalasset_canton_protocol_v31_topology_proto = out.File

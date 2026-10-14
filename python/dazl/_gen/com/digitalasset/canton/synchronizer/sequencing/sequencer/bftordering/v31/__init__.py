@@ -4,6 +4,7 @@
 # isort: skip_file
 
 from .bft_ordering_sequencing_parameters_pb2 import BlacklistLeaderSelectionPolicy, DynamicSequencingParametersPayload, HowLongExponential, HowLongLinear, HowLongLinearWithParameters, HowLongNoBlacklisting, HowManyNoBlacklisting, HowManyNumFaultsTolerated
+from .bft_ordering_service_pb2 import StateTransferMessage
 
 __all__ = [
     "BlacklistLeaderSelectionPolicy",
@@ -14,4 +15,5 @@ __all__ = [
     "HowLongNoBlacklisting",
     "HowManyNoBlacklisting",
     "HowManyNumFaultsTolerated",
+    "StateTransferMessage",
 ]
