@@ -3,5 +3,30 @@
 # fmt: off
 # isort: skip_file
 
+from .participant_transaction_pb2 import EncryptedMultipleViewsMessage, ExternalAuthorization, SubmitterMetadata, ViewExternalCallResult, ViewParticipantData
+from .sequencing_pb2 import AcsCommitmentLimits, CompressedBatch, SequencedEvent, StaticSynchronizerParameters, SubmissionRequest, SynchronizerLimits, TopologyLimits, TransactionProtocolLimits
+from .acs_commitments_pb2 import AcsCommitment, AcsCommitmentProtocolMessage, AcsCommitmentSummary, AcsCommitmentSummaryProtocolMessage, CommitmentPeriod, DigestForCounterparticipant
+from .synchronization_pb2 import EnvelopeContent
 
-__all__ = []  # type: ignore
+__all__ = [
+    "AcsCommitment",
+    "AcsCommitmentLimits",
+    "AcsCommitmentProtocolMessage",
+    "AcsCommitmentSummary",
+    "AcsCommitmentSummaryProtocolMessage",
+    "CommitmentPeriod",
+    "CompressedBatch",
+    "DigestForCounterparticipant",
+    "EncryptedMultipleViewsMessage",
+    "EnvelopeContent",
+    "ExternalAuthorization",
+    "SequencedEvent",
+    "StaticSynchronizerParameters",
+    "SubmissionRequest",
+    "SubmitterMetadata",
+    "SynchronizerLimits",
+    "TopologyLimits",
+    "TransactionProtocolLimits",
+    "ViewExternalCallResult",
+    "ViewParticipantData",
+]

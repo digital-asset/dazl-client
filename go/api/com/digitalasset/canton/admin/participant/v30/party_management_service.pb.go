@@ -77,6 +77,55 @@ func (ParticipantPermission) EnumDescriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{0}
 }
 
+type PartyReplicationStatus_ReplicationMode int32
+
+const (
+	PartyReplicationStatus_REPLICATION_MODE_UNSPECIFIED       PartyReplicationStatus_ReplicationMode = 0
+	PartyReplicationStatus_REPLICATION_MODE_FILE              PartyReplicationStatus_ReplicationMode = 1
+	PartyReplicationStatus_REPLICATION_MODE_SEQUENCER_CHANNEL PartyReplicationStatus_ReplicationMode = 2
+)
+
+// Enum value maps for PartyReplicationStatus_ReplicationMode.
+var (
+	PartyReplicationStatus_ReplicationMode_name = map[int32]string{
+		0: "REPLICATION_MODE_UNSPECIFIED",
+		1: "REPLICATION_MODE_FILE",
+		2: "REPLICATION_MODE_SEQUENCER_CHANNEL",
+	}
+	PartyReplicationStatus_ReplicationMode_value = map[string]int32{
+		"REPLICATION_MODE_UNSPECIFIED":       0,
+		"REPLICATION_MODE_FILE":              1,
+		"REPLICATION_MODE_SEQUENCER_CHANNEL": 2,
+	}
+)
+
+func (x PartyReplicationStatus_ReplicationMode) Enum() *PartyReplicationStatus_ReplicationMode {
+	p := new(PartyReplicationStatus_ReplicationMode)
+	*p = x
+	return p
+}
+
+func (x PartyReplicationStatus_ReplicationMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PartyReplicationStatus_ReplicationMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_enumTypes[1].Descriptor()
+}
+
+func (PartyReplicationStatus_ReplicationMode) Type() protoreflect.EnumType {
+	return &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_enumTypes[1]
+}
+
+func (x PartyReplicationStatus_ReplicationMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PartyReplicationStatus_ReplicationMode.Descriptor instead.
+func (PartyReplicationStatus_ReplicationMode) EnumDescriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9, 0}
+}
+
 type AddPartyAsyncRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Arguments     *AddPartyArguments     `protobuf:"bytes,1,opt,name=arguments,proto3" json:"arguments,omitempty"`
@@ -425,22 +474,111 @@ func (x *GetAddPartyStatusResponse) GetStatus() *PartyReplicationStatus {
 	return nil
 }
 
-type PartyReplicationStatus struct {
-	state         protoimpl.MessageState                                `protogen:"open.v1"`
-	Parameters    *PartyReplicationStatus_ReplicationParameters         `protobuf:"bytes,1,opt,name=parameters,proto3" json:"parameters,omitempty"`
-	Agreement     *PartyReplicationStatus_SequencerChannelAgreement     `protobuf:"bytes,2,opt,name=agreement,proto3" json:"agreement,omitempty"`
-	Authorization *PartyReplicationStatus_PartyReplicationAuthorization `protobuf:"bytes,3,opt,name=authorization,proto3" json:"authorization,omitempty"`
-	Replication   *PartyReplicationStatus_AcsReplicationProgress        `protobuf:"bytes,4,opt,name=replication,proto3" json:"replication,omitempty"`
-	Indexing      *PartyReplicationStatus_AcsIndexingProgress           `protobuf:"bytes,5,opt,name=indexing,proto3" json:"indexing,omitempty"`
-	HasCompleted  bool                                                  `protobuf:"varint,6,opt,name=has_completed,json=hasCompleted,proto3" json:"has_completed,omitempty"`
-	ErrorMessage  *PartyReplicationStatus_PartyReplicationError         `protobuf:"bytes,7,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+type GetAcsReplicationStatusRequest struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	AcsReplicationRequestId string                 `protobuf:"bytes,1,opt,name=acs_replication_request_id,json=acsReplicationRequestId,proto3" json:"acs_replication_request_id,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *GetAcsReplicationStatusRequest) Reset() {
+	*x = GetAcsReplicationStatusRequest{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAcsReplicationStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAcsReplicationStatusRequest) ProtoMessage() {}
+
+func (x *GetAcsReplicationStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAcsReplicationStatusRequest.ProtoReflect.Descriptor instead.
+func (*GetAcsReplicationStatusRequest) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetAcsReplicationStatusRequest) GetAcsReplicationRequestId() string {
+	if x != nil {
+		return x.AcsReplicationRequestId
+	}
+	return ""
+}
+
+type GetAcsReplicationStatusResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        *AcsReplicationStatus  `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *GetAcsReplicationStatusResponse) Reset() {
+	*x = GetAcsReplicationStatusResponse{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAcsReplicationStatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAcsReplicationStatusResponse) ProtoMessage() {}
+
+func (x *GetAcsReplicationStatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAcsReplicationStatusResponse.ProtoReflect.Descriptor instead.
+func (*GetAcsReplicationStatusResponse) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetAcsReplicationStatusResponse) GetStatus() *AcsReplicationStatus {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+type PartyReplicationStatus struct {
+	state                protoimpl.MessageState                                `protogen:"open.v1"`
+	Parameters           *PartyReplicationStatus_ReplicationParameters         `protobuf:"bytes,1,opt,name=parameters,proto3" json:"parameters,omitempty"`
+	Authorization        *PartyReplicationStatus_PartyReplicationAuthorization `protobuf:"bytes,2,opt,name=authorization,proto3" json:"authorization,omitempty"`
+	Replication          *PartyReplicationStatus_AcsReplicationProgress        `protobuf:"bytes,3,opt,name=replication,proto3" json:"replication,omitempty"`
+	Indexing             *PartyReplicationStatus_AcsIndexingProgress           `protobuf:"bytes,4,opt,name=indexing,proto3" json:"indexing,omitempty"`
+	HasCompleted         bool                                                  `protobuf:"varint,5,opt,name=has_completed,json=hasCompleted,proto3" json:"has_completed,omitempty"`
+	ErrorMessage         *PartyReplicationStatus_PartyReplicationError         `protobuf:"bytes,6,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	AcsReplicationStatus *AcsReplicationStatus                                 `protobuf:"bytes,7,opt,name=acs_replication_status,json=acsReplicationStatus,proto3" json:"acs_replication_status,omitempty"`
+	ReplicationMode      PartyReplicationStatus_ReplicationMode                `protobuf:"varint,8,opt,name=replication_mode,json=replicationMode,proto3,enum=com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus_ReplicationMode" json:"replication_mode,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
 func (x *PartyReplicationStatus) Reset() {
 	*x = PartyReplicationStatus{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -452,7 +590,7 @@ func (x *PartyReplicationStatus) String() string {
 func (*PartyReplicationStatus) ProtoMessage() {}
 
 func (x *PartyReplicationStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -465,19 +603,12 @@ func (x *PartyReplicationStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PartyReplicationStatus.ProtoReflect.Descriptor instead.
 func (*PartyReplicationStatus) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PartyReplicationStatus) GetParameters() *PartyReplicationStatus_ReplicationParameters {
 	if x != nil {
 		return x.Parameters
-	}
-	return nil
-}
-
-func (x *PartyReplicationStatus) GetAgreement() *PartyReplicationStatus_SequencerChannelAgreement {
-	if x != nil {
-		return x.Agreement
 	}
 	return nil
 }
@@ -517,6 +648,96 @@ func (x *PartyReplicationStatus) GetErrorMessage() *PartyReplicationStatus_Party
 	return nil
 }
 
+func (x *PartyReplicationStatus) GetAcsReplicationStatus() *AcsReplicationStatus {
+	if x != nil {
+		return x.AcsReplicationStatus
+	}
+	return nil
+}
+
+func (x *PartyReplicationStatus) GetReplicationMode() PartyReplicationStatus_ReplicationMode {
+	if x != nil {
+		return x.ReplicationMode
+	}
+	return PartyReplicationStatus_REPLICATION_MODE_UNSPECIFIED
+}
+
+type AcsReplicationStatus struct {
+	state                  protoimpl.MessageState                                      `protogen:"open.v1"`
+	Parameters             *AcsReplicationStatus_AcsReplicationParameters              `protobuf:"bytes,1,opt,name=parameters,proto3" json:"parameters,omitempty"`
+	PtpTopologyTransaction *AcsReplicationStatus_PartyToParticipantTopologyTransaction `protobuf:"bytes,2,opt,name=ptp_topology_transaction,json=ptpTopologyTransaction,proto3" json:"ptp_topology_transaction,omitempty"`
+	ReplicationProgress    *AcsReplicationStatus_AcsReplicationProgress                `protobuf:"bytes,3,opt,name=replication_progress,json=replicationProgress,proto3" json:"replication_progress,omitempty"`
+	HasCompleted           bool                                                        `protobuf:"varint,4,opt,name=has_completed,json=hasCompleted,proto3" json:"has_completed,omitempty"`
+	ErrorMessage           *AcsReplicationStatus_AcsReplicationError                   `protobuf:"bytes,5,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus) Reset() {
+	*x = AcsReplicationStatus{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus) ProtoMessage() {}
+
+func (x *AcsReplicationStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *AcsReplicationStatus) GetParameters() *AcsReplicationStatus_AcsReplicationParameters {
+	if x != nil {
+		return x.Parameters
+	}
+	return nil
+}
+
+func (x *AcsReplicationStatus) GetPtpTopologyTransaction() *AcsReplicationStatus_PartyToParticipantTopologyTransaction {
+	if x != nil {
+		return x.PtpTopologyTransaction
+	}
+	return nil
+}
+
+func (x *AcsReplicationStatus) GetReplicationProgress() *AcsReplicationStatus_AcsReplicationProgress {
+	if x != nil {
+		return x.ReplicationProgress
+	}
+	return nil
+}
+
+func (x *AcsReplicationStatus) GetHasCompleted() bool {
+	if x != nil {
+		return x.HasCompleted
+	}
+	return false
+}
+
+func (x *AcsReplicationStatus) GetErrorMessage() *AcsReplicationStatus_AcsReplicationError {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return nil
+}
+
 type ExportPartyAcsRequest struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
 	PartyId                  string                 `protobuf:"bytes,1,opt,name=party_id,json=partyId,proto3" json:"party_id,omitempty"`
@@ -530,7 +751,7 @@ type ExportPartyAcsRequest struct {
 
 func (x *ExportPartyAcsRequest) Reset() {
 	*x = ExportPartyAcsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -542,7 +763,7 @@ func (x *ExportPartyAcsRequest) String() string {
 func (*ExportPartyAcsRequest) ProtoMessage() {}
 
 func (x *ExportPartyAcsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +776,7 @@ func (x *ExportPartyAcsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPartyAcsRequest.ProtoReflect.Descriptor instead.
 func (*ExportPartyAcsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{8}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ExportPartyAcsRequest) GetPartyId() string {
@@ -602,7 +823,7 @@ type ExportPartyAcsResponse struct {
 
 func (x *ExportPartyAcsResponse) Reset() {
 	*x = ExportPartyAcsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -614,7 +835,7 @@ func (x *ExportPartyAcsResponse) String() string {
 func (*ExportPartyAcsResponse) ProtoMessage() {}
 
 func (x *ExportPartyAcsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -627,7 +848,7 @@ func (x *ExportPartyAcsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPartyAcsResponse.ProtoReflect.Descriptor instead.
 func (*ExportPartyAcsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ExportPartyAcsResponse) GetChunk() []byte {
@@ -651,7 +872,7 @@ type ImportPartyAcsRequest struct {
 
 func (x *ImportPartyAcsRequest) Reset() {
 	*x = ImportPartyAcsRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -663,7 +884,7 @@ func (x *ImportPartyAcsRequest) String() string {
 func (*ImportPartyAcsRequest) ProtoMessage() {}
 
 func (x *ImportPartyAcsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -676,7 +897,7 @@ func (x *ImportPartyAcsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPartyAcsRequest.ProtoReflect.Descriptor instead.
 func (*ImportPartyAcsRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ImportPartyAcsRequest) GetAcsSnapshot() []byte {
@@ -729,7 +950,7 @@ type ImportPartyAcsResponse struct {
 
 func (x *ImportPartyAcsResponse) Reset() {
 	*x = ImportPartyAcsResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -741,7 +962,7 @@ func (x *ImportPartyAcsResponse) String() string {
 func (*ImportPartyAcsResponse) ProtoMessage() {}
 
 func (x *ImportPartyAcsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -754,7 +975,7 @@ func (x *ImportPartyAcsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPartyAcsResponse.ProtoReflect.Descriptor instead.
 func (*ImportPartyAcsResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{11}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{14}
 }
 
 type GetHighestOffsetByTimestampRequest struct {
@@ -768,7 +989,7 @@ type GetHighestOffsetByTimestampRequest struct {
 
 func (x *GetHighestOffsetByTimestampRequest) Reset() {
 	*x = GetHighestOffsetByTimestampRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -780,7 +1001,7 @@ func (x *GetHighestOffsetByTimestampRequest) String() string {
 func (*GetHighestOffsetByTimestampRequest) ProtoMessage() {}
 
 func (x *GetHighestOffsetByTimestampRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -793,7 +1014,7 @@ func (x *GetHighestOffsetByTimestampRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use GetHighestOffsetByTimestampRequest.ProtoReflect.Descriptor instead.
 func (*GetHighestOffsetByTimestampRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{12}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetHighestOffsetByTimestampRequest) GetSynchronizerId() string {
@@ -826,7 +1047,7 @@ type GetHighestOffsetByTimestampResponse struct {
 
 func (x *GetHighestOffsetByTimestampResponse) Reset() {
 	*x = GetHighestOffsetByTimestampResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -838,7 +1059,7 @@ func (x *GetHighestOffsetByTimestampResponse) String() string {
 func (*GetHighestOffsetByTimestampResponse) ProtoMessage() {}
 
 func (x *GetHighestOffsetByTimestampResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -851,7 +1072,7 @@ func (x *GetHighestOffsetByTimestampResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use GetHighestOffsetByTimestampResponse.ProtoReflect.Descriptor instead.
 func (*GetHighestOffsetByTimestampResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{13}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetHighestOffsetByTimestampResponse) GetLedgerOffset() int64 {
@@ -873,7 +1094,7 @@ type ClearPartyOnboardingFlagRequest struct {
 
 func (x *ClearPartyOnboardingFlagRequest) Reset() {
 	*x = ClearPartyOnboardingFlagRequest{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -885,7 +1106,7 @@ func (x *ClearPartyOnboardingFlagRequest) String() string {
 func (*ClearPartyOnboardingFlagRequest) ProtoMessage() {}
 
 func (x *ClearPartyOnboardingFlagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -898,7 +1119,7 @@ func (x *ClearPartyOnboardingFlagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearPartyOnboardingFlagRequest.ProtoReflect.Descriptor instead.
 func (*ClearPartyOnboardingFlagRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{14}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ClearPartyOnboardingFlagRequest) GetPartyId() string {
@@ -939,7 +1160,7 @@ type ClearPartyOnboardingFlagResponse struct {
 
 func (x *ClearPartyOnboardingFlagResponse) Reset() {
 	*x = ClearPartyOnboardingFlagResponse{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -951,7 +1172,7 @@ func (x *ClearPartyOnboardingFlagResponse) String() string {
 func (*ClearPartyOnboardingFlagResponse) ProtoMessage() {}
 
 func (x *ClearPartyOnboardingFlagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -964,7 +1185,7 @@ func (x *ClearPartyOnboardingFlagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearPartyOnboardingFlagResponse.ProtoReflect.Descriptor instead.
 func (*ClearPartyOnboardingFlagResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{15}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ClearPartyOnboardingFlagResponse) GetOnboarded() bool {
@@ -995,7 +1216,7 @@ type PartyReplicationStatus_ReplicationParameters struct {
 
 func (x *PartyReplicationStatus_ReplicationParameters) Reset() {
 	*x = PartyReplicationStatus_ReplicationParameters{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1007,7 +1228,7 @@ func (x *PartyReplicationStatus_ReplicationParameters) String() string {
 func (*PartyReplicationStatus_ReplicationParameters) ProtoMessage() {}
 
 func (x *PartyReplicationStatus_ReplicationParameters) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1020,7 +1241,7 @@ func (x *PartyReplicationStatus_ReplicationParameters) ProtoReflect() protorefle
 
 // Deprecated: Use PartyReplicationStatus_ReplicationParameters.ProtoReflect.Descriptor instead.
 func (*PartyReplicationStatus_ReplicationParameters) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7, 0}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9, 0}
 }
 
 func (x *PartyReplicationStatus_ReplicationParameters) GetRequestId() string {
@@ -1065,50 +1286,6 @@ func (x *PartyReplicationStatus_ReplicationParameters) GetTopologySerial() uint3
 	return 0
 }
 
-type PartyReplicationStatus_SequencerChannelAgreement struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SequencerUid  string                 `protobuf:"bytes,1,opt,name=sequencer_uid,json=sequencerUid,proto3" json:"sequencer_uid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *PartyReplicationStatus_SequencerChannelAgreement) Reset() {
-	*x = PartyReplicationStatus_SequencerChannelAgreement{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PartyReplicationStatus_SequencerChannelAgreement) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PartyReplicationStatus_SequencerChannelAgreement) ProtoMessage() {}
-
-func (x *PartyReplicationStatus_SequencerChannelAgreement) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PartyReplicationStatus_SequencerChannelAgreement.ProtoReflect.Descriptor instead.
-func (*PartyReplicationStatus_SequencerChannelAgreement) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7, 1}
-}
-
-func (x *PartyReplicationStatus_SequencerChannelAgreement) GetSequencerUid() string {
-	if x != nil {
-		return x.SequencerUid
-	}
-	return ""
-}
-
 type PartyReplicationStatus_PartyReplicationAuthorization struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	OnboardingAt            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=onboarding_at,json=onboardingAt,proto3" json:"onboarding_at,omitempty"`
@@ -1119,7 +1296,7 @@ type PartyReplicationStatus_PartyReplicationAuthorization struct {
 
 func (x *PartyReplicationStatus_PartyReplicationAuthorization) Reset() {
 	*x = PartyReplicationStatus_PartyReplicationAuthorization{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1131,7 +1308,7 @@ func (x *PartyReplicationStatus_PartyReplicationAuthorization) String() string {
 func (*PartyReplicationStatus_PartyReplicationAuthorization) ProtoMessage() {}
 
 func (x *PartyReplicationStatus_PartyReplicationAuthorization) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1144,7 +1321,7 @@ func (x *PartyReplicationStatus_PartyReplicationAuthorization) ProtoReflect() pr
 
 // Deprecated: Use PartyReplicationStatus_PartyReplicationAuthorization.ProtoReflect.Descriptor instead.
 func (*PartyReplicationStatus_PartyReplicationAuthorization) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7, 2}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9, 1}
 }
 
 func (x *PartyReplicationStatus_PartyReplicationAuthorization) GetOnboardingAt() *timestamppb.Timestamp {
@@ -1171,7 +1348,7 @@ type PartyReplicationStatus_AcsReplicationProgress struct {
 
 func (x *PartyReplicationStatus_AcsReplicationProgress) Reset() {
 	*x = PartyReplicationStatus_AcsReplicationProgress{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[19]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1183,7 +1360,7 @@ func (x *PartyReplicationStatus_AcsReplicationProgress) String() string {
 func (*PartyReplicationStatus_AcsReplicationProgress) ProtoMessage() {}
 
 func (x *PartyReplicationStatus_AcsReplicationProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[19]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1196,7 +1373,7 @@ func (x *PartyReplicationStatus_AcsReplicationProgress) ProtoReflect() protorefl
 
 // Deprecated: Use PartyReplicationStatus_AcsReplicationProgress.ProtoReflect.Descriptor instead.
 func (*PartyReplicationStatus_AcsReplicationProgress) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7, 3}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9, 2}
 }
 
 func (x *PartyReplicationStatus_AcsReplicationProgress) GetProcessedContractCount() uint64 {
@@ -1221,7 +1398,7 @@ type PartyReplicationStatus_AcsIndexingProgress struct {
 
 func (x *PartyReplicationStatus_AcsIndexingProgress) Reset() {
 	*x = PartyReplicationStatus_AcsIndexingProgress{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1233,7 +1410,7 @@ func (x *PartyReplicationStatus_AcsIndexingProgress) String() string {
 func (*PartyReplicationStatus_AcsIndexingProgress) ProtoMessage() {}
 
 func (x *PartyReplicationStatus_AcsIndexingProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1246,19 +1423,19 @@ func (x *PartyReplicationStatus_AcsIndexingProgress) ProtoReflect() protoreflect
 
 // Deprecated: Use PartyReplicationStatus_AcsIndexingProgress.ProtoReflect.Descriptor instead.
 func (*PartyReplicationStatus_AcsIndexingProgress) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7, 4}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9, 3}
 }
 
 type PartyReplicationStatus_PartyReplicationError struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ErrorMessage  string                 `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	ErrorMessage  string                 `protobuf:"bytes,1,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PartyReplicationStatus_PartyReplicationError) Reset() {
 	*x = PartyReplicationStatus_PartyReplicationError{}
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1270,7 +1447,7 @@ func (x *PartyReplicationStatus_PartyReplicationError) String() string {
 func (*PartyReplicationStatus_PartyReplicationError) ProtoMessage() {}
 
 func (x *PartyReplicationStatus_PartyReplicationError) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1283,7 +1460,7 @@ func (x *PartyReplicationStatus_PartyReplicationError) ProtoReflect() protorefle
 
 // Deprecated: Use PartyReplicationStatus_PartyReplicationError.ProtoReflect.Descriptor instead.
 func (*PartyReplicationStatus_PartyReplicationError) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{7, 5}
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{9, 4}
 }
 
 func (x *PartyReplicationStatus_PartyReplicationError) GetErrorMessage() string {
@@ -1291,6 +1468,290 @@ func (x *PartyReplicationStatus_PartyReplicationError) GetErrorMessage() string 
 		return x.ErrorMessage
 	}
 	return ""
+}
+
+type AcsReplicationStatus_AcsReplicationParameters struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	RequestId            string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	PartyId              string                 `protobuf:"bytes,2,opt,name=party_id,json=partyId,proto3" json:"party_id,omitempty"`
+	SynchronizerId       string                 `protobuf:"bytes,3,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	SourceParticipantUid string                 `protobuf:"bytes,4,opt,name=source_participant_uid,json=sourceParticipantUid,proto3" json:"source_participant_uid,omitempty"`
+	TargetParticipantUid string                 `protobuf:"bytes,5,opt,name=target_participant_uid,json=targetParticipantUid,proto3" json:"target_participant_uid,omitempty"`
+	Timestamp            *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) Reset() {
+	*x = AcsReplicationStatus_AcsReplicationParameters{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus_AcsReplicationParameters) ProtoMessage() {}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus_AcsReplicationParameters.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus_AcsReplicationParameters) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10, 0}
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) GetPartyId() string {
+	if x != nil {
+		return x.PartyId
+	}
+	return ""
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) GetSynchronizerId() string {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return ""
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) GetSourceParticipantUid() string {
+	if x != nil {
+		return x.SourceParticipantUid
+	}
+	return ""
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) GetTargetParticipantUid() string {
+	if x != nil {
+		return x.TargetParticipantUid
+	}
+	return ""
+}
+
+func (x *AcsReplicationStatus_AcsReplicationParameters) GetTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+type AcsReplicationStatus_SequencerChannelAgreement struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SequencerUid  string                 `protobuf:"bytes,1,opt,name=sequencer_uid,json=sequencerUid,proto3" json:"sequencer_uid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus_SequencerChannelAgreement) Reset() {
+	*x = AcsReplicationStatus_SequencerChannelAgreement{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus_SequencerChannelAgreement) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus_SequencerChannelAgreement) ProtoMessage() {}
+
+func (x *AcsReplicationStatus_SequencerChannelAgreement) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus_SequencerChannelAgreement.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus_SequencerChannelAgreement) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10, 1}
+}
+
+func (x *AcsReplicationStatus_SequencerChannelAgreement) GetSequencerUid() string {
+	if x != nil {
+		return x.SequencerUid
+	}
+	return ""
+}
+
+type AcsReplicationStatus_PartyToParticipantTopologyTransaction struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ValidFrom     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=valid_from,json=validFrom,proto3" json:"valid_from,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) Reset() {
+	*x = AcsReplicationStatus_PartyToParticipantTopologyTransaction{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus_PartyToParticipantTopologyTransaction) ProtoMessage() {}
+
+func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus_PartyToParticipantTopologyTransaction.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus_PartyToParticipantTopologyTransaction) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10, 2}
+}
+
+func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) GetValidFrom() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ValidFrom
+	}
+	return nil
+}
+
+type AcsReplicationStatus_AcsReplicationProgress struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	ProcessedContractCount uint64                 `protobuf:"varint,1,opt,name=processed_contract_count,json=processedContractCount,proto3" json:"processed_contract_count,omitempty"`
+	AcsHash                []byte                 `protobuf:"bytes,2,opt,name=acs_hash,json=acsHash,proto3,oneof" json:"acs_hash,omitempty"`
+	FullyProcessedAcs      bool                   `protobuf:"varint,3,opt,name=fully_processed_acs,json=fullyProcessedAcs,proto3" json:"fully_processed_acs,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus_AcsReplicationProgress) Reset() {
+	*x = AcsReplicationStatus_AcsReplicationProgress{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus_AcsReplicationProgress) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus_AcsReplicationProgress) ProtoMessage() {}
+
+func (x *AcsReplicationStatus_AcsReplicationProgress) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus_AcsReplicationProgress.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus_AcsReplicationProgress) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10, 3}
+}
+
+func (x *AcsReplicationStatus_AcsReplicationProgress) GetProcessedContractCount() uint64 {
+	if x != nil {
+		return x.ProcessedContractCount
+	}
+	return 0
+}
+
+func (x *AcsReplicationStatus_AcsReplicationProgress) GetAcsHash() []byte {
+	if x != nil {
+		return x.AcsHash
+	}
+	return nil
+}
+
+func (x *AcsReplicationStatus_AcsReplicationProgress) GetFullyProcessedAcs() bool {
+	if x != nil {
+		return x.FullyProcessedAcs
+	}
+	return false
+}
+
+type AcsReplicationStatus_AcsReplicationError struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ErrorMessage  string                 `protobuf:"bytes,1,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	IsTerminal    bool                   `protobuf:"varint,2,opt,name=is_terminal,json=isTerminal,proto3" json:"is_terminal,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus_AcsReplicationError) Reset() {
+	*x = AcsReplicationStatus_AcsReplicationError{}
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus_AcsReplicationError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus_AcsReplicationError) ProtoMessage() {}
+
+func (x *AcsReplicationStatus_AcsReplicationError) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus_AcsReplicationError.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus_AcsReplicationError) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescGZIP(), []int{10, 4}
+}
+
+func (x *AcsReplicationStatus_AcsReplicationError) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *AcsReplicationStatus_AcsReplicationError) GetIsTerminal() bool {
+	if x != nil {
+		return x.IsTerminal
+	}
+	return false
 }
 
 var File_com_digitalasset_canton_admin_participant_v30_party_management_service_proto protoreflect.FileDescriptor
@@ -1316,17 +1777,22 @@ const file_com_digitalasset_canton_admin_participant_v30_party_management_servic
 	"\x18GetAddPartyStatusRequest\x12/\n" +
 	"\x14add_party_request_id\x18\x01 \x01(\tR\x11addPartyRequestId\"z\n" +
 	"\x19GetAddPartyStatusResponse\x12]\n" +
-	"\x06status\x18\x01 \x01(\v2E.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatusR\x06status\"\x8d\f\n" +
+	"\x06status\x18\x01 \x01(\v2E.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatusR\x06status\"]\n" +
+	"\x1eGetAcsReplicationStatusRequest\x12;\n" +
+	"\x1aacs_replication_request_id\x18\x01 \x01(\tR\x17acsReplicationRequestId\"~\n" +
+	"\x1fGetAcsReplicationStatusResponse\x12[\n" +
+	"\x06status\x18\x01 \x01(\v2C.com.digitalasset.canton.admin.participant.v30.AcsReplicationStatusR\x06status\"\xc2\r\n" +
 	"\x16PartyReplicationStatus\x12{\n" +
 	"\n" +
 	"parameters\x18\x01 \x01(\v2[.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationParametersR\n" +
-	"parameters\x12}\n" +
-	"\tagreement\x18\x02 \x01(\v2_.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.SequencerChannelAgreementR\tagreement\x12\x89\x01\n" +
-	"\rauthorization\x18\x03 \x01(\v2c.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorizationR\rauthorization\x12~\n" +
-	"\vreplication\x18\x04 \x01(\v2\\.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsReplicationProgressR\vreplication\x12u\n" +
-	"\bindexing\x18\x05 \x01(\v2Y.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsIndexingProgressR\bindexing\x12#\n" +
-	"\rhas_completed\x18\x06 \x01(\bR\fhasCompleted\x12\x80\x01\n" +
-	"\rerror_message\x18\a \x01(\v2[.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationErrorR\ferrorMessage\x1a\x8f\x02\n" +
+	"parameters\x12\x89\x01\n" +
+	"\rauthorization\x18\x02 \x01(\v2c.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorizationR\rauthorization\x12~\n" +
+	"\vreplication\x18\x03 \x01(\v2\\.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsReplicationProgressR\vreplication\x12u\n" +
+	"\bindexing\x18\x04 \x01(\v2Y.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsIndexingProgressR\bindexing\x12#\n" +
+	"\rhas_completed\x18\x05 \x01(\bR\fhasCompleted\x12\x80\x01\n" +
+	"\rerror_message\x18\x06 \x01(\v2[.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationErrorR\ferrorMessage\x12y\n" +
+	"\x16acs_replication_status\x18\a \x01(\v2C.com.digitalasset.canton.admin.participant.v30.AcsReplicationStatusR\x14acsReplicationStatus\x12\x80\x01\n" +
+	"\x10replication_mode\x18\b \x01(\x0e2U.com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationModeR\x0freplicationMode\x1a\x8f\x02\n" +
 	"\x15ReplicationParameters\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x19\n" +
@@ -1334,9 +1800,7 @@ const file_com_digitalasset_canton_admin_participant_v30_party_management_servic
 	"\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x124\n" +
 	"\x16source_participant_uid\x18\x04 \x01(\tR\x14sourceParticipantUid\x124\n" +
 	"\x16target_participant_uid\x18\x05 \x01(\tR\x14targetParticipantUid\x12'\n" +
-	"\x0ftopology_serial\x18\x06 \x01(\rR\x0etopologySerial\x1a@\n" +
-	"\x19SequencerChannelAgreement\x12#\n" +
-	"\rsequencer_uid\x18\x01 \x01(\tR\fsequencerUid\x1a\x9d\x01\n" +
+	"\x0ftopology_serial\x18\x06 \x01(\rR\x0etopologySerial\x1a\x9d\x01\n" +
 	"\x1dPartyReplicationAuthorization\x12?\n" +
 	"\ronboarding_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\fonboardingAt\x12;\n" +
 	"\x1ais_onboarding_flag_cleared\x18\x02 \x01(\bR\x17isOnboardingFlagCleared\x1a\x82\x01\n" +
@@ -1345,7 +1809,42 @@ const file_com_digitalasset_canton_admin_participant_v30_party_management_servic
 	"\x13fully_processed_acs\x18\x02 \x01(\bR\x11fullyProcessedAcs\x1a\x15\n" +
 	"\x13AcsIndexingProgress\x1a<\n" +
 	"\x15PartyReplicationError\x12#\n" +
-	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\"\xa1\x02\n" +
+	"\rerror_message\x18\x01 \x01(\tR\ferrorMessage\"v\n" +
+	"\x0fReplicationMode\x12 \n" +
+	"\x1cREPLICATION_MODE_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15REPLICATION_MODE_FILE\x10\x01\x12&\n" +
+	"\"REPLICATION_MODE_SEQUENCER_CHANNEL\x10\x02\"\xc8\n" +
+	"\n" +
+	"\x14AcsReplicationStatus\x12|\n" +
+	"\n" +
+	"parameters\x18\x01 \x01(\v2\\.com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationParametersR\n" +
+	"parameters\x12\xa3\x01\n" +
+	"\x18ptp_topology_transaction\x18\x02 \x01(\v2i.com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.PartyToParticipantTopologyTransactionR\x16ptpTopologyTransaction\x12\x8d\x01\n" +
+	"\x14replication_progress\x18\x03 \x01(\v2Z.com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationProgressR\x13replicationProgress\x12#\n" +
+	"\rhas_completed\x18\x04 \x01(\bR\fhasCompleted\x12|\n" +
+	"\rerror_message\x18\x05 \x01(\v2W.com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationErrorR\ferrorMessage\x1a\xa3\x02\n" +
+	"\x18AcsReplicationParameters\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x19\n" +
+	"\bparty_id\x18\x02 \x01(\tR\apartyId\x12'\n" +
+	"\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x124\n" +
+	"\x16source_participant_uid\x18\x04 \x01(\tR\x14sourceParticipantUid\x124\n" +
+	"\x16target_participant_uid\x18\x05 \x01(\tR\x14targetParticipantUid\x128\n" +
+	"\ttimestamp\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x1a@\n" +
+	"\x19SequencerChannelAgreement\x12#\n" +
+	"\rsequencer_uid\x18\x01 \x01(\tR\fsequencerUid\x1ab\n" +
+	"%PartyToParticipantTopologyTransaction\x129\n" +
+	"\n" +
+	"valid_from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tvalidFrom\x1a\xaf\x01\n" +
+	"\x16AcsReplicationProgress\x128\n" +
+	"\x18processed_contract_count\x18\x01 \x01(\x04R\x16processedContractCount\x12\x1e\n" +
+	"\bacs_hash\x18\x02 \x01(\fH\x00R\aacsHash\x88\x01\x01\x12.\n" +
+	"\x13fully_processed_acs\x18\x03 \x01(\bR\x11fullyProcessedAcsB\v\n" +
+	"\t_acs_hash\x1a[\n" +
+	"\x13AcsReplicationError\x12#\n" +
+	"\rerror_message\x18\x01 \x01(\tR\ferrorMessage\x12\x1f\n" +
+	"\vis_terminal\x18\x02 \x01(\bR\n" +
+	"isTerminal\"\xa1\x02\n" +
 	"\x15ExportPartyAcsRequest\x12\x19\n" +
 	"\bparty_id\x18\x01 \x01(\tR\apartyId\x12'\n" +
 	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x124\n" +
@@ -1386,11 +1885,12 @@ const file_com_digitalasset_canton_admin_participant_v30_party_management_servic
 	"\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12'\n" +
 	"#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n" +
-	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\xdb\t\n" +
+	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\x96\v\n" +
 	"\x16PartyManagementService\x12\x9a\x01\n" +
 	"\rAddPartyAsync\x12C.com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest\x1aD.com.digitalasset.canton.admin.participant.v30.AddPartyAsyncResponse\x12\xb1\x01\n" +
 	"\x14AddPartyWithAcsAsync\x12J.com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest\x1aK.com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncResponse(\x01\x12\xa6\x01\n" +
-	"\x11GetAddPartyStatus\x12G.com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusRequest\x1aH.com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse\x12\x9f\x01\n" +
+	"\x11GetAddPartyStatus\x12G.com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusRequest\x1aH.com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse\x12\xb8\x01\n" +
+	"\x17GetAcsReplicationStatus\x12M.com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusRequest\x1aN.com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusResponse\x12\x9f\x01\n" +
 	"\x0eExportPartyAcs\x12D.com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest\x1aE.com.digitalasset.canton.admin.participant.v30.ExportPartyAcsResponse0\x01\x12\x9f\x01\n" +
 	"\x0eImportPartyAcs\x12D.com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest\x1aE.com.digitalasset.canton.admin.participant.v30.ImportPartyAcsResponse(\x01\x12\xc4\x01\n" +
 	"\x1bGetHighestOffsetByTimestamp\x12Q.com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest\x1aR.com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampResponse\x12\xbb\x01\n" +
@@ -1408,74 +1908,92 @@ func file_com_digitalasset_canton_admin_participant_v30_party_management_service
 	return file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_goTypes = []any{
-	(ParticipantPermission)(0),                                   // 0: com.digitalasset.canton.admin.participant.v30.ParticipantPermission
-	(*AddPartyAsyncRequest)(nil),                                 // 1: com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest
-	(*AddPartyArguments)(nil),                                    // 2: com.digitalasset.canton.admin.participant.v30.AddPartyArguments
-	(*AddPartyAsyncResponse)(nil),                                // 3: com.digitalasset.canton.admin.participant.v30.AddPartyAsyncResponse
-	(*AddPartyWithAcsAsyncRequest)(nil),                          // 4: com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest
-	(*AddPartyWithAcsAsyncResponse)(nil),                         // 5: com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncResponse
-	(*GetAddPartyStatusRequest)(nil),                             // 6: com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusRequest
-	(*GetAddPartyStatusResponse)(nil),                            // 7: com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse
-	(*PartyReplicationStatus)(nil),                               // 8: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus
-	(*ExportPartyAcsRequest)(nil),                                // 9: com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest
-	(*ExportPartyAcsResponse)(nil),                               // 10: com.digitalasset.canton.admin.participant.v30.ExportPartyAcsResponse
-	(*ImportPartyAcsRequest)(nil),                                // 11: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest
-	(*ImportPartyAcsResponse)(nil),                               // 12: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsResponse
-	(*GetHighestOffsetByTimestampRequest)(nil),                   // 13: com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest
-	(*GetHighestOffsetByTimestampResponse)(nil),                  // 14: com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampResponse
-	(*ClearPartyOnboardingFlagRequest)(nil),                      // 15: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagRequest
-	(*ClearPartyOnboardingFlagResponse)(nil),                     // 16: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagResponse
-	(*PartyReplicationStatus_ReplicationParameters)(nil),         // 17: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationParameters
-	(*PartyReplicationStatus_SequencerChannelAgreement)(nil),     // 18: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.SequencerChannelAgreement
-	(*PartyReplicationStatus_PartyReplicationAuthorization)(nil), // 19: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorization
-	(*PartyReplicationStatus_AcsReplicationProgress)(nil),        // 20: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsReplicationProgress
-	(*PartyReplicationStatus_AcsIndexingProgress)(nil),           // 21: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsIndexingProgress
-	(*PartyReplicationStatus_PartyReplicationError)(nil),         // 22: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationError
-	(*durationpb.Duration)(nil),                                  // 23: google.protobuf.Duration
-	(ContractImportMode)(0),                                      // 24: com.digitalasset.canton.admin.participant.v30.ContractImportMode
-	(*RepresentativePackageIdOverride)(nil),                      // 25: com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
-	(*timestamppb.Timestamp)(nil),                                // 26: google.protobuf.Timestamp
+	(ParticipantPermission)(0),                                         // 0: com.digitalasset.canton.admin.participant.v30.ParticipantPermission
+	(PartyReplicationStatus_ReplicationMode)(0),                        // 1: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationMode
+	(*AddPartyAsyncRequest)(nil),                                       // 2: com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest
+	(*AddPartyArguments)(nil),                                          // 3: com.digitalasset.canton.admin.participant.v30.AddPartyArguments
+	(*AddPartyAsyncResponse)(nil),                                      // 4: com.digitalasset.canton.admin.participant.v30.AddPartyAsyncResponse
+	(*AddPartyWithAcsAsyncRequest)(nil),                                // 5: com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest
+	(*AddPartyWithAcsAsyncResponse)(nil),                               // 6: com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncResponse
+	(*GetAddPartyStatusRequest)(nil),                                   // 7: com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusRequest
+	(*GetAddPartyStatusResponse)(nil),                                  // 8: com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse
+	(*GetAcsReplicationStatusRequest)(nil),                             // 9: com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusRequest
+	(*GetAcsReplicationStatusResponse)(nil),                            // 10: com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusResponse
+	(*PartyReplicationStatus)(nil),                                     // 11: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus
+	(*AcsReplicationStatus)(nil),                                       // 12: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus
+	(*ExportPartyAcsRequest)(nil),                                      // 13: com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest
+	(*ExportPartyAcsResponse)(nil),                                     // 14: com.digitalasset.canton.admin.participant.v30.ExportPartyAcsResponse
+	(*ImportPartyAcsRequest)(nil),                                      // 15: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest
+	(*ImportPartyAcsResponse)(nil),                                     // 16: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsResponse
+	(*GetHighestOffsetByTimestampRequest)(nil),                         // 17: com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest
+	(*GetHighestOffsetByTimestampResponse)(nil),                        // 18: com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampResponse
+	(*ClearPartyOnboardingFlagRequest)(nil),                            // 19: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagRequest
+	(*ClearPartyOnboardingFlagResponse)(nil),                           // 20: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagResponse
+	(*PartyReplicationStatus_ReplicationParameters)(nil),               // 21: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationParameters
+	(*PartyReplicationStatus_PartyReplicationAuthorization)(nil),       // 22: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorization
+	(*PartyReplicationStatus_AcsReplicationProgress)(nil),              // 23: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsReplicationProgress
+	(*PartyReplicationStatus_AcsIndexingProgress)(nil),                 // 24: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsIndexingProgress
+	(*PartyReplicationStatus_PartyReplicationError)(nil),               // 25: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationError
+	(*AcsReplicationStatus_AcsReplicationParameters)(nil),              // 26: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationParameters
+	(*AcsReplicationStatus_SequencerChannelAgreement)(nil),             // 27: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.SequencerChannelAgreement
+	(*AcsReplicationStatus_PartyToParticipantTopologyTransaction)(nil), // 28: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction
+	(*AcsReplicationStatus_AcsReplicationProgress)(nil),                // 29: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationProgress
+	(*AcsReplicationStatus_AcsReplicationError)(nil),                   // 30: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationError
+	(*durationpb.Duration)(nil),                                        // 31: google.protobuf.Duration
+	(ContractImportMode)(0),                                            // 32: com.digitalasset.canton.admin.participant.v30.ContractImportMode
+	(*RepresentativePackageIdOverride)(nil),                            // 33: com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
+	(*timestamppb.Timestamp)(nil),                                      // 34: google.protobuf.Timestamp
 }
 var file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_depIdxs = []int32{
-	2,  // 0: com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest.arguments:type_name -> com.digitalasset.canton.admin.participant.v30.AddPartyArguments
+	3,  // 0: com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest.arguments:type_name -> com.digitalasset.canton.admin.participant.v30.AddPartyArguments
 	0,  // 1: com.digitalasset.canton.admin.participant.v30.AddPartyArguments.participant_permission:type_name -> com.digitalasset.canton.admin.participant.v30.ParticipantPermission
-	2,  // 2: com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest.arguments:type_name -> com.digitalasset.canton.admin.participant.v30.AddPartyArguments
-	8,  // 3: com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse.status:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus
-	17, // 4: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.parameters:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationParameters
-	18, // 5: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.agreement:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.SequencerChannelAgreement
-	19, // 6: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.authorization:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorization
-	20, // 7: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.replication:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsReplicationProgress
-	21, // 8: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.indexing:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsIndexingProgress
-	22, // 9: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.error_message:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationError
-	23, // 10: com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest.wait_for_activation_timeout:type_name -> google.protobuf.Duration
-	24, // 11: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest.contract_import_mode:type_name -> com.digitalasset.canton.admin.participant.v30.ContractImportMode
-	25, // 12: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest.representative_package_id_override:type_name -> com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
-	26, // 13: com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest.timestamp:type_name -> google.protobuf.Timestamp
-	23, // 14: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagRequest.wait_for_activation_timeout:type_name -> google.protobuf.Duration
-	26, // 15: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagResponse.earliest_retry_timestamp:type_name -> google.protobuf.Timestamp
-	26, // 16: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorization.onboarding_at:type_name -> google.protobuf.Timestamp
-	1,  // 17: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyAsync:input_type -> com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest
-	4,  // 18: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyWithAcsAsync:input_type -> com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest
-	6,  // 19: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetAddPartyStatus:input_type -> com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusRequest
-	9,  // 20: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ExportPartyAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest
-	11, // 21: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ImportPartyAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest
-	13, // 22: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetHighestOffsetByTimestamp:input_type -> com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest
-	15, // 23: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ClearPartyOnboardingFlag:input_type -> com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagRequest
-	3,  // 24: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyAsync:output_type -> com.digitalasset.canton.admin.participant.v30.AddPartyAsyncResponse
-	5,  // 25: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyWithAcsAsync:output_type -> com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncResponse
-	7,  // 26: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetAddPartyStatus:output_type -> com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse
-	10, // 27: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ExportPartyAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ExportPartyAcsResponse
-	12, // 28: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ImportPartyAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ImportPartyAcsResponse
-	14, // 29: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetHighestOffsetByTimestamp:output_type -> com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampResponse
-	16, // 30: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ClearPartyOnboardingFlag:output_type -> com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagResponse
-	24, // [24:31] is the sub-list for method output_type
-	17, // [17:24] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	3,  // 2: com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest.arguments:type_name -> com.digitalasset.canton.admin.participant.v30.AddPartyArguments
+	11, // 3: com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse.status:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus
+	12, // 4: com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusResponse.status:type_name -> com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus
+	21, // 5: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.parameters:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationParameters
+	22, // 6: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.authorization:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorization
+	23, // 7: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.replication:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsReplicationProgress
+	24, // 8: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.indexing:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.AcsIndexingProgress
+	25, // 9: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.error_message:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationError
+	12, // 10: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.acs_replication_status:type_name -> com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus
+	1,  // 11: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.replication_mode:type_name -> com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.ReplicationMode
+	26, // 12: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.parameters:type_name -> com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationParameters
+	28, // 13: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.ptp_topology_transaction:type_name -> com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction
+	29, // 14: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.replication_progress:type_name -> com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationProgress
+	30, // 15: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.error_message:type_name -> com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationError
+	31, // 16: com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest.wait_for_activation_timeout:type_name -> google.protobuf.Duration
+	32, // 17: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest.contract_import_mode:type_name -> com.digitalasset.canton.admin.participant.v30.ContractImportMode
+	33, // 18: com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest.representative_package_id_override:type_name -> com.digitalasset.canton.admin.participant.v30.RepresentativePackageIdOverride
+	34, // 19: com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest.timestamp:type_name -> google.protobuf.Timestamp
+	31, // 20: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagRequest.wait_for_activation_timeout:type_name -> google.protobuf.Duration
+	34, // 21: com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagResponse.earliest_retry_timestamp:type_name -> google.protobuf.Timestamp
+	34, // 22: com.digitalasset.canton.admin.participant.v30.PartyReplicationStatus.PartyReplicationAuthorization.onboarding_at:type_name -> google.protobuf.Timestamp
+	34, // 23: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.AcsReplicationParameters.timestamp:type_name -> google.protobuf.Timestamp
+	34, // 24: com.digitalasset.canton.admin.participant.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction.valid_from:type_name -> google.protobuf.Timestamp
+	2,  // 25: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyAsync:input_type -> com.digitalasset.canton.admin.participant.v30.AddPartyAsyncRequest
+	5,  // 26: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyWithAcsAsync:input_type -> com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncRequest
+	7,  // 27: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetAddPartyStatus:input_type -> com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusRequest
+	9,  // 28: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetAcsReplicationStatus:input_type -> com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusRequest
+	13, // 29: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ExportPartyAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ExportPartyAcsRequest
+	15, // 30: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ImportPartyAcs:input_type -> com.digitalasset.canton.admin.participant.v30.ImportPartyAcsRequest
+	17, // 31: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetHighestOffsetByTimestamp:input_type -> com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampRequest
+	19, // 32: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ClearPartyOnboardingFlag:input_type -> com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagRequest
+	4,  // 33: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyAsync:output_type -> com.digitalasset.canton.admin.participant.v30.AddPartyAsyncResponse
+	6,  // 34: com.digitalasset.canton.admin.participant.v30.PartyManagementService.AddPartyWithAcsAsync:output_type -> com.digitalasset.canton.admin.participant.v30.AddPartyWithAcsAsyncResponse
+	8,  // 35: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetAddPartyStatus:output_type -> com.digitalasset.canton.admin.participant.v30.GetAddPartyStatusResponse
+	10, // 36: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetAcsReplicationStatus:output_type -> com.digitalasset.canton.admin.participant.v30.GetAcsReplicationStatusResponse
+	14, // 37: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ExportPartyAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ExportPartyAcsResponse
+	16, // 38: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ImportPartyAcs:output_type -> com.digitalasset.canton.admin.participant.v30.ImportPartyAcsResponse
+	18, // 39: com.digitalasset.canton.admin.participant.v30.PartyManagementService.GetHighestOffsetByTimestamp:output_type -> com.digitalasset.canton.admin.participant.v30.GetHighestOffsetByTimestampResponse
+	20, // 40: com.digitalasset.canton.admin.participant.v30.PartyManagementService.ClearPartyOnboardingFlag:output_type -> com.digitalasset.canton.admin.participant.v30.ClearPartyOnboardingFlagResponse
+	33, // [33:41] is the sub-list for method output_type
+	25, // [25:33] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_init() }
@@ -1484,15 +2002,16 @@ func file_com_digitalasset_canton_admin_participant_v30_party_management_service
 		return
 	}
 	file_com_digitalasset_canton_admin_participant_v30_acs_import_proto_init()
-	file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[10].OneofWrappers = []any{}
-	file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[15].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[13].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[18].OneofWrappers = []any{}
+	file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_msgTypes[27].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDesc), len(file_com_digitalasset_canton_admin_participant_v30_party_management_service_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   22,
+			NumEnums:      2,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

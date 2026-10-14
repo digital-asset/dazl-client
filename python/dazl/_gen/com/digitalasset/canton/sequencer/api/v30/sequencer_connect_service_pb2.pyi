@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
-from ....protocol.v30 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v30 import topology_pb2 as _topology_pb2
+from ....protocol.v31 import sequencing_pb2 as _sequencing_pb2
+from ....protocol.v32 import sequencing_pb2 as _sequencing_pb2_1
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -47,10 +48,12 @@ class SequencerConnect(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
     class GetSynchronizerParametersResponse(_message.Message):
-        __slots__ = ("parameters_v1",)
-        PARAMETERS_V1_FIELD_NUMBER: _ClassVar[int]
-        parameters_v1: _sequencing_pb2.StaticSynchronizerParameters
-        def __init__(self, parameters_v1: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ...) -> None: ...
+        __slots__ = ("v31", "v32")
+        V31_FIELD_NUMBER: _ClassVar[int]
+        V32_FIELD_NUMBER: _ClassVar[int]
+        v31: _sequencing_pb2.StaticSynchronizerParameters
+        v32: _sequencing_pb2_1.StaticSynchronizerParameters
+        def __init__(self, v31: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., v32: _Optional[_Union[_sequencing_pb2_1.StaticSynchronizerParameters, _Mapping]] = ...) -> None: ...
     class VerifyActiveRequest(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...

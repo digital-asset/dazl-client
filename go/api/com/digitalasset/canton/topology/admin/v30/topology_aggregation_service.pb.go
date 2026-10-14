@@ -26,6 +26,50 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type BaseAggregationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientVersion string                 `protobuf:"bytes,1,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BaseAggregationRequest) Reset() {
+	*x = BaseAggregationRequest{}
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BaseAggregationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BaseAggregationRequest) ProtoMessage() {}
+
+func (x *BaseAggregationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BaseAggregationRequest.ProtoReflect.Descriptor instead.
+func (*BaseAggregationRequest) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *BaseAggregationRequest) GetClientVersion() string {
+	if x != nil {
+		return x.ClientVersion
+	}
+	return ""
+}
+
 type ListPartiesRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	AsOf              *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"`
@@ -39,7 +83,7 @@ type ListPartiesRequest struct {
 
 func (x *ListPartiesRequest) Reset() {
 	*x = ListPartiesRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[0]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -51,7 +95,7 @@ func (x *ListPartiesRequest) String() string {
 func (*ListPartiesRequest) ProtoMessage() {}
 
 func (x *ListPartiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[0]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -64,7 +108,7 @@ func (x *ListPartiesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPartiesRequest.ProtoReflect.Descriptor instead.
 func (*ListPartiesRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ListPartiesRequest) GetAsOf() *timestamppb.Timestamp {
@@ -111,7 +155,7 @@ type ListPartiesResponse struct {
 
 func (x *ListPartiesResponse) Reset() {
 	*x = ListPartiesResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -123,7 +167,7 @@ func (x *ListPartiesResponse) String() string {
 func (*ListPartiesResponse) ProtoMessage() {}
 
 func (x *ListPartiesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -136,7 +180,7 @@ func (x *ListPartiesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPartiesResponse.ProtoReflect.Descriptor instead.
 func (*ListPartiesResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListPartiesResponse) GetResults() []*ListPartiesResponse_Result {
@@ -147,19 +191,20 @@ func (x *ListPartiesResponse) GetResults() []*ListPartiesResponse_Result {
 }
 
 type ListKeyOwnersRequest struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	AsOf               *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"`
-	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	SynchronizerIds    []string               `protobuf:"bytes,3,rep,name=synchronizer_ids,json=synchronizerIds,proto3" json:"synchronizer_ids,omitempty"`
-	FilterKeyOwnerType string                 `protobuf:"bytes,4,opt,name=filter_key_owner_type,json=filterKeyOwnerType,proto3" json:"filter_key_owner_type,omitempty"`
-	FilterKeyOwnerUid  string                 `protobuf:"bytes,5,opt,name=filter_key_owner_uid,json=filterKeyOwnerUid,proto3" json:"filter_key_owner_uid,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                  protoimpl.MessageState  `protogen:"open.v1"`
+	AsOf                   *timestamppb.Timestamp  `protobuf:"bytes,1,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"`
+	Limit                  int32                   `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	SynchronizerIds        []string                `protobuf:"bytes,3,rep,name=synchronizer_ids,json=synchronizerIds,proto3" json:"synchronizer_ids,omitempty"`
+	FilterKeyOwnerType     string                  `protobuf:"bytes,4,opt,name=filter_key_owner_type,json=filterKeyOwnerType,proto3" json:"filter_key_owner_type,omitempty"`
+	FilterKeyOwnerUid      string                  `protobuf:"bytes,5,opt,name=filter_key_owner_uid,json=filterKeyOwnerUid,proto3" json:"filter_key_owner_uid,omitempty"`
+	BaseAggregationRequest *BaseAggregationRequest `protobuf:"bytes,6,opt,name=base_aggregation_request,json=baseAggregationRequest,proto3,oneof" json:"base_aggregation_request,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ListKeyOwnersRequest) Reset() {
 	*x = ListKeyOwnersRequest{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -171,7 +216,7 @@ func (x *ListKeyOwnersRequest) String() string {
 func (*ListKeyOwnersRequest) ProtoMessage() {}
 
 func (x *ListKeyOwnersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -184,7 +229,7 @@ func (x *ListKeyOwnersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeyOwnersRequest.ProtoReflect.Descriptor instead.
 func (*ListKeyOwnersRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{2}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListKeyOwnersRequest) GetAsOf() *timestamppb.Timestamp {
@@ -222,6 +267,13 @@ func (x *ListKeyOwnersRequest) GetFilterKeyOwnerUid() string {
 	return ""
 }
 
+func (x *ListKeyOwnersRequest) GetBaseAggregationRequest() *BaseAggregationRequest {
+	if x != nil {
+		return x.BaseAggregationRequest
+	}
+	return nil
+}
+
 type ListKeyOwnersResponse struct {
 	state         protoimpl.MessageState          `protogen:"open.v1"`
 	Results       []*ListKeyOwnersResponse_Result `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
@@ -231,7 +283,7 @@ type ListKeyOwnersResponse struct {
 
 func (x *ListKeyOwnersResponse) Reset() {
 	*x = ListKeyOwnersResponse{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -243,7 +295,7 @@ func (x *ListKeyOwnersResponse) String() string {
 func (*ListKeyOwnersResponse) ProtoMessage() {}
 
 func (x *ListKeyOwnersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -256,7 +308,7 @@ func (x *ListKeyOwnersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeyOwnersResponse.ProtoReflect.Descriptor instead.
 func (*ListKeyOwnersResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{3}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListKeyOwnersResponse) GetResults() []*ListKeyOwnersResponse_Result {
@@ -276,7 +328,7 @@ type ListPartiesResponse_Result struct {
 
 func (x *ListPartiesResponse_Result) Reset() {
 	*x = ListPartiesResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -288,7 +340,7 @@ func (x *ListPartiesResponse_Result) String() string {
 func (*ListPartiesResponse_Result) ProtoMessage() {}
 
 func (x *ListPartiesResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -301,7 +353,7 @@ func (x *ListPartiesResponse_Result) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPartiesResponse_Result.ProtoReflect.Descriptor instead.
 func (*ListPartiesResponse_Result) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{1, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{2, 0}
 }
 
 func (x *ListPartiesResponse_Result) GetParty() string {
@@ -328,7 +380,7 @@ type ListPartiesResponse_Result_ParticipantSynchronizers struct {
 
 func (x *ListPartiesResponse_Result_ParticipantSynchronizers) Reset() {
 	*x = ListPartiesResponse_Result_ParticipantSynchronizers{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -340,7 +392,7 @@ func (x *ListPartiesResponse_Result_ParticipantSynchronizers) String() string {
 func (*ListPartiesResponse_Result_ParticipantSynchronizers) ProtoMessage() {}
 
 func (x *ListPartiesResponse_Result_ParticipantSynchronizers) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -353,7 +405,7 @@ func (x *ListPartiesResponse_Result_ParticipantSynchronizers) ProtoReflect() pro
 
 // Deprecated: Use ListPartiesResponse_Result_ParticipantSynchronizers.ProtoReflect.Descriptor instead.
 func (*ListPartiesResponse_Result_ParticipantSynchronizers) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{1, 0, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{2, 0, 0}
 }
 
 func (x *ListPartiesResponse_Result_ParticipantSynchronizers) GetParticipantUid() string {
@@ -381,7 +433,7 @@ type ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions
 
 func (x *ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions) Reset() {
 	*x = ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -393,7 +445,7 @@ func (x *ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermiss
 func (*ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions) ProtoMessage() {}
 
 func (x *ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -406,7 +458,7 @@ func (x *ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermiss
 
 // Deprecated: Use ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions.ProtoReflect.Descriptor instead.
 func (*ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{1, 0, 0, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{2, 0, 0, 0}
 }
 
 func (x *ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions) GetSynchronizerId() string {
@@ -434,7 +486,7 @@ type ListKeyOwnersResponse_Result struct {
 	state                  protoimpl.MessageState      `protogen:"open.v1"`
 	SynchronizerId         string                      `protobuf:"bytes,1,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
 	KeyOwner               string                      `protobuf:"bytes,2,opt,name=key_owner,json=keyOwner,proto3" json:"key_owner,omitempty"`
-	SigningKeys            []*v301.SigningPublicKey    `protobuf:"bytes,3,rep,name=signing_keys,json=signingKeys,proto3" json:"signing_keys,omitempty"`
+	SigningKeysV30         []*v301.SigningPublicKey    `protobuf:"bytes,3,rep,name=signing_keys_v30,json=signingKeysV30,proto3" json:"signing_keys_v30,omitempty"`
 	EncryptionKeys         []*v301.EncryptionPublicKey `protobuf:"bytes,4,rep,name=encryption_keys,json=encryptionKeys,proto3" json:"encryption_keys,omitempty"`
 	PhysicalSynchronizerId string                      `protobuf:"bytes,5,opt,name=physical_synchronizer_id,json=physicalSynchronizerId,proto3" json:"physical_synchronizer_id,omitempty"`
 	unknownFields          protoimpl.UnknownFields
@@ -443,7 +495,7 @@ type ListKeyOwnersResponse_Result struct {
 
 func (x *ListKeyOwnersResponse_Result) Reset() {
 	*x = ListKeyOwnersResponse_Result{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -455,7 +507,7 @@ func (x *ListKeyOwnersResponse_Result) String() string {
 func (*ListKeyOwnersResponse_Result) ProtoMessage() {}
 
 func (x *ListKeyOwnersResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -468,7 +520,7 @@ func (x *ListKeyOwnersResponse_Result) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeyOwnersResponse_Result.ProtoReflect.Descriptor instead.
 func (*ListKeyOwnersResponse_Result) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{3, 0}
+	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescGZIP(), []int{4, 0}
 }
 
 func (x *ListKeyOwnersResponse_Result) GetSynchronizerId() string {
@@ -485,9 +537,9 @@ func (x *ListKeyOwnersResponse_Result) GetKeyOwner() string {
 	return ""
 }
 
-func (x *ListKeyOwnersResponse_Result) GetSigningKeys() []*v301.SigningPublicKey {
+func (x *ListKeyOwnersResponse_Result) GetSigningKeysV30() []*v301.SigningPublicKey {
 	if x != nil {
-		return x.SigningKeys
+		return x.SigningKeysV30
 	}
 	return nil
 }
@@ -510,7 +562,9 @@ var File_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service
 
 const file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDesc = "" +
 	"\n" +
-	"Mcom/digitalasset/canton/topology/admin/v30/topology_aggregation_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd8\x01\n" +
+	"Mcom/digitalasset/canton/topology/admin/v30/topology_aggregation_service.proto\x12*com.digitalasset.canton.topology.admin.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"?\n" +
+	"\x16BaseAggregationRequest\x12%\n" +
+	"\x0eclient_version\x18\x01 \x01(\tR\rclientVersion\"\xd8\x01\n" +
 	"\x12ListPartiesRequest\x12/\n" +
 	"\x05as_of\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04asOf\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12)\n" +
@@ -530,19 +584,21 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_servi
 	"\n" +
 	"permission\x18\x02 \x01(\x0e2A.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\n" +
 	"permission\x128\n" +
-	"\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\"\xec\x01\n" +
+	"\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\"\x8d\x03\n" +
 	"\x14ListKeyOwnersRequest\x12/\n" +
 	"\x05as_of\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04asOf\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12)\n" +
 	"\x10synchronizer_ids\x18\x03 \x03(\tR\x0fsynchronizerIds\x121\n" +
 	"\x15filter_key_owner_type\x18\x04 \x01(\tR\x12filterKeyOwnerType\x12/\n" +
-	"\x14filter_key_owner_uid\x18\x05 \x01(\tR\x11filterKeyOwnerUid\"\xc1\x03\n" +
+	"\x14filter_key_owner_uid\x18\x05 \x01(\tR\x11filterKeyOwnerUid\x12\x81\x01\n" +
+	"\x18base_aggregation_request\x18\x06 \x01(\v2B.com.digitalasset.canton.topology.admin.v30.BaseAggregationRequestH\x00R\x16baseAggregationRequest\x88\x01\x01B\x1b\n" +
+	"\x19_base_aggregation_request\"\xc8\x03\n" +
 	"\x15ListKeyOwnersResponse\x12b\n" +
-	"\aresults\x18\x01 \x03(\v2H.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.ResultR\aresults\x1a\xc3\x02\n" +
+	"\aresults\x18\x01 \x03(\v2H.com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.ResultR\aresults\x1a\xca\x02\n" +
 	"\x06Result\x12'\n" +
 	"\x0fsynchronizer_id\x18\x01 \x01(\tR\x0esynchronizerId\x12\x1b\n" +
-	"\tkey_owner\x18\x02 \x01(\tR\bkeyOwner\x12W\n" +
-	"\fsigning_keys\x18\x03 \x03(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\vsigningKeys\x12`\n" +
+	"\tkey_owner\x18\x02 \x01(\tR\bkeyOwner\x12^\n" +
+	"\x10signing_keys_v30\x18\x03 \x03(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\x0esigningKeysV30\x12`\n" +
 	"\x0fencryption_keys\x18\x04 \x03(\v27.com.digitalasset.canton.crypto.v30.EncryptionPublicKeyR\x0eencryptionKeys\x128\n" +
 	"\x18physical_synchronizer_id\x18\x05 \x01(\tR\x16physicalSynchronizerId2\xc4\x02\n" +
 	"\x1aTopologyAggregationService\x12\x8e\x01\n" +
@@ -561,40 +617,42 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_servic
 	return file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_goTypes = []any{
-	(*ListPartiesRequest)(nil),                                  // 0: com.digitalasset.canton.topology.admin.v30.ListPartiesRequest
-	(*ListPartiesResponse)(nil),                                 // 1: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse
-	(*ListKeyOwnersRequest)(nil),                                // 2: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest
-	(*ListKeyOwnersResponse)(nil),                               // 3: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse
-	(*ListPartiesResponse_Result)(nil),                          // 4: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result
-	(*ListPartiesResponse_Result_ParticipantSynchronizers)(nil), // 5: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers
-	(*ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions)(nil), // 6: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissions
-	(*ListKeyOwnersResponse_Result)(nil),                                                // 7: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result
-	(*timestamppb.Timestamp)(nil),                                                       // 8: google.protobuf.Timestamp
-	(v30.Enums_ParticipantPermission)(0),                                                // 9: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	(*v301.SigningPublicKey)(nil),                                                       // 10: com.digitalasset.canton.crypto.v30.SigningPublicKey
-	(*v301.EncryptionPublicKey)(nil),                                                    // 11: com.digitalasset.canton.crypto.v30.EncryptionPublicKey
+	(*BaseAggregationRequest)(nil),                              // 0: com.digitalasset.canton.topology.admin.v30.BaseAggregationRequest
+	(*ListPartiesRequest)(nil),                                  // 1: com.digitalasset.canton.topology.admin.v30.ListPartiesRequest
+	(*ListPartiesResponse)(nil),                                 // 2: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse
+	(*ListKeyOwnersRequest)(nil),                                // 3: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest
+	(*ListKeyOwnersResponse)(nil),                               // 4: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse
+	(*ListPartiesResponse_Result)(nil),                          // 5: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result
+	(*ListPartiesResponse_Result_ParticipantSynchronizers)(nil), // 6: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers
+	(*ListPartiesResponse_Result_ParticipantSynchronizers_SynchronizerPermissions)(nil), // 7: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissions
+	(*ListKeyOwnersResponse_Result)(nil),                                                // 8: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result
+	(*timestamppb.Timestamp)(nil),                                                       // 9: google.protobuf.Timestamp
+	(v30.Enums_ParticipantPermission)(0),                                                // 10: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	(*v301.SigningPublicKey)(nil),                                                       // 11: com.digitalasset.canton.crypto.v30.SigningPublicKey
+	(*v301.EncryptionPublicKey)(nil),                                                    // 12: com.digitalasset.canton.crypto.v30.EncryptionPublicKey
 }
 var file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_depIdxs = []int32{
-	8,  // 0: com.digitalasset.canton.topology.admin.v30.ListPartiesRequest.as_of:type_name -> google.protobuf.Timestamp
-	4,  // 1: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result
-	8,  // 2: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest.as_of:type_name -> google.protobuf.Timestamp
-	7,  // 3: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result
-	5,  // 4: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.participants:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers
-	6,  // 5: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.synchronizers:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissions
-	9,  // 6: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissions.permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	10, // 7: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result.signing_keys:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
-	11, // 8: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result.encryption_keys:type_name -> com.digitalasset.canton.crypto.v30.EncryptionPublicKey
-	0,  // 9: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListParties:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartiesRequest
-	2,  // 10: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListKeyOwners:input_type -> com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest
-	1,  // 11: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListParties:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse
-	3,  // 12: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListKeyOwners:output_type -> com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse
-	11, // [11:13] is the sub-list for method output_type
-	9,  // [9:11] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	9,  // 0: com.digitalasset.canton.topology.admin.v30.ListPartiesRequest.as_of:type_name -> google.protobuf.Timestamp
+	5,  // 1: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result
+	9,  // 2: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest.as_of:type_name -> google.protobuf.Timestamp
+	0,  // 3: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest.base_aggregation_request:type_name -> com.digitalasset.canton.topology.admin.v30.BaseAggregationRequest
+	8,  // 4: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.results:type_name -> com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result
+	6,  // 5: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.participants:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers
+	7,  // 6: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.synchronizers:type_name -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissions
+	10, // 7: com.digitalasset.canton.topology.admin.v30.ListPartiesResponse.Result.ParticipantSynchronizers.SynchronizerPermissions.permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	11, // 8: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result.signing_keys_v30:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
+	12, // 9: com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse.Result.encryption_keys:type_name -> com.digitalasset.canton.crypto.v30.EncryptionPublicKey
+	1,  // 10: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListParties:input_type -> com.digitalasset.canton.topology.admin.v30.ListPartiesRequest
+	3,  // 11: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListKeyOwners:input_type -> com.digitalasset.canton.topology.admin.v30.ListKeyOwnersRequest
+	2,  // 12: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListParties:output_type -> com.digitalasset.canton.topology.admin.v30.ListPartiesResponse
+	4,  // 13: com.digitalasset.canton.topology.admin.v30.TopologyAggregationService.ListKeyOwners:output_type -> com.digitalasset.canton.topology.admin.v30.ListKeyOwnersResponse
+	12, // [12:14] is the sub-list for method output_type
+	10, // [10:12] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() {
@@ -604,13 +662,14 @@ func file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_servic
 	if File_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto != nil {
 		return
 	}
+	file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDesc), len(file_com_digitalasset_canton_topology_admin_v30_topology_aggregation_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

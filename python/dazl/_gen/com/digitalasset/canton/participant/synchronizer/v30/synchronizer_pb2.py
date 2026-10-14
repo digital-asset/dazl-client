@@ -28,7 +28,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nGcom/digitalasset/canton/participant/synchronizer/v30/synchronizer.proto\x12\x34\x63om.digitalasset.canton.participant.synchronizer.v30\"b\n\x13PendingLsuOperation\x12K\n\"successor_physical_synchronizer_id\x18\x01 \x01(\tR\x1fsuccessorPhysicalSynchronizerIdBeZcgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/synchronizer/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nGcom/digitalasset/canton/participant/synchronizer/v30/synchronizer.proto\x12\x34\x63om.digitalasset.canton.participant.synchronizer.v30\"b\n\x13PendingLsuOperation\x12K\n\"successor_physical_synchronizer_id\x18\x01 \x01(\tR\x1fsuccessorPhysicalSynchronizerId\"C\n\x1dPendingOnboardingTransactions\x12\"\n\x0ctransactions\x18\x01 \x03(\x0cR\x0ctransactionsBeZcgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/synchronizer/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,4 +38,6 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._serialized_options = b'Zcgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/synchronizer/v30'
   _globals['_PENDINGLSUOPERATION']._serialized_start=129
   _globals['_PENDINGLSUOPERATION']._serialized_end=227
+  _globals['_PENDINGONBOARDINGTRANSACTIONS']._serialized_start=229
+  _globals['_PENDINGONBOARDINGTRANSACTIONS']._serialized_end=296
 # @@protoc_insertion_point(module_scope)

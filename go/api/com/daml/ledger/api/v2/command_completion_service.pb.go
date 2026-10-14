@@ -217,6 +217,102 @@ func (*CompletionStreamResponse_Completion) isCompletionStreamResponse_Completio
 
 func (*CompletionStreamResponse_OffsetCheckpoint) isCompletionStreamResponse_CompletionResponse() {}
 
+type GetCompletionByHashRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	TransactionHash []byte                 `protobuf:"bytes,1,opt,name=transaction_hash,json=transactionHash,proto3" json:"transaction_hash,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *GetCompletionByHashRequest) Reset() {
+	*x = GetCompletionByHashRequest{}
+	mi := &file_com_daml_ledger_api_v2_command_completion_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCompletionByHashRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCompletionByHashRequest) ProtoMessage() {}
+
+func (x *GetCompletionByHashRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_command_completion_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCompletionByHashRequest.ProtoReflect.Descriptor instead.
+func (*GetCompletionByHashRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_command_completion_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetCompletionByHashRequest) GetTransactionHash() []byte {
+	if x != nil {
+		return x.TransactionHash
+	}
+	return nil
+}
+
+type GetCompletionByHashResponse struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	AcceptedCompletion      *Completion            `protobuf:"bytes,1,opt,name=accepted_completion,json=acceptedCompletion,proto3" json:"accepted_completion,omitempty"`
+	LastRejectedCompletions []*Completion          `protobuf:"bytes,2,rep,name=last_rejected_completions,json=lastRejectedCompletions,proto3" json:"last_rejected_completions,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *GetCompletionByHashResponse) Reset() {
+	*x = GetCompletionByHashResponse{}
+	mi := &file_com_daml_ledger_api_v2_command_completion_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCompletionByHashResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCompletionByHashResponse) ProtoMessage() {}
+
+func (x *GetCompletionByHashResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_command_completion_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCompletionByHashResponse.ProtoReflect.Descriptor instead.
+func (*GetCompletionByHashResponse) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_command_completion_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetCompletionByHashResponse) GetAcceptedCompletion() *Completion {
+	if x != nil {
+		return x.AcceptedCompletion
+	}
+	return nil
+}
+
+func (x *GetCompletionByHashResponse) GetLastRejectedCompletions() []*Completion {
+	if x != nil {
+		return x.LastRejectedCompletions
+	}
+	return nil
+}
+
 var File_com_daml_ledger_api_v2_command_completion_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_command_completion_service_proto_rawDesc = "" +
@@ -234,10 +330,16 @@ const file_com_daml_ledger_api_v2_command_completion_service_proto_rawDesc = "" 
 	"completion\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.CompletionH\x00R\n" +
 	"completion\x12W\n" +
 	"\x11offset_checkpoint\x18\x02 \x01(\v2(.com.daml.ledger.api.v2.OffsetCheckpointH\x00R\x10offsetCheckpointB\x15\n" +
-	"\x13completion_response2\x88\x02\n" +
+	"\x13completion_response\"G\n" +
+	"\x1aGetCompletionByHashRequest\x12)\n" +
+	"\x10transaction_hash\x18\x01 \x01(\fR\x0ftransactionHash\"\xd2\x01\n" +
+	"\x1bGetCompletionByHashResponse\x12S\n" +
+	"\x13accepted_completion\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.CompletionR\x12acceptedCompletion\x12^\n" +
+	"\x19last_rejected_completions\x18\x02 \x03(\v2\".com.daml.ledger.api.v2.CompletionR\x17lastRejectedCompletions2\x88\x03\n" +
 	"\x18CommandCompletionService\x12w\n" +
 	"\x10CompletionStream\x12/.com.daml.ledger.api.v2.CompletionStreamRequest\x1a0.com.daml.ledger.api.v2.CompletionStreamResponse0\x01\x12s\n" +
-	"\x0eGetCompletions\x12-.com.daml.ledger.api.v2.GetCompletionsRequest\x1a0.com.daml.ledger.api.v2.CompletionStreamResponse0\x01B\x9c\x01\n" +
+	"\x0eGetCompletions\x12-.com.daml.ledger.api.v2.GetCompletionsRequest\x1a0.com.daml.ledger.api.v2.CompletionStreamResponse0\x01\x12~\n" +
+	"\x13GetCompletionByHash\x122.com.daml.ledger.api.v2.GetCompletionByHashRequest\x1a3.com.daml.ledger.api.v2.GetCompletionByHashResponseB\x9c\x01\n" +
 	"\x16com.daml.ledger.api.v2B\"CommandCompletionServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -252,26 +354,32 @@ func file_com_daml_ledger_api_v2_command_completion_service_proto_rawDescGZIP() 
 	return file_com_daml_ledger_api_v2_command_completion_service_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_command_completion_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_com_daml_ledger_api_v2_command_completion_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_com_daml_ledger_api_v2_command_completion_service_proto_goTypes = []any{
-	(*CompletionStreamRequest)(nil),  // 0: com.daml.ledger.api.v2.CompletionStreamRequest
-	(*GetCompletionsRequest)(nil),    // 1: com.daml.ledger.api.v2.GetCompletionsRequest
-	(*CompletionStreamResponse)(nil), // 2: com.daml.ledger.api.v2.CompletionStreamResponse
-	(*Completion)(nil),               // 3: com.daml.ledger.api.v2.Completion
-	(*OffsetCheckpoint)(nil),         // 4: com.daml.ledger.api.v2.OffsetCheckpoint
+	(*CompletionStreamRequest)(nil),     // 0: com.daml.ledger.api.v2.CompletionStreamRequest
+	(*GetCompletionsRequest)(nil),       // 1: com.daml.ledger.api.v2.GetCompletionsRequest
+	(*CompletionStreamResponse)(nil),    // 2: com.daml.ledger.api.v2.CompletionStreamResponse
+	(*GetCompletionByHashRequest)(nil),  // 3: com.daml.ledger.api.v2.GetCompletionByHashRequest
+	(*GetCompletionByHashResponse)(nil), // 4: com.daml.ledger.api.v2.GetCompletionByHashResponse
+	(*Completion)(nil),                  // 5: com.daml.ledger.api.v2.Completion
+	(*OffsetCheckpoint)(nil),            // 6: com.daml.ledger.api.v2.OffsetCheckpoint
 }
 var file_com_daml_ledger_api_v2_command_completion_service_proto_depIdxs = []int32{
-	3, // 0: com.daml.ledger.api.v2.CompletionStreamResponse.completion:type_name -> com.daml.ledger.api.v2.Completion
-	4, // 1: com.daml.ledger.api.v2.CompletionStreamResponse.offset_checkpoint:type_name -> com.daml.ledger.api.v2.OffsetCheckpoint
-	0, // 2: com.daml.ledger.api.v2.CommandCompletionService.CompletionStream:input_type -> com.daml.ledger.api.v2.CompletionStreamRequest
-	1, // 3: com.daml.ledger.api.v2.CommandCompletionService.GetCompletions:input_type -> com.daml.ledger.api.v2.GetCompletionsRequest
-	2, // 4: com.daml.ledger.api.v2.CommandCompletionService.CompletionStream:output_type -> com.daml.ledger.api.v2.CompletionStreamResponse
-	2, // 5: com.daml.ledger.api.v2.CommandCompletionService.GetCompletions:output_type -> com.daml.ledger.api.v2.CompletionStreamResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 0: com.daml.ledger.api.v2.CompletionStreamResponse.completion:type_name -> com.daml.ledger.api.v2.Completion
+	6, // 1: com.daml.ledger.api.v2.CompletionStreamResponse.offset_checkpoint:type_name -> com.daml.ledger.api.v2.OffsetCheckpoint
+	5, // 2: com.daml.ledger.api.v2.GetCompletionByHashResponse.accepted_completion:type_name -> com.daml.ledger.api.v2.Completion
+	5, // 3: com.daml.ledger.api.v2.GetCompletionByHashResponse.last_rejected_completions:type_name -> com.daml.ledger.api.v2.Completion
+	0, // 4: com.daml.ledger.api.v2.CommandCompletionService.CompletionStream:input_type -> com.daml.ledger.api.v2.CompletionStreamRequest
+	1, // 5: com.daml.ledger.api.v2.CommandCompletionService.GetCompletions:input_type -> com.daml.ledger.api.v2.GetCompletionsRequest
+	3, // 6: com.daml.ledger.api.v2.CommandCompletionService.GetCompletionByHash:input_type -> com.daml.ledger.api.v2.GetCompletionByHashRequest
+	2, // 7: com.daml.ledger.api.v2.CommandCompletionService.CompletionStream:output_type -> com.daml.ledger.api.v2.CompletionStreamResponse
+	2, // 8: com.daml.ledger.api.v2.CommandCompletionService.GetCompletions:output_type -> com.daml.ledger.api.v2.CompletionStreamResponse
+	4, // 9: com.daml.ledger.api.v2.CommandCompletionService.GetCompletionByHash:output_type -> com.daml.ledger.api.v2.GetCompletionByHashResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_command_completion_service_proto_init() }
@@ -291,7 +399,7 @@ func file_com_daml_ledger_api_v2_command_completion_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_command_completion_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_command_completion_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
