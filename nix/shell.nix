@@ -6,7 +6,7 @@
     dpm
     glibcLocales
     jq
-    go
+    go_1_26
     openjdk
     poetry
     protobuf
