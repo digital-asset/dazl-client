@@ -10,9 +10,6 @@ package v30
 
 import (
 	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
-	v31 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31"
-	v32 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v32"
-	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -1011,246 +1008,6 @@ func (*SnapshotResponse_Failure_) isSnapshotResponse_Value() {}
 
 func (*SnapshotResponse_VersionedSuccess_) isSnapshotResponse_Value() {}
 
-type OnboardingStateRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Request:
-	//
-	//	*OnboardingStateRequest_SequencerUid
-	//	*OnboardingStateRequest_Timestamp
-	Request       isOnboardingStateRequest_Request `protobuf_oneof:"request"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *OnboardingStateRequest) Reset() {
-	*x = OnboardingStateRequest{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OnboardingStateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OnboardingStateRequest) ProtoMessage() {}
-
-func (x *OnboardingStateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OnboardingStateRequest.ProtoReflect.Descriptor instead.
-func (*OnboardingStateRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *OnboardingStateRequest) GetRequest() isOnboardingStateRequest_Request {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
-
-func (x *OnboardingStateRequest) GetSequencerUid() string {
-	if x != nil {
-		if x, ok := x.Request.(*OnboardingStateRequest_SequencerUid); ok {
-			return x.SequencerUid
-		}
-	}
-	return ""
-}
-
-func (x *OnboardingStateRequest) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		if x, ok := x.Request.(*OnboardingStateRequest_Timestamp); ok {
-			return x.Timestamp
-		}
-	}
-	return nil
-}
-
-type isOnboardingStateRequest_Request interface {
-	isOnboardingStateRequest_Request()
-}
-
-type OnboardingStateRequest_SequencerUid struct {
-	SequencerUid string `protobuf:"bytes,1,opt,name=sequencer_uid,json=sequencerUid,proto3,oneof"`
-}
-
-type OnboardingStateRequest_Timestamp struct {
-	Timestamp *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=timestamp,proto3,oneof"`
-}
-
-func (*OnboardingStateRequest_SequencerUid) isOnboardingStateRequest_Request() {}
-
-func (*OnboardingStateRequest_Timestamp) isOnboardingStateRequest_Request() {}
-
-type OnboardingStateResponse struct {
-	state                       protoimpl.MessageState `protogen:"open.v1"`
-	OnboardingStateForSequencer []byte                 `protobuf:"bytes,1,opt,name=onboarding_state_for_sequencer,json=onboardingStateForSequencer,proto3" json:"onboarding_state_for_sequencer,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
-}
-
-func (x *OnboardingStateResponse) Reset() {
-	*x = OnboardingStateResponse{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OnboardingStateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OnboardingStateResponse) ProtoMessage() {}
-
-func (x *OnboardingStateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OnboardingStateResponse.ProtoReflect.Descriptor instead.
-func (*OnboardingStateResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *OnboardingStateResponse) GetOnboardingStateForSequencer() []byte {
-	if x != nil {
-		return x.OnboardingStateForSequencer
-	}
-	return nil
-}
-
-type OnboardingStateForSequencer struct {
-	state            protoimpl.MessageState     `protogen:"open.v1"`
-	TopologySnapshot *v301.TopologyTransactions `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
-	// Types that are valid to be assigned to Parameters:
-	//
-	//	*OnboardingStateForSequencer_V30
-	//	*OnboardingStateForSequencer_V31
-	//	*OnboardingStateForSequencer_V32
-	Parameters        isOnboardingStateForSequencer_Parameters `protobuf_oneof:"parameters"`
-	SequencerSnapshot *SequencerSnapshot                       `protobuf:"bytes,3,opt,name=sequencer_snapshot,json=sequencerSnapshot,proto3" json:"sequencer_snapshot,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *OnboardingStateForSequencer) Reset() {
-	*x = OnboardingStateForSequencer{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OnboardingStateForSequencer) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OnboardingStateForSequencer) ProtoMessage() {}
-
-func (x *OnboardingStateForSequencer) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OnboardingStateForSequencer.ProtoReflect.Descriptor instead.
-func (*OnboardingStateForSequencer) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *OnboardingStateForSequencer) GetTopologySnapshot() *v301.TopologyTransactions {
-	if x != nil {
-		return x.TopologySnapshot
-	}
-	return nil
-}
-
-func (x *OnboardingStateForSequencer) GetParameters() isOnboardingStateForSequencer_Parameters {
-	if x != nil {
-		return x.Parameters
-	}
-	return nil
-}
-
-func (x *OnboardingStateForSequencer) GetV30() *v30.StaticSynchronizerParameters {
-	if x != nil {
-		if x, ok := x.Parameters.(*OnboardingStateForSequencer_V30); ok {
-			return x.V30
-		}
-	}
-	return nil
-}
-
-func (x *OnboardingStateForSequencer) GetV31() *v31.StaticSynchronizerParameters {
-	if x != nil {
-		if x, ok := x.Parameters.(*OnboardingStateForSequencer_V31); ok {
-			return x.V31
-		}
-	}
-	return nil
-}
-
-func (x *OnboardingStateForSequencer) GetV32() *v32.StaticSynchronizerParameters {
-	if x != nil {
-		if x, ok := x.Parameters.(*OnboardingStateForSequencer_V32); ok {
-			return x.V32
-		}
-	}
-	return nil
-}
-
-func (x *OnboardingStateForSequencer) GetSequencerSnapshot() *SequencerSnapshot {
-	if x != nil {
-		return x.SequencerSnapshot
-	}
-	return nil
-}
-
-type isOnboardingStateForSequencer_Parameters interface {
-	isOnboardingStateForSequencer_Parameters()
-}
-
-type OnboardingStateForSequencer_V30 struct {
-	V30 *v30.StaticSynchronizerParameters `protobuf:"bytes,2,opt,name=v30,proto3,oneof"`
-}
-
-type OnboardingStateForSequencer_V31 struct {
-	V31 *v31.StaticSynchronizerParameters `protobuf:"bytes,4,opt,name=v31,proto3,oneof"`
-}
-
-type OnboardingStateForSequencer_V32 struct {
-	V32 *v32.StaticSynchronizerParameters `protobuf:"bytes,5,opt,name=v32,proto3,oneof"`
-}
-
-func (*OnboardingStateForSequencer_V30) isOnboardingStateForSequencer_Parameters() {}
-
-func (*OnboardingStateForSequencer_V31) isOnboardingStateForSequencer_Parameters() {}
-
-func (*OnboardingStateForSequencer_V32) isOnboardingStateForSequencer_Parameters() {}
-
 type OnboardingStateV2Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Request:
@@ -1264,7 +1021,7 @@ type OnboardingStateV2Request struct {
 
 func (x *OnboardingStateV2Request) Reset() {
 	*x = OnboardingStateV2Request{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1276,7 +1033,7 @@ func (x *OnboardingStateV2Request) String() string {
 func (*OnboardingStateV2Request) ProtoMessage() {}
 
 func (x *OnboardingStateV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1289,7 +1046,7 @@ func (x *OnboardingStateV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnboardingStateV2Request.ProtoReflect.Descriptor instead.
 func (*OnboardingStateV2Request) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{21}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *OnboardingStateV2Request) GetRequest() isOnboardingStateV2Request_Request {
@@ -1342,7 +1099,7 @@ type OnboardingStateV2Response struct {
 
 func (x *OnboardingStateV2Response) Reset() {
 	*x = OnboardingStateV2Response{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1354,7 +1111,7 @@ func (x *OnboardingStateV2Response) String() string {
 func (*OnboardingStateV2Response) ProtoMessage() {}
 
 func (x *OnboardingStateV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1367,7 +1124,7 @@ func (x *OnboardingStateV2Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnboardingStateV2Response.ProtoReflect.Descriptor instead.
 func (*OnboardingStateV2Response) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{22}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *OnboardingStateV2Response) GetOnboardingStateForSequencer() []byte {
@@ -1388,7 +1145,7 @@ type OnboardingStateForSequencerV2 struct {
 
 func (x *OnboardingStateForSequencerV2) Reset() {
 	*x = OnboardingStateForSequencerV2{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[23]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1400,7 +1157,7 @@ func (x *OnboardingStateForSequencerV2) String() string {
 func (*OnboardingStateForSequencerV2) ProtoMessage() {}
 
 func (x *OnboardingStateForSequencerV2) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[23]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1413,7 +1170,7 @@ func (x *OnboardingStateForSequencerV2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnboardingStateForSequencerV2.ProtoReflect.Descriptor instead.
 func (*OnboardingStateForSequencerV2) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{23}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *OnboardingStateForSequencerV2) GetTopologyTransaction() []byte {
@@ -1445,7 +1202,7 @@ type PruningStatusRequest struct {
 
 func (x *PruningStatusRequest) Reset() {
 	*x = PruningStatusRequest{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[24]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1457,7 +1214,7 @@ func (x *PruningStatusRequest) String() string {
 func (*PruningStatusRequest) ProtoMessage() {}
 
 func (x *PruningStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[24]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1470,7 +1227,7 @@ func (x *PruningStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PruningStatusRequest.ProtoReflect.Descriptor instead.
 func (*PruningStatusRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{24}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{21}
 }
 
 type PruningStatusResponse struct {
@@ -1482,7 +1239,7 @@ type PruningStatusResponse struct {
 
 func (x *PruningStatusResponse) Reset() {
 	*x = PruningStatusResponse{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[25]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1494,7 +1251,7 @@ func (x *PruningStatusResponse) String() string {
 func (*PruningStatusResponse) ProtoMessage() {}
 
 func (x *PruningStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[25]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1507,7 +1264,7 @@ func (x *PruningStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PruningStatusResponse.ProtoReflect.Descriptor instead.
 func (*PruningStatusResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{25}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *PruningStatusResponse) GetPruningStatus() *SequencerPruningStatus {
@@ -1526,7 +1283,7 @@ type DisableMemberRequest struct {
 
 func (x *DisableMemberRequest) Reset() {
 	*x = DisableMemberRequest{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1538,7 +1295,7 @@ func (x *DisableMemberRequest) String() string {
 func (*DisableMemberRequest) ProtoMessage() {}
 
 func (x *DisableMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1551,7 +1308,7 @@ func (x *DisableMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DisableMemberRequest.ProtoReflect.Descriptor instead.
 func (*DisableMemberRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{26}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *DisableMemberRequest) GetMember() string {
@@ -1569,7 +1326,7 @@ type DisableMemberResponse struct {
 
 func (x *DisableMemberResponse) Reset() {
 	*x = DisableMemberResponse{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[27]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1581,7 +1338,7 @@ func (x *DisableMemberResponse) String() string {
 func (*DisableMemberResponse) ProtoMessage() {}
 
 func (x *DisableMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[27]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1594,7 +1351,7 @@ func (x *DisableMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DisableMemberResponse.ProtoReflect.Descriptor instead.
 func (*DisableMemberResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{27}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{24}
 }
 
 type PerformLsuSequencingTestRequest struct {
@@ -1606,7 +1363,7 @@ type PerformLsuSequencingTestRequest struct {
 
 func (x *PerformLsuSequencingTestRequest) Reset() {
 	*x = PerformLsuSequencingTestRequest{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[28]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1618,7 +1375,7 @@ func (x *PerformLsuSequencingTestRequest) String() string {
 func (*PerformLsuSequencingTestRequest) ProtoMessage() {}
 
 func (x *PerformLsuSequencingTestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[28]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1631,7 +1388,7 @@ func (x *PerformLsuSequencingTestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PerformLsuSequencingTestRequest.ProtoReflect.Descriptor instead.
 func (*PerformLsuSequencingTestRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{28}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *PerformLsuSequencingTestRequest) GetRecipientMediatorGroup() int32 {
@@ -1649,7 +1406,7 @@ type PerformLsuSequencingTestResponse struct {
 
 func (x *PerformLsuSequencingTestResponse) Reset() {
 	*x = PerformLsuSequencingTestResponse{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[29]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1661,7 +1418,7 @@ func (x *PerformLsuSequencingTestResponse) String() string {
 func (*PerformLsuSequencingTestResponse) ProtoMessage() {}
 
 func (x *PerformLsuSequencingTestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[29]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1674,7 +1431,7 @@ func (x *PerformLsuSequencingTestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PerformLsuSequencingTestResponse.ProtoReflect.Descriptor instead.
 func (*PerformLsuSequencingTestResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{29}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDescGZIP(), []int{26}
 }
 
 type SnapshotResponse_Success struct {
@@ -1686,7 +1443,7 @@ type SnapshotResponse_Success struct {
 
 func (x *SnapshotResponse_Success) Reset() {
 	*x = SnapshotResponse_Success{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[32]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1698,7 +1455,7 @@ func (x *SnapshotResponse_Success) String() string {
 func (*SnapshotResponse_Success) ProtoMessage() {}
 
 func (x *SnapshotResponse_Success) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[32]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1730,7 +1487,7 @@ type SnapshotResponse_Failure struct {
 
 func (x *SnapshotResponse_Failure) Reset() {
 	*x = SnapshotResponse_Failure{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[33]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1742,7 +1499,7 @@ func (x *SnapshotResponse_Failure) String() string {
 func (*SnapshotResponse_Failure) ProtoMessage() {}
 
 func (x *SnapshotResponse_Failure) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[33]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1774,7 +1531,7 @@ type SnapshotResponse_VersionedSuccess struct {
 
 func (x *SnapshotResponse_VersionedSuccess) Reset() {
 	*x = SnapshotResponse_VersionedSuccess{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[34]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1786,7 +1543,7 @@ func (x *SnapshotResponse_VersionedSuccess) String() string {
 func (*SnapshotResponse_VersionedSuccess) ProtoMessage() {}
 
 func (x *SnapshotResponse_VersionedSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[34]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1813,7 +1570,7 @@ var File_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_se
 
 const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDesc = "" +
 	"\n" +
-	"Rcom/digitalasset/canton/sequencer/admin/v30/sequencer_administration_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\x1aEcom/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x1a5com/digitalasset/canton/protocol/v31/sequencing.proto\x1a5com/digitalasset/canton/protocol/v32/sequencing.proto\x1aScom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_snapshot.proto\x1a7com/digitalasset/canton/topology/admin/v30/common.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"v\n" +
+	"Rcom/digitalasset/canton/sequencer/admin/v30/sequencer_administration_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1aEcom/digitalasset/canton/protocol/v30/traffic_control_parameters.proto\x1aScom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_snapshot.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"v\n" +
 	"\"GenerateAuthenticationTokenRequest\x12\x16\n" +
 	"\x06member\x18\x01 \x01(\tR\x06member\x128\n" +
 	"\n" +
@@ -1880,21 +1637,7 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_
 	"\x06reason\x18\x01 \x01(\tR\x06reason\x1a.\n" +
 	"\x10VersionedSuccess\x12\x1a\n" +
 	"\bsnapshot\x18\x01 \x01(\fR\bsnapshotB\a\n" +
-	"\x05value\"\x86\x01\n" +
-	"\x16OnboardingStateRequest\x12%\n" +
-	"\rsequencer_uid\x18\x01 \x01(\tH\x00R\fsequencerUid\x12:\n" +
-	"\ttimestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\ttimestampB\t\n" +
-	"\arequest\"^\n" +
-	"\x17OnboardingStateResponse\x12C\n" +
-	"\x1eonboarding_state_for_sequencer\x18\x01 \x01(\fR\x1bonboardingStateForSequencer\"\x91\x04\n" +
-	"\x1bOnboardingStateForSequencer\x12m\n" +
-	"\x11topology_snapshot\x18\x01 \x01(\v2@.com.digitalasset.canton.topology.admin.v30.TopologyTransactionsR\x10topologySnapshot\x12V\n" +
-	"\x03v30\x18\x02 \x01(\v2B.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersH\x00R\x03v30\x12V\n" +
-	"\x03v31\x18\x04 \x01(\v2B.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x03v31\x12V\n" +
-	"\x03v32\x18\x05 \x01(\v2B.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x03v32\x12m\n" +
-	"\x12sequencer_snapshot\x18\x03 \x01(\v2>.com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshotR\x11sequencerSnapshotB\f\n" +
-	"\n" +
-	"parameters\"\x88\x01\n" +
+	"\x05value\"\x88\x01\n" +
 	"\x18OnboardingStateV2Request\x12%\n" +
 	"\rsequencer_uid\x18\x01 \x01(\tH\x00R\fsequencerUid\x12:\n" +
 	"\ttimestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\ttimestampB\t\n" +
@@ -1915,7 +1658,7 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_
 	"\x15DisableMemberResponse\"[\n" +
 	"\x1fPerformLsuSequencingTestRequest\x128\n" +
 	"\x18recipient_mediator_group\x18\x01 \x01(\x05R\x16recipientMediatorGroup\"\"\n" +
-	" PerformLsuSequencingTestResponse2\xba\x11\n" +
+	" PerformLsuSequencingTestResponse2\x94\x10\n" +
 	"\x1eSequencerAdministrationService\x12\x96\x01\n" +
 	"\rPruningStatus\x12A.com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest\x1aB.com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse\x12\xa8\x01\n" +
 	"\x13TrafficControlState\x12G.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest\x1aH.com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse\x12\xa8\x01\n" +
@@ -1924,8 +1667,7 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_
 	"\x19SetLsuTrafficControlState\x12M.com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateRequest\x1aN.com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateResponse\x12\x9f\x01\n" +
 	"\x10SetThroughputCap\x12D.com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapRequest\x1aE.com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapResponse\x12\x9f\x01\n" +
 	"\x10GetThroughputCap\x12D.com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapRequest\x1aE.com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse\x12\x87\x01\n" +
-	"\bSnapshot\x12<.com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest\x1a=.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse\x12\xa3\x01\n" +
-	"\x0fOnboardingState\x12C.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest\x1aD.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse\"\x03\x88\x02\x010\x01\x12\xa4\x01\n" +
+	"\bSnapshot\x12<.com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest\x1a=.com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse\x12\xa4\x01\n" +
 	"\x11OnboardingStateV2\x12E.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request\x1aF.com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response0\x01\x12\x96\x01\n" +
 	"\rDisableMember\x12A.com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest\x1aB.com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse\x12\xc0\x01\n" +
 	"\x1bGenerateAuthenticationToken\x12O.com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest\x1aP.com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse\x12\xb7\x01\n" +
@@ -1944,7 +1686,7 @@ func file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_s
 }
 
 var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_goTypes = []any{
 	(TrafficControlStateRequest_RelativeTimestamp)(0), // 0: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest.RelativeTimestamp
 	(*GenerateAuthenticationTokenRequest)(nil),        // 1: com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest
@@ -1965,89 +1707,74 @@ var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_se
 	(*GetThroughputCapResponse)(nil),                  // 16: com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse
 	(*SnapshotRequest)(nil),                           // 17: com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest
 	(*SnapshotResponse)(nil),                          // 18: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse
-	(*OnboardingStateRequest)(nil),                    // 19: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest
-	(*OnboardingStateResponse)(nil),                   // 20: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse
-	(*OnboardingStateForSequencer)(nil),               // 21: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencer
-	(*OnboardingStateV2Request)(nil),                  // 22: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request
-	(*OnboardingStateV2Response)(nil),                 // 23: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response
-	(*OnboardingStateForSequencerV2)(nil),             // 24: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencerV2
-	(*PruningStatusRequest)(nil),                      // 25: com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest
-	(*PruningStatusResponse)(nil),                     // 26: com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse
-	(*DisableMemberRequest)(nil),                      // 27: com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest
-	(*DisableMemberResponse)(nil),                     // 28: com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse
-	(*PerformLsuSequencingTestRequest)(nil),           // 29: com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestRequest
-	(*PerformLsuSequencingTestResponse)(nil),          // 30: com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestResponse
-	nil,                                               // 31: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntry
-	nil,                                               // 32: com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntry
-	(*SnapshotResponse_Success)(nil),                  // 33: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Success
-	(*SnapshotResponse_Failure)(nil),                  // 34: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Failure
-	(*SnapshotResponse_VersionedSuccess)(nil),         // 35: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.VersionedSuccess
-	(*durationpb.Duration)(nil),                       // 36: google.protobuf.Duration
-	(*timestamppb.Timestamp)(nil),                     // 37: google.protobuf.Timestamp
-	(*v301.TopologyTransactions)(nil),                 // 38: com.digitalasset.canton.topology.admin.v30.TopologyTransactions
-	(*v30.StaticSynchronizerParameters)(nil),          // 39: com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	(*v31.StaticSynchronizerParameters)(nil),          // 40: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
-	(*v32.StaticSynchronizerParameters)(nil),          // 41: com.digitalasset.canton.protocol.v32.StaticSynchronizerParameters
-	(*SequencerSnapshot)(nil),                         // 42: com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
-	(*SequencerPruningStatus)(nil),                    // 43: com.digitalasset.canton.sequencer.admin.v30.SequencerPruningStatus
-	(*v30.TrafficState)(nil),                          // 44: com.digitalasset.canton.protocol.v30.TrafficState
+	(*OnboardingStateV2Request)(nil),                  // 19: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request
+	(*OnboardingStateV2Response)(nil),                 // 20: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response
+	(*OnboardingStateForSequencerV2)(nil),             // 21: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencerV2
+	(*PruningStatusRequest)(nil),                      // 22: com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest
+	(*PruningStatusResponse)(nil),                     // 23: com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse
+	(*DisableMemberRequest)(nil),                      // 24: com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest
+	(*DisableMemberResponse)(nil),                     // 25: com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse
+	(*PerformLsuSequencingTestRequest)(nil),           // 26: com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestRequest
+	(*PerformLsuSequencingTestResponse)(nil),          // 27: com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestResponse
+	nil,                                               // 28: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntry
+	nil,                                               // 29: com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntry
+	(*SnapshotResponse_Success)(nil),                  // 30: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Success
+	(*SnapshotResponse_Failure)(nil),                  // 31: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Failure
+	(*SnapshotResponse_VersionedSuccess)(nil),         // 32: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.VersionedSuccess
+	(*durationpb.Duration)(nil),                       // 33: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),                     // 34: google.protobuf.Timestamp
+	(*SequencerSnapshot)(nil),                         // 35: com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
+	(*SequencerPruningStatus)(nil),                    // 36: com.digitalasset.canton.sequencer.admin.v30.SequencerPruningStatus
+	(*v30.TrafficState)(nil),                          // 37: com.digitalasset.canton.protocol.v30.TrafficState
 }
 var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_depIdxs = []int32{
-	36, // 0: com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest.expires_in:type_name -> google.protobuf.Duration
-	37, // 1: com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse.expires_at:type_name -> google.protobuf.Timestamp
+	33, // 0: com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest.expires_in:type_name -> google.protobuf.Duration
+	34, // 1: com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse.expires_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest.relative_timestamp:type_name -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest.RelativeTimestamp
-	31, // 3: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.traffic_states:type_name -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntry
-	37, // 4: com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateRequest.timestamp:type_name -> google.protobuf.Timestamp
-	32, // 5: com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.lsu_traffic_states:type_name -> com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntry
+	28, // 3: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.traffic_states:type_name -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntry
+	34, // 4: com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateRequest.timestamp:type_name -> google.protobuf.Timestamp
+	29, // 5: com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.lsu_traffic_states:type_name -> com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntry
 	12, // 6: com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapRequest.config:type_name -> com.digitalasset.canton.sequencer.admin.v30.IndividualThroughputCapConfig
 	12, // 7: com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse.config:type_name -> com.digitalasset.canton.sequencer.admin.v30.IndividualThroughputCapConfig
-	37, // 8: com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest.timestamp:type_name -> google.protobuf.Timestamp
-	33, // 9: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.success:type_name -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Success
-	34, // 10: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.failure:type_name -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Failure
-	35, // 11: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.versioned_success:type_name -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.VersionedSuccess
-	37, // 12: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest.timestamp:type_name -> google.protobuf.Timestamp
-	38, // 13: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencer.topology_snapshot:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions
-	39, // 14: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencer.v30:type_name -> com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	40, // 15: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencer.v31:type_name -> com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
-	41, // 16: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencer.v32:type_name -> com.digitalasset.canton.protocol.v32.StaticSynchronizerParameters
-	42, // 17: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencer.sequencer_snapshot:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
-	37, // 18: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request.timestamp:type_name -> google.protobuf.Timestamp
-	42, // 19: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencerV2.sequencer_snapshot:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
-	43, // 20: com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse.pruning_status:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerPruningStatus
-	44, // 21: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntry.value:type_name -> com.digitalasset.canton.protocol.v30.TrafficState
-	44, // 22: com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntry.value:type_name -> com.digitalasset.canton.protocol.v30.TrafficState
-	42, // 23: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Success.state:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
-	25, // 24: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PruningStatus:input_type -> com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest
-	3,  // 25: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.TrafficControlState:input_type -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest
-	5,  // 26: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetTrafficPurchased:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedRequest
-	7,  // 27: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetLsuTrafficControlState:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateRequest
-	10, // 28: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetLsuTrafficControlState:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateRequest
-	13, // 29: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetThroughputCap:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapRequest
-	15, // 30: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetThroughputCap:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapRequest
-	17, // 31: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.Snapshot:input_type -> com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest
-	19, // 32: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.OnboardingState:input_type -> com.digitalasset.canton.sequencer.admin.v30.OnboardingStateRequest
-	22, // 33: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.OnboardingStateV2:input_type -> com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request
-	27, // 34: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.DisableMember:input_type -> com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest
-	1,  // 35: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GenerateAuthenticationToken:input_type -> com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest
-	29, // 36: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PerformLsuSequencingTest:input_type -> com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestRequest
-	26, // 37: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PruningStatus:output_type -> com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse
-	4,  // 38: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.TrafficControlState:output_type -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse
-	6,  // 39: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetTrafficPurchased:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedResponse
-	9,  // 40: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetLsuTrafficControlState:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateResponse
-	11, // 41: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetLsuTrafficControlState:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateResponse
-	14, // 42: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetThroughputCap:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapResponse
-	16, // 43: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetThroughputCap:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse
-	18, // 44: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.Snapshot:output_type -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse
-	20, // 45: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.OnboardingState:output_type -> com.digitalasset.canton.sequencer.admin.v30.OnboardingStateResponse
-	23, // 46: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.OnboardingStateV2:output_type -> com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response
-	28, // 47: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.DisableMember:output_type -> com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse
-	2,  // 48: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GenerateAuthenticationToken:output_type -> com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse
-	30, // 49: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PerformLsuSequencingTest:output_type -> com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestResponse
-	37, // [37:50] is the sub-list for method output_type
-	24, // [24:37] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	34, // 8: com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest.timestamp:type_name -> google.protobuf.Timestamp
+	30, // 9: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.success:type_name -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Success
+	31, // 10: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.failure:type_name -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Failure
+	32, // 11: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.versioned_success:type_name -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.VersionedSuccess
+	34, // 12: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request.timestamp:type_name -> google.protobuf.Timestamp
+	35, // 13: com.digitalasset.canton.sequencer.admin.v30.OnboardingStateForSequencerV2.sequencer_snapshot:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
+	36, // 14: com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse.pruning_status:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerPruningStatus
+	37, // 15: com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse.TrafficStatesEntry.value:type_name -> com.digitalasset.canton.protocol.v30.TrafficState
+	37, // 16: com.digitalasset.canton.sequencer.admin.v30.LsuTrafficState.LsuTrafficStatesEntry.value:type_name -> com.digitalasset.canton.protocol.v30.TrafficState
+	35, // 17: com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse.Success.state:type_name -> com.digitalasset.canton.sequencer.admin.v30.SequencerSnapshot
+	22, // 18: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PruningStatus:input_type -> com.digitalasset.canton.sequencer.admin.v30.PruningStatusRequest
+	3,  // 19: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.TrafficControlState:input_type -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateRequest
+	5,  // 20: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetTrafficPurchased:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedRequest
+	7,  // 21: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetLsuTrafficControlState:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateRequest
+	10, // 22: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetLsuTrafficControlState:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateRequest
+	13, // 23: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetThroughputCap:input_type -> com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapRequest
+	15, // 24: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetThroughputCap:input_type -> com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapRequest
+	17, // 25: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.Snapshot:input_type -> com.digitalasset.canton.sequencer.admin.v30.SnapshotRequest
+	19, // 26: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.OnboardingStateV2:input_type -> com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Request
+	24, // 27: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.DisableMember:input_type -> com.digitalasset.canton.sequencer.admin.v30.DisableMemberRequest
+	1,  // 28: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GenerateAuthenticationToken:input_type -> com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenRequest
+	26, // 29: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PerformLsuSequencingTest:input_type -> com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestRequest
+	23, // 30: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PruningStatus:output_type -> com.digitalasset.canton.sequencer.admin.v30.PruningStatusResponse
+	4,  // 31: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.TrafficControlState:output_type -> com.digitalasset.canton.sequencer.admin.v30.TrafficControlStateResponse
+	6,  // 32: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetTrafficPurchased:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetTrafficPurchasedResponse
+	9,  // 33: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetLsuTrafficControlState:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetLsuTrafficControlStateResponse
+	11, // 34: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetLsuTrafficControlState:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetLsuTrafficControlStateResponse
+	14, // 35: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.SetThroughputCap:output_type -> com.digitalasset.canton.sequencer.admin.v30.SetThroughputCapResponse
+	16, // 36: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GetThroughputCap:output_type -> com.digitalasset.canton.sequencer.admin.v30.GetThroughputCapResponse
+	18, // 37: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.Snapshot:output_type -> com.digitalasset.canton.sequencer.admin.v30.SnapshotResponse
+	20, // 38: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.OnboardingStateV2:output_type -> com.digitalasset.canton.sequencer.admin.v30.OnboardingStateV2Response
+	25, // 39: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.DisableMember:output_type -> com.digitalasset.canton.sequencer.admin.v30.DisableMemberResponse
+	2,  // 40: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.GenerateAuthenticationToken:output_type -> com.digitalasset.canton.sequencer.admin.v30.GenerateAuthenticationTokenResponse
+	27, // 41: com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService.PerformLsuSequencingTest:output_type -> com.digitalasset.canton.sequencer.admin.v30.PerformLsuSequencingTestResponse
+	30, // [30:42] is the sub-list for method output_type
+	18, // [18:30] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() {
@@ -2069,26 +1796,17 @@ func file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_s
 		(*SnapshotResponse_VersionedSuccess_)(nil),
 	}
 	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[18].OneofWrappers = []any{
-		(*OnboardingStateRequest_SequencerUid)(nil),
-		(*OnboardingStateRequest_Timestamp)(nil),
-	}
-	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[20].OneofWrappers = []any{
-		(*OnboardingStateForSequencer_V30)(nil),
-		(*OnboardingStateForSequencer_V31)(nil),
-		(*OnboardingStateForSequencer_V32)(nil),
-	}
-	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[21].OneofWrappers = []any{
 		(*OnboardingStateV2Request_SequencerUid)(nil),
 		(*OnboardingStateV2Request_Timestamp)(nil),
 	}
-	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[23].OneofWrappers = []any{}
+	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_msgTypes[20].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDesc), len(file_com_digitalasset_canton_sequencer_admin_v30_sequencer_administration_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   35,
+			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

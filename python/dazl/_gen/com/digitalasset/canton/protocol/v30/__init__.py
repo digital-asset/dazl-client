@@ -12,16 +12,16 @@ from .merkle_pb2 import BlindableNode, GenTransactionTree, MerkleSeq, MerkleSeqE
 from .quorum_pb2 import PartyIndexAndWeight, Quorum
 from .participant_transaction_pb2 import ActionDescription, CommonMetadata, CreatedContract, DeduplicationPeriod, ExternalPartyAuthorization, FullInformeeTree, Informee, InformeeMessage, InputContract, LightTransactionViewTree, ParticipantMetadata, RootHashMessage, ViewCommonData, ViewHashAndKey, ViewNode, ViewParticipantData, ViewParticipantMessage
 from .common_stable_pb2 import AggregationRule, GlobalKey, Stakeholders
-from .sequencing_pb2 import CompressedBatch, PossiblyIgnoredSequencedEvent, Recipients, RecipientsTree, SequencingSubmissionCost, ServiceAgreement, StaticSynchronizerParameters
-from .acs_commitments_pb2 import AcsCommitment, AcsCommitmentProtocolMessage
 from .participant_reassignment_pb2 import ActiveContract, AssignmentCommonData, AssignmentMediatorMessage, AssignmentView, ReassignmentId, ReassignmentSubmitterMetadata, ReassignmentViewTree, UnassignmentCommonData, UnassignmentData, UnassignmentMediatorMessage, UnassignmentView
-from .synchronization_pb2 import LsuSequencingTestMessage, LsuSequencingTestMessageContent, SignedProtocolMessage, TypedSignedProtocolMessageContent
 from .confirmation_response_pb2 import ConfirmationResponse, ConfirmationResponses, LocalVerdict, MerkleSeqIndex, ViewPosition
 from .mediator_pb2 import ConfirmationResultMessage, InformeeTree, MediatorReject, ParticipantReject, RejectionReason, Verdict
 from .versioned_google_rpc_status_pb2 import VersionedStatus
+from .sequencing_pb2 import CompressedBatch, PossiblyIgnoredSequencedEvent, Recipients, RecipientsTree, SequencingSubmissionCost, ServiceAgreement, StaticSynchronizerParameters
 from .storage_pb2 import StoredParties
+from .synchronization_pb2 import LsuSequencingTestMessage, LsuSequencingTestMessageContent, SignedProtocolMessage, TypedSignedProtocolMessageContent
 from .ordering_request_pb2 import OrderingRequest
 from .signed_content_pb2 import SignedContent
+from .acs_commitments_pb2 import AcsCommitment, AcsCommitmentProtocolMessage
 
 __all__ = [
     "AcsCommitment",

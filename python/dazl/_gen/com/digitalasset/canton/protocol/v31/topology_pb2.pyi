@@ -5,6 +5,7 @@
 from ...crypto.v30 import crypto_pb2 as _crypto_pb2
 from ..v30 import topology_pb2 as _topology_pb2
 from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
@@ -13,18 +14,37 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PartyToParticipant(_message.Message):
-    __slots__ = ("party", "threshold", "participants", "party_signing_keys", "is_offline")
+    __slots__ = ("party", "threshold", "participants", "party_signing_keys")
+    class HostingParticipant(_message.Message):
+        __slots__ = ("participant_uid", "permission", "state")
+        class HostingState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+            __slots__ = ()
+            HOSTING_STATE_UNSPECIFIED: _ClassVar[PartyToParticipant.HostingParticipant.HostingState]
+            HOSTING_STATE_NOMINATED: _ClassVar[PartyToParticipant.HostingParticipant.HostingState]
+            HOSTING_STATE_FREEZING: _ClassVar[PartyToParticipant.HostingParticipant.HostingState]
+            HOSTING_STATE_ONBOARDING: _ClassVar[PartyToParticipant.HostingParticipant.HostingState]
+            HOSTING_STATE_ACTIVE: _ClassVar[PartyToParticipant.HostingParticipant.HostingState]
+        HOSTING_STATE_UNSPECIFIED: PartyToParticipant.HostingParticipant.HostingState
+        HOSTING_STATE_NOMINATED: PartyToParticipant.HostingParticipant.HostingState
+        HOSTING_STATE_FREEZING: PartyToParticipant.HostingParticipant.HostingState
+        HOSTING_STATE_ONBOARDING: PartyToParticipant.HostingParticipant.HostingState
+        HOSTING_STATE_ACTIVE: PartyToParticipant.HostingParticipant.HostingState
+        PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
+        PERMISSION_FIELD_NUMBER: _ClassVar[int]
+        STATE_FIELD_NUMBER: _ClassVar[int]
+        participant_uid: str
+        permission: _topology_pb2.Enums.ParticipantPermission
+        state: PartyToParticipant.HostingParticipant.HostingState
+        def __init__(self, participant_uid: _Optional[str] = ..., permission: _Optional[_Union[_topology_pb2.Enums.ParticipantPermission, str]] = ..., state: _Optional[_Union[PartyToParticipant.HostingParticipant.HostingState, str]] = ...) -> None: ...
     PARTY_FIELD_NUMBER: _ClassVar[int]
     THRESHOLD_FIELD_NUMBER: _ClassVar[int]
     PARTICIPANTS_FIELD_NUMBER: _ClassVar[int]
     PARTY_SIGNING_KEYS_FIELD_NUMBER: _ClassVar[int]
-    IS_OFFLINE_FIELD_NUMBER: _ClassVar[int]
     party: str
     threshold: int
-    participants: _containers.RepeatedCompositeFieldContainer[_topology_pb2.PartyToParticipant.HostingParticipant]
+    participants: _containers.RepeatedCompositeFieldContainer[PartyToParticipant.HostingParticipant]
     party_signing_keys: _crypto_pb2.SigningKeysWithThreshold
-    is_offline: bool
-    def __init__(self, party: _Optional[str] = ..., threshold: _Optional[int] = ..., participants: _Optional[_Iterable[_Union[_topology_pb2.PartyToParticipant.HostingParticipant, _Mapping]]] = ..., party_signing_keys: _Optional[_Union[_crypto_pb2.SigningKeysWithThreshold, _Mapping]] = ..., is_offline: _Optional[bool] = ...) -> None: ...
+    def __init__(self, party: _Optional[str] = ..., threshold: _Optional[int] = ..., participants: _Optional[_Iterable[_Union[PartyToParticipant.HostingParticipant, _Mapping]]] = ..., party_signing_keys: _Optional[_Union[_crypto_pb2.SigningKeysWithThreshold, _Mapping]] = ...) -> None: ...
 
 class TopologyMapping(_message.Message):
     __slots__ = ("namespace_delegation", "decentralized_namespace_definition", "owner_to_key_mapping", "synchronizer_trust_certificate", "participant_permission", "party_hosting_limits", "vetted_packages", "party_to_participant", "synchronizer_parameters_state", "mediator_synchronizer_state", "sequencer_synchronizer_state", "sequencing_dynamic_parameters_state", "party_to_key_mapping", "synchronizer_upgrade_announcement", "sequencer_connection_successor")

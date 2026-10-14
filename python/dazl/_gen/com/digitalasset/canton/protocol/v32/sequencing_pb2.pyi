@@ -70,13 +70,27 @@ class SequencedEvent(_message.Message):
     def __init__(self, previous_timestamp: _Optional[int] = ..., timestamp: _Optional[int] = ..., physical_synchronizer_id: _Optional[str] = ..., message_id: _Optional[str] = ..., batch: _Optional[_Union[CompressedBatch, _Mapping]] = ..., deliver_error_reason: _Optional[_Union[_status_pb2.Status, _Mapping]] = ..., topology_timestamp: _Optional[int] = ..., traffic_receipt: _Optional[_Union[_traffic_control_parameters_pb2.TrafficReceipt, _Mapping]] = ...) -> None: ...
 
 class SynchronizerLimits(_message.Message):
-    __slots__ = ("transaction_protocol_limits",)
+    __slots__ = ("transaction_protocol_limits", "topology_limits", "acs_commitment_limits")
     TRANSACTION_PROTOCOL_LIMITS_FIELD_NUMBER: _ClassVar[int]
+    TOPOLOGY_LIMITS_FIELD_NUMBER: _ClassVar[int]
+    ACS_COMMITMENT_LIMITS_FIELD_NUMBER: _ClassVar[int]
     transaction_protocol_limits: TransactionProtocolLimits
-    def __init__(self, transaction_protocol_limits: _Optional[_Union[TransactionProtocolLimits, _Mapping]] = ...) -> None: ...
+    topology_limits: TopologyLimits
+    acs_commitment_limits: AcsCommitmentLimits
+    def __init__(self, transaction_protocol_limits: _Optional[_Union[TransactionProtocolLimits, _Mapping]] = ..., topology_limits: _Optional[_Union[TopologyLimits, _Mapping]] = ..., acs_commitment_limits: _Optional[_Union[AcsCommitmentLimits, _Mapping]] = ...) -> None: ...
+
+class TopologyLimits(_message.Message):
+    __slots__ = ("max_signing_keys_per_entity", "max_owners_per_decentralized_namespace", "max_hosting_participants_per_party")
+    MAX_SIGNING_KEYS_PER_ENTITY_FIELD_NUMBER: _ClassVar[int]
+    MAX_OWNERS_PER_DECENTRALIZED_NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    MAX_HOSTING_PARTICIPANTS_PER_PARTY_FIELD_NUMBER: _ClassVar[int]
+    max_signing_keys_per_entity: int
+    max_owners_per_decentralized_namespace: int
+    max_hosting_participants_per_party: int
+    def __init__(self, max_signing_keys_per_entity: _Optional[int] = ..., max_owners_per_decentralized_namespace: _Optional[int] = ..., max_hosting_participants_per_party: _Optional[int] = ...) -> None: ...
 
 class TransactionProtocolLimits(_message.Message):
-    __slots__ = ("max_act_as", "max_envelopes", "max_recipients_per_batch", "max_recipients_trees", "max_recipients_per_recipients_tree_level", "max_children_per_recipients_tree_level", "max_recipients_per_envelope", "max_recipients_tree_depth", "max_transaction_root_views", "max_transaction_sub_views", "max_transaction_tree_depth")
+    __slots__ = ("max_act_as", "max_envelopes", "max_recipients_per_batch", "max_recipients_trees", "max_recipients_per_recipients_tree_level", "max_children_per_recipients_tree_level", "max_recipients_per_envelope", "max_recipients_tree_depth", "max_transaction_root_views", "max_transaction_sub_views", "max_transaction_tree_depth", "max_signatures_per_envelope", "max_quorum_size")
     MAX_ACT_AS_FIELD_NUMBER: _ClassVar[int]
     MAX_ENVELOPES_FIELD_NUMBER: _ClassVar[int]
     MAX_RECIPIENTS_PER_BATCH_FIELD_NUMBER: _ClassVar[int]
@@ -88,6 +102,8 @@ class TransactionProtocolLimits(_message.Message):
     MAX_TRANSACTION_ROOT_VIEWS_FIELD_NUMBER: _ClassVar[int]
     MAX_TRANSACTION_SUB_VIEWS_FIELD_NUMBER: _ClassVar[int]
     MAX_TRANSACTION_TREE_DEPTH_FIELD_NUMBER: _ClassVar[int]
+    MAX_SIGNATURES_PER_ENVELOPE_FIELD_NUMBER: _ClassVar[int]
+    MAX_QUORUM_SIZE_FIELD_NUMBER: _ClassVar[int]
     max_act_as: int
     max_envelopes: int
     max_recipients_per_batch: int
@@ -99,7 +115,21 @@ class TransactionProtocolLimits(_message.Message):
     max_transaction_root_views: int
     max_transaction_sub_views: int
     max_transaction_tree_depth: int
-    def __init__(self, max_act_as: _Optional[int] = ..., max_envelopes: _Optional[int] = ..., max_recipients_per_batch: _Optional[int] = ..., max_recipients_trees: _Optional[int] = ..., max_recipients_per_recipients_tree_level: _Optional[int] = ..., max_children_per_recipients_tree_level: _Optional[int] = ..., max_recipients_per_envelope: _Optional[int] = ..., max_recipients_tree_depth: _Optional[int] = ..., max_transaction_root_views: _Optional[int] = ..., max_transaction_sub_views: _Optional[int] = ..., max_transaction_tree_depth: _Optional[int] = ...) -> None: ...
+    max_signatures_per_envelope: int
+    max_quorum_size: int
+    def __init__(self, max_act_as: _Optional[int] = ..., max_envelopes: _Optional[int] = ..., max_recipients_per_batch: _Optional[int] = ..., max_recipients_trees: _Optional[int] = ..., max_recipients_per_recipients_tree_level: _Optional[int] = ..., max_children_per_recipients_tree_level: _Optional[int] = ..., max_recipients_per_envelope: _Optional[int] = ..., max_recipients_tree_depth: _Optional[int] = ..., max_transaction_root_views: _Optional[int] = ..., max_transaction_sub_views: _Optional[int] = ..., max_transaction_tree_depth: _Optional[int] = ..., max_signatures_per_envelope: _Optional[int] = ..., max_quorum_size: _Optional[int] = ...) -> None: ...
+
+class AcsCommitmentLimits(_message.Message):
+    __slots__ = ("max_acs_commitment_size_bytes", "max_acs_commitment_summary_size_bytes", "max_addressed_counterparticipants", "max_unsent_digests")
+    MAX_ACS_COMMITMENT_SIZE_BYTES_FIELD_NUMBER: _ClassVar[int]
+    MAX_ACS_COMMITMENT_SUMMARY_SIZE_BYTES_FIELD_NUMBER: _ClassVar[int]
+    MAX_ADDRESSED_COUNTERPARTICIPANTS_FIELD_NUMBER: _ClassVar[int]
+    MAX_UNSENT_DIGESTS_FIELD_NUMBER: _ClassVar[int]
+    max_acs_commitment_size_bytes: int
+    max_acs_commitment_summary_size_bytes: int
+    max_addressed_counterparticipants: int
+    max_unsent_digests: int
+    def __init__(self, max_acs_commitment_size_bytes: _Optional[int] = ..., max_acs_commitment_summary_size_bytes: _Optional[int] = ..., max_addressed_counterparticipants: _Optional[int] = ..., max_unsent_digests: _Optional[int] = ...) -> None: ...
 
 class StaticSynchronizerParameters(_message.Message):
     __slots__ = ("required_signing_specs", "required_encryption_specs", "required_symmetric_key_schemes", "required_hash_algorithms", "required_crypto_key_formats", "required_signature_formats", "protocol_version", "serial", "enable_transparency_checks", "topology_change_delay", "synchronizer_limits")
