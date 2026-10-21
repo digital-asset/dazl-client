@@ -77,12 +77,13 @@ func (ParticipantPermission) EnumDescriptor() ([]byte, []int) {
 }
 
 type GetActiveContractsRequest struct {
-	state                   protoimpl.MessageState `protogen:"open.v1"`
-	ActiveAtOffset          int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
-	EventFormat             *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
-	StreamContinuationToken []byte                 `protobuf:"bytes,5,opt,name=stream_continuation_token,json=streamContinuationToken,proto3,oneof" json:"stream_continuation_token,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	ActiveAtOffset                 int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
+	EventFormat                    *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	StreamContinuationToken        []byte                 `protobuf:"bytes,5,opt,name=stream_continuation_token,json=streamContinuationToken,proto3,oneof" json:"stream_continuation_token,omitempty"`
+	IncludeIncompleteReassignments bool                   `protobuf:"varint,6,opt,name=include_incomplete_reassignments,json=includeIncompleteReassignments,proto3" json:"include_incomplete_reassignments,omitempty"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
 func (x *GetActiveContractsRequest) Reset() {
@@ -136,14 +137,22 @@ func (x *GetActiveContractsRequest) GetStreamContinuationToken() []byte {
 	return nil
 }
 
+func (x *GetActiveContractsRequest) GetIncludeIncompleteReassignments() bool {
+	if x != nil {
+		return x.IncludeIncompleteReassignments
+	}
+	return false
+}
+
 type GetActiveContractsPageRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ActiveAtOffset *int64                 `protobuf:"varint,1,opt,name=active_at_offset,json=activeAtOffset,proto3,oneof" json:"active_at_offset,omitempty"`
-	EventFormat    *EventFormat           `protobuf:"bytes,2,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
-	MaxPageSize    *int32                 `protobuf:"varint,3,opt,name=max_page_size,json=maxPageSize,proto3,oneof" json:"max_page_size,omitempty"`
-	PageToken      []byte                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	ActiveAtOffset                 *int64                 `protobuf:"varint,1,opt,name=active_at_offset,json=activeAtOffset,proto3,oneof" json:"active_at_offset,omitempty"`
+	EventFormat                    *EventFormat           `protobuf:"bytes,2,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	MaxPageSize                    *int32                 `protobuf:"varint,3,opt,name=max_page_size,json=maxPageSize,proto3,oneof" json:"max_page_size,omitempty"`
+	PageToken                      []byte                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+	IncludeIncompleteReassignments bool                   `protobuf:"varint,5,opt,name=include_incomplete_reassignments,json=includeIncompleteReassignments,proto3" json:"include_incomplete_reassignments,omitempty"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
 func (x *GetActiveContractsPageRequest) Reset() {
@@ -202,6 +211,13 @@ func (x *GetActiveContractsPageRequest) GetPageToken() []byte {
 		return x.PageToken
 	}
 	return nil
+}
+
+func (x *GetActiveContractsPageRequest) GetIncludeIncompleteReassignments() bool {
+	if x != nil {
+		return x.IncludeIncompleteReassignments
+	}
+	return false
 }
 
 type GetActiveContractsResponse struct {
@@ -983,18 +999,20 @@ var File_com_daml_ledger_api_v2_state_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\n" +
-	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x89\x02\n" +
+	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd3\x02\n" +
 	"\x19GetActiveContractsRequest\x12(\n" +
 	"\x10active_at_offset\x18\x03 \x01(\x03R\x0eactiveAtOffset\x12F\n" +
 	"\fevent_format\x18\x04 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12?\n" +
-	"\x19stream_continuation_token\x18\x05 \x01(\fH\x00R\x17streamContinuationToken\x88\x01\x01B\x1c\n" +
-	"\x1a_stream_continuation_tokenJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x06filterR\averbose\"\x99\x02\n" +
+	"\x19stream_continuation_token\x18\x05 \x01(\fH\x00R\x17streamContinuationToken\x88\x01\x01\x12H\n" +
+	" include_incomplete_reassignments\x18\x06 \x01(\bR\x1eincludeIncompleteReassignmentsB\x1c\n" +
+	"\x1a_stream_continuation_tokenJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x06filterR\averbose\"\xe3\x02\n" +
 	"\x1dGetActiveContractsPageRequest\x12-\n" +
 	"\x10active_at_offset\x18\x01 \x01(\x03H\x00R\x0eactiveAtOffset\x88\x01\x01\x12F\n" +
 	"\fevent_format\x18\x02 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12'\n" +
 	"\rmax_page_size\x18\x03 \x01(\x05H\x01R\vmaxPageSize\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"page_token\x18\x04 \x01(\fH\x02R\tpageToken\x88\x01\x01B\x13\n" +
+	"page_token\x18\x04 \x01(\fH\x02R\tpageToken\x88\x01\x01\x12H\n" +
+	" include_incomplete_reassignments\x18\x05 \x01(\bR\x1eincludeIncompleteReassignmentsB\x13\n" +
 	"\x11_active_at_offsetB\x10\n" +
 	"\x0e_max_page_sizeB\r\n" +
 	"\v_page_token\"\xa2\x03\n" +

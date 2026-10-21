@@ -35,14 +35,18 @@ class ReassignmentCommand(_message.Message):
     def __init__(self, unassign_command: _Optional[_Union[UnassignCommand, _Mapping]] = ..., assign_command: _Optional[_Union[AssignCommand, _Mapping]] = ...) -> None: ...
 
 class UnassignCommand(_message.Message):
-    __slots__ = ("contract_id", "source", "target")
+    __slots__ = ("contract_id", "source", "target", "override_source_validation_package_id", "override_target_validation_package_id")
     CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
     SOURCE_FIELD_NUMBER: _ClassVar[int]
     TARGET_FIELD_NUMBER: _ClassVar[int]
+    OVERRIDE_SOURCE_VALIDATION_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
+    OVERRIDE_TARGET_VALIDATION_PACKAGE_ID_FIELD_NUMBER: _ClassVar[int]
     contract_id: str
     source: str
     target: str
-    def __init__(self, contract_id: _Optional[str] = ..., source: _Optional[str] = ..., target: _Optional[str] = ...) -> None: ...
+    override_source_validation_package_id: str
+    override_target_validation_package_id: str
+    def __init__(self, contract_id: _Optional[str] = ..., source: _Optional[str] = ..., target: _Optional[str] = ..., override_source_validation_package_id: _Optional[str] = ..., override_target_validation_package_id: _Optional[str] = ...) -> None: ...
 
 class AssignCommand(_message.Message):
     __slots__ = ("reassignment_id", "source", "target")
