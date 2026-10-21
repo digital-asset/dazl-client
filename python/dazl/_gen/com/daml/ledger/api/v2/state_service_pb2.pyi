@@ -30,26 +30,30 @@ PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
 
 class GetActiveContractsRequest(_message.Message):
-    __slots__ = ("active_at_offset", "event_format", "stream_continuation_token")
+    __slots__ = ("active_at_offset", "event_format", "stream_continuation_token", "include_incomplete_reassignments")
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     STREAM_CONTINUATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    INCLUDE_INCOMPLETE_REASSIGNMENTS_FIELD_NUMBER: _ClassVar[int]
     active_at_offset: int
     event_format: _transaction_filter_pb2.EventFormat
     stream_continuation_token: bytes
-    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., stream_continuation_token: _Optional[bytes] = ...) -> None: ...
+    include_incomplete_reassignments: bool
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., stream_continuation_token: _Optional[bytes] = ..., include_incomplete_reassignments: _Optional[bool] = ...) -> None: ...
 
 class GetActiveContractsPageRequest(_message.Message):
-    __slots__ = ("active_at_offset", "event_format", "max_page_size", "page_token")
+    __slots__ = ("active_at_offset", "event_format", "max_page_size", "page_token", "include_incomplete_reassignments")
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     MAX_PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    INCLUDE_INCOMPLETE_REASSIGNMENTS_FIELD_NUMBER: _ClassVar[int]
     active_at_offset: int
     event_format: _transaction_filter_pb2.EventFormat
     max_page_size: int
     page_token: bytes
-    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., max_page_size: _Optional[int] = ..., page_token: _Optional[bytes] = ...) -> None: ...
+    include_incomplete_reassignments: bool
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., max_page_size: _Optional[int] = ..., page_token: _Optional[bytes] = ..., include_incomplete_reassignments: _Optional[bool] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
     __slots__ = ("workflow_id", "active_contract", "incomplete_unassigned", "incomplete_assigned", "stream_continuation_token")
