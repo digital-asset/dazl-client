@@ -354,60 +354,60 @@ type TopologyMapping_NamespaceDelegation struct {
 }
 
 type TopologyMapping_DecentralizedNamespaceDefinition struct {
-	DecentralizedNamespaceDefinition *v301.DecentralizedNamespaceDefinition `protobuf:"bytes,2,opt,name=decentralized_namespace_definition,json=decentralizedNamespaceDefinition,proto3,oneof"`
+	DecentralizedNamespaceDefinition *v301.DecentralizedNamespaceDefinition `protobuf:"bytes,3,opt,name=decentralized_namespace_definition,json=decentralizedNamespaceDefinition,proto3,oneof"`
 }
 
 type TopologyMapping_OwnerToKeyMapping struct {
-	OwnerToKeyMapping *v301.OwnerToKeyMapping `protobuf:"bytes,3,opt,name=owner_to_key_mapping,json=ownerToKeyMapping,proto3,oneof"`
+	OwnerToKeyMapping *v301.OwnerToKeyMapping `protobuf:"bytes,4,opt,name=owner_to_key_mapping,json=ownerToKeyMapping,proto3,oneof"`
 }
 
 type TopologyMapping_SynchronizerTrustCertificate struct {
-	SynchronizerTrustCertificate *v301.SynchronizerTrustCertificate `protobuf:"bytes,4,opt,name=synchronizer_trust_certificate,json=synchronizerTrustCertificate,proto3,oneof"`
+	SynchronizerTrustCertificate *v301.SynchronizerTrustCertificate `protobuf:"bytes,5,opt,name=synchronizer_trust_certificate,json=synchronizerTrustCertificate,proto3,oneof"`
 }
 
 type TopologyMapping_ParticipantPermission struct {
-	ParticipantPermission *v301.ParticipantSynchronizerPermission `protobuf:"bytes,5,opt,name=participant_permission,json=participantPermission,proto3,oneof"`
+	ParticipantPermission *v301.ParticipantSynchronizerPermission `protobuf:"bytes,6,opt,name=participant_permission,json=participantPermission,proto3,oneof"`
 }
 
 type TopologyMapping_PartyHostingLimits struct {
-	PartyHostingLimits *v301.PartyHostingLimits `protobuf:"bytes,6,opt,name=party_hosting_limits,json=partyHostingLimits,proto3,oneof"`
+	PartyHostingLimits *v301.PartyHostingLimits `protobuf:"bytes,7,opt,name=party_hosting_limits,json=partyHostingLimits,proto3,oneof"`
 }
 
 type TopologyMapping_VettedPackages struct {
-	VettedPackages *v301.VettedPackages `protobuf:"bytes,7,opt,name=vetted_packages,json=vettedPackages,proto3,oneof"`
+	VettedPackages *v301.VettedPackages `protobuf:"bytes,8,opt,name=vetted_packages,json=vettedPackages,proto3,oneof"`
 }
 
 type TopologyMapping_PartyToParticipant struct {
-	PartyToParticipant *PartyToParticipant `protobuf:"bytes,8,opt,name=party_to_participant,json=partyToParticipant,proto3,oneof"`
+	PartyToParticipant *PartyToParticipant `protobuf:"bytes,9,opt,name=party_to_participant,json=partyToParticipant,proto3,oneof"`
 }
 
 type TopologyMapping_SynchronizerParametersState struct {
-	SynchronizerParametersState *v301.SynchronizerParametersState `protobuf:"bytes,9,opt,name=synchronizer_parameters_state,json=synchronizerParametersState,proto3,oneof"`
+	SynchronizerParametersState *v301.SynchronizerParametersState `protobuf:"bytes,11,opt,name=synchronizer_parameters_state,json=synchronizerParametersState,proto3,oneof"`
 }
 
 type TopologyMapping_MediatorSynchronizerState struct {
-	MediatorSynchronizerState *v301.MediatorSynchronizerState `protobuf:"bytes,10,opt,name=mediator_synchronizer_state,json=mediatorSynchronizerState,proto3,oneof"`
+	MediatorSynchronizerState *v301.MediatorSynchronizerState `protobuf:"bytes,12,opt,name=mediator_synchronizer_state,json=mediatorSynchronizerState,proto3,oneof"`
 }
 
 type TopologyMapping_SequencerSynchronizerState struct {
-	SequencerSynchronizerState *v301.SequencerSynchronizerState `protobuf:"bytes,11,opt,name=sequencer_synchronizer_state,json=sequencerSynchronizerState,proto3,oneof"`
+	SequencerSynchronizerState *v301.SequencerSynchronizerState `protobuf:"bytes,13,opt,name=sequencer_synchronizer_state,json=sequencerSynchronizerState,proto3,oneof"`
 }
 
 type TopologyMapping_SequencingDynamicParametersState struct {
-	SequencingDynamicParametersState *v301.DynamicSequencingParametersState `protobuf:"bytes,12,opt,name=sequencing_dynamic_parameters_state,json=sequencingDynamicParametersState,proto3,oneof"`
+	SequencingDynamicParametersState *v301.DynamicSequencingParametersState `protobuf:"bytes,15,opt,name=sequencing_dynamic_parameters_state,json=sequencingDynamicParametersState,proto3,oneof"`
 }
 
 type TopologyMapping_PartyToKeyMapping struct {
 	// Deprecated: Marked as deprecated in com/digitalasset/canton/protocol/v31/topology.proto.
-	PartyToKeyMapping *v301.PartyToKeyMapping `protobuf:"bytes,13,opt,name=party_to_key_mapping,json=partyToKeyMapping,proto3,oneof"`
+	PartyToKeyMapping *v301.PartyToKeyMapping `protobuf:"bytes,16,opt,name=party_to_key_mapping,json=partyToKeyMapping,proto3,oneof"`
 }
 
 type TopologyMapping_SynchronizerUpgradeAnnouncement struct {
-	SynchronizerUpgradeAnnouncement *v301.LsuAnnouncement `protobuf:"bytes,14,opt,name=synchronizer_upgrade_announcement,json=synchronizerUpgradeAnnouncement,proto3,oneof"`
+	SynchronizerUpgradeAnnouncement *v301.LsuAnnouncement `protobuf:"bytes,17,opt,name=synchronizer_upgrade_announcement,json=synchronizerUpgradeAnnouncement,proto3,oneof"`
 }
 
 type TopologyMapping_SequencerConnectionSuccessor struct {
-	SequencerConnectionSuccessor *v301.LsuSequencerConnectionSuccessor `protobuf:"bytes,15,opt,name=sequencer_connection_successor,json=sequencerConnectionSuccessor,proto3,oneof"`
+	SequencerConnectionSuccessor *v301.LsuSequencerConnectionSuccessor `protobuf:"bytes,18,opt,name=sequencer_connection_successor,json=sequencerConnectionSuccessor,proto3,oneof"`
 }
 
 func (*TopologyMapping_NamespaceDelegation) isTopologyMapping_Mapping() {}
@@ -585,21 +585,20 @@ const file_com_digitalasset_canton_protocol_v31_topology_proto_rawDesc = "" +
 	"\x13_party_signing_keys\"\x93\x0f\n" +
 	"\x0fTopologyMapping\x12n\n" +
 	"\x14namespace_delegation\x18\x01 \x01(\v29.com.digitalasset.canton.protocol.v30.NamespaceDelegationH\x00R\x13namespaceDelegation\x12\x96\x01\n" +
-	"\"decentralized_namespace_definition\x18\x02 \x01(\v2F.com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinitionH\x00R decentralizedNamespaceDefinition\x12j\n" +
-	"\x14owner_to_key_mapping\x18\x03 \x01(\v27.com.digitalasset.canton.protocol.v30.OwnerToKeyMappingH\x00R\x11ownerToKeyMapping\x12\x8a\x01\n" +
-	"\x1esynchronizer_trust_certificate\x18\x04 \x01(\v2B.com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificateH\x00R\x1csynchronizerTrustCertificate\x12\x80\x01\n" +
-	"\x16participant_permission\x18\x05 \x01(\v2G.com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermissionH\x00R\x15participantPermission\x12l\n" +
-	"\x14party_hosting_limits\x18\x06 \x01(\v28.com.digitalasset.canton.protocol.v30.PartyHostingLimitsH\x00R\x12partyHostingLimits\x12_\n" +
-	"\x0fvetted_packages\x18\a \x01(\v24.com.digitalasset.canton.protocol.v30.VettedPackagesH\x00R\x0evettedPackages\x12l\n" +
-	"\x14party_to_participant\x18\b \x01(\v28.com.digitalasset.canton.protocol.v31.PartyToParticipantH\x00R\x12partyToParticipant\x12\x87\x01\n" +
-	"\x1dsynchronizer_parameters_state\x18\t \x01(\v2A.com.digitalasset.canton.protocol.v30.SynchronizerParametersStateH\x00R\x1bsynchronizerParametersState\x12\x81\x01\n" +
-	"\x1bmediator_synchronizer_state\x18\n" +
-	" \x01(\v2?.com.digitalasset.canton.protocol.v30.MediatorSynchronizerStateH\x00R\x19mediatorSynchronizerState\x12\x84\x01\n" +
-	"\x1csequencer_synchronizer_state\x18\v \x01(\v2@.com.digitalasset.canton.protocol.v30.SequencerSynchronizerStateH\x00R\x1asequencerSynchronizerState\x12\x97\x01\n" +
-	"#sequencing_dynamic_parameters_state\x18\f \x01(\v2F.com.digitalasset.canton.protocol.v30.DynamicSequencingParametersStateH\x00R sequencingDynamicParametersState\x12n\n" +
-	"\x14party_to_key_mapping\x18\r \x01(\v27.com.digitalasset.canton.protocol.v30.PartyToKeyMappingB\x02\x18\x01H\x00R\x11partyToKeyMapping\x12\x83\x01\n" +
-	"!synchronizer_upgrade_announcement\x18\x0e \x01(\v25.com.digitalasset.canton.protocol.v30.LsuAnnouncementH\x00R\x1fsynchronizerUpgradeAnnouncement\x12\x8d\x01\n" +
-	"\x1esequencer_connection_successor\x18\x0f \x01(\v2E.com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessorH\x00R\x1csequencerConnectionSuccessorB\t\n" +
+	"\"decentralized_namespace_definition\x18\x03 \x01(\v2F.com.digitalasset.canton.protocol.v30.DecentralizedNamespaceDefinitionH\x00R decentralizedNamespaceDefinition\x12j\n" +
+	"\x14owner_to_key_mapping\x18\x04 \x01(\v27.com.digitalasset.canton.protocol.v30.OwnerToKeyMappingH\x00R\x11ownerToKeyMapping\x12\x8a\x01\n" +
+	"\x1esynchronizer_trust_certificate\x18\x05 \x01(\v2B.com.digitalasset.canton.protocol.v30.SynchronizerTrustCertificateH\x00R\x1csynchronizerTrustCertificate\x12\x80\x01\n" +
+	"\x16participant_permission\x18\x06 \x01(\v2G.com.digitalasset.canton.protocol.v30.ParticipantSynchronizerPermissionH\x00R\x15participantPermission\x12l\n" +
+	"\x14party_hosting_limits\x18\a \x01(\v28.com.digitalasset.canton.protocol.v30.PartyHostingLimitsH\x00R\x12partyHostingLimits\x12_\n" +
+	"\x0fvetted_packages\x18\b \x01(\v24.com.digitalasset.canton.protocol.v30.VettedPackagesH\x00R\x0evettedPackages\x12l\n" +
+	"\x14party_to_participant\x18\t \x01(\v28.com.digitalasset.canton.protocol.v31.PartyToParticipantH\x00R\x12partyToParticipant\x12\x87\x01\n" +
+	"\x1dsynchronizer_parameters_state\x18\v \x01(\v2A.com.digitalasset.canton.protocol.v30.SynchronizerParametersStateH\x00R\x1bsynchronizerParametersState\x12\x81\x01\n" +
+	"\x1bmediator_synchronizer_state\x18\f \x01(\v2?.com.digitalasset.canton.protocol.v30.MediatorSynchronizerStateH\x00R\x19mediatorSynchronizerState\x12\x84\x01\n" +
+	"\x1csequencer_synchronizer_state\x18\r \x01(\v2@.com.digitalasset.canton.protocol.v30.SequencerSynchronizerStateH\x00R\x1asequencerSynchronizerState\x12\x97\x01\n" +
+	"#sequencing_dynamic_parameters_state\x18\x0f \x01(\v2F.com.digitalasset.canton.protocol.v30.DynamicSequencingParametersStateH\x00R sequencingDynamicParametersState\x12n\n" +
+	"\x14party_to_key_mapping\x18\x10 \x01(\v27.com.digitalasset.canton.protocol.v30.PartyToKeyMappingB\x02\x18\x01H\x00R\x11partyToKeyMapping\x12\x83\x01\n" +
+	"!synchronizer_upgrade_announcement\x18\x11 \x01(\v25.com.digitalasset.canton.protocol.v30.LsuAnnouncementH\x00R\x1fsynchronizerUpgradeAnnouncement\x12\x8d\x01\n" +
+	"\x1esequencer_connection_successor\x18\x12 \x01(\v2E.com.digitalasset.canton.protocol.v30.LsuSequencerConnectionSuccessorH\x00R\x1csequencerConnectionSuccessorB\t\n" +
 	"\amapping\"\xda\x01\n" +
 	"\x13TopologyTransaction\x12Z\n" +
 	"\toperation\x18\x01 \x01(\x0e2<.com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOpR\toperation\x12\x16\n" +
