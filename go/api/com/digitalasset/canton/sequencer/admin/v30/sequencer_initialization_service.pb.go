@@ -9,7 +9,8 @@
 package v30
 
 import (
-	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
+	v31 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v31"
+	v32 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v32"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,11 +26,15 @@ const (
 )
 
 type InitializeSequencerFromGenesisStateRequest struct {
-	state                  protoimpl.MessageState            `protogen:"open.v1"`
-	TopologySnapshot       []byte                            `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
-	SynchronizerParameters *v30.StaticSynchronizerParameters `protobuf:"bytes,2,opt,name=synchronizer_parameters,json=synchronizerParameters,proto3" json:"synchronizer_parameters,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TopologySnapshot []byte                 `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
+	// Types that are valid to be assigned to Parameters:
+	//
+	//	*InitializeSequencerFromGenesisStateRequest_V31
+	//	*InitializeSequencerFromGenesisStateRequest_V32
+	Parameters    isInitializeSequencerFromGenesisStateRequest_Parameters `protobuf_oneof:"parameters"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *InitializeSequencerFromGenesisStateRequest) Reset() {
@@ -69,11 +74,47 @@ func (x *InitializeSequencerFromGenesisStateRequest) GetTopologySnapshot() []byt
 	return nil
 }
 
-func (x *InitializeSequencerFromGenesisStateRequest) GetSynchronizerParameters() *v30.StaticSynchronizerParameters {
+func (x *InitializeSequencerFromGenesisStateRequest) GetParameters() isInitializeSequencerFromGenesisStateRequest_Parameters {
 	if x != nil {
-		return x.SynchronizerParameters
+		return x.Parameters
 	}
 	return nil
+}
+
+func (x *InitializeSequencerFromGenesisStateRequest) GetV31() *v31.StaticSynchronizerParameters {
+	if x != nil {
+		if x, ok := x.Parameters.(*InitializeSequencerFromGenesisStateRequest_V31); ok {
+			return x.V31
+		}
+	}
+	return nil
+}
+
+func (x *InitializeSequencerFromGenesisStateRequest) GetV32() *v32.StaticSynchronizerParameters {
+	if x != nil {
+		if x, ok := x.Parameters.(*InitializeSequencerFromGenesisStateRequest_V32); ok {
+			return x.V32
+		}
+	}
+	return nil
+}
+
+type isInitializeSequencerFromGenesisStateRequest_Parameters interface {
+	isInitializeSequencerFromGenesisStateRequest_Parameters()
+}
+
+type InitializeSequencerFromGenesisStateRequest_V31 struct {
+	V31 *v31.StaticSynchronizerParameters `protobuf:"bytes,3,opt,name=v31,proto3,oneof"`
+}
+
+type InitializeSequencerFromGenesisStateRequest_V32 struct {
+	V32 *v32.StaticSynchronizerParameters `protobuf:"bytes,4,opt,name=v32,proto3,oneof"`
+}
+
+func (*InitializeSequencerFromGenesisStateRequest_V31) isInitializeSequencerFromGenesisStateRequest_Parameters() {
+}
+
+func (*InitializeSequencerFromGenesisStateRequest_V32) isInitializeSequencerFromGenesisStateRequest_Parameters() {
 }
 
 type InitializeSequencerFromGenesisStateResponse struct {
@@ -121,12 +162,17 @@ func (x *InitializeSequencerFromGenesisStateResponse) GetReplicated() bool {
 }
 
 type InitializeSequencerFromLsuPredecessorRequest struct {
-	state                  protoimpl.MessageState            `protogen:"open.v1"`
-	TopologySnapshot       []byte                            `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
-	SynchronizerParameters *v30.StaticSynchronizerParameters `protobuf:"bytes,2,opt,name=synchronizer_parameters,json=synchronizerParameters,proto3" json:"synchronizer_parameters,omitempty"`
-	IgnorePsidCheck        bool                              `protobuf:"varint,3,opt,name=ignore_psid_check,json=ignorePsidCheck,proto3" json:"ignore_psid_check,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TopologySnapshot []byte                 `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
+	// Types that are valid to be assigned to Parameters:
+	//
+	//	*InitializeSequencerFromLsuPredecessorRequest_V31
+	//	*InitializeSequencerFromLsuPredecessorRequest_V32
+	Parameters      isInitializeSequencerFromLsuPredecessorRequest_Parameters `protobuf_oneof:"parameters"`
+	IgnorePsidCheck bool                                                      `protobuf:"varint,3,opt,name=ignore_psid_check,json=ignorePsidCheck,proto3" json:"ignore_psid_check,omitempty"`
+	SynchronizerId  string                                                    `protobuf:"bytes,5,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *InitializeSequencerFromLsuPredecessorRequest) Reset() {
@@ -166,9 +212,27 @@ func (x *InitializeSequencerFromLsuPredecessorRequest) GetTopologySnapshot() []b
 	return nil
 }
 
-func (x *InitializeSequencerFromLsuPredecessorRequest) GetSynchronizerParameters() *v30.StaticSynchronizerParameters {
+func (x *InitializeSequencerFromLsuPredecessorRequest) GetParameters() isInitializeSequencerFromLsuPredecessorRequest_Parameters {
 	if x != nil {
-		return x.SynchronizerParameters
+		return x.Parameters
+	}
+	return nil
+}
+
+func (x *InitializeSequencerFromLsuPredecessorRequest) GetV31() *v31.StaticSynchronizerParameters {
+	if x != nil {
+		if x, ok := x.Parameters.(*InitializeSequencerFromLsuPredecessorRequest_V31); ok {
+			return x.V31
+		}
+	}
+	return nil
+}
+
+func (x *InitializeSequencerFromLsuPredecessorRequest) GetV32() *v32.StaticSynchronizerParameters {
+	if x != nil {
+		if x, ok := x.Parameters.(*InitializeSequencerFromLsuPredecessorRequest_V32); ok {
+			return x.V32
+		}
 	}
 	return nil
 }
@@ -178,6 +242,31 @@ func (x *InitializeSequencerFromLsuPredecessorRequest) GetIgnorePsidCheck() bool
 		return x.IgnorePsidCheck
 	}
 	return false
+}
+
+func (x *InitializeSequencerFromLsuPredecessorRequest) GetSynchronizerId() string {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return ""
+}
+
+type isInitializeSequencerFromLsuPredecessorRequest_Parameters interface {
+	isInitializeSequencerFromLsuPredecessorRequest_Parameters()
+}
+
+type InitializeSequencerFromLsuPredecessorRequest_V31 struct {
+	V31 *v31.StaticSynchronizerParameters `protobuf:"bytes,4,opt,name=v31,proto3,oneof"`
+}
+
+type InitializeSequencerFromLsuPredecessorRequest_V32 struct {
+	V32 *v32.StaticSynchronizerParameters `protobuf:"bytes,6,opt,name=v32,proto3,oneof"`
+}
+
+func (*InitializeSequencerFromLsuPredecessorRequest_V31) isInitializeSequencerFromLsuPredecessorRequest_Parameters() {
+}
+
+func (*InitializeSequencerFromLsuPredecessorRequest_V32) isInitializeSequencerFromLsuPredecessorRequest_Parameters() {
 }
 
 type InitializeSequencerFromLsuPredecessorResponse struct {
@@ -216,105 +305,21 @@ func (*InitializeSequencerFromLsuPredecessorResponse) Descriptor() ([]byte, []in
 	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{3}
 }
 
-type InitializeSequencerFromOnboardingStateRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	OnboardingState []byte                 `protobuf:"bytes,1,opt,name=onboarding_state,json=onboardingState,proto3" json:"onboarding_state,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *InitializeSequencerFromOnboardingStateRequest) Reset() {
-	*x = InitializeSequencerFromOnboardingStateRequest{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InitializeSequencerFromOnboardingStateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InitializeSequencerFromOnboardingStateRequest) ProtoMessage() {}
-
-func (x *InitializeSequencerFromOnboardingStateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InitializeSequencerFromOnboardingStateRequest.ProtoReflect.Descriptor instead.
-func (*InitializeSequencerFromOnboardingStateRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *InitializeSequencerFromOnboardingStateRequest) GetOnboardingState() []byte {
-	if x != nil {
-		return x.OnboardingState
-	}
-	return nil
-}
-
-type InitializeSequencerFromOnboardingStateResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Replicated    bool                   `protobuf:"varint,1,opt,name=replicated,proto3" json:"replicated,omitempty"`
+type InitializeSequencerFromGenesisStateV2Request struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TopologySnapshot []byte                 `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
+	// Types that are valid to be assigned to Parameters:
+	//
+	//	*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV31
+	//	*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV32
+	Parameters    isInitializeSequencerFromGenesisStateV2Request_Parameters `protobuf_oneof:"parameters"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *InitializeSequencerFromOnboardingStateResponse) Reset() {
-	*x = InitializeSequencerFromOnboardingStateResponse{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InitializeSequencerFromOnboardingStateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InitializeSequencerFromOnboardingStateResponse) ProtoMessage() {}
-
-func (x *InitializeSequencerFromOnboardingStateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InitializeSequencerFromOnboardingStateResponse.ProtoReflect.Descriptor instead.
-func (*InitializeSequencerFromOnboardingStateResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *InitializeSequencerFromOnboardingStateResponse) GetReplicated() bool {
-	if x != nil {
-		return x.Replicated
-	}
-	return false
-}
-
-type InitializeSequencerFromGenesisStateV2Request struct {
-	state                  protoimpl.MessageState            `protogen:"open.v1"`
-	TopologySnapshot       []byte                            `protobuf:"bytes,1,opt,name=topology_snapshot,json=topologySnapshot,proto3" json:"topology_snapshot,omitempty"`
-	SynchronizerParameters *v30.StaticSynchronizerParameters `protobuf:"bytes,2,opt,name=synchronizer_parameters,json=synchronizerParameters,proto3" json:"synchronizer_parameters,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
-}
-
 func (x *InitializeSequencerFromGenesisStateV2Request) Reset() {
 	*x = InitializeSequencerFromGenesisStateV2Request{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -326,7 +331,7 @@ func (x *InitializeSequencerFromGenesisStateV2Request) String() string {
 func (*InitializeSequencerFromGenesisStateV2Request) ProtoMessage() {}
 
 func (x *InitializeSequencerFromGenesisStateV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -339,7 +344,7 @@ func (x *InitializeSequencerFromGenesisStateV2Request) ProtoReflect() protorefle
 
 // Deprecated: Use InitializeSequencerFromGenesisStateV2Request.ProtoReflect.Descriptor instead.
 func (*InitializeSequencerFromGenesisStateV2Request) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{6}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *InitializeSequencerFromGenesisStateV2Request) GetTopologySnapshot() []byte {
@@ -349,11 +354,47 @@ func (x *InitializeSequencerFromGenesisStateV2Request) GetTopologySnapshot() []b
 	return nil
 }
 
-func (x *InitializeSequencerFromGenesisStateV2Request) GetSynchronizerParameters() *v30.StaticSynchronizerParameters {
+func (x *InitializeSequencerFromGenesisStateV2Request) GetParameters() isInitializeSequencerFromGenesisStateV2Request_Parameters {
 	if x != nil {
-		return x.SynchronizerParameters
+		return x.Parameters
 	}
 	return nil
+}
+
+func (x *InitializeSequencerFromGenesisStateV2Request) GetSynchronizerParametersV31() *v31.StaticSynchronizerParameters {
+	if x != nil {
+		if x, ok := x.Parameters.(*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV31); ok {
+			return x.SynchronizerParametersV31
+		}
+	}
+	return nil
+}
+
+func (x *InitializeSequencerFromGenesisStateV2Request) GetSynchronizerParametersV32() *v32.StaticSynchronizerParameters {
+	if x != nil {
+		if x, ok := x.Parameters.(*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV32); ok {
+			return x.SynchronizerParametersV32
+		}
+	}
+	return nil
+}
+
+type isInitializeSequencerFromGenesisStateV2Request_Parameters interface {
+	isInitializeSequencerFromGenesisStateV2Request_Parameters()
+}
+
+type InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV31 struct {
+	SynchronizerParametersV31 *v31.StaticSynchronizerParameters `protobuf:"bytes,3,opt,name=synchronizer_parameters_v31,json=synchronizerParametersV31,proto3,oneof"`
+}
+
+type InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV32 struct {
+	SynchronizerParametersV32 *v32.StaticSynchronizerParameters `protobuf:"bytes,4,opt,name=synchronizer_parameters_v32,json=synchronizerParametersV32,proto3,oneof"`
+}
+
+func (*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV31) isInitializeSequencerFromGenesisStateV2Request_Parameters() {
+}
+
+func (*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV32) isInitializeSequencerFromGenesisStateV2Request_Parameters() {
 }
 
 type InitializeSequencerFromGenesisStateV2Response struct {
@@ -365,7 +406,7 @@ type InitializeSequencerFromGenesisStateV2Response struct {
 
 func (x *InitializeSequencerFromGenesisStateV2Response) Reset() {
 	*x = InitializeSequencerFromGenesisStateV2Response{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -377,7 +418,7 @@ func (x *InitializeSequencerFromGenesisStateV2Response) String() string {
 func (*InitializeSequencerFromGenesisStateV2Response) ProtoMessage() {}
 
 func (x *InitializeSequencerFromGenesisStateV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -390,7 +431,7 @@ func (x *InitializeSequencerFromGenesisStateV2Response) ProtoReflect() protorefl
 
 // Deprecated: Use InitializeSequencerFromGenesisStateV2Response.ProtoReflect.Descriptor instead.
 func (*InitializeSequencerFromGenesisStateV2Response) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{7}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *InitializeSequencerFromGenesisStateV2Response) GetReplicated() bool {
@@ -409,7 +450,7 @@ type InitializeSequencerFromOnboardingStateV2Request struct {
 
 func (x *InitializeSequencerFromOnboardingStateV2Request) Reset() {
 	*x = InitializeSequencerFromOnboardingStateV2Request{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -421,7 +462,7 @@ func (x *InitializeSequencerFromOnboardingStateV2Request) String() string {
 func (*InitializeSequencerFromOnboardingStateV2Request) ProtoMessage() {}
 
 func (x *InitializeSequencerFromOnboardingStateV2Request) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -434,7 +475,7 @@ func (x *InitializeSequencerFromOnboardingStateV2Request) ProtoReflect() protore
 
 // Deprecated: Use InitializeSequencerFromOnboardingStateV2Request.ProtoReflect.Descriptor instead.
 func (*InitializeSequencerFromOnboardingStateV2Request) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{8}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *InitializeSequencerFromOnboardingStateV2Request) GetOnboardingState() []byte {
@@ -453,7 +494,7 @@ type InitializeSequencerFromOnboardingStateV2Response struct {
 
 func (x *InitializeSequencerFromOnboardingStateV2Response) Reset() {
 	*x = InitializeSequencerFromOnboardingStateV2Response{}
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -465,7 +506,7 @@ func (x *InitializeSequencerFromOnboardingStateV2Response) String() string {
 func (*InitializeSequencerFromOnboardingStateV2Response) ProtoMessage() {}
 
 func (x *InitializeSequencerFromOnboardingStateV2Response) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -478,7 +519,7 @@ func (x *InitializeSequencerFromOnboardingStateV2Response) ProtoReflect() protor
 
 // Deprecated: Use InitializeSequencerFromOnboardingStateV2Response.ProtoReflect.Descriptor instead.
 func (*InitializeSequencerFromOnboardingStateV2Response) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{9}
+	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *InitializeSequencerFromOnboardingStateV2Response) GetReplicated() bool {
@@ -492,28 +533,32 @@ var File_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_se
 
 const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDesc = "" +
 	"\n" +
-	"Rcom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a5com/digitalasset/canton/protocol/v30/sequencing.proto\"\xd6\x01\n" +
+	"Rcom/digitalasset/canton/sequencer/admin/v30/sequencer_initialization_service.proto\x12+com.digitalasset.canton.sequencer.admin.v30\x1a5com/digitalasset/canton/protocol/v31/sequencing.proto\x1a5com/digitalasset/canton/protocol/v32/sequencing.proto\"\x9d\x02\n" +
 	"*InitializeSequencerFromGenesisStateRequest\x12+\n" +
-	"\x11topology_snapshot\x18\x01 \x01(\fR\x10topologySnapshot\x12{\n" +
-	"\x17synchronizer_parameters\x18\x02 \x01(\v2B.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x16synchronizerParameters\"M\n" +
+	"\x11topology_snapshot\x18\x01 \x01(\fR\x10topologySnapshot\x12V\n" +
+	"\x03v31\x18\x03 \x01(\v2B.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x03v31\x12V\n" +
+	"\x03v32\x18\x04 \x01(\v2B.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x03v32B\f\n" +
+	"\n" +
+	"parametersJ\x04\b\x02\x10\x03\"M\n" +
 	"+InitializeSequencerFromGenesisStateResponse\x12\x1e\n" +
 	"\n" +
 	"replicated\x18\x01 \x01(\bR\n" +
-	"replicated\"\x84\x02\n" +
+	"replicated\"\xf4\x02\n" +
 	",InitializeSequencerFromLsuPredecessorRequest\x12+\n" +
-	"\x11topology_snapshot\x18\x01 \x01(\fR\x10topologySnapshot\x12{\n" +
-	"\x17synchronizer_parameters\x18\x02 \x01(\v2B.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x16synchronizerParameters\x12*\n" +
-	"\x11ignore_psid_check\x18\x03 \x01(\bR\x0fignorePsidCheck\"/\n" +
-	"-InitializeSequencerFromLsuPredecessorResponse\"Z\n" +
-	"-InitializeSequencerFromOnboardingStateRequest\x12)\n" +
-	"\x10onboarding_state\x18\x01 \x01(\fR\x0fonboardingState\"P\n" +
-	".InitializeSequencerFromOnboardingStateResponse\x12\x1e\n" +
+	"\x11topology_snapshot\x18\x01 \x01(\fR\x10topologySnapshot\x12V\n" +
+	"\x03v31\x18\x04 \x01(\v2B.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x03v31\x12V\n" +
+	"\x03v32\x18\x06 \x01(\v2B.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x03v32\x12*\n" +
+	"\x11ignore_psid_check\x18\x03 \x01(\bR\x0fignorePsidCheck\x12'\n" +
+	"\x0fsynchronizer_id\x18\x05 \x01(\tR\x0esynchronizerIdB\f\n" +
 	"\n" +
-	"replicated\x18\x01 \x01(\bR\n" +
-	"replicated\"\xd8\x01\n" +
+	"parametersJ\x04\b\x02\x10\x03\"/\n" +
+	"-InitializeSequencerFromLsuPredecessorResponse\"\xfd\x02\n" +
 	",InitializeSequencerFromGenesisStateV2Request\x12+\n" +
-	"\x11topology_snapshot\x18\x01 \x01(\fR\x10topologySnapshot\x12{\n" +
-	"\x17synchronizer_parameters\x18\x02 \x01(\v2B.com.digitalasset.canton.protocol.v30.StaticSynchronizerParametersR\x16synchronizerParameters\"O\n" +
+	"\x11topology_snapshot\x18\x01 \x01(\fR\x10topologySnapshot\x12\x84\x01\n" +
+	"\x1bsynchronizer_parameters_v31\x18\x03 \x01(\v2B.com.digitalasset.canton.protocol.v31.StaticSynchronizerParametersH\x00R\x19synchronizerParametersV31\x12\x84\x01\n" +
+	"\x1bsynchronizer_parameters_v32\x18\x04 \x01(\v2B.com.digitalasset.canton.protocol.v32.StaticSynchronizerParametersH\x00R\x19synchronizerParametersV32B\f\n" +
+	"\n" +
+	"parametersJ\x04\b\x02\x10\x03\"O\n" +
 	"-InitializeSequencerFromGenesisStateV2Response\x12\x1e\n" +
 	"\n" +
 	"replicated\x18\x01 \x01(\bR\n" +
@@ -523,10 +568,9 @@ const file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_
 	"0InitializeSequencerFromOnboardingStateV2Response\x12\x1e\n" +
 	"\n" +
 	"replicated\x18\x01 \x01(\bR\n" +
-	"replicated2\x9f\t\n" +
+	"replicated2\xb4\a\n" +
 	"\x1eSequencerInitializationService\x12\xdf\x01\n" +
-	"#InitializeSequencerFromGenesisState\x12W.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest\x1aX.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse\"\x03\x88\x02\x01(\x01\x12\xe8\x01\n" +
-	"&InitializeSequencerFromOnboardingState\x12Z.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest\x1a[.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse\"\x03\x88\x02\x01(\x01\x12\xe0\x01\n" +
+	"#InitializeSequencerFromGenesisState\x12W.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest\x1aX.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse\"\x03\x88\x02\x01(\x01\x12\xe0\x01\n" +
 	"%InitializeSequencerFromLsuPredecessor\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse(\x01\x12\xe0\x01\n" +
 	"%InitializeSequencerFromGenesisStateV2\x12Y.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request\x1aZ.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response(\x01\x12\xe9\x01\n" +
 	"(InitializeSequencerFromOnboardingStateV2\x12\\.com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request\x1a].com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response(\x01B\\ZZgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/sequencer/admin/v30b\x06proto3"
@@ -543,39 +587,39 @@ func file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_s
 	return file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_goTypes = []any{
 	(*InitializeSequencerFromGenesisStateRequest)(nil),       // 0: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest
 	(*InitializeSequencerFromGenesisStateResponse)(nil),      // 1: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse
 	(*InitializeSequencerFromLsuPredecessorRequest)(nil),     // 2: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest
 	(*InitializeSequencerFromLsuPredecessorResponse)(nil),    // 3: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse
-	(*InitializeSequencerFromOnboardingStateRequest)(nil),    // 4: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest
-	(*InitializeSequencerFromOnboardingStateResponse)(nil),   // 5: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse
-	(*InitializeSequencerFromGenesisStateV2Request)(nil),     // 6: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request
-	(*InitializeSequencerFromGenesisStateV2Response)(nil),    // 7: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response
-	(*InitializeSequencerFromOnboardingStateV2Request)(nil),  // 8: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request
-	(*InitializeSequencerFromOnboardingStateV2Response)(nil), // 9: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response
-	(*v30.StaticSynchronizerParameters)(nil),                 // 10: com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
+	(*InitializeSequencerFromGenesisStateV2Request)(nil),     // 4: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request
+	(*InitializeSequencerFromGenesisStateV2Response)(nil),    // 5: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response
+	(*InitializeSequencerFromOnboardingStateV2Request)(nil),  // 6: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request
+	(*InitializeSequencerFromOnboardingStateV2Response)(nil), // 7: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response
+	(*v31.StaticSynchronizerParameters)(nil),                 // 8: com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
+	(*v32.StaticSynchronizerParameters)(nil),                 // 9: com.digitalasset.canton.protocol.v32.StaticSynchronizerParameters
 }
 var file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_depIdxs = []int32{
-	10, // 0: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest.synchronizer_parameters:type_name -> com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	10, // 1: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest.synchronizer_parameters:type_name -> com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	10, // 2: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request.synchronizer_parameters:type_name -> com.digitalasset.canton.protocol.v30.StaticSynchronizerParameters
-	0,  // 3: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisState:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest
-	4,  // 4: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromOnboardingState:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateRequest
-	2,  // 5: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromLsuPredecessor:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest
-	6,  // 6: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisStateV2:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request
-	8,  // 7: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromOnboardingStateV2:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request
-	1,  // 8: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisState:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse
-	5,  // 9: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromOnboardingState:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateResponse
-	3,  // 10: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromLsuPredecessor:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse
-	7,  // 11: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisStateV2:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response
-	9,  // 12: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromOnboardingStateV2:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	8,  // 0: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest.v31:type_name -> com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
+	9,  // 1: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest.v32:type_name -> com.digitalasset.canton.protocol.v32.StaticSynchronizerParameters
+	8,  // 2: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest.v31:type_name -> com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
+	9,  // 3: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest.v32:type_name -> com.digitalasset.canton.protocol.v32.StaticSynchronizerParameters
+	8,  // 4: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request.synchronizer_parameters_v31:type_name -> com.digitalasset.canton.protocol.v31.StaticSynchronizerParameters
+	9,  // 5: com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request.synchronizer_parameters_v32:type_name -> com.digitalasset.canton.protocol.v32.StaticSynchronizerParameters
+	0,  // 6: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisState:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateRequest
+	2,  // 7: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromLsuPredecessor:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorRequest
+	4,  // 8: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisStateV2:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Request
+	6,  // 9: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromOnboardingStateV2:input_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Request
+	1,  // 10: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisState:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateResponse
+	3,  // 11: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromLsuPredecessor:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromLsuPredecessorResponse
+	5,  // 12: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromGenesisStateV2:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromGenesisStateV2Response
+	7,  // 13: com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService.InitializeSequencerFromOnboardingStateV2:output_type -> com.digitalasset.canton.sequencer.admin.v30.InitializeSequencerFromOnboardingStateV2Response
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() {
@@ -585,13 +629,25 @@ func file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_s
 	if File_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto != nil {
 		return
 	}
+	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[0].OneofWrappers = []any{
+		(*InitializeSequencerFromGenesisStateRequest_V31)(nil),
+		(*InitializeSequencerFromGenesisStateRequest_V32)(nil),
+	}
+	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[2].OneofWrappers = []any{
+		(*InitializeSequencerFromLsuPredecessorRequest_V31)(nil),
+		(*InitializeSequencerFromLsuPredecessorRequest_V32)(nil),
+	}
+	file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_msgTypes[4].OneofWrappers = []any{
+		(*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV31)(nil),
+		(*InitializeSequencerFromGenesisStateV2Request_SynchronizerParametersV32)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDesc), len(file_com_digitalasset_canton_sequencer_admin_v30_sequencer_initialization_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

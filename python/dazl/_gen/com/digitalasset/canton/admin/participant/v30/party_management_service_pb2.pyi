@@ -78,8 +78,28 @@ class GetAddPartyStatusResponse(_message.Message):
     status: PartyReplicationStatus
     def __init__(self, status: _Optional[_Union[PartyReplicationStatus, _Mapping]] = ...) -> None: ...
 
+class GetAcsReplicationStatusRequest(_message.Message):
+    __slots__ = ("acs_replication_request_id",)
+    ACS_REPLICATION_REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
+    acs_replication_request_id: str
+    def __init__(self, acs_replication_request_id: _Optional[str] = ...) -> None: ...
+
+class GetAcsReplicationStatusResponse(_message.Message):
+    __slots__ = ("status",)
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    status: AcsReplicationStatus
+    def __init__(self, status: _Optional[_Union[AcsReplicationStatus, _Mapping]] = ...) -> None: ...
+
 class PartyReplicationStatus(_message.Message):
-    __slots__ = ("parameters", "agreement", "authorization", "replication", "indexing", "has_completed", "error_message")
+    __slots__ = ("parameters", "authorization", "replication", "indexing", "has_completed", "error_message", "acs_replication_status", "replication_mode")
+    class ReplicationMode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = ()
+        REPLICATION_MODE_UNSPECIFIED: _ClassVar[PartyReplicationStatus.ReplicationMode]
+        REPLICATION_MODE_FILE: _ClassVar[PartyReplicationStatus.ReplicationMode]
+        REPLICATION_MODE_SEQUENCER_CHANNEL: _ClassVar[PartyReplicationStatus.ReplicationMode]
+    REPLICATION_MODE_UNSPECIFIED: PartyReplicationStatus.ReplicationMode
+    REPLICATION_MODE_FILE: PartyReplicationStatus.ReplicationMode
+    REPLICATION_MODE_SEQUENCER_CHANNEL: PartyReplicationStatus.ReplicationMode
     class ReplicationParameters(_message.Message):
         __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "topology_serial")
         REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
@@ -95,11 +115,6 @@ class PartyReplicationStatus(_message.Message):
         target_participant_uid: str
         topology_serial: int
         def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ...) -> None: ...
-    class SequencerChannelAgreement(_message.Message):
-        __slots__ = ("sequencer_uid",)
-        SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-        sequencer_uid: str
-        def __init__(self, sequencer_uid: _Optional[str] = ...) -> None: ...
     class PartyReplicationAuthorization(_message.Message):
         __slots__ = ("onboarding_at", "is_onboarding_flag_cleared")
         ONBOARDING_AT_FIELD_NUMBER: _ClassVar[int]
@@ -123,20 +138,77 @@ class PartyReplicationStatus(_message.Message):
         error_message: str
         def __init__(self, error_message: _Optional[str] = ...) -> None: ...
     PARAMETERS_FIELD_NUMBER: _ClassVar[int]
-    AGREEMENT_FIELD_NUMBER: _ClassVar[int]
     AUTHORIZATION_FIELD_NUMBER: _ClassVar[int]
     REPLICATION_FIELD_NUMBER: _ClassVar[int]
     INDEXING_FIELD_NUMBER: _ClassVar[int]
     HAS_COMPLETED_FIELD_NUMBER: _ClassVar[int]
     ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    ACS_REPLICATION_STATUS_FIELD_NUMBER: _ClassVar[int]
+    REPLICATION_MODE_FIELD_NUMBER: _ClassVar[int]
     parameters: PartyReplicationStatus.ReplicationParameters
-    agreement: PartyReplicationStatus.SequencerChannelAgreement
     authorization: PartyReplicationStatus.PartyReplicationAuthorization
     replication: PartyReplicationStatus.AcsReplicationProgress
     indexing: PartyReplicationStatus.AcsIndexingProgress
     has_completed: bool
     error_message: PartyReplicationStatus.PartyReplicationError
-    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., agreement: _Optional[_Union[PartyReplicationStatus.SequencerChannelAgreement, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ...) -> None: ...
+    acs_replication_status: AcsReplicationStatus
+    replication_mode: PartyReplicationStatus.ReplicationMode
+    def __init__(self, parameters: _Optional[_Union[PartyReplicationStatus.ReplicationParameters, _Mapping]] = ..., authorization: _Optional[_Union[PartyReplicationStatus.PartyReplicationAuthorization, _Mapping]] = ..., replication: _Optional[_Union[PartyReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., indexing: _Optional[_Union[PartyReplicationStatus.AcsIndexingProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[PartyReplicationStatus.PartyReplicationError, _Mapping]] = ..., acs_replication_status: _Optional[_Union[AcsReplicationStatus, _Mapping]] = ..., replication_mode: _Optional[_Union[PartyReplicationStatus.ReplicationMode, str]] = ...) -> None: ...
+
+class AcsReplicationStatus(_message.Message):
+    __slots__ = ("parameters", "ptp_topology_transaction", "replication_progress", "has_completed", "error_message")
+    class AcsReplicationParameters(_message.Message):
+        __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "timestamp")
+        REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
+        PARTY_ID_FIELD_NUMBER: _ClassVar[int]
+        SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+        SOURCE_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
+        TARGET_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
+        TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+        request_id: str
+        party_id: str
+        synchronizer_id: str
+        source_participant_uid: str
+        target_participant_uid: str
+        timestamp: _timestamp_pb2.Timestamp
+        def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    class SequencerChannelAgreement(_message.Message):
+        __slots__ = ("sequencer_uid",)
+        SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
+        sequencer_uid: str
+        def __init__(self, sequencer_uid: _Optional[str] = ...) -> None: ...
+    class PartyToParticipantTopologyTransaction(_message.Message):
+        __slots__ = ("valid_from",)
+        VALID_FROM_FIELD_NUMBER: _ClassVar[int]
+        valid_from: _timestamp_pb2.Timestamp
+        def __init__(self, valid_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    class AcsReplicationProgress(_message.Message):
+        __slots__ = ("processed_contract_count", "acs_hash", "fully_processed_acs")
+        PROCESSED_CONTRACT_COUNT_FIELD_NUMBER: _ClassVar[int]
+        ACS_HASH_FIELD_NUMBER: _ClassVar[int]
+        FULLY_PROCESSED_ACS_FIELD_NUMBER: _ClassVar[int]
+        processed_contract_count: int
+        acs_hash: bytes
+        fully_processed_acs: bool
+        def __init__(self, processed_contract_count: _Optional[int] = ..., acs_hash: _Optional[bytes] = ..., fully_processed_acs: _Optional[bool] = ...) -> None: ...
+    class AcsReplicationError(_message.Message):
+        __slots__ = ("error_message", "is_terminal")
+        ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+        IS_TERMINAL_FIELD_NUMBER: _ClassVar[int]
+        error_message: str
+        is_terminal: bool
+        def __init__(self, error_message: _Optional[str] = ..., is_terminal: _Optional[bool] = ...) -> None: ...
+    PARAMETERS_FIELD_NUMBER: _ClassVar[int]
+    PTP_TOPOLOGY_TRANSACTION_FIELD_NUMBER: _ClassVar[int]
+    REPLICATION_PROGRESS_FIELD_NUMBER: _ClassVar[int]
+    HAS_COMPLETED_FIELD_NUMBER: _ClassVar[int]
+    ERROR_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    parameters: AcsReplicationStatus.AcsReplicationParameters
+    ptp_topology_transaction: AcsReplicationStatus.PartyToParticipantTopologyTransaction
+    replication_progress: AcsReplicationStatus.AcsReplicationProgress
+    has_completed: bool
+    error_message: AcsReplicationStatus.AcsReplicationError
+    def __init__(self, parameters: _Optional[_Union[AcsReplicationStatus.AcsReplicationParameters, _Mapping]] = ..., ptp_topology_transaction: _Optional[_Union[AcsReplicationStatus.PartyToParticipantTopologyTransaction, _Mapping]] = ..., replication_progress: _Optional[_Union[AcsReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[AcsReplicationStatus.AcsReplicationError, _Mapping]] = ...) -> None: ...
 
 class ExportPartyAcsRequest(_message.Message):
     __slots__ = ("party_id", "synchronizer_id", "target_participant_uid", "begin_offset_exclusive", "wait_for_activation_timeout")

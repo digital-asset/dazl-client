@@ -22,7 +22,6 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	SequencerInitializationService_InitializeSequencerFromGenesisState_FullMethodName      = "/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromGenesisState"
-	SequencerInitializationService_InitializeSequencerFromOnboardingState_FullMethodName   = "/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromOnboardingState"
 	SequencerInitializationService_InitializeSequencerFromLsuPredecessor_FullMethodName    = "/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromLsuPredecessor"
 	SequencerInitializationService_InitializeSequencerFromGenesisStateV2_FullMethodName    = "/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromGenesisStateV2"
 	SequencerInitializationService_InitializeSequencerFromOnboardingStateV2_FullMethodName = "/com.digitalasset.canton.sequencer.admin.v30.SequencerInitializationService/InitializeSequencerFromOnboardingStateV2"
@@ -34,8 +33,6 @@ const (
 type SequencerInitializationServiceClient interface {
 	// Deprecated: Do not use.
 	InitializeSequencerFromGenesisState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse], error)
-	// Deprecated: Do not use.
-	InitializeSequencerFromOnboardingState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse], error)
 	InitializeSequencerFromLsuPredecessor(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse], error)
 	InitializeSequencerFromGenesisStateV2(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateV2Request, InitializeSequencerFromGenesisStateV2Response], error)
 	InitializeSequencerFromOnboardingStateV2(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateV2Request, InitializeSequencerFromOnboardingStateV2Response], error)
@@ -63,23 +60,9 @@ func (c *sequencerInitializationServiceClient) InitializeSequencerFromGenesisSta
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type SequencerInitializationService_InitializeSequencerFromGenesisStateClient = grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse]
 
-// Deprecated: Do not use.
-func (c *sequencerInitializationServiceClient) InitializeSequencerFromOnboardingState(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[1], SequencerInitializationService_InitializeSequencerFromOnboardingState_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SequencerInitializationService_InitializeSequencerFromOnboardingStateClient = grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]
-
 func (c *sequencerInitializationServiceClient) InitializeSequencerFromLsuPredecessor(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[2], SequencerInitializationService_InitializeSequencerFromLsuPredecessor_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[1], SequencerInitializationService_InitializeSequencerFromLsuPredecessor_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +75,7 @@ type SequencerInitializationService_InitializeSequencerFromLsuPredecessorClient 
 
 func (c *sequencerInitializationServiceClient) InitializeSequencerFromGenesisStateV2(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromGenesisStateV2Request, InitializeSequencerFromGenesisStateV2Response], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[3], SequencerInitializationService_InitializeSequencerFromGenesisStateV2_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[2], SequencerInitializationService_InitializeSequencerFromGenesisStateV2_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +88,7 @@ type SequencerInitializationService_InitializeSequencerFromGenesisStateV2Client 
 
 func (c *sequencerInitializationServiceClient) InitializeSequencerFromOnboardingStateV2(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[InitializeSequencerFromOnboardingStateV2Request, InitializeSequencerFromOnboardingStateV2Response], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[4], SequencerInitializationService_InitializeSequencerFromOnboardingStateV2_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SequencerInitializationService_ServiceDesc.Streams[3], SequencerInitializationService_InitializeSequencerFromOnboardingStateV2_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,8 +105,6 @@ type SequencerInitializationService_InitializeSequencerFromOnboardingStateV2Clie
 type SequencerInitializationServiceServer interface {
 	// Deprecated: Do not use.
 	InitializeSequencerFromGenesisState(grpc.ClientStreamingServer[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse]) error
-	// Deprecated: Do not use.
-	InitializeSequencerFromOnboardingState(grpc.ClientStreamingServer[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]) error
 	InitializeSequencerFromLsuPredecessor(grpc.ClientStreamingServer[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse]) error
 	InitializeSequencerFromGenesisStateV2(grpc.ClientStreamingServer[InitializeSequencerFromGenesisStateV2Request, InitializeSequencerFromGenesisStateV2Response]) error
 	InitializeSequencerFromOnboardingStateV2(grpc.ClientStreamingServer[InitializeSequencerFromOnboardingStateV2Request, InitializeSequencerFromOnboardingStateV2Response]) error
@@ -139,9 +120,6 @@ type UnimplementedSequencerInitializationServiceServer struct{}
 
 func (UnimplementedSequencerInitializationServiceServer) InitializeSequencerFromGenesisState(grpc.ClientStreamingServer[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method InitializeSequencerFromGenesisState not implemented")
-}
-func (UnimplementedSequencerInitializationServiceServer) InitializeSequencerFromOnboardingState(grpc.ClientStreamingServer[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method InitializeSequencerFromOnboardingState not implemented")
 }
 func (UnimplementedSequencerInitializationServiceServer) InitializeSequencerFromLsuPredecessor(grpc.ClientStreamingServer[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method InitializeSequencerFromLsuPredecessor not implemented")
@@ -181,13 +159,6 @@ func _SequencerInitializationService_InitializeSequencerFromGenesisState_Handler
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type SequencerInitializationService_InitializeSequencerFromGenesisStateServer = grpc.ClientStreamingServer[InitializeSequencerFromGenesisStateRequest, InitializeSequencerFromGenesisStateResponse]
 
-func _SequencerInitializationService_InitializeSequencerFromOnboardingState_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(SequencerInitializationServiceServer).InitializeSequencerFromOnboardingState(&grpc.GenericServerStream[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SequencerInitializationService_InitializeSequencerFromOnboardingStateServer = grpc.ClientStreamingServer[InitializeSequencerFromOnboardingStateRequest, InitializeSequencerFromOnboardingStateResponse]
-
 func _SequencerInitializationService_InitializeSequencerFromLsuPredecessor_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(SequencerInitializationServiceServer).InitializeSequencerFromLsuPredecessor(&grpc.GenericServerStream[InitializeSequencerFromLsuPredecessorRequest, InitializeSequencerFromLsuPredecessorResponse]{ServerStream: stream})
 }
@@ -220,11 +191,6 @@ var SequencerInitializationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "InitializeSequencerFromGenesisState",
 			Handler:       _SequencerInitializationService_InitializeSequencerFromGenesisState_Handler,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "InitializeSequencerFromOnboardingState",
-			Handler:       _SequencerInitializationService_InitializeSequencerFromOnboardingState_Handler,
 			ClientStreams: true,
 		},
 		{

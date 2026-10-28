@@ -2,9 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # fmt: off
 # isort: skip_file
+import datetime
+
 from . import event_pb2 as _event_pb2
+from . import offset_checkpoint_pb2 as _offset_checkpoint_pb2
 from . import reassignment_pb2 as _reassignment_pb2
 from . import transaction_filter_pb2 as _transaction_filter_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -26,26 +30,30 @@ PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
 
 class GetActiveContractsRequest(_message.Message):
-    __slots__ = ("active_at_offset", "event_format", "stream_continuation_token")
+    __slots__ = ("active_at_offset", "event_format", "stream_continuation_token", "include_incomplete_reassignments")
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     STREAM_CONTINUATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    INCLUDE_INCOMPLETE_REASSIGNMENTS_FIELD_NUMBER: _ClassVar[int]
     active_at_offset: int
     event_format: _transaction_filter_pb2.EventFormat
     stream_continuation_token: bytes
-    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., stream_continuation_token: _Optional[bytes] = ...) -> None: ...
+    include_incomplete_reassignments: bool
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., stream_continuation_token: _Optional[bytes] = ..., include_incomplete_reassignments: _Optional[bool] = ...) -> None: ...
 
 class GetActiveContractsPageRequest(_message.Message):
-    __slots__ = ("active_at_offset", "event_format", "max_page_size", "page_token")
+    __slots__ = ("active_at_offset", "event_format", "max_page_size", "page_token", "include_incomplete_reassignments")
     ACTIVE_AT_OFFSET_FIELD_NUMBER: _ClassVar[int]
     EVENT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     MAX_PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    INCLUDE_INCOMPLETE_REASSIGNMENTS_FIELD_NUMBER: _ClassVar[int]
     active_at_offset: int
     event_format: _transaction_filter_pb2.EventFormat
     max_page_size: int
     page_token: bytes
-    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., max_page_size: _Optional[int] = ..., page_token: _Optional[bytes] = ...) -> None: ...
+    include_incomplete_reassignments: bool
+    def __init__(self, active_at_offset: _Optional[int] = ..., event_format: _Optional[_Union[_transaction_filter_pb2.EventFormat, _Mapping]] = ..., max_page_size: _Optional[int] = ..., page_token: _Optional[bytes] = ..., include_incomplete_reassignments: _Optional[bool] = ...) -> None: ...
 
 class GetActiveContractsResponse(_message.Message):
     __slots__ = ("workflow_id", "active_contract", "incomplete_unassigned", "incomplete_assigned", "stream_continuation_token")
@@ -121,14 +129,18 @@ class GetConnectedSynchronizersResponse(_message.Message):
     def __init__(self, connected_synchronizers: _Optional[_Iterable[_Union[GetConnectedSynchronizersResponse.ConnectedSynchronizer, _Mapping]]] = ...) -> None: ...
 
 class GetLedgerEndRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, synchronizer_id: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class GetLedgerEndResponse(_message.Message):
-    __slots__ = ("offset",)
+    __slots__ = ("offset", "synchronizer_times")
     OFFSET_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_TIMES_FIELD_NUMBER: _ClassVar[int]
     offset: int
-    def __init__(self, offset: _Optional[int] = ...) -> None: ...
+    synchronizer_times: _containers.RepeatedCompositeFieldContainer[_offset_checkpoint_pb2.SynchronizerTime]
+    def __init__(self, offset: _Optional[int] = ..., synchronizer_times: _Optional[_Iterable[_Union[_offset_checkpoint_pb2.SynchronizerTime, _Mapping]]] = ...) -> None: ...
 
 class GetLatestPrunedOffsetsRequest(_message.Message):
     __slots__ = ()
@@ -141,3 +153,17 @@ class GetLatestPrunedOffsetsResponse(_message.Message):
     participant_pruned_up_to_inclusive: int
     all_divulged_contracts_pruned_up_to_inclusive: int
     def __init__(self, participant_pruned_up_to_inclusive: _Optional[int] = ..., all_divulged_contracts_pruned_up_to_inclusive: _Optional[int] = ...) -> None: ...
+
+class ConvertRecordTimeToOffsetRequest(_message.Message):
+    __slots__ = ("record_time", "synchronizer_id")
+    RECORD_TIME_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    record_time: _timestamp_pb2.Timestamp
+    synchronizer_id: str
+    def __init__(self, record_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class ConvertRecordTimeToOffsetResponse(_message.Message):
+    __slots__ = ("offset",)
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    offset: int
+    def __init__(self, offset: _Optional[int] = ...) -> None: ...

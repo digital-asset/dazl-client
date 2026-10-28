@@ -26,6 +26,7 @@ const (
 	StateService_GetConnectedSynchronizers_FullMethodName = "/com.daml.ledger.api.v2.StateService/GetConnectedSynchronizers"
 	StateService_GetLedgerEnd_FullMethodName              = "/com.daml.ledger.api.v2.StateService/GetLedgerEnd"
 	StateService_GetLatestPrunedOffsets_FullMethodName    = "/com.daml.ledger.api.v2.StateService/GetLatestPrunedOffsets"
+	StateService_ConvertRecordTimeToOffset_FullMethodName = "/com.daml.ledger.api.v2.StateService/ConvertRecordTimeToOffset"
 )
 
 // StateServiceClient is the client API for StateService service.
@@ -37,6 +38,7 @@ type StateServiceClient interface {
 	GetConnectedSynchronizers(ctx context.Context, in *GetConnectedSynchronizersRequest, opts ...grpc.CallOption) (*GetConnectedSynchronizersResponse, error)
 	GetLedgerEnd(ctx context.Context, in *GetLedgerEndRequest, opts ...grpc.CallOption) (*GetLedgerEndResponse, error)
 	GetLatestPrunedOffsets(ctx context.Context, in *GetLatestPrunedOffsetsRequest, opts ...grpc.CallOption) (*GetLatestPrunedOffsetsResponse, error)
+	ConvertRecordTimeToOffset(ctx context.Context, in *ConvertRecordTimeToOffsetRequest, opts ...grpc.CallOption) (*ConvertRecordTimeToOffsetResponse, error)
 }
 
 type stateServiceClient struct {
@@ -106,6 +108,16 @@ func (c *stateServiceClient) GetLatestPrunedOffsets(ctx context.Context, in *Get
 	return out, nil
 }
 
+func (c *stateServiceClient) ConvertRecordTimeToOffset(ctx context.Context, in *ConvertRecordTimeToOffsetRequest, opts ...grpc.CallOption) (*ConvertRecordTimeToOffsetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConvertRecordTimeToOffsetResponse)
+	err := c.cc.Invoke(ctx, StateService_ConvertRecordTimeToOffset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StateServiceServer is the server API for StateService service.
 // All implementations must embed UnimplementedStateServiceServer
 // for forward compatibility.
@@ -115,6 +127,7 @@ type StateServiceServer interface {
 	GetConnectedSynchronizers(context.Context, *GetConnectedSynchronizersRequest) (*GetConnectedSynchronizersResponse, error)
 	GetLedgerEnd(context.Context, *GetLedgerEndRequest) (*GetLedgerEndResponse, error)
 	GetLatestPrunedOffsets(context.Context, *GetLatestPrunedOffsetsRequest) (*GetLatestPrunedOffsetsResponse, error)
+	ConvertRecordTimeToOffset(context.Context, *ConvertRecordTimeToOffsetRequest) (*ConvertRecordTimeToOffsetResponse, error)
 	mustEmbedUnimplementedStateServiceServer()
 }
 
@@ -139,6 +152,9 @@ func (UnimplementedStateServiceServer) GetLedgerEnd(context.Context, *GetLedgerE
 }
 func (UnimplementedStateServiceServer) GetLatestPrunedOffsets(context.Context, *GetLatestPrunedOffsetsRequest) (*GetLatestPrunedOffsetsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLatestPrunedOffsets not implemented")
+}
+func (UnimplementedStateServiceServer) ConvertRecordTimeToOffset(context.Context, *ConvertRecordTimeToOffsetRequest) (*ConvertRecordTimeToOffsetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConvertRecordTimeToOffset not implemented")
 }
 func (UnimplementedStateServiceServer) mustEmbedUnimplementedStateServiceServer() {}
 func (UnimplementedStateServiceServer) testEmbeddedByValue()                      {}
@@ -244,6 +260,24 @@ func _StateService_GetLatestPrunedOffsets_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StateService_ConvertRecordTimeToOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConvertRecordTimeToOffsetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StateServiceServer).ConvertRecordTimeToOffset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StateService_ConvertRecordTimeToOffset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StateServiceServer).ConvertRecordTimeToOffset(ctx, req.(*ConvertRecordTimeToOffsetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // StateService_ServiceDesc is the grpc.ServiceDesc for StateService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var StateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLatestPrunedOffsets",
 			Handler:    _StateService_GetLatestPrunedOffsets_Handler,
+		},
+		{
+			MethodName: "ConvertRecordTimeToOffset",
+			Handler:    _StateService_ConvertRecordTimeToOffset_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

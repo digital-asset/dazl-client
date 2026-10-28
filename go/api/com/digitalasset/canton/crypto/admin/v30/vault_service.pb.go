@@ -24,6 +24,50 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type BaseVaultRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientVersion string                 `protobuf:"bytes,1,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BaseVaultRequest) Reset() {
+	*x = BaseVaultRequest{}
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BaseVaultRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BaseVaultRequest) ProtoMessage() {}
+
+func (x *BaseVaultRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BaseVaultRequest.ProtoReflect.Descriptor instead.
+func (*BaseVaultRequest) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *BaseVaultRequest) GetClientVersion() string {
+	if x != nil {
+		return x.ClientVersion
+	}
+	return ""
+}
+
 type GenerateCertificateRequest struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	UniqueIdentifier        string                 `protobuf:"bytes,1,opt,name=unique_identifier,json=uniqueIdentifier,proto3" json:"unique_identifier,omitempty"`
@@ -36,7 +80,7 @@ type GenerateCertificateRequest struct {
 
 func (x *GenerateCertificateRequest) Reset() {
 	*x = GenerateCertificateRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[0]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +92,7 @@ func (x *GenerateCertificateRequest) String() string {
 func (*GenerateCertificateRequest) ProtoMessage() {}
 
 func (x *GenerateCertificateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[0]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +105,7 @@ func (x *GenerateCertificateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateCertificateRequest.ProtoReflect.Descriptor instead.
 func (*GenerateCertificateRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{0}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GenerateCertificateRequest) GetUniqueIdentifier() string {
@@ -101,7 +145,7 @@ type GenerateCertificateResponse struct {
 
 func (x *GenerateCertificateResponse) Reset() {
 	*x = GenerateCertificateResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -113,7 +157,7 @@ func (x *GenerateCertificateResponse) String() string {
 func (*GenerateCertificateResponse) ProtoMessage() {}
 
 func (x *GenerateCertificateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[1]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -126,7 +170,7 @@ func (x *GenerateCertificateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateCertificateResponse.ProtoReflect.Descriptor instead.
 func (*GenerateCertificateResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{1}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GenerateCertificateResponse) GetX509Cert() string {
@@ -145,7 +189,7 @@ type ListCertificateRequest struct {
 
 func (x *ListCertificateRequest) Reset() {
 	*x = ListCertificateRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -157,7 +201,7 @@ func (x *ListCertificateRequest) String() string {
 func (*ListCertificateRequest) ProtoMessage() {}
 
 func (x *ListCertificateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[2]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +214,7 @@ func (x *ListCertificateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCertificateRequest.ProtoReflect.Descriptor instead.
 func (*ListCertificateRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{2}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListCertificateRequest) GetFilterUid() string {
@@ -189,7 +233,7 @@ type ListCertificateResponse struct {
 
 func (x *ListCertificateResponse) Reset() {
 	*x = ListCertificateResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -201,7 +245,7 @@ func (x *ListCertificateResponse) String() string {
 func (*ListCertificateResponse) ProtoMessage() {}
 
 func (x *ListCertificateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[3]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,7 +258,7 @@ func (x *ListCertificateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCertificateResponse.ProtoReflect.Descriptor instead.
 func (*ListCertificateResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{3}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListCertificateResponse) GetResults() []*ListCertificateResponse_Result {
@@ -233,7 +277,7 @@ type ImportCertificateRequest struct {
 
 func (x *ImportCertificateRequest) Reset() {
 	*x = ImportCertificateRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -245,7 +289,7 @@ func (x *ImportCertificateRequest) String() string {
 func (*ImportCertificateRequest) ProtoMessage() {}
 
 func (x *ImportCertificateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -258,7 +302,7 @@ func (x *ImportCertificateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportCertificateRequest.ProtoReflect.Descriptor instead.
 func (*ImportCertificateRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{4}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ImportCertificateRequest) GetX509Cert() string {
@@ -277,7 +321,7 @@ type ImportCertificateResponse struct {
 
 func (x *ImportCertificateResponse) Reset() {
 	*x = ImportCertificateResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -289,7 +333,7 @@ func (x *ImportCertificateResponse) String() string {
 func (*ImportCertificateResponse) ProtoMessage() {}
 
 func (x *ImportCertificateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -302,7 +346,7 @@ func (x *ImportCertificateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportCertificateResponse.ProtoReflect.Descriptor instead.
 func (*ImportCertificateResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{5}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ImportCertificateResponse) GetCertificateId() string {
@@ -322,7 +366,7 @@ type ImportPublicKeyRequest struct {
 
 func (x *ImportPublicKeyRequest) Reset() {
 	*x = ImportPublicKeyRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +378,7 @@ func (x *ImportPublicKeyRequest) String() string {
 func (*ImportPublicKeyRequest) ProtoMessage() {}
 
 func (x *ImportPublicKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +391,7 @@ func (x *ImportPublicKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPublicKeyRequest.ProtoReflect.Descriptor instead.
 func (*ImportPublicKeyRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{6}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ImportPublicKeyRequest) GetPublicKey() []byte {
@@ -373,7 +417,7 @@ type ImportPublicKeyResponse struct {
 
 func (x *ImportPublicKeyResponse) Reset() {
 	*x = ImportPublicKeyResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -385,7 +429,7 @@ func (x *ImportPublicKeyResponse) String() string {
 func (*ImportPublicKeyResponse) ProtoMessage() {}
 
 func (x *ImportPublicKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -398,7 +442,7 @@ func (x *ImportPublicKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportPublicKeyResponse.ProtoReflect.Descriptor instead.
 func (*ImportPublicKeyResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{7}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ImportPublicKeyResponse) GetFingerprint() string {
@@ -413,14 +457,14 @@ type ListKeysFilters struct {
 	Fingerprint   string                 `protobuf:"bytes,1,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Purpose       []v30.KeyPurpose       `protobuf:"varint,3,rep,packed,name=purpose,proto3,enum=com.digitalasset.canton.crypto.v30.KeyPurpose" json:"purpose,omitempty"`
-	Usage         []v30.SigningKeyUsage  `protobuf:"varint,4,rep,packed,name=usage,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeyUsage" json:"usage,omitempty"`
+	UsageV30      []v30.SigningKeyUsage  `protobuf:"varint,4,rep,packed,name=usage_v30,json=usageV30,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeyUsage" json:"usage_v30,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListKeysFilters) Reset() {
 	*x = ListKeysFilters{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -432,7 +476,7 @@ func (x *ListKeysFilters) String() string {
 func (*ListKeysFilters) ProtoMessage() {}
 
 func (x *ListKeysFilters) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -445,7 +489,7 @@ func (x *ListKeysFilters) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListKeysFilters.ProtoReflect.Descriptor instead.
 func (*ListKeysFilters) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{8}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListKeysFilters) GetFingerprint() string {
@@ -469,9 +513,9 @@ func (x *ListKeysFilters) GetPurpose() []v30.KeyPurpose {
 	return nil
 }
 
-func (x *ListKeysFilters) GetUsage() []v30.SigningKeyUsage {
+func (x *ListKeysFilters) GetUsageV30() []v30.SigningKeyUsage {
 	if x != nil {
-		return x.Usage
+		return x.UsageV30
 	}
 	return nil
 }
@@ -479,13 +523,14 @@ func (x *ListKeysFilters) GetUsage() []v30.SigningKeyUsage {
 type ListMyKeysRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filters       *ListKeysFilters       `protobuf:"bytes,1,opt,name=filters,proto3" json:"filters,omitempty"`
+	BaseRequest   *BaseVaultRequest      `protobuf:"bytes,2,opt,name=base_request,json=baseRequest,proto3,oneof" json:"base_request,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListMyKeysRequest) Reset() {
 	*x = ListMyKeysRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -497,7 +542,7 @@ func (x *ListMyKeysRequest) String() string {
 func (*ListMyKeysRequest) ProtoMessage() {}
 
 func (x *ListMyKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -510,7 +555,7 @@ func (x *ListMyKeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyKeysRequest.ProtoReflect.Descriptor instead.
 func (*ListMyKeysRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{9}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListMyKeysRequest) GetFilters() *ListKeysFilters {
@@ -520,16 +565,24 @@ func (x *ListMyKeysRequest) GetFilters() *ListKeysFilters {
 	return nil
 }
 
+func (x *ListMyKeysRequest) GetBaseRequest() *BaseVaultRequest {
+	if x != nil {
+		return x.BaseRequest
+	}
+	return nil
+}
+
 type ListPublicKeysRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filters       *ListKeysFilters       `protobuf:"bytes,1,opt,name=filters,proto3" json:"filters,omitempty"`
+	BaseRequest   *BaseVaultRequest      `protobuf:"bytes,2,opt,name=base_request,json=baseRequest,proto3,oneof" json:"base_request,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListPublicKeysRequest) Reset() {
 	*x = ListPublicKeysRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -541,7 +594,7 @@ func (x *ListPublicKeysRequest) String() string {
 func (*ListPublicKeysRequest) ProtoMessage() {}
 
 func (x *ListPublicKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -554,7 +607,7 @@ func (x *ListPublicKeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPublicKeysRequest.ProtoReflect.Descriptor instead.
 func (*ListPublicKeysRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{10}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListPublicKeysRequest) GetFilters() *ListKeysFilters {
@@ -564,18 +617,28 @@ func (x *ListPublicKeysRequest) GetFilters() *ListKeysFilters {
 	return nil
 }
 
+func (x *ListPublicKeysRequest) GetBaseRequest() *BaseVaultRequest {
+	if x != nil {
+		return x.BaseRequest
+	}
+	return nil
+}
+
 type PrivateKeyMetadata struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	PublicKeyWithName *v30.PublicKeyWithName `protobuf:"bytes,1,opt,name=public_key_with_name,json=publicKeyWithName,proto3" json:"public_key_with_name,omitempty"`
-	WrapperKeyId      *string                `protobuf:"bytes,2,opt,name=wrapper_key_id,json=wrapperKeyId,proto3,oneof" json:"wrapper_key_id,omitempty"`
-	KmsKeyId          *string                `protobuf:"bytes,3,opt,name=kms_key_id,json=kmsKeyId,proto3,oneof" json:"kms_key_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to PublicKeyWithName:
+	//
+	//	*PrivateKeyMetadata_V30
+	PublicKeyWithName isPrivateKeyMetadata_PublicKeyWithName `protobuf_oneof:"public_key_with_name"`
+	WrapperKeyId      *string                                `protobuf:"bytes,2,opt,name=wrapper_key_id,json=wrapperKeyId,proto3,oneof" json:"wrapper_key_id,omitempty"`
+	KmsKeyId          *string                                `protobuf:"bytes,3,opt,name=kms_key_id,json=kmsKeyId,proto3,oneof" json:"kms_key_id,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
 
 func (x *PrivateKeyMetadata) Reset() {
 	*x = PrivateKeyMetadata{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -587,7 +650,7 @@ func (x *PrivateKeyMetadata) String() string {
 func (*PrivateKeyMetadata) ProtoMessage() {}
 
 func (x *PrivateKeyMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -600,12 +663,21 @@ func (x *PrivateKeyMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrivateKeyMetadata.ProtoReflect.Descriptor instead.
 func (*PrivateKeyMetadata) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{11}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *PrivateKeyMetadata) GetPublicKeyWithName() *v30.PublicKeyWithName {
+func (x *PrivateKeyMetadata) GetPublicKeyWithName() isPrivateKeyMetadata_PublicKeyWithName {
 	if x != nil {
 		return x.PublicKeyWithName
+	}
+	return nil
+}
+
+func (x *PrivateKeyMetadata) GetV30() *v30.PublicKeyWithName {
+	if x != nil {
+		if x, ok := x.PublicKeyWithName.(*PrivateKeyMetadata_V30); ok {
+			return x.V30
+		}
 	}
 	return nil
 }
@@ -624,6 +696,16 @@ func (x *PrivateKeyMetadata) GetKmsKeyId() string {
 	return ""
 }
 
+type isPrivateKeyMetadata_PublicKeyWithName interface {
+	isPrivateKeyMetadata_PublicKeyWithName()
+}
+
+type PrivateKeyMetadata_V30 struct {
+	V30 *v30.PublicKeyWithName `protobuf:"bytes,1,opt,name=v30,proto3,oneof"`
+}
+
+func (*PrivateKeyMetadata_V30) isPrivateKeyMetadata_PublicKeyWithName() {}
+
 type ListMyKeysResponse struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	PrivateKeysMetadata []*PrivateKeyMetadata  `protobuf:"bytes,1,rep,name=private_keys_metadata,json=privateKeysMetadata,proto3" json:"private_keys_metadata,omitempty"`
@@ -633,7 +715,7 @@ type ListMyKeysResponse struct {
 
 func (x *ListMyKeysResponse) Reset() {
 	*x = ListMyKeysResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -645,7 +727,7 @@ func (x *ListMyKeysResponse) String() string {
 func (*ListMyKeysResponse) ProtoMessage() {}
 
 func (x *ListMyKeysResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -658,7 +740,7 @@ func (x *ListMyKeysResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyKeysResponse.ProtoReflect.Descriptor instead.
 func (*ListMyKeysResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{12}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListMyKeysResponse) GetPrivateKeysMetadata() []*PrivateKeyMetadata {
@@ -670,14 +752,14 @@ func (x *ListMyKeysResponse) GetPrivateKeysMetadata() []*PrivateKeyMetadata {
 
 type ListPublicKeysResponse struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
-	PublicKeys    []*v30.PublicKeyWithName `protobuf:"bytes,1,rep,name=public_keys,json=publicKeys,proto3" json:"public_keys,omitempty"`
+	PublicKeysV30 []*v30.PublicKeyWithName `protobuf:"bytes,1,rep,name=public_keys_v30,json=publicKeysV30,proto3" json:"public_keys_v30,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListPublicKeysResponse) Reset() {
 	*x = ListPublicKeysResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -689,7 +771,7 @@ func (x *ListPublicKeysResponse) String() string {
 func (*ListPublicKeysResponse) ProtoMessage() {}
 
 func (x *ListPublicKeysResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -702,12 +784,12 @@ func (x *ListPublicKeysResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPublicKeysResponse.ProtoReflect.Descriptor instead.
 func (*ListPublicKeysResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{13}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *ListPublicKeysResponse) GetPublicKeys() []*v30.PublicKeyWithName {
+func (x *ListPublicKeysResponse) GetPublicKeysV30() []*v30.PublicKeyWithName {
 	if x != nil {
-		return x.PublicKeys
+		return x.PublicKeysV30
 	}
 	return nil
 }
@@ -716,14 +798,15 @@ type GenerateSigningKeyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	KeySpec       v30.SigningKeySpec     `protobuf:"varint,1,opt,name=key_spec,json=keySpec,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeySpec" json:"key_spec,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Usage         []v30.SigningKeyUsage  `protobuf:"varint,3,rep,packed,name=usage,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeyUsage" json:"usage,omitempty"`
+	UsageV30      []v30.SigningKeyUsage  `protobuf:"varint,3,rep,packed,name=usage_v30,json=usageV30,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeyUsage" json:"usage_v30,omitempty"`
+	BaseRequest   *BaseVaultRequest      `protobuf:"bytes,4,opt,name=base_request,json=baseRequest,proto3,oneof" json:"base_request,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GenerateSigningKeyRequest) Reset() {
 	*x = GenerateSigningKeyRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -735,7 +818,7 @@ func (x *GenerateSigningKeyRequest) String() string {
 func (*GenerateSigningKeyRequest) ProtoMessage() {}
 
 func (x *GenerateSigningKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -748,7 +831,7 @@ func (x *GenerateSigningKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateSigningKeyRequest.ProtoReflect.Descriptor instead.
 func (*GenerateSigningKeyRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{14}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GenerateSigningKeyRequest) GetKeySpec() v30.SigningKeySpec {
@@ -765,23 +848,33 @@ func (x *GenerateSigningKeyRequest) GetName() string {
 	return ""
 }
 
-func (x *GenerateSigningKeyRequest) GetUsage() []v30.SigningKeyUsage {
+func (x *GenerateSigningKeyRequest) GetUsageV30() []v30.SigningKeyUsage {
 	if x != nil {
-		return x.Usage
+		return x.UsageV30
+	}
+	return nil
+}
+
+func (x *GenerateSigningKeyRequest) GetBaseRequest() *BaseVaultRequest {
+	if x != nil {
+		return x.BaseRequest
 	}
 	return nil
 }
 
 type GenerateSigningKeyResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PublicKey     *v30.SigningPublicKey  `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to PublicKey:
+	//
+	//	*GenerateSigningKeyResponse_V30
+	PublicKey     isGenerateSigningKeyResponse_PublicKey `protobuf_oneof:"public_key"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GenerateSigningKeyResponse) Reset() {
 	*x = GenerateSigningKeyResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -793,7 +886,7 @@ func (x *GenerateSigningKeyResponse) String() string {
 func (*GenerateSigningKeyResponse) ProtoMessage() {}
 
 func (x *GenerateSigningKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -806,15 +899,34 @@ func (x *GenerateSigningKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateSigningKeyResponse.ProtoReflect.Descriptor instead.
 func (*GenerateSigningKeyResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{15}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *GenerateSigningKeyResponse) GetPublicKey() *v30.SigningPublicKey {
+func (x *GenerateSigningKeyResponse) GetPublicKey() isGenerateSigningKeyResponse_PublicKey {
 	if x != nil {
 		return x.PublicKey
 	}
 	return nil
 }
+
+func (x *GenerateSigningKeyResponse) GetV30() *v30.SigningPublicKey {
+	if x != nil {
+		if x, ok := x.PublicKey.(*GenerateSigningKeyResponse_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+type isGenerateSigningKeyResponse_PublicKey interface {
+	isGenerateSigningKeyResponse_PublicKey()
+}
+
+type GenerateSigningKeyResponse_V30 struct {
+	V30 *v30.SigningPublicKey `protobuf:"bytes,1,opt,name=v30,proto3,oneof"`
+}
+
+func (*GenerateSigningKeyResponse_V30) isGenerateSigningKeyResponse_PublicKey() {}
 
 type GenerateEncryptionKeyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -826,7 +938,7 @@ type GenerateEncryptionKeyRequest struct {
 
 func (x *GenerateEncryptionKeyRequest) Reset() {
 	*x = GenerateEncryptionKeyRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -838,7 +950,7 @@ func (x *GenerateEncryptionKeyRequest) String() string {
 func (*GenerateEncryptionKeyRequest) ProtoMessage() {}
 
 func (x *GenerateEncryptionKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -851,7 +963,7 @@ func (x *GenerateEncryptionKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateEncryptionKeyRequest.ProtoReflect.Descriptor instead.
 func (*GenerateEncryptionKeyRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{16}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GenerateEncryptionKeyRequest) GetKeySpec() v30.EncryptionKeySpec {
@@ -877,7 +989,7 @@ type GenerateEncryptionKeyResponse struct {
 
 func (x *GenerateEncryptionKeyResponse) Reset() {
 	*x = GenerateEncryptionKeyResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -889,7 +1001,7 @@ func (x *GenerateEncryptionKeyResponse) String() string {
 func (*GenerateEncryptionKeyResponse) ProtoMessage() {}
 
 func (x *GenerateEncryptionKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -902,7 +1014,7 @@ func (x *GenerateEncryptionKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateEncryptionKeyResponse.ProtoReflect.Descriptor instead.
 func (*GenerateEncryptionKeyResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{17}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GenerateEncryptionKeyResponse) GetPublicKey() *v30.EncryptionPublicKey {
@@ -916,14 +1028,15 @@ type RegisterKmsSigningKeyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	KmsKeyId      string                 `protobuf:"bytes,1,opt,name=kms_key_id,json=kmsKeyId,proto3" json:"kms_key_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Usage         []v30.SigningKeyUsage  `protobuf:"varint,3,rep,packed,name=usage,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeyUsage" json:"usage,omitempty"`
+	UsageV30      []v30.SigningKeyUsage  `protobuf:"varint,3,rep,packed,name=usage_v30,json=usageV30,proto3,enum=com.digitalasset.canton.crypto.v30.SigningKeyUsage" json:"usage_v30,omitempty"`
+	BaseRequest   *BaseVaultRequest      `protobuf:"bytes,4,opt,name=base_request,json=baseRequest,proto3,oneof" json:"base_request,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RegisterKmsSigningKeyRequest) Reset() {
 	*x = RegisterKmsSigningKeyRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -935,7 +1048,7 @@ func (x *RegisterKmsSigningKeyRequest) String() string {
 func (*RegisterKmsSigningKeyRequest) ProtoMessage() {}
 
 func (x *RegisterKmsSigningKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -948,7 +1061,7 @@ func (x *RegisterKmsSigningKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterKmsSigningKeyRequest.ProtoReflect.Descriptor instead.
 func (*RegisterKmsSigningKeyRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{18}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *RegisterKmsSigningKeyRequest) GetKmsKeyId() string {
@@ -965,23 +1078,33 @@ func (x *RegisterKmsSigningKeyRequest) GetName() string {
 	return ""
 }
 
-func (x *RegisterKmsSigningKeyRequest) GetUsage() []v30.SigningKeyUsage {
+func (x *RegisterKmsSigningKeyRequest) GetUsageV30() []v30.SigningKeyUsage {
 	if x != nil {
-		return x.Usage
+		return x.UsageV30
+	}
+	return nil
+}
+
+func (x *RegisterKmsSigningKeyRequest) GetBaseRequest() *BaseVaultRequest {
+	if x != nil {
+		return x.BaseRequest
 	}
 	return nil
 }
 
 type RegisterKmsSigningKeyResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PublicKey     *v30.SigningPublicKey  `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to PublicKey:
+	//
+	//	*RegisterKmsSigningKeyResponse_V30
+	PublicKey     isRegisterKmsSigningKeyResponse_PublicKey `protobuf_oneof:"public_key"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RegisterKmsSigningKeyResponse) Reset() {
 	*x = RegisterKmsSigningKeyResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[19]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -993,7 +1116,7 @@ func (x *RegisterKmsSigningKeyResponse) String() string {
 func (*RegisterKmsSigningKeyResponse) ProtoMessage() {}
 
 func (x *RegisterKmsSigningKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[19]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1006,15 +1129,34 @@ func (x *RegisterKmsSigningKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterKmsSigningKeyResponse.ProtoReflect.Descriptor instead.
 func (*RegisterKmsSigningKeyResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{19}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *RegisterKmsSigningKeyResponse) GetPublicKey() *v30.SigningPublicKey {
+func (x *RegisterKmsSigningKeyResponse) GetPublicKey() isRegisterKmsSigningKeyResponse_PublicKey {
 	if x != nil {
 		return x.PublicKey
 	}
 	return nil
 }
+
+func (x *RegisterKmsSigningKeyResponse) GetV30() *v30.SigningPublicKey {
+	if x != nil {
+		if x, ok := x.PublicKey.(*RegisterKmsSigningKeyResponse_V30); ok {
+			return x.V30
+		}
+	}
+	return nil
+}
+
+type isRegisterKmsSigningKeyResponse_PublicKey interface {
+	isRegisterKmsSigningKeyResponse_PublicKey()
+}
+
+type RegisterKmsSigningKeyResponse_V30 struct {
+	V30 *v30.SigningPublicKey `protobuf:"bytes,1,opt,name=v30,proto3,oneof"`
+}
+
+func (*RegisterKmsSigningKeyResponse_V30) isRegisterKmsSigningKeyResponse_PublicKey() {}
 
 type RegisterKmsEncryptionKeyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1026,7 +1168,7 @@ type RegisterKmsEncryptionKeyRequest struct {
 
 func (x *RegisterKmsEncryptionKeyRequest) Reset() {
 	*x = RegisterKmsEncryptionKeyRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1038,7 +1180,7 @@ func (x *RegisterKmsEncryptionKeyRequest) String() string {
 func (*RegisterKmsEncryptionKeyRequest) ProtoMessage() {}
 
 func (x *RegisterKmsEncryptionKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1051,7 +1193,7 @@ func (x *RegisterKmsEncryptionKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterKmsEncryptionKeyRequest.ProtoReflect.Descriptor instead.
 func (*RegisterKmsEncryptionKeyRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{20}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *RegisterKmsEncryptionKeyRequest) GetKmsKeyId() string {
@@ -1077,7 +1219,7 @@ type RegisterKmsEncryptionKeyResponse struct {
 
 func (x *RegisterKmsEncryptionKeyResponse) Reset() {
 	*x = RegisterKmsEncryptionKeyResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1089,7 +1231,7 @@ func (x *RegisterKmsEncryptionKeyResponse) String() string {
 func (*RegisterKmsEncryptionKeyResponse) ProtoMessage() {}
 
 func (x *RegisterKmsEncryptionKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1102,7 +1244,7 @@ func (x *RegisterKmsEncryptionKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterKmsEncryptionKeyResponse.ProtoReflect.Descriptor instead.
 func (*RegisterKmsEncryptionKeyResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{21}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *RegisterKmsEncryptionKeyResponse) GetPublicKey() *v30.EncryptionPublicKey {
@@ -1121,7 +1263,7 @@ type RotateWrapperKeyRequest struct {
 
 func (x *RotateWrapperKeyRequest) Reset() {
 	*x = RotateWrapperKeyRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1133,7 +1275,7 @@ func (x *RotateWrapperKeyRequest) String() string {
 func (*RotateWrapperKeyRequest) ProtoMessage() {}
 
 func (x *RotateWrapperKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1146,7 +1288,7 @@ func (x *RotateWrapperKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RotateWrapperKeyRequest.ProtoReflect.Descriptor instead.
 func (*RotateWrapperKeyRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{22}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *RotateWrapperKeyRequest) GetNewWrapperKeyId() string {
@@ -1164,7 +1306,7 @@ type RotateWrapperKeyResponse struct {
 
 func (x *RotateWrapperKeyResponse) Reset() {
 	*x = RotateWrapperKeyResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[23]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1176,7 +1318,7 @@ func (x *RotateWrapperKeyResponse) String() string {
 func (*RotateWrapperKeyResponse) ProtoMessage() {}
 
 func (x *RotateWrapperKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[23]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1189,7 +1331,7 @@ func (x *RotateWrapperKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RotateWrapperKeyResponse.ProtoReflect.Descriptor instead.
 func (*RotateWrapperKeyResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{23}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{24}
 }
 
 type GetWrapperKeyIdRequest struct {
@@ -1200,7 +1342,7 @@ type GetWrapperKeyIdRequest struct {
 
 func (x *GetWrapperKeyIdRequest) Reset() {
 	*x = GetWrapperKeyIdRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[24]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1212,7 +1354,7 @@ func (x *GetWrapperKeyIdRequest) String() string {
 func (*GetWrapperKeyIdRequest) ProtoMessage() {}
 
 func (x *GetWrapperKeyIdRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[24]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1225,7 +1367,7 @@ func (x *GetWrapperKeyIdRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWrapperKeyIdRequest.ProtoReflect.Descriptor instead.
 func (*GetWrapperKeyIdRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{24}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{25}
 }
 
 type GetWrapperKeyIdResponse struct {
@@ -1237,7 +1379,7 @@ type GetWrapperKeyIdResponse struct {
 
 func (x *GetWrapperKeyIdResponse) Reset() {
 	*x = GetWrapperKeyIdResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[25]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1249,7 +1391,7 @@ func (x *GetWrapperKeyIdResponse) String() string {
 func (*GetWrapperKeyIdResponse) ProtoMessage() {}
 
 func (x *GetWrapperKeyIdResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[25]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1262,7 +1404,7 @@ func (x *GetWrapperKeyIdResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWrapperKeyIdResponse.ProtoReflect.Descriptor instead.
 func (*GetWrapperKeyIdResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{25}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetWrapperKeyIdResponse) GetWrapperKeyId() string {
@@ -1283,7 +1425,7 @@ type ExportKeyPairRequest struct {
 
 func (x *ExportKeyPairRequest) Reset() {
 	*x = ExportKeyPairRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1295,7 +1437,7 @@ func (x *ExportKeyPairRequest) String() string {
 func (*ExportKeyPairRequest) ProtoMessage() {}
 
 func (x *ExportKeyPairRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1308,7 +1450,7 @@ func (x *ExportKeyPairRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportKeyPairRequest.ProtoReflect.Descriptor instead.
 func (*ExportKeyPairRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{26}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ExportKeyPairRequest) GetFingerprint() string {
@@ -1341,7 +1483,7 @@ type ExportKeyPairResponse struct {
 
 func (x *ExportKeyPairResponse) Reset() {
 	*x = ExportKeyPairResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[27]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1353,7 +1495,7 @@ func (x *ExportKeyPairResponse) String() string {
 func (*ExportKeyPairResponse) ProtoMessage() {}
 
 func (x *ExportKeyPairResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[27]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1366,7 +1508,7 @@ func (x *ExportKeyPairResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportKeyPairResponse.ProtoReflect.Descriptor instead.
 func (*ExportKeyPairResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{27}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ExportKeyPairResponse) GetKeyPair() []byte {
@@ -1387,7 +1529,7 @@ type ImportKeyPairRequest struct {
 
 func (x *ImportKeyPairRequest) Reset() {
 	*x = ImportKeyPairRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[28]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1399,7 +1541,7 @@ func (x *ImportKeyPairRequest) String() string {
 func (*ImportKeyPairRequest) ProtoMessage() {}
 
 func (x *ImportKeyPairRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[28]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1412,7 +1554,7 @@ func (x *ImportKeyPairRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportKeyPairRequest.ProtoReflect.Descriptor instead.
 func (*ImportKeyPairRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{28}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ImportKeyPairRequest) GetKeyPair() []byte {
@@ -1444,7 +1586,7 @@ type ImportKeyPairResponse struct {
 
 func (x *ImportKeyPairResponse) Reset() {
 	*x = ImportKeyPairResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[29]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1456,7 +1598,7 @@ func (x *ImportKeyPairResponse) String() string {
 func (*ImportKeyPairResponse) ProtoMessage() {}
 
 func (x *ImportKeyPairResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[29]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1469,7 +1611,7 @@ func (x *ImportKeyPairResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportKeyPairResponse.ProtoReflect.Descriptor instead.
 func (*ImportKeyPairResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{29}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{30}
 }
 
 type DeleteKeyPairRequest struct {
@@ -1481,7 +1623,7 @@ type DeleteKeyPairRequest struct {
 
 func (x *DeleteKeyPairRequest) Reset() {
 	*x = DeleteKeyPairRequest{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[30]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1493,7 +1635,7 @@ func (x *DeleteKeyPairRequest) String() string {
 func (*DeleteKeyPairRequest) ProtoMessage() {}
 
 func (x *DeleteKeyPairRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[30]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1506,7 +1648,7 @@ func (x *DeleteKeyPairRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteKeyPairRequest.ProtoReflect.Descriptor instead.
 func (*DeleteKeyPairRequest) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{30}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *DeleteKeyPairRequest) GetFingerprint() string {
@@ -1524,7 +1666,7 @@ type DeleteKeyPairResponse struct {
 
 func (x *DeleteKeyPairResponse) Reset() {
 	*x = DeleteKeyPairResponse{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[31]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1536,7 +1678,7 @@ func (x *DeleteKeyPairResponse) String() string {
 func (*DeleteKeyPairResponse) ProtoMessage() {}
 
 func (x *DeleteKeyPairResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[31]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1549,7 +1691,7 @@ func (x *DeleteKeyPairResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteKeyPairResponse.ProtoReflect.Descriptor instead.
 func (*DeleteKeyPairResponse) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{31}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{32}
 }
 
 type ListCertificateResponse_Result struct {
@@ -1561,7 +1703,7 @@ type ListCertificateResponse_Result struct {
 
 func (x *ListCertificateResponse_Result) Reset() {
 	*x = ListCertificateResponse_Result{}
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[32]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1573,7 +1715,7 @@ func (x *ListCertificateResponse_Result) String() string {
 func (*ListCertificateResponse_Result) ProtoMessage() {}
 
 func (x *ListCertificateResponse_Result) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[32]
+	mi := &file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1586,7 +1728,7 @@ func (x *ListCertificateResponse_Result) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCertificateResponse_Result.ProtoReflect.Descriptor instead.
 func (*ListCertificateResponse_Result) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{3, 0}
+	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZIP(), []int{4, 0}
 }
 
 func (x *ListCertificateResponse_Result) GetX509Cert() string {
@@ -1600,7 +1742,9 @@ var File_com_digitalasset_canton_crypto_admin_v30_vault_service_proto protorefle
 
 const file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDesc = "" +
 	"\n" +
-	"<com/digitalasset/canton/crypto/admin/v30/vault_service.proto\x12(com.digitalasset.canton.crypto.admin.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\"\xdd\x01\n" +
+	"<com/digitalasset/canton/crypto/admin/v30/vault_service.proto\x12(com.digitalasset.canton.crypto.admin.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\"9\n" +
+	"\x10BaseVaultRequest\x12%\n" +
+	"\x0eclient_version\x18\x01 \x01(\tR\rclientVersion\"\xdd\x01\n" +
 	"\x1aGenerateCertificateRequest\x12+\n" +
 	"\x11unique_identifier\x18\x01 \x01(\tR\x10uniqueIdentifier\x12'\n" +
 	"\x0fcertificate_key\x18\x02 \x01(\tR\x0ecertificateKey\x12-\n" +
@@ -1624,49 +1768,59 @@ const file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDesc 
 	"public_key\x18\x01 \x01(\fR\tpublicKey\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\";\n" +
 	"\x17ImportPublicKeyResponse\x12 \n" +
-	"\vfingerprint\x18\x01 \x01(\tR\vfingerprint\"\xdc\x01\n" +
+	"\vfingerprint\x18\x01 \x01(\tR\vfingerprint\"\xe3\x01\n" +
 	"\x0fListKeysFilters\x12 \n" +
 	"\vfingerprint\x18\x01 \x01(\tR\vfingerprint\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12H\n" +
-	"\apurpose\x18\x03 \x03(\x0e2..com.digitalasset.canton.crypto.v30.KeyPurposeR\apurpose\x12I\n" +
-	"\x05usage\x18\x04 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SigningKeyUsageR\x05usage\"h\n" +
+	"\apurpose\x18\x03 \x03(\x0e2..com.digitalasset.canton.crypto.v30.KeyPurposeR\apurpose\x12P\n" +
+	"\tusage_v30\x18\x04 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SigningKeyUsageR\busageV30\"\xdd\x01\n" +
 	"\x11ListMyKeysRequest\x12S\n" +
-	"\afilters\x18\x01 \x01(\v29.com.digitalasset.canton.crypto.admin.v30.ListKeysFiltersR\afilters\"l\n" +
+	"\afilters\x18\x01 \x01(\v29.com.digitalasset.canton.crypto.admin.v30.ListKeysFiltersR\afilters\x12b\n" +
+	"\fbase_request\x18\x02 \x01(\v2:.com.digitalasset.canton.crypto.admin.v30.BaseVaultRequestH\x00R\vbaseRequest\x88\x01\x01B\x0f\n" +
+	"\r_base_request\"\xe1\x01\n" +
 	"\x15ListPublicKeysRequest\x12S\n" +
-	"\afilters\x18\x01 \x01(\v29.com.digitalasset.canton.crypto.admin.v30.ListKeysFiltersR\afilters\"\xec\x01\n" +
-	"\x12PrivateKeyMetadata\x12f\n" +
-	"\x14public_key_with_name\x18\x01 \x01(\v25.com.digitalasset.canton.crypto.v30.PublicKeyWithNameR\x11publicKeyWithName\x12)\n" +
-	"\x0ewrapper_key_id\x18\x02 \x01(\tH\x00R\fwrapperKeyId\x88\x01\x01\x12!\n" +
+	"\afilters\x18\x01 \x01(\v29.com.digitalasset.canton.crypto.admin.v30.ListKeysFiltersR\afilters\x12b\n" +
+	"\fbase_request\x18\x02 \x01(\v2:.com.digitalasset.canton.crypto.admin.v30.BaseVaultRequestH\x00R\vbaseRequest\x88\x01\x01B\x0f\n" +
+	"\r_base_request\"\xe7\x01\n" +
+	"\x12PrivateKeyMetadata\x12I\n" +
+	"\x03v30\x18\x01 \x01(\v25.com.digitalasset.canton.crypto.v30.PublicKeyWithNameH\x00R\x03v30\x12)\n" +
+	"\x0ewrapper_key_id\x18\x02 \x01(\tH\x01R\fwrapperKeyId\x88\x01\x01\x12!\n" +
 	"\n" +
-	"kms_key_id\x18\x03 \x01(\tH\x01R\bkmsKeyId\x88\x01\x01B\x11\n" +
+	"kms_key_id\x18\x03 \x01(\tH\x02R\bkmsKeyId\x88\x01\x01B\x16\n" +
+	"\x14public_key_with_nameB\x11\n" +
 	"\x0f_wrapper_key_idB\r\n" +
 	"\v_kms_key_id\"\x86\x01\n" +
 	"\x12ListMyKeysResponse\x12p\n" +
-	"\x15private_keys_metadata\x18\x01 \x03(\v2<.com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadataR\x13privateKeysMetadata\"p\n" +
-	"\x16ListPublicKeysResponse\x12V\n" +
-	"\vpublic_keys\x18\x01 \x03(\v25.com.digitalasset.canton.crypto.v30.PublicKeyWithNameR\n" +
-	"publicKeys\"\xc9\x01\n" +
+	"\x15private_keys_metadata\x18\x01 \x03(\v2<.com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadataR\x13privateKeysMetadata\"w\n" +
+	"\x16ListPublicKeysResponse\x12]\n" +
+	"\x0fpublic_keys_v30\x18\x01 \x03(\v25.com.digitalasset.canton.crypto.v30.PublicKeyWithNameR\rpublicKeysV30\"\xc5\x02\n" +
 	"\x19GenerateSigningKeyRequest\x12M\n" +
 	"\bkey_spec\x18\x01 \x01(\x0e22.com.digitalasset.canton.crypto.v30.SigningKeySpecR\akeySpec\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12I\n" +
-	"\x05usage\x18\x03 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SigningKeyUsageR\x05usage\"q\n" +
-	"\x1aGenerateSigningKeyResponse\x12S\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12P\n" +
+	"\tusage_v30\x18\x03 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SigningKeyUsageR\busageV30\x12b\n" +
+	"\fbase_request\x18\x04 \x01(\v2:.com.digitalasset.canton.crypto.admin.v30.BaseVaultRequestH\x00R\vbaseRequest\x88\x01\x01B\x0f\n" +
+	"\r_base_request\"t\n" +
+	"\x1aGenerateSigningKeyResponse\x12H\n" +
+	"\x03v30\x18\x01 \x01(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyH\x00R\x03v30B\f\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\tpublicKey\"\x84\x01\n" +
+	"public_key\"\x84\x01\n" +
 	"\x1cGenerateEncryptionKeyRequest\x12P\n" +
 	"\bkey_spec\x18\x01 \x01(\x0e25.com.digitalasset.canton.crypto.v30.EncryptionKeySpecR\akeySpec\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"w\n" +
 	"\x1dGenerateEncryptionKeyResponse\x12V\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v27.com.digitalasset.canton.crypto.v30.EncryptionPublicKeyR\tpublicKey\"\x9b\x01\n" +
+	"public_key\x18\x01 \x01(\v27.com.digitalasset.canton.crypto.v30.EncryptionPublicKeyR\tpublicKey\"\x97\x02\n" +
 	"\x1cRegisterKmsSigningKeyRequest\x12\x1c\n" +
 	"\n" +
 	"kms_key_id\x18\x01 \x01(\tR\bkmsKeyId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12I\n" +
-	"\x05usage\x18\x03 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SigningKeyUsageR\x05usage\"t\n" +
-	"\x1dRegisterKmsSigningKeyResponse\x12S\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12P\n" +
+	"\tusage_v30\x18\x03 \x03(\x0e23.com.digitalasset.canton.crypto.v30.SigningKeyUsageR\busageV30\x12b\n" +
+	"\fbase_request\x18\x04 \x01(\v2:.com.digitalasset.canton.crypto.admin.v30.BaseVaultRequestH\x00R\vbaseRequest\x88\x01\x01B\x0f\n" +
+	"\r_base_request\"w\n" +
+	"\x1dRegisterKmsSigningKeyResponse\x12H\n" +
+	"\x03v30\x18\x01 \x01(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyH\x00R\x03v30B\f\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v24.com.digitalasset.canton.crypto.v30.SigningPublicKeyR\tpublicKey\"S\n" +
+	"public_key\"S\n" +
 	"\x1fRegisterKmsEncryptionKeyRequest\x12\x1c\n" +
 	"\n" +
 	"kms_key_id\x18\x01 \x01(\tR\bkmsKeyId\x12\x12\n" +
@@ -1721,95 +1875,100 @@ func file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescGZ
 	return file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
+var file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes = make([]protoimpl.MessageInfo, 34)
 var file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_goTypes = []any{
-	(*GenerateCertificateRequest)(nil),       // 0: com.digitalasset.canton.crypto.admin.v30.GenerateCertificateRequest
-	(*GenerateCertificateResponse)(nil),      // 1: com.digitalasset.canton.crypto.admin.v30.GenerateCertificateResponse
-	(*ListCertificateRequest)(nil),           // 2: com.digitalasset.canton.crypto.admin.v30.ListCertificateRequest
-	(*ListCertificateResponse)(nil),          // 3: com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse
-	(*ImportCertificateRequest)(nil),         // 4: com.digitalasset.canton.crypto.admin.v30.ImportCertificateRequest
-	(*ImportCertificateResponse)(nil),        // 5: com.digitalasset.canton.crypto.admin.v30.ImportCertificateResponse
-	(*ImportPublicKeyRequest)(nil),           // 6: com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyRequest
-	(*ImportPublicKeyResponse)(nil),          // 7: com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyResponse
-	(*ListKeysFilters)(nil),                  // 8: com.digitalasset.canton.crypto.admin.v30.ListKeysFilters
-	(*ListMyKeysRequest)(nil),                // 9: com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest
-	(*ListPublicKeysRequest)(nil),            // 10: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest
-	(*PrivateKeyMetadata)(nil),               // 11: com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadata
-	(*ListMyKeysResponse)(nil),               // 12: com.digitalasset.canton.crypto.admin.v30.ListMyKeysResponse
-	(*ListPublicKeysResponse)(nil),           // 13: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysResponse
-	(*GenerateSigningKeyRequest)(nil),        // 14: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest
-	(*GenerateSigningKeyResponse)(nil),       // 15: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyResponse
-	(*GenerateEncryptionKeyRequest)(nil),     // 16: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyRequest
-	(*GenerateEncryptionKeyResponse)(nil),    // 17: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyResponse
-	(*RegisterKmsSigningKeyRequest)(nil),     // 18: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest
-	(*RegisterKmsSigningKeyResponse)(nil),    // 19: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyResponse
-	(*RegisterKmsEncryptionKeyRequest)(nil),  // 20: com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyRequest
-	(*RegisterKmsEncryptionKeyResponse)(nil), // 21: com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyResponse
-	(*RotateWrapperKeyRequest)(nil),          // 22: com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyRequest
-	(*RotateWrapperKeyResponse)(nil),         // 23: com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyResponse
-	(*GetWrapperKeyIdRequest)(nil),           // 24: com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdRequest
-	(*GetWrapperKeyIdResponse)(nil),          // 25: com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdResponse
-	(*ExportKeyPairRequest)(nil),             // 26: com.digitalasset.canton.crypto.admin.v30.ExportKeyPairRequest
-	(*ExportKeyPairResponse)(nil),            // 27: com.digitalasset.canton.crypto.admin.v30.ExportKeyPairResponse
-	(*ImportKeyPairRequest)(nil),             // 28: com.digitalasset.canton.crypto.admin.v30.ImportKeyPairRequest
-	(*ImportKeyPairResponse)(nil),            // 29: com.digitalasset.canton.crypto.admin.v30.ImportKeyPairResponse
-	(*DeleteKeyPairRequest)(nil),             // 30: com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairRequest
-	(*DeleteKeyPairResponse)(nil),            // 31: com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairResponse
-	(*ListCertificateResponse_Result)(nil),   // 32: com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse.Result
-	(v30.KeyPurpose)(0),                      // 33: com.digitalasset.canton.crypto.v30.KeyPurpose
-	(v30.SigningKeyUsage)(0),                 // 34: com.digitalasset.canton.crypto.v30.SigningKeyUsage
-	(*v30.PublicKeyWithName)(nil),            // 35: com.digitalasset.canton.crypto.v30.PublicKeyWithName
-	(v30.SigningKeySpec)(0),                  // 36: com.digitalasset.canton.crypto.v30.SigningKeySpec
-	(*v30.SigningPublicKey)(nil),             // 37: com.digitalasset.canton.crypto.v30.SigningPublicKey
-	(v30.EncryptionKeySpec)(0),               // 38: com.digitalasset.canton.crypto.v30.EncryptionKeySpec
-	(*v30.EncryptionPublicKey)(nil),          // 39: com.digitalasset.canton.crypto.v30.EncryptionPublicKey
+	(*BaseVaultRequest)(nil),                 // 0: com.digitalasset.canton.crypto.admin.v30.BaseVaultRequest
+	(*GenerateCertificateRequest)(nil),       // 1: com.digitalasset.canton.crypto.admin.v30.GenerateCertificateRequest
+	(*GenerateCertificateResponse)(nil),      // 2: com.digitalasset.canton.crypto.admin.v30.GenerateCertificateResponse
+	(*ListCertificateRequest)(nil),           // 3: com.digitalasset.canton.crypto.admin.v30.ListCertificateRequest
+	(*ListCertificateResponse)(nil),          // 4: com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse
+	(*ImportCertificateRequest)(nil),         // 5: com.digitalasset.canton.crypto.admin.v30.ImportCertificateRequest
+	(*ImportCertificateResponse)(nil),        // 6: com.digitalasset.canton.crypto.admin.v30.ImportCertificateResponse
+	(*ImportPublicKeyRequest)(nil),           // 7: com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyRequest
+	(*ImportPublicKeyResponse)(nil),          // 8: com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyResponse
+	(*ListKeysFilters)(nil),                  // 9: com.digitalasset.canton.crypto.admin.v30.ListKeysFilters
+	(*ListMyKeysRequest)(nil),                // 10: com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest
+	(*ListPublicKeysRequest)(nil),            // 11: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest
+	(*PrivateKeyMetadata)(nil),               // 12: com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadata
+	(*ListMyKeysResponse)(nil),               // 13: com.digitalasset.canton.crypto.admin.v30.ListMyKeysResponse
+	(*ListPublicKeysResponse)(nil),           // 14: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysResponse
+	(*GenerateSigningKeyRequest)(nil),        // 15: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest
+	(*GenerateSigningKeyResponse)(nil),       // 16: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyResponse
+	(*GenerateEncryptionKeyRequest)(nil),     // 17: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyRequest
+	(*GenerateEncryptionKeyResponse)(nil),    // 18: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyResponse
+	(*RegisterKmsSigningKeyRequest)(nil),     // 19: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest
+	(*RegisterKmsSigningKeyResponse)(nil),    // 20: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyResponse
+	(*RegisterKmsEncryptionKeyRequest)(nil),  // 21: com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyRequest
+	(*RegisterKmsEncryptionKeyResponse)(nil), // 22: com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyResponse
+	(*RotateWrapperKeyRequest)(nil),          // 23: com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyRequest
+	(*RotateWrapperKeyResponse)(nil),         // 24: com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyResponse
+	(*GetWrapperKeyIdRequest)(nil),           // 25: com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdRequest
+	(*GetWrapperKeyIdResponse)(nil),          // 26: com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdResponse
+	(*ExportKeyPairRequest)(nil),             // 27: com.digitalasset.canton.crypto.admin.v30.ExportKeyPairRequest
+	(*ExportKeyPairResponse)(nil),            // 28: com.digitalasset.canton.crypto.admin.v30.ExportKeyPairResponse
+	(*ImportKeyPairRequest)(nil),             // 29: com.digitalasset.canton.crypto.admin.v30.ImportKeyPairRequest
+	(*ImportKeyPairResponse)(nil),            // 30: com.digitalasset.canton.crypto.admin.v30.ImportKeyPairResponse
+	(*DeleteKeyPairRequest)(nil),             // 31: com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairRequest
+	(*DeleteKeyPairResponse)(nil),            // 32: com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairResponse
+	(*ListCertificateResponse_Result)(nil),   // 33: com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse.Result
+	(v30.KeyPurpose)(0),                      // 34: com.digitalasset.canton.crypto.v30.KeyPurpose
+	(v30.SigningKeyUsage)(0),                 // 35: com.digitalasset.canton.crypto.v30.SigningKeyUsage
+	(*v30.PublicKeyWithName)(nil),            // 36: com.digitalasset.canton.crypto.v30.PublicKeyWithName
+	(v30.SigningKeySpec)(0),                  // 37: com.digitalasset.canton.crypto.v30.SigningKeySpec
+	(*v30.SigningPublicKey)(nil),             // 38: com.digitalasset.canton.crypto.v30.SigningPublicKey
+	(v30.EncryptionKeySpec)(0),               // 39: com.digitalasset.canton.crypto.v30.EncryptionKeySpec
+	(*v30.EncryptionPublicKey)(nil),          // 40: com.digitalasset.canton.crypto.v30.EncryptionPublicKey
 }
 var file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_depIdxs = []int32{
-	32, // 0: com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse.results:type_name -> com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse.Result
-	33, // 1: com.digitalasset.canton.crypto.admin.v30.ListKeysFilters.purpose:type_name -> com.digitalasset.canton.crypto.v30.KeyPurpose
-	34, // 2: com.digitalasset.canton.crypto.admin.v30.ListKeysFilters.usage:type_name -> com.digitalasset.canton.crypto.v30.SigningKeyUsage
-	8,  // 3: com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest.filters:type_name -> com.digitalasset.canton.crypto.admin.v30.ListKeysFilters
-	8,  // 4: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest.filters:type_name -> com.digitalasset.canton.crypto.admin.v30.ListKeysFilters
-	35, // 5: com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadata.public_key_with_name:type_name -> com.digitalasset.canton.crypto.v30.PublicKeyWithName
-	11, // 6: com.digitalasset.canton.crypto.admin.v30.ListMyKeysResponse.private_keys_metadata:type_name -> com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadata
-	35, // 7: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysResponse.public_keys:type_name -> com.digitalasset.canton.crypto.v30.PublicKeyWithName
-	36, // 8: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest.key_spec:type_name -> com.digitalasset.canton.crypto.v30.SigningKeySpec
-	34, // 9: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest.usage:type_name -> com.digitalasset.canton.crypto.v30.SigningKeyUsage
-	37, // 10: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyResponse.public_key:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
-	38, // 11: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyRequest.key_spec:type_name -> com.digitalasset.canton.crypto.v30.EncryptionKeySpec
-	39, // 12: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyResponse.public_key:type_name -> com.digitalasset.canton.crypto.v30.EncryptionPublicKey
-	34, // 13: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest.usage:type_name -> com.digitalasset.canton.crypto.v30.SigningKeyUsage
-	37, // 14: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyResponse.public_key:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
-	39, // 15: com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyResponse.public_key:type_name -> com.digitalasset.canton.crypto.v30.EncryptionPublicKey
-	9,  // 16: com.digitalasset.canton.crypto.admin.v30.VaultService.ListMyKeys:input_type -> com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest
-	14, // 17: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateSigningKey:input_type -> com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest
-	16, // 18: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateEncryptionKey:input_type -> com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyRequest
-	20, // 19: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsEncryptionKey:input_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyRequest
-	18, // 20: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsSigningKey:input_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest
-	6,  // 21: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportPublicKey:input_type -> com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyRequest
-	10, // 22: com.digitalasset.canton.crypto.admin.v30.VaultService.ListPublicKeys:input_type -> com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest
-	22, // 23: com.digitalasset.canton.crypto.admin.v30.VaultService.RotateWrapperKey:input_type -> com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyRequest
-	24, // 24: com.digitalasset.canton.crypto.admin.v30.VaultService.GetWrapperKeyId:input_type -> com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdRequest
-	26, // 25: com.digitalasset.canton.crypto.admin.v30.VaultService.ExportKeyPair:input_type -> com.digitalasset.canton.crypto.admin.v30.ExportKeyPairRequest
-	28, // 26: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportKeyPair:input_type -> com.digitalasset.canton.crypto.admin.v30.ImportKeyPairRequest
-	30, // 27: com.digitalasset.canton.crypto.admin.v30.VaultService.DeleteKeyPair:input_type -> com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairRequest
-	12, // 28: com.digitalasset.canton.crypto.admin.v30.VaultService.ListMyKeys:output_type -> com.digitalasset.canton.crypto.admin.v30.ListMyKeysResponse
-	15, // 29: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateSigningKey:output_type -> com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyResponse
-	17, // 30: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateEncryptionKey:output_type -> com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyResponse
-	21, // 31: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsEncryptionKey:output_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyResponse
-	19, // 32: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsSigningKey:output_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyResponse
-	7,  // 33: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportPublicKey:output_type -> com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyResponse
-	13, // 34: com.digitalasset.canton.crypto.admin.v30.VaultService.ListPublicKeys:output_type -> com.digitalasset.canton.crypto.admin.v30.ListPublicKeysResponse
-	23, // 35: com.digitalasset.canton.crypto.admin.v30.VaultService.RotateWrapperKey:output_type -> com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyResponse
-	25, // 36: com.digitalasset.canton.crypto.admin.v30.VaultService.GetWrapperKeyId:output_type -> com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdResponse
-	27, // 37: com.digitalasset.canton.crypto.admin.v30.VaultService.ExportKeyPair:output_type -> com.digitalasset.canton.crypto.admin.v30.ExportKeyPairResponse
-	29, // 38: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportKeyPair:output_type -> com.digitalasset.canton.crypto.admin.v30.ImportKeyPairResponse
-	31, // 39: com.digitalasset.canton.crypto.admin.v30.VaultService.DeleteKeyPair:output_type -> com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairResponse
-	28, // [28:40] is the sub-list for method output_type
-	16, // [16:28] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	33, // 0: com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse.results:type_name -> com.digitalasset.canton.crypto.admin.v30.ListCertificateResponse.Result
+	34, // 1: com.digitalasset.canton.crypto.admin.v30.ListKeysFilters.purpose:type_name -> com.digitalasset.canton.crypto.v30.KeyPurpose
+	35, // 2: com.digitalasset.canton.crypto.admin.v30.ListKeysFilters.usage_v30:type_name -> com.digitalasset.canton.crypto.v30.SigningKeyUsage
+	9,  // 3: com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest.filters:type_name -> com.digitalasset.canton.crypto.admin.v30.ListKeysFilters
+	0,  // 4: com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest.base_request:type_name -> com.digitalasset.canton.crypto.admin.v30.BaseVaultRequest
+	9,  // 5: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest.filters:type_name -> com.digitalasset.canton.crypto.admin.v30.ListKeysFilters
+	0,  // 6: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest.base_request:type_name -> com.digitalasset.canton.crypto.admin.v30.BaseVaultRequest
+	36, // 7: com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadata.v30:type_name -> com.digitalasset.canton.crypto.v30.PublicKeyWithName
+	12, // 8: com.digitalasset.canton.crypto.admin.v30.ListMyKeysResponse.private_keys_metadata:type_name -> com.digitalasset.canton.crypto.admin.v30.PrivateKeyMetadata
+	36, // 9: com.digitalasset.canton.crypto.admin.v30.ListPublicKeysResponse.public_keys_v30:type_name -> com.digitalasset.canton.crypto.v30.PublicKeyWithName
+	37, // 10: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest.key_spec:type_name -> com.digitalasset.canton.crypto.v30.SigningKeySpec
+	35, // 11: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest.usage_v30:type_name -> com.digitalasset.canton.crypto.v30.SigningKeyUsage
+	0,  // 12: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest.base_request:type_name -> com.digitalasset.canton.crypto.admin.v30.BaseVaultRequest
+	38, // 13: com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyResponse.v30:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
+	39, // 14: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyRequest.key_spec:type_name -> com.digitalasset.canton.crypto.v30.EncryptionKeySpec
+	40, // 15: com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyResponse.public_key:type_name -> com.digitalasset.canton.crypto.v30.EncryptionPublicKey
+	35, // 16: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest.usage_v30:type_name -> com.digitalasset.canton.crypto.v30.SigningKeyUsage
+	0,  // 17: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest.base_request:type_name -> com.digitalasset.canton.crypto.admin.v30.BaseVaultRequest
+	38, // 18: com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyResponse.v30:type_name -> com.digitalasset.canton.crypto.v30.SigningPublicKey
+	40, // 19: com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyResponse.public_key:type_name -> com.digitalasset.canton.crypto.v30.EncryptionPublicKey
+	10, // 20: com.digitalasset.canton.crypto.admin.v30.VaultService.ListMyKeys:input_type -> com.digitalasset.canton.crypto.admin.v30.ListMyKeysRequest
+	15, // 21: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateSigningKey:input_type -> com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyRequest
+	17, // 22: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateEncryptionKey:input_type -> com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyRequest
+	21, // 23: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsEncryptionKey:input_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyRequest
+	19, // 24: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsSigningKey:input_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyRequest
+	7,  // 25: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportPublicKey:input_type -> com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyRequest
+	11, // 26: com.digitalasset.canton.crypto.admin.v30.VaultService.ListPublicKeys:input_type -> com.digitalasset.canton.crypto.admin.v30.ListPublicKeysRequest
+	23, // 27: com.digitalasset.canton.crypto.admin.v30.VaultService.RotateWrapperKey:input_type -> com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyRequest
+	25, // 28: com.digitalasset.canton.crypto.admin.v30.VaultService.GetWrapperKeyId:input_type -> com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdRequest
+	27, // 29: com.digitalasset.canton.crypto.admin.v30.VaultService.ExportKeyPair:input_type -> com.digitalasset.canton.crypto.admin.v30.ExportKeyPairRequest
+	29, // 30: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportKeyPair:input_type -> com.digitalasset.canton.crypto.admin.v30.ImportKeyPairRequest
+	31, // 31: com.digitalasset.canton.crypto.admin.v30.VaultService.DeleteKeyPair:input_type -> com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairRequest
+	13, // 32: com.digitalasset.canton.crypto.admin.v30.VaultService.ListMyKeys:output_type -> com.digitalasset.canton.crypto.admin.v30.ListMyKeysResponse
+	16, // 33: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateSigningKey:output_type -> com.digitalasset.canton.crypto.admin.v30.GenerateSigningKeyResponse
+	18, // 34: com.digitalasset.canton.crypto.admin.v30.VaultService.GenerateEncryptionKey:output_type -> com.digitalasset.canton.crypto.admin.v30.GenerateEncryptionKeyResponse
+	22, // 35: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsEncryptionKey:output_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsEncryptionKeyResponse
+	20, // 36: com.digitalasset.canton.crypto.admin.v30.VaultService.RegisterKmsSigningKey:output_type -> com.digitalasset.canton.crypto.admin.v30.RegisterKmsSigningKeyResponse
+	8,  // 37: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportPublicKey:output_type -> com.digitalasset.canton.crypto.admin.v30.ImportPublicKeyResponse
+	14, // 38: com.digitalasset.canton.crypto.admin.v30.VaultService.ListPublicKeys:output_type -> com.digitalasset.canton.crypto.admin.v30.ListPublicKeysResponse
+	24, // 39: com.digitalasset.canton.crypto.admin.v30.VaultService.RotateWrapperKey:output_type -> com.digitalasset.canton.crypto.admin.v30.RotateWrapperKeyResponse
+	26, // 40: com.digitalasset.canton.crypto.admin.v30.VaultService.GetWrapperKeyId:output_type -> com.digitalasset.canton.crypto.admin.v30.GetWrapperKeyIdResponse
+	28, // 41: com.digitalasset.canton.crypto.admin.v30.VaultService.ExportKeyPair:output_type -> com.digitalasset.canton.crypto.admin.v30.ExportKeyPairResponse
+	30, // 42: com.digitalasset.canton.crypto.admin.v30.VaultService.ImportKeyPair:output_type -> com.digitalasset.canton.crypto.admin.v30.ImportKeyPairResponse
+	32, // 43: com.digitalasset.canton.crypto.admin.v30.VaultService.DeleteKeyPair:output_type -> com.digitalasset.canton.crypto.admin.v30.DeleteKeyPairResponse
+	32, // [32:44] is the sub-list for method output_type
+	20, // [20:32] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_init() }
@@ -1817,14 +1976,26 @@ func file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_init() {
 	if File_com_digitalasset_canton_crypto_admin_v30_vault_service_proto != nil {
 		return
 	}
+	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[10].OneofWrappers = []any{}
 	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[11].OneofWrappers = []any{}
+	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[12].OneofWrappers = []any{
+		(*PrivateKeyMetadata_V30)(nil),
+	}
+	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[15].OneofWrappers = []any{}
+	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[16].OneofWrappers = []any{
+		(*GenerateSigningKeyResponse_V30)(nil),
+	}
+	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[19].OneofWrappers = []any{}
+	file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_msgTypes[20].OneofWrappers = []any{
+		(*RegisterKmsSigningKeyResponse_V30)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDesc), len(file_com_digitalasset_canton_crypto_admin_v30_vault_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   33,
+			NumMessages:   34,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

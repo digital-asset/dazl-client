@@ -53,6 +53,11 @@ class PartyManagementServiceStub:
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusRequest.SerializeToString,
                 response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusResponse.FromString,
                 _registered_method=True)
+        self.GetAcsReplicationStatus = channel.unary_unary(
+                '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAcsReplicationStatus',
+                request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAcsReplicationStatusRequest.SerializeToString,
+                response_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAcsReplicationStatusResponse.FromString,
+                _registered_method=True)
         self.ExportPartyAcs = channel.unary_stream(
                 '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ExportPartyAcs',
                 request_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.ExportPartyAcsRequest.SerializeToString,
@@ -91,6 +96,12 @@ class PartyManagementServiceServicer:
         raise NotImplementedError('Method not implemented!')
 
     def GetAddPartyStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetAcsReplicationStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -137,6 +148,11 @@ def add_PartyManagementServiceServicer_to_server(servicer, server):
                     servicer.GetAddPartyStatus,
                     request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusRequest.FromString,
                     response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusResponse.SerializeToString,
+            ),
+            'GetAcsReplicationStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAcsReplicationStatus,
+                    request_deserializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAcsReplicationStatusRequest.FromString,
+                    response_serializer=com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAcsReplicationStatusResponse.SerializeToString,
             ),
             'ExportPartyAcs': grpc.unary_stream_rpc_method_handler(
                     servicer.ExportPartyAcs,
@@ -240,6 +256,33 @@ class PartyManagementService:
             '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAddPartyStatus',
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusRequest.SerializeToString,
             com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAddPartyStatusResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetAcsReplicationStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetAcsReplicationStatus',
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAcsReplicationStatusRequest.SerializeToString,
+            com_dot_digitalasset_dot_canton_dot_admin_dot_participant_dot_v30_dot_party__management__service__pb2.GetAcsReplicationStatusResponse.FromString,
             options,
             channel_credentials,
             insecure,

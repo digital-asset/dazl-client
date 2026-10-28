@@ -4,10 +4,8 @@
 # isort: skip_file
 import datetime
 
-from ....protocol.v30 import sequencing_pb2 as _sequencing_pb2
 from ....protocol.v30 import traffic_control_parameters_pb2 as _traffic_control_parameters_pb2
 from . import sequencer_initialization_snapshot_pb2 as _sequencer_initialization_snapshot_pb2
-from ....topology.admin.v30 import common_pb2 as _common_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -181,30 +179,6 @@ class SnapshotResponse(_message.Message):
     failure: SnapshotResponse.Failure
     versioned_success: SnapshotResponse.VersionedSuccess
     def __init__(self, success: _Optional[_Union[SnapshotResponse.Success, _Mapping]] = ..., failure: _Optional[_Union[SnapshotResponse.Failure, _Mapping]] = ..., versioned_success: _Optional[_Union[SnapshotResponse.VersionedSuccess, _Mapping]] = ...) -> None: ...
-
-class OnboardingStateRequest(_message.Message):
-    __slots__ = ("sequencer_uid", "timestamp")
-    SEQUENCER_UID_FIELD_NUMBER: _ClassVar[int]
-    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-    sequencer_uid: str
-    timestamp: _timestamp_pb2.Timestamp
-    def __init__(self, sequencer_uid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
-
-class OnboardingStateResponse(_message.Message):
-    __slots__ = ("onboarding_state_for_sequencer",)
-    ONBOARDING_STATE_FOR_SEQUENCER_FIELD_NUMBER: _ClassVar[int]
-    onboarding_state_for_sequencer: bytes
-    def __init__(self, onboarding_state_for_sequencer: _Optional[bytes] = ...) -> None: ...
-
-class OnboardingStateForSequencer(_message.Message):
-    __slots__ = ("topology_snapshot", "static_synchronizer_parameters", "sequencer_snapshot")
-    TOPOLOGY_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
-    STATIC_SYNCHRONIZER_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
-    SEQUENCER_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
-    topology_snapshot: _common_pb2.TopologyTransactions
-    static_synchronizer_parameters: _sequencing_pb2.StaticSynchronizerParameters
-    sequencer_snapshot: _sequencer_initialization_snapshot_pb2.SequencerSnapshot
-    def __init__(self, topology_snapshot: _Optional[_Union[_common_pb2.TopologyTransactions, _Mapping]] = ..., static_synchronizer_parameters: _Optional[_Union[_sequencing_pb2.StaticSynchronizerParameters, _Mapping]] = ..., sequencer_snapshot: _Optional[_Union[_sequencer_initialization_snapshot_pb2.SequencerSnapshot, _Mapping]] = ...) -> None: ...
 
 class OnboardingStateV2Request(_message.Message):
     __slots__ = ("sequencer_uid", "timestamp")

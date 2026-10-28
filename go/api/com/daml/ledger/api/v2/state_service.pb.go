@@ -11,6 +11,7 @@ package v2
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -76,12 +77,13 @@ func (ParticipantPermission) EnumDescriptor() ([]byte, []int) {
 }
 
 type GetActiveContractsRequest struct {
-	state                   protoimpl.MessageState `protogen:"open.v1"`
-	ActiveAtOffset          int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
-	EventFormat             *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
-	StreamContinuationToken []byte                 `protobuf:"bytes,5,opt,name=stream_continuation_token,json=streamContinuationToken,proto3,oneof" json:"stream_continuation_token,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	ActiveAtOffset                 int64                  `protobuf:"varint,3,opt,name=active_at_offset,json=activeAtOffset,proto3" json:"active_at_offset,omitempty"`
+	EventFormat                    *EventFormat           `protobuf:"bytes,4,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	StreamContinuationToken        []byte                 `protobuf:"bytes,5,opt,name=stream_continuation_token,json=streamContinuationToken,proto3,oneof" json:"stream_continuation_token,omitempty"`
+	IncludeIncompleteReassignments bool                   `protobuf:"varint,6,opt,name=include_incomplete_reassignments,json=includeIncompleteReassignments,proto3" json:"include_incomplete_reassignments,omitempty"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
 func (x *GetActiveContractsRequest) Reset() {
@@ -135,14 +137,22 @@ func (x *GetActiveContractsRequest) GetStreamContinuationToken() []byte {
 	return nil
 }
 
+func (x *GetActiveContractsRequest) GetIncludeIncompleteReassignments() bool {
+	if x != nil {
+		return x.IncludeIncompleteReassignments
+	}
+	return false
+}
+
 type GetActiveContractsPageRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ActiveAtOffset *int64                 `protobuf:"varint,1,opt,name=active_at_offset,json=activeAtOffset,proto3,oneof" json:"active_at_offset,omitempty"`
-	EventFormat    *EventFormat           `protobuf:"bytes,2,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
-	MaxPageSize    *int32                 `protobuf:"varint,3,opt,name=max_page_size,json=maxPageSize,proto3,oneof" json:"max_page_size,omitempty"`
-	PageToken      []byte                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	ActiveAtOffset                 *int64                 `protobuf:"varint,1,opt,name=active_at_offset,json=activeAtOffset,proto3,oneof" json:"active_at_offset,omitempty"`
+	EventFormat                    *EventFormat           `protobuf:"bytes,2,opt,name=event_format,json=eventFormat,proto3" json:"event_format,omitempty"`
+	MaxPageSize                    *int32                 `protobuf:"varint,3,opt,name=max_page_size,json=maxPageSize,proto3,oneof" json:"max_page_size,omitempty"`
+	PageToken                      []byte                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+	IncludeIncompleteReassignments bool                   `protobuf:"varint,5,opt,name=include_incomplete_reassignments,json=includeIncompleteReassignments,proto3" json:"include_incomplete_reassignments,omitempty"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
 func (x *GetActiveContractsPageRequest) Reset() {
@@ -201,6 +211,13 @@ func (x *GetActiveContractsPageRequest) GetPageToken() []byte {
 		return x.PageToken
 	}
 	return nil
+}
+
+func (x *GetActiveContractsPageRequest) GetIncludeIncompleteReassignments() bool {
+	if x != nil {
+		return x.IncludeIncompleteReassignments
+	}
+	return false
 }
 
 type GetActiveContractsResponse struct {
@@ -639,9 +656,10 @@ func (x *GetConnectedSynchronizersResponse) GetConnectedSynchronizers() []*GetCo
 }
 
 type GetLedgerEndRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	SynchronizerId []string               `protobuf:"bytes,1,rep,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *GetLedgerEndRequest) Reset() {
@@ -674,11 +692,19 @@ func (*GetLedgerEndRequest) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{9}
 }
 
+func (x *GetLedgerEndRequest) GetSynchronizerId() []string {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return nil
+}
+
 type GetLedgerEndResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Offset        int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Offset            int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	SynchronizerTimes []*SynchronizerTime    `protobuf:"bytes,2,rep,name=synchronizer_times,json=synchronizerTimes,proto3" json:"synchronizer_times,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *GetLedgerEndResponse) Reset() {
@@ -716,6 +742,13 @@ func (x *GetLedgerEndResponse) GetOffset() int64 {
 		return x.Offset
 	}
 	return 0
+}
+
+func (x *GetLedgerEndResponse) GetSynchronizerTimes() []*SynchronizerTime {
+	if x != nil {
+		return x.SynchronizerTimes
+	}
+	return nil
 }
 
 type GetLatestPrunedOffsetsRequest struct {
@@ -806,6 +839,102 @@ func (x *GetLatestPrunedOffsetsResponse) GetAllDivulgedContractsPrunedUpToInclus
 	return 0
 }
 
+type ConvertRecordTimeToOffsetRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	RecordTime     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=record_time,json=recordTime,proto3" json:"record_time,omitempty"`
+	SynchronizerId string                 `protobuf:"bytes,2,opt,name=synchronizer_id,json=synchronizerId,proto3" json:"synchronizer_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ConvertRecordTimeToOffsetRequest) Reset() {
+	*x = ConvertRecordTimeToOffsetRequest{}
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConvertRecordTimeToOffsetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConvertRecordTimeToOffsetRequest) ProtoMessage() {}
+
+func (x *ConvertRecordTimeToOffsetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConvertRecordTimeToOffsetRequest.ProtoReflect.Descriptor instead.
+func (*ConvertRecordTimeToOffsetRequest) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ConvertRecordTimeToOffsetRequest) GetRecordTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.RecordTime
+	}
+	return nil
+}
+
+func (x *ConvertRecordTimeToOffsetRequest) GetSynchronizerId() string {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return ""
+}
+
+type ConvertRecordTimeToOffsetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Offset        int64                  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConvertRecordTimeToOffsetResponse) Reset() {
+	*x = ConvertRecordTimeToOffsetResponse{}
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConvertRecordTimeToOffsetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConvertRecordTimeToOffsetResponse) ProtoMessage() {}
+
+func (x *ConvertRecordTimeToOffsetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConvertRecordTimeToOffsetResponse.ProtoReflect.Descriptor instead.
+func (*ConvertRecordTimeToOffsetResponse) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ConvertRecordTimeToOffsetResponse) GetOffset() int64 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
 type GetConnectedSynchronizersResponse_ConnectedSynchronizer struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	SynchronizerAlias string                 `protobuf:"bytes,1,opt,name=synchronizer_alias,json=synchronizerAlias,proto3" json:"synchronizer_alias,omitempty"`
@@ -817,7 +946,7 @@ type GetConnectedSynchronizersResponse_ConnectedSynchronizer struct {
 
 func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) Reset() {
 	*x = GetConnectedSynchronizersResponse_ConnectedSynchronizer{}
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[13]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -829,7 +958,7 @@ func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) String() strin
 func (*GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoMessage() {}
 
 func (x *GetConnectedSynchronizersResponse_ConnectedSynchronizer) ProtoReflect() protoreflect.Message {
-	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[13]
+	mi := &file_com_daml_ledger_api_v2_state_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -870,18 +999,20 @@ var File_com_daml_ledger_api_v2_state_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\n" +
-	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\"\x89\x02\n" +
+	"*com/daml/ledger/api/v2/state_service.proto\x12\x16com.daml.ledger.api.v2\x1a\"com/daml/ledger/api/v2/event.proto\x1a.com/daml/ledger/api/v2/offset_checkpoint.proto\x1a)com/daml/ledger/api/v2/reassignment.proto\x1a/com/daml/ledger/api/v2/transaction_filter.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd3\x02\n" +
 	"\x19GetActiveContractsRequest\x12(\n" +
 	"\x10active_at_offset\x18\x03 \x01(\x03R\x0eactiveAtOffset\x12F\n" +
 	"\fevent_format\x18\x04 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12?\n" +
-	"\x19stream_continuation_token\x18\x05 \x01(\fH\x00R\x17streamContinuationToken\x88\x01\x01B\x1c\n" +
-	"\x1a_stream_continuation_tokenJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x06filterR\averbose\"\x99\x02\n" +
+	"\x19stream_continuation_token\x18\x05 \x01(\fH\x00R\x17streamContinuationToken\x88\x01\x01\x12H\n" +
+	" include_incomplete_reassignments\x18\x06 \x01(\bR\x1eincludeIncompleteReassignmentsB\x1c\n" +
+	"\x1a_stream_continuation_tokenJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x06filterR\averbose\"\xe3\x02\n" +
 	"\x1dGetActiveContractsPageRequest\x12-\n" +
 	"\x10active_at_offset\x18\x01 \x01(\x03H\x00R\x0eactiveAtOffset\x88\x01\x01\x12F\n" +
 	"\fevent_format\x18\x02 \x01(\v2#.com.daml.ledger.api.v2.EventFormatR\veventFormat\x12'\n" +
 	"\rmax_page_size\x18\x03 \x01(\x05H\x01R\vmaxPageSize\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"page_token\x18\x04 \x01(\fH\x02R\tpageToken\x88\x01\x01B\x13\n" +
+	"page_token\x18\x04 \x01(\fH\x02R\tpageToken\x88\x01\x01\x12H\n" +
+	" include_incomplete_reassignments\x18\x05 \x01(\bR\x1eincludeIncompleteReassignmentsB\x13\n" +
 	"\x11_active_at_offsetB\x10\n" +
 	"\x0e_max_page_sizeB\r\n" +
 	"\v_page_token\"\xa2\x03\n" +
@@ -918,25 +1049,34 @@ const file_com_daml_ledger_api_v2_state_service_proto_rawDesc = "" +
 	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\x12M\n" +
 	"\n" +
 	"permission\x18\x03 \x01(\x0e2-.com.daml.ledger.api.v2.ParticipantPermissionR\n" +
-	"permission\"\x15\n" +
-	"\x13GetLedgerEndRequest\".\n" +
+	"permission\">\n" +
+	"\x13GetLedgerEndRequest\x12'\n" +
+	"\x0fsynchronizer_id\x18\x01 \x03(\tR\x0esynchronizerId\"\x87\x01\n" +
 	"\x14GetLedgerEndResponse\x12\x16\n" +
-	"\x06offset\x18\x01 \x01(\x03R\x06offset\"\x1f\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset\x12W\n" +
+	"\x12synchronizer_times\x18\x02 \x03(\v2(.com.daml.ledger.api.v2.SynchronizerTimeR\x11synchronizerTimes\"\x1f\n" +
 	"\x1dGetLatestPrunedOffsetsRequest\"\xcc\x01\n" +
 	"\x1eGetLatestPrunedOffsetsResponse\x12J\n" +
 	"\"participant_pruned_up_to_inclusive\x18\x01 \x01(\x03R\x1eparticipantPrunedUpToInclusive\x12^\n" +
-	"-all_divulged_contracts_pruned_up_to_inclusive\x18\x02 \x01(\x03R'allDivulgedContractsPrunedUpToInclusive*\xb7\x01\n" +
+	"-all_divulged_contracts_pruned_up_to_inclusive\x18\x02 \x01(\x03R'allDivulgedContractsPrunedUpToInclusive\"\x88\x01\n" +
+	" ConvertRecordTimeToOffsetRequest\x12;\n" +
+	"\vrecord_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"recordTime\x12'\n" +
+	"\x0fsynchronizer_id\x18\x02 \x01(\tR\x0esynchronizerId\";\n" +
+	"!ConvertRecordTimeToOffsetResponse\x12\x16\n" +
+	"\x06offset\x18\x01 \x01(\x03R\x06offset*\xb7\x01\n" +
 	"\x15ParticipantPermission\x12&\n" +
 	"\"PARTICIPANT_PERMISSION_UNSPECIFIED\x10\x00\x12%\n" +
 	"!PARTICIPANT_PERMISSION_SUBMISSION\x10\x01\x12'\n" +
 	"#PARTICIPANT_PERMISSION_CONFIRMATION\x10\x02\x12&\n" +
-	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\x9f\x05\n" +
+	"\"PARTICIPANT_PERMISSION_OBSERVATION\x10\x032\xb2\x06\n" +
 	"\fStateService\x12}\n" +
 	"\x12GetActiveContracts\x121.com.daml.ledger.api.v2.GetActiveContractsRequest\x1a2.com.daml.ledger.api.v2.GetActiveContractsResponse0\x01\x12\x87\x01\n" +
 	"\x16GetActiveContractsPage\x125.com.daml.ledger.api.v2.GetActiveContractsPageRequest\x1a6.com.daml.ledger.api.v2.GetActiveContractsPageResponse\x12\x90\x01\n" +
 	"\x19GetConnectedSynchronizers\x128.com.daml.ledger.api.v2.GetConnectedSynchronizersRequest\x1a9.com.daml.ledger.api.v2.GetConnectedSynchronizersResponse\x12i\n" +
 	"\fGetLedgerEnd\x12+.com.daml.ledger.api.v2.GetLedgerEndRequest\x1a,.com.daml.ledger.api.v2.GetLedgerEndResponse\x12\x87\x01\n" +
-	"\x16GetLatestPrunedOffsets\x125.com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest\x1a6.com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponseB\x90\x01\n" +
+	"\x16GetLatestPrunedOffsets\x125.com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest\x1a6.com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse\x12\x90\x01\n" +
+	"\x19ConvertRecordTimeToOffset\x128.com.daml.ledger.api.v2.ConvertRecordTimeToOffsetRequest\x1a9.com.daml.ledger.api.v2.ConvertRecordTimeToOffsetResponseB\x90\x01\n" +
 	"\x16com.daml.ledger.api.v2B\x16StateServiceOuterClassZEgithub.com/digital-asset/dazl-client/v8/go/api/com/daml/ledger/api/v2\xaa\x02\x16Com.Daml.Ledger.Api.V2b\x06proto3"
 
 var (
@@ -952,7 +1092,7 @@ func file_com_daml_ledger_api_v2_state_service_proto_rawDescGZIP() []byte {
 }
 
 var file_com_daml_ledger_api_v2_state_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_daml_ledger_api_v2_state_service_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_com_daml_ledger_api_v2_state_service_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_com_daml_ledger_api_v2_state_service_proto_goTypes = []any{
 	(ParticipantPermission)(0),                                      // 0: com.daml.ledger.api.v2.ParticipantPermission
 	(*GetActiveContractsRequest)(nil),                               // 1: com.daml.ledger.api.v2.GetActiveContractsRequest
@@ -968,40 +1108,48 @@ var file_com_daml_ledger_api_v2_state_service_proto_goTypes = []any{
 	(*GetLedgerEndResponse)(nil),                                    // 11: com.daml.ledger.api.v2.GetLedgerEndResponse
 	(*GetLatestPrunedOffsetsRequest)(nil),                           // 12: com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
 	(*GetLatestPrunedOffsetsResponse)(nil),                          // 13: com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
-	(*GetConnectedSynchronizersResponse_ConnectedSynchronizer)(nil), // 14: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
-	(*EventFormat)(nil),                                             // 15: com.daml.ledger.api.v2.EventFormat
-	(*CreatedEvent)(nil),                                            // 16: com.daml.ledger.api.v2.CreatedEvent
-	(*UnassignedEvent)(nil),                                         // 17: com.daml.ledger.api.v2.UnassignedEvent
-	(*AssignedEvent)(nil),                                           // 18: com.daml.ledger.api.v2.AssignedEvent
+	(*ConvertRecordTimeToOffsetRequest)(nil),                        // 14: com.daml.ledger.api.v2.ConvertRecordTimeToOffsetRequest
+	(*ConvertRecordTimeToOffsetResponse)(nil),                       // 15: com.daml.ledger.api.v2.ConvertRecordTimeToOffsetResponse
+	(*GetConnectedSynchronizersResponse_ConnectedSynchronizer)(nil), // 16: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
+	(*EventFormat)(nil),                                             // 17: com.daml.ledger.api.v2.EventFormat
+	(*CreatedEvent)(nil),                                            // 18: com.daml.ledger.api.v2.CreatedEvent
+	(*UnassignedEvent)(nil),                                         // 19: com.daml.ledger.api.v2.UnassignedEvent
+	(*AssignedEvent)(nil),                                           // 20: com.daml.ledger.api.v2.AssignedEvent
+	(*SynchronizerTime)(nil),                                        // 21: com.daml.ledger.api.v2.SynchronizerTime
+	(*timestamppb.Timestamp)(nil),                                   // 22: google.protobuf.Timestamp
 }
 var file_com_daml_ledger_api_v2_state_service_proto_depIdxs = []int32{
-	15, // 0: com.daml.ledger.api.v2.GetActiveContractsRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
-	15, // 1: com.daml.ledger.api.v2.GetActiveContractsPageRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	17, // 0: com.daml.ledger.api.v2.GetActiveContractsRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
+	17, // 1: com.daml.ledger.api.v2.GetActiveContractsPageRequest.event_format:type_name -> com.daml.ledger.api.v2.EventFormat
 	5,  // 2: com.daml.ledger.api.v2.GetActiveContractsResponse.active_contract:type_name -> com.daml.ledger.api.v2.ActiveContract
 	6,  // 3: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_unassigned:type_name -> com.daml.ledger.api.v2.IncompleteUnassigned
 	7,  // 4: com.daml.ledger.api.v2.GetActiveContractsResponse.incomplete_assigned:type_name -> com.daml.ledger.api.v2.IncompleteAssigned
 	3,  // 5: com.daml.ledger.api.v2.GetActiveContractsPageResponse.active_contracts:type_name -> com.daml.ledger.api.v2.GetActiveContractsResponse
-	16, // 6: com.daml.ledger.api.v2.ActiveContract.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	16, // 7: com.daml.ledger.api.v2.IncompleteUnassigned.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
-	17, // 8: com.daml.ledger.api.v2.IncompleteUnassigned.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
-	18, // 9: com.daml.ledger.api.v2.IncompleteAssigned.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
-	14, // 10: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.connected_synchronizers:type_name -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
-	0,  // 11: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer.permission:type_name -> com.daml.ledger.api.v2.ParticipantPermission
-	1,  // 12: com.daml.ledger.api.v2.StateService.GetActiveContracts:input_type -> com.daml.ledger.api.v2.GetActiveContractsRequest
-	2,  // 13: com.daml.ledger.api.v2.StateService.GetActiveContractsPage:input_type -> com.daml.ledger.api.v2.GetActiveContractsPageRequest
-	8,  // 14: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:input_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
-	10, // 15: com.daml.ledger.api.v2.StateService.GetLedgerEnd:input_type -> com.daml.ledger.api.v2.GetLedgerEndRequest
-	12, // 16: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:input_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
-	3,  // 17: com.daml.ledger.api.v2.StateService.GetActiveContracts:output_type -> com.daml.ledger.api.v2.GetActiveContractsResponse
-	4,  // 18: com.daml.ledger.api.v2.StateService.GetActiveContractsPage:output_type -> com.daml.ledger.api.v2.GetActiveContractsPageResponse
-	9,  // 19: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:output_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
-	11, // 20: com.daml.ledger.api.v2.StateService.GetLedgerEnd:output_type -> com.daml.ledger.api.v2.GetLedgerEndResponse
-	13, // 21: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:output_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
-	17, // [17:22] is the sub-list for method output_type
-	12, // [12:17] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	18, // 6: com.daml.ledger.api.v2.ActiveContract.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	18, // 7: com.daml.ledger.api.v2.IncompleteUnassigned.created_event:type_name -> com.daml.ledger.api.v2.CreatedEvent
+	19, // 8: com.daml.ledger.api.v2.IncompleteUnassigned.unassigned_event:type_name -> com.daml.ledger.api.v2.UnassignedEvent
+	20, // 9: com.daml.ledger.api.v2.IncompleteAssigned.assigned_event:type_name -> com.daml.ledger.api.v2.AssignedEvent
+	16, // 10: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.connected_synchronizers:type_name -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer
+	21, // 11: com.daml.ledger.api.v2.GetLedgerEndResponse.synchronizer_times:type_name -> com.daml.ledger.api.v2.SynchronizerTime
+	22, // 12: com.daml.ledger.api.v2.ConvertRecordTimeToOffsetRequest.record_time:type_name -> google.protobuf.Timestamp
+	0,  // 13: com.daml.ledger.api.v2.GetConnectedSynchronizersResponse.ConnectedSynchronizer.permission:type_name -> com.daml.ledger.api.v2.ParticipantPermission
+	1,  // 14: com.daml.ledger.api.v2.StateService.GetActiveContracts:input_type -> com.daml.ledger.api.v2.GetActiveContractsRequest
+	2,  // 15: com.daml.ledger.api.v2.StateService.GetActiveContractsPage:input_type -> com.daml.ledger.api.v2.GetActiveContractsPageRequest
+	8,  // 16: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:input_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersRequest
+	10, // 17: com.daml.ledger.api.v2.StateService.GetLedgerEnd:input_type -> com.daml.ledger.api.v2.GetLedgerEndRequest
+	12, // 18: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:input_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsRequest
+	14, // 19: com.daml.ledger.api.v2.StateService.ConvertRecordTimeToOffset:input_type -> com.daml.ledger.api.v2.ConvertRecordTimeToOffsetRequest
+	3,  // 20: com.daml.ledger.api.v2.StateService.GetActiveContracts:output_type -> com.daml.ledger.api.v2.GetActiveContractsResponse
+	4,  // 21: com.daml.ledger.api.v2.StateService.GetActiveContractsPage:output_type -> com.daml.ledger.api.v2.GetActiveContractsPageResponse
+	9,  // 22: com.daml.ledger.api.v2.StateService.GetConnectedSynchronizers:output_type -> com.daml.ledger.api.v2.GetConnectedSynchronizersResponse
+	11, // 23: com.daml.ledger.api.v2.StateService.GetLedgerEnd:output_type -> com.daml.ledger.api.v2.GetLedgerEndResponse
+	13, // 24: com.daml.ledger.api.v2.StateService.GetLatestPrunedOffsets:output_type -> com.daml.ledger.api.v2.GetLatestPrunedOffsetsResponse
+	15, // 25: com.daml.ledger.api.v2.StateService.ConvertRecordTimeToOffset:output_type -> com.daml.ledger.api.v2.ConvertRecordTimeToOffsetResponse
+	20, // [20:26] is the sub-list for method output_type
+	14, // [14:20] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_state_service_proto_init() }
@@ -1010,6 +1158,7 @@ func file_com_daml_ledger_api_v2_state_service_proto_init() {
 		return
 	}
 	file_com_daml_ledger_api_v2_event_proto_init()
+	file_com_daml_ledger_api_v2_offset_checkpoint_proto_init()
 	file_com_daml_ledger_api_v2_reassignment_proto_init()
 	file_com_daml_ledger_api_v2_transaction_filter_proto_init()
 	file_com_daml_ledger_api_v2_state_service_proto_msgTypes[0].OneofWrappers = []any{}
@@ -1026,7 +1175,7 @@ func file_com_daml_ledger_api_v2_state_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_state_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_state_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   14,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

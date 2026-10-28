@@ -190,12 +190,14 @@ func (*ReassignmentCommand_UnassignCommand) isReassignmentCommand_Command() {}
 func (*ReassignmentCommand_AssignCommand) isReassignmentCommand_Command() {}
 
 type UnassignCommand struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ContractId    string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
-	Source        string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
-	Target        string                 `protobuf:"bytes,3,opt,name=target,proto3" json:"target,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                             protoimpl.MessageState `protogen:"open.v1"`
+	ContractId                        string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	Source                            string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	Target                            string                 `protobuf:"bytes,3,opt,name=target,proto3" json:"target,omitempty"`
+	OverrideSourceValidationPackageId *string                `protobuf:"bytes,4,opt,name=override_source_validation_package_id,json=overrideSourceValidationPackageId,proto3,oneof" json:"override_source_validation_package_id,omitempty"`
+	OverrideTargetValidationPackageId *string                `protobuf:"bytes,5,opt,name=override_target_validation_package_id,json=overrideTargetValidationPackageId,proto3,oneof" json:"override_target_validation_package_id,omitempty"`
+	unknownFields                     protoimpl.UnknownFields
+	sizeCache                         protoimpl.SizeCache
 }
 
 func (x *UnassignCommand) Reset() {
@@ -245,6 +247,20 @@ func (x *UnassignCommand) GetSource() string {
 func (x *UnassignCommand) GetTarget() string {
 	if x != nil {
 		return x.Target
+	}
+	return ""
+}
+
+func (x *UnassignCommand) GetOverrideSourceValidationPackageId() string {
+	if x != nil && x.OverrideSourceValidationPackageId != nil {
+		return *x.OverrideSourceValidationPackageId
+	}
+	return ""
+}
+
+func (x *UnassignCommand) GetOverrideTargetValidationPackageId() string {
+	if x != nil && x.OverrideTargetValidationPackageId != nil {
+		return *x.OverrideTargetValidationPackageId
 	}
 	return ""
 }
@@ -326,12 +342,16 @@ const file_com_daml_ledger_api_v2_reassignment_commands_proto_rawDesc = "" +
 	"\x13ReassignmentCommand\x12T\n" +
 	"\x10unassign_command\x18\x01 \x01(\v2'.com.daml.ledger.api.v2.UnassignCommandH\x00R\x0funassignCommand\x12N\n" +
 	"\x0eassign_command\x18\x02 \x01(\v2%.com.daml.ledger.api.v2.AssignCommandH\x00R\rassignCommandB\t\n" +
-	"\acommand\"b\n" +
+	"\acommand\"\xe4\x02\n" +
 	"\x0fUnassignCommand\x12\x1f\n" +
 	"\vcontract_id\x18\x01 \x01(\tR\n" +
 	"contractId\x12\x16\n" +
 	"\x06source\x18\x02 \x01(\tR\x06source\x12\x16\n" +
-	"\x06target\x18\x03 \x01(\tR\x06target\"h\n" +
+	"\x06target\x18\x03 \x01(\tR\x06target\x12U\n" +
+	"%override_source_validation_package_id\x18\x04 \x01(\tH\x00R!overrideSourceValidationPackageId\x88\x01\x01\x12U\n" +
+	"%override_target_validation_package_id\x18\x05 \x01(\tH\x01R!overrideTargetValidationPackageId\x88\x01\x01B(\n" +
+	"&_override_source_validation_package_idB(\n" +
+	"&_override_target_validation_package_id\"h\n" +
 	"\rAssignCommand\x12'\n" +
 	"\x0freassignment_id\x18\x01 \x01(\tR\x0ereassignmentId\x12\x16\n" +
 	"\x06source\x18\x02 \x01(\tR\x06source\x12\x16\n" +
@@ -377,6 +397,7 @@ func file_com_daml_ledger_api_v2_reassignment_commands_proto_init() {
 		(*ReassignmentCommand_UnassignCommand)(nil),
 		(*ReassignmentCommand_AssignCommand)(nil),
 	}
+	file_com_daml_ledger_api_v2_reassignment_commands_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

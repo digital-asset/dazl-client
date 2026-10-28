@@ -13,14 +13,16 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TimeProofRequestConfig(_message.Message):
-    __slots__ = ("initial_retry_delay", "max_retry_delay", "max_sequencing_delay")
+    __slots__ = ("initial_retry_delay", "max_retry_delay", "max_sequencing_delay", "request_timeout")
     INITIAL_RETRY_DELAY_FIELD_NUMBER: _ClassVar[int]
     MAX_RETRY_DELAY_FIELD_NUMBER: _ClassVar[int]
     MAX_SEQUENCING_DELAY_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_TIMEOUT_FIELD_NUMBER: _ClassVar[int]
     initial_retry_delay: _duration_pb2.Duration
     max_retry_delay: _duration_pb2.Duration
     max_sequencing_delay: _duration_pb2.Duration
-    def __init__(self, initial_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_sequencing_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    request_timeout: _duration_pb2.Duration
+    def __init__(self, initial_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_retry_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_sequencing_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., request_timeout: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
 
 class SynchronizerTimeTrackerConfig(_message.Message):
     __slots__ = ("observation_latency", "patience_duration", "min_observation_duration", "time_proof_request")

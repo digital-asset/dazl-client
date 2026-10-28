@@ -7,6 +7,7 @@ import datetime
 from . import acs_import_pb2 as _acs_import_pb2
 from . import synchronizer_connectivity_service_pb2 as _synchronizer_connectivity_service_pb2
 from ...sequencer.v30 import sequencer_connection_pb2 as _sequencer_connection_pb2
+from ....topology.admin.v30 import common_pb2 as _common_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -18,21 +19,23 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PurgeContractsRequest(_message.Message):
-    __slots__ = ("synchronizer_alias", "contract_ids", "ignore_already_purged")
+    __slots__ = ("synchronizer_alias", "contract_ids", "ignore_already_purged", "force_repair_when_topology_transaction_at_ledger_end")
     SYNCHRONIZER_ALIAS_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_IDS_FIELD_NUMBER: _ClassVar[int]
     IGNORE_ALREADY_PURGED_FIELD_NUMBER: _ClassVar[int]
+    FORCE_REPAIR_WHEN_TOPOLOGY_TRANSACTION_AT_LEDGER_END_FIELD_NUMBER: _ClassVar[int]
     synchronizer_alias: str
     contract_ids: _containers.RepeatedScalarFieldContainer[str]
     ignore_already_purged: bool
-    def __init__(self, synchronizer_alias: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., ignore_already_purged: _Optional[bool] = ...) -> None: ...
+    force_repair_when_topology_transaction_at_ledger_end: bool
+    def __init__(self, synchronizer_alias: _Optional[str] = ..., contract_ids: _Optional[_Iterable[str]] = ..., ignore_already_purged: _Optional[bool] = ..., force_repair_when_topology_transaction_at_ledger_end: _Optional[bool] = ...) -> None: ...
 
 class PurgeContractsResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
 class ChangeAssignationRequest(_message.Message):
-    __slots__ = ("source_synchronizer_alias", "target_synchronizer_alias", "skip_inactive", "contracts")
+    __slots__ = ("source_synchronizer_alias", "target_synchronizer_alias", "skip_inactive", "contracts", "force_repair_when_topology_transaction_at_ledger_end")
     class Contract(_message.Message):
         __slots__ = ("id", "reassignment_counter_override")
         ID_FIELD_NUMBER: _ClassVar[int]
@@ -44,25 +47,29 @@ class ChangeAssignationRequest(_message.Message):
     TARGET_SYNCHRONIZER_ALIAS_FIELD_NUMBER: _ClassVar[int]
     SKIP_INACTIVE_FIELD_NUMBER: _ClassVar[int]
     CONTRACTS_FIELD_NUMBER: _ClassVar[int]
+    FORCE_REPAIR_WHEN_TOPOLOGY_TRANSACTION_AT_LEDGER_END_FIELD_NUMBER: _ClassVar[int]
     source_synchronizer_alias: str
     target_synchronizer_alias: str
     skip_inactive: bool
     contracts: _containers.RepeatedCompositeFieldContainer[ChangeAssignationRequest.Contract]
-    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_alias: _Optional[str] = ..., skip_inactive: _Optional[bool] = ..., contracts: _Optional[_Iterable[_Union[ChangeAssignationRequest.Contract, _Mapping]]] = ...) -> None: ...
+    force_repair_when_topology_transaction_at_ledger_end: bool
+    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_alias: _Optional[str] = ..., skip_inactive: _Optional[bool] = ..., contracts: _Optional[_Iterable[_Union[ChangeAssignationRequest.Contract, _Mapping]]] = ..., force_repair_when_topology_transaction_at_ledger_end: _Optional[bool] = ...) -> None: ...
 
 class ChangeAssignationResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
 
 class MigrateSynchronizerRequest(_message.Message):
-    __slots__ = ("source_synchronizer_alias", "target_synchronizer_connection_config", "force")
+    __slots__ = ("source_synchronizer_alias", "target_synchronizer_connection_config", "force", "force_repair_when_topology_transaction_at_ledger_end")
     SOURCE_SYNCHRONIZER_ALIAS_FIELD_NUMBER: _ClassVar[int]
     TARGET_SYNCHRONIZER_CONNECTION_CONFIG_FIELD_NUMBER: _ClassVar[int]
     FORCE_FIELD_NUMBER: _ClassVar[int]
+    FORCE_REPAIR_WHEN_TOPOLOGY_TRANSACTION_AT_LEDGER_END_FIELD_NUMBER: _ClassVar[int]
     source_synchronizer_alias: str
     target_synchronizer_connection_config: _synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig
     force: bool
-    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_connection_config: _Optional[_Union[_synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., force: _Optional[bool] = ...) -> None: ...
+    force_repair_when_topology_transaction_at_ledger_end: bool
+    def __init__(self, source_synchronizer_alias: _Optional[str] = ..., target_synchronizer_connection_config: _Optional[_Union[_synchronizer_connectivity_service_pb2.SynchronizerConnectionConfig, _Mapping]] = ..., force: _Optional[bool] = ..., force_repair_when_topology_transaction_at_ledger_end: _Optional[bool] = ...) -> None: ...
 
 class MigrateSynchronizerResponse(_message.Message):
     __slots__ = ()
@@ -102,20 +109,22 @@ class ExportAcsResponse(_message.Message):
     def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
 
 class ImportAcsRequest(_message.Message):
-    __slots__ = ("acs_snapshot", "workflow_id_prefix", "contract_import_mode", "excluded_stakeholder_ids", "representative_package_id_override", "synchronizer_id")
+    __slots__ = ("acs_snapshot", "workflow_id_prefix", "contract_import_mode", "excluded_stakeholder_ids", "representative_package_id_override", "synchronizer_id", "force_repair_when_topology_transaction_at_ledger_end")
     ACS_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_PREFIX_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_IMPORT_MODE_FIELD_NUMBER: _ClassVar[int]
     EXCLUDED_STAKEHOLDER_IDS_FIELD_NUMBER: _ClassVar[int]
     REPRESENTATIVE_PACKAGE_ID_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    FORCE_REPAIR_WHEN_TOPOLOGY_TRANSACTION_AT_LEDGER_END_FIELD_NUMBER: _ClassVar[int]
     acs_snapshot: bytes
     workflow_id_prefix: str
     contract_import_mode: _acs_import_pb2.ContractImportMode
     excluded_stakeholder_ids: _containers.RepeatedScalarFieldContainer[str]
     representative_package_id_override: _acs_import_pb2.RepresentativePackageIdOverride
     synchronizer_id: str
-    def __init__(self, acs_snapshot: _Optional[bytes] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., excluded_stakeholder_ids: _Optional[_Iterable[str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+    force_repair_when_topology_transaction_at_ledger_end: bool
+    def __init__(self, acs_snapshot: _Optional[bytes] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., excluded_stakeholder_ids: _Optional[_Iterable[str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ..., synchronizer_id: _Optional[str] = ..., force_repair_when_topology_transaction_at_ledger_end: _Optional[bool] = ...) -> None: ...
 
 class ImportAcsResponse(_message.Message):
     __slots__ = ()
@@ -164,14 +173,16 @@ class UnignoreEventsResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class RollbackUnassignmentRequest(_message.Message):
-    __slots__ = ("reassignment_id", "source_synchronizer_id", "target_synchronizer_id")
+    __slots__ = ("reassignment_id", "source_synchronizer_id", "target_synchronizer_id", "force_repair_when_topology_transaction_at_ledger_end")
     REASSIGNMENT_ID_FIELD_NUMBER: _ClassVar[int]
     SOURCE_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     TARGET_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    FORCE_REPAIR_WHEN_TOPOLOGY_TRANSACTION_AT_LEDGER_END_FIELD_NUMBER: _ClassVar[int]
     reassignment_id: str
     source_synchronizer_id: str
     target_synchronizer_id: str
-    def __init__(self, reassignment_id: _Optional[str] = ..., source_synchronizer_id: _Optional[str] = ..., target_synchronizer_id: _Optional[str] = ...) -> None: ...
+    force_repair_when_topology_transaction_at_ledger_end: bool
+    def __init__(self, reassignment_id: _Optional[str] = ..., source_synchronizer_id: _Optional[str] = ..., target_synchronizer_id: _Optional[str] = ..., force_repair_when_topology_transaction_at_ledger_end: _Optional[bool] = ...) -> None: ...
 
 class RollbackUnassignmentResponse(_message.Message):
     __slots__ = ()
@@ -227,3 +238,101 @@ class PerformLateLsuRequest(_message.Message):
 class PerformLateLsuResponse(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...
+
+class DeleteSynchronizerConnectionConfigRequest(_message.Message):
+    __slots__ = ("physical_synchronizer_id",)
+    PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    physical_synchronizer_id: str
+    def __init__(self, physical_synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class DeleteSynchronizerConnectionConfigResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class ListPendingOperationsRequest(_message.Message):
+    __slots__ = ("operation_name", "filter_synchronizer", "filter_operation_key")
+    OPERATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    FILTER_SYNCHRONIZER_FIELD_NUMBER: _ClassVar[int]
+    FILTER_OPERATION_KEY_FIELD_NUMBER: _ClassVar[int]
+    operation_name: str
+    filter_synchronizer: _common_pb2.Synchronizer
+    filter_operation_key: str
+    def __init__(self, operation_name: _Optional[str] = ..., filter_synchronizer: _Optional[_Union[_common_pb2.Synchronizer, _Mapping]] = ..., filter_operation_key: _Optional[str] = ...) -> None: ...
+
+class ListPendingOperationsResponse(_message.Message):
+    __slots__ = ("pending_operations",)
+    PENDING_OPERATIONS_FIELD_NUMBER: _ClassVar[int]
+    pending_operations: _containers.RepeatedCompositeFieldContainer[PendingOperationMetadata]
+    def __init__(self, pending_operations: _Optional[_Iterable[_Union[PendingOperationMetadata, _Mapping]]] = ...) -> None: ...
+
+class PendingOperationMetadata(_message.Message):
+    __slots__ = ("operation_name", "operation_key", "synchronizer")
+    OPERATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    OPERATION_KEY_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_FIELD_NUMBER: _ClassVar[int]
+    operation_name: str
+    operation_key: str
+    synchronizer: _common_pb2.Synchronizer
+    def __init__(self, operation_name: _Optional[str] = ..., operation_key: _Optional[str] = ..., synchronizer: _Optional[_Union[_common_pb2.Synchronizer, _Mapping]] = ...) -> None: ...
+
+class DeletePendingOperationRequest(_message.Message):
+    __slots__ = ("operation_name", "synchronizer", "operation_key")
+    OPERATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_FIELD_NUMBER: _ClassVar[int]
+    OPERATION_KEY_FIELD_NUMBER: _ClassVar[int]
+    operation_name: str
+    synchronizer: _common_pb2.Synchronizer
+    operation_key: str
+    def __init__(self, operation_name: _Optional[str] = ..., synchronizer: _Optional[_Union[_common_pb2.Synchronizer, _Mapping]] = ..., operation_key: _Optional[str] = ...) -> None: ...
+
+class DeletePendingOperationResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class ReinitializeDigestCommitmentsRequest(_message.Message):
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: str
+    def __init__(self, synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class ReinitializeDigestCommitmentsResponse(_message.Message):
+    __slots__ = ("reinitialization_timestamp",)
+    REINITIALIZATION_TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    reinitialization_timestamp: _timestamp_pb2.Timestamp
+    def __init__(self, reinitialization_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ReinitializeDigestCommitmentsStatusRequest(_message.Message):
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: str
+    def __init__(self, synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class ReinitializeDigestCommitmentsStatusResponse(_message.Message):
+    __slots__ = ("last_completed_reinitialization_time",)
+    LAST_COMPLETED_REINITIALIZATION_TIME_FIELD_NUMBER: _ClassVar[int]
+    last_completed_reinitialization_time: _timestamp_pb2.Timestamp
+    def __init__(self, last_completed_reinitialization_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class RunDigestConsistencyCheckRequest(_message.Message):
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: str
+    def __init__(self, synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class RunDigestConsistencyCheckResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class DigestConsistencyCheckStatusRequest(_message.Message):
+    __slots__ = ("synchronizer_id",)
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    synchronizer_id: str
+    def __init__(self, synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class DigestConsistencyCheckStatusResponse(_message.Message):
+    __slots__ = ("is_running", "last_started_check_time")
+    IS_RUNNING_FIELD_NUMBER: _ClassVar[int]
+    LAST_STARTED_CHECK_TIME_FIELD_NUMBER: _ClassVar[int]
+    is_running: bool
+    last_started_check_time: _timestamp_pb2.Timestamp
+    def __init__(self, is_running: _Optional[bool] = ..., last_started_check_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
