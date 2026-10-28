@@ -121,7 +121,7 @@ func (x AcsReplicationStatus_AcsReplicationError_ErrorType) Number() protoreflec
 
 // Deprecated: Use AcsReplicationStatus_AcsReplicationError_ErrorType.Descriptor instead.
 func (AcsReplicationStatus_AcsReplicationError_ErrorType) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 6, 0}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 7, 0}
 }
 
 type AcsReplicationStatus struct {
@@ -133,11 +133,12 @@ type AcsReplicationStatus struct {
 	//	*AcsReplicationStatus_Proposed
 	//	*AcsReplicationStatus_Exists
 	//	*AcsReplicationStatus_Archived
+	//	*AcsReplicationStatus_ProposalSent
 	AgreementStatus        isAcsReplicationStatus_AgreementStatus                      `protobuf_oneof:"agreement_status"`
-	PtpTopologyTransaction *AcsReplicationStatus_PartyToParticipantTopologyTransaction `protobuf:"bytes,6,opt,name=ptp_topology_transaction,json=ptpTopologyTransaction,proto3" json:"ptp_topology_transaction,omitempty"`
-	Replication            *AcsReplicationStatus_AcsReplicationProgress                `protobuf:"bytes,7,opt,name=replication,proto3" json:"replication,omitempty"`
-	HasCompleted           bool                                                        `protobuf:"varint,8,opt,name=has_completed,json=hasCompleted,proto3" json:"has_completed,omitempty"`
-	ErrorMessage           *AcsReplicationStatus_AcsReplicationError                   `protobuf:"bytes,9,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	PtpTopologyTransaction *AcsReplicationStatus_PartyToParticipantTopologyTransaction `protobuf:"bytes,7,opt,name=ptp_topology_transaction,json=ptpTopologyTransaction,proto3" json:"ptp_topology_transaction,omitempty"`
+	Replication            *AcsReplicationStatus_AcsReplicationProgress                `protobuf:"bytes,8,opt,name=replication,proto3" json:"replication,omitempty"`
+	HasCompleted           bool                                                        `protobuf:"varint,9,opt,name=has_completed,json=hasCompleted,proto3" json:"has_completed,omitempty"`
+	ErrorMessage           *AcsReplicationStatus_AcsReplicationError                   `protobuf:"bytes,10,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -222,6 +223,15 @@ func (x *AcsReplicationStatus) GetArchived() *AcsReplicationStatus_AgreementArch
 	return nil
 }
 
+func (x *AcsReplicationStatus) GetProposalSent() *AcsReplicationStatus_AgreementProposalSent {
+	if x != nil {
+		if x, ok := x.AgreementStatus.(*AcsReplicationStatus_ProposalSent); ok {
+			return x.ProposalSent
+		}
+	}
+	return nil
+}
+
 func (x *AcsReplicationStatus) GetPtpTopologyTransaction() *AcsReplicationStatus_PartyToParticipantTopologyTransaction {
 	if x != nil {
 		return x.PtpTopologyTransaction
@@ -270,6 +280,10 @@ type AcsReplicationStatus_Archived struct {
 	Archived *AcsReplicationStatus_AgreementArchived `protobuf:"bytes,5,opt,name=archived,proto3,oneof"`
 }
 
+type AcsReplicationStatus_ProposalSent struct {
+	ProposalSent *AcsReplicationStatus_AgreementProposalSent `protobuf:"bytes,6,opt,name=proposal_sent,json=proposalSent,proto3,oneof"`
+}
+
 func (*AcsReplicationStatus_NotProposed) isAcsReplicationStatus_AgreementStatus() {}
 
 func (*AcsReplicationStatus_Proposed) isAcsReplicationStatus_AgreementStatus() {}
@@ -277,6 +291,8 @@ func (*AcsReplicationStatus_Proposed) isAcsReplicationStatus_AgreementStatus() {
 func (*AcsReplicationStatus_Exists) isAcsReplicationStatus_AgreementStatus() {}
 
 func (*AcsReplicationStatus_Archived) isAcsReplicationStatus_AgreementStatus() {}
+
+func (*AcsReplicationStatus_ProposalSent) isAcsReplicationStatus_AgreementStatus() {}
 
 type AcsReplicationTargetParticipantMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -718,15 +734,52 @@ func (*AcsReplicationStatus_AgreementNotProposed) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 1}
 }
 
+type AcsReplicationStatus_AgreementProposalSent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcsReplicationStatus_AgreementProposalSent) Reset() {
+	*x = AcsReplicationStatus_AgreementProposalSent{}
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcsReplicationStatus_AgreementProposalSent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcsReplicationStatus_AgreementProposalSent) ProtoMessage() {}
+
+func (x *AcsReplicationStatus_AgreementProposalSent) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcsReplicationStatus_AgreementProposalSent.ProtoReflect.Descriptor instead.
+func (*AcsReplicationStatus_AgreementProposalSent) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 2}
+}
+
 type AcsReplicationStatus_AgreementProposed struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	ContractId    string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AcsReplicationStatus_AgreementProposed) Reset() {
 	*x = AcsReplicationStatus_AgreementProposed{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -738,7 +791,7 @@ func (x *AcsReplicationStatus_AgreementProposed) String() string {
 func (*AcsReplicationStatus_AgreementProposed) ProtoMessage() {}
 
 func (x *AcsReplicationStatus_AgreementProposed) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[7]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -751,7 +804,14 @@ func (x *AcsReplicationStatus_AgreementProposed) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use AcsReplicationStatus_AgreementProposed.ProtoReflect.Descriptor instead.
 func (*AcsReplicationStatus_AgreementProposed) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 2}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 3}
+}
+
+func (x *AcsReplicationStatus_AgreementProposed) GetContractId() string {
+	if x != nil {
+		return x.ContractId
+	}
+	return ""
 }
 
 type AcsReplicationStatus_AgreementExists struct {
@@ -765,7 +825,7 @@ type AcsReplicationStatus_AgreementExists struct {
 
 func (x *AcsReplicationStatus_AgreementExists) Reset() {
 	*x = AcsReplicationStatus_AgreementExists{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -777,7 +837,7 @@ func (x *AcsReplicationStatus_AgreementExists) String() string {
 func (*AcsReplicationStatus_AgreementExists) ProtoMessage() {}
 
 func (x *AcsReplicationStatus_AgreementExists) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[8]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -790,7 +850,7 @@ func (x *AcsReplicationStatus_AgreementExists) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use AcsReplicationStatus_AgreementExists.ProtoReflect.Descriptor instead.
 func (*AcsReplicationStatus_AgreementExists) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 3}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 4}
 }
 
 func (x *AcsReplicationStatus_AgreementExists) GetContractId() string {
@@ -822,7 +882,7 @@ type AcsReplicationStatus_AgreementArchived struct {
 
 func (x *AcsReplicationStatus_AgreementArchived) Reset() {
 	*x = AcsReplicationStatus_AgreementArchived{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -834,7 +894,7 @@ func (x *AcsReplicationStatus_AgreementArchived) String() string {
 func (*AcsReplicationStatus_AgreementArchived) ProtoMessage() {}
 
 func (x *AcsReplicationStatus_AgreementArchived) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[9]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -847,7 +907,7 @@ func (x *AcsReplicationStatus_AgreementArchived) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use AcsReplicationStatus_AgreementArchived.ProtoReflect.Descriptor instead.
 func (*AcsReplicationStatus_AgreementArchived) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 4}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 5}
 }
 
 type AcsReplicationStatus_AcsReplicationProgress struct {
@@ -862,7 +922,7 @@ type AcsReplicationStatus_AcsReplicationProgress struct {
 
 func (x *AcsReplicationStatus_AcsReplicationProgress) Reset() {
 	*x = AcsReplicationStatus_AcsReplicationProgress{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -874,7 +934,7 @@ func (x *AcsReplicationStatus_AcsReplicationProgress) String() string {
 func (*AcsReplicationStatus_AcsReplicationProgress) ProtoMessage() {}
 
 func (x *AcsReplicationStatus_AcsReplicationProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[10]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -887,7 +947,7 @@ func (x *AcsReplicationStatus_AcsReplicationProgress) ProtoReflect() protoreflec
 
 // Deprecated: Use AcsReplicationStatus_AcsReplicationProgress.ProtoReflect.Descriptor instead.
 func (*AcsReplicationStatus_AcsReplicationProgress) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 5}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 6}
 }
 
 func (x *AcsReplicationStatus_AcsReplicationProgress) GetProcessedContractCount() uint64 {
@@ -928,7 +988,7 @@ type AcsReplicationStatus_AcsReplicationError struct {
 
 func (x *AcsReplicationStatus_AcsReplicationError) Reset() {
 	*x = AcsReplicationStatus_AcsReplicationError{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -940,7 +1000,7 @@ func (x *AcsReplicationStatus_AcsReplicationError) String() string {
 func (*AcsReplicationStatus_AcsReplicationError) ProtoMessage() {}
 
 func (x *AcsReplicationStatus_AcsReplicationError) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[11]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -953,7 +1013,7 @@ func (x *AcsReplicationStatus_AcsReplicationError) ProtoReflect() protoreflect.M
 
 // Deprecated: Use AcsReplicationStatus_AcsReplicationError.ProtoReflect.Descriptor instead.
 func (*AcsReplicationStatus_AcsReplicationError) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 6}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 7}
 }
 
 func (x *AcsReplicationStatus_AcsReplicationError) GetErrorType() AcsReplicationStatus_AcsReplicationError_ErrorType {
@@ -981,7 +1041,7 @@ type AcsReplicationStatus_PartyToParticipantTopologyTransaction struct {
 
 func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) Reset() {
 	*x = AcsReplicationStatus_PartyToParticipantTopologyTransaction{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -993,7 +1053,7 @@ func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) String() st
 func (*AcsReplicationStatus_PartyToParticipantTopologyTransaction) ProtoMessage() {}
 
 func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[12]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1006,7 +1066,7 @@ func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) ProtoReflec
 
 // Deprecated: Use AcsReplicationStatus_PartyToParticipantTopologyTransaction.ProtoReflect.Descriptor instead.
 func (*AcsReplicationStatus_PartyToParticipantTopologyTransaction) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 7}
+	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{0, 8}
 }
 
 func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) GetValidFrom() uint64 {
@@ -1039,7 +1099,7 @@ type AcsReplicationTargetParticipantMessage_Initialize struct {
 
 func (x *AcsReplicationTargetParticipantMessage_Initialize) Reset() {
 	*x = AcsReplicationTargetParticipantMessage_Initialize{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1051,7 +1111,7 @@ func (x *AcsReplicationTargetParticipantMessage_Initialize) String() string {
 func (*AcsReplicationTargetParticipantMessage_Initialize) ProtoMessage() {}
 
 func (x *AcsReplicationTargetParticipantMessage_Initialize) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[13]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1083,7 +1143,7 @@ type AcsReplicationTargetParticipantMessage_SendAcsUpTo struct {
 
 func (x *AcsReplicationTargetParticipantMessage_SendAcsUpTo) Reset() {
 	*x = AcsReplicationTargetParticipantMessage_SendAcsUpTo{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1095,7 +1155,7 @@ func (x *AcsReplicationTargetParticipantMessage_SendAcsUpTo) String() string {
 func (*AcsReplicationTargetParticipantMessage_SendAcsUpTo) ProtoMessage() {}
 
 func (x *AcsReplicationTargetParticipantMessage_SendAcsUpTo) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[14]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1127,7 +1187,7 @@ type AcsReplicationSourceParticipantMessage_AcsBatch struct {
 
 func (x *AcsReplicationSourceParticipantMessage_AcsBatch) Reset() {
 	*x = AcsReplicationSourceParticipantMessage_AcsBatch{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1139,7 +1199,7 @@ func (x *AcsReplicationSourceParticipantMessage_AcsBatch) String() string {
 func (*AcsReplicationSourceParticipantMessage_AcsBatch) ProtoMessage() {}
 
 func (x *AcsReplicationSourceParticipantMessage_AcsBatch) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[15]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1172,7 +1232,7 @@ type AcsReplicationSourceParticipantMessage_EndOfAcs struct {
 
 func (x *AcsReplicationSourceParticipantMessage_EndOfAcs) Reset() {
 	*x = AcsReplicationSourceParticipantMessage_EndOfAcs{}
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1184,7 +1244,7 @@ func (x *AcsReplicationSourceParticipantMessage_EndOfAcs) String() string {
 func (*AcsReplicationSourceParticipantMessage_EndOfAcs) ProtoMessage() {}
 
 func (x *AcsReplicationSourceParticipantMessage_EndOfAcs) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1218,7 +1278,7 @@ var File_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto 
 
 const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDesc = "" +
 	"\n" +
-	"Fcom/digitalasset/canton/participant/protocol/v30/acs_replication.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aCcom/digitalasset/canton/admin/participant/v30/active_contract.proto\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\xdd\x15\n" +
+	"Fcom/digitalasset/canton/participant/protocol/v30/acs_replication.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aCcom/digitalasset/canton/admin/participant/v30/active_contract.proto\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\x9d\x17\n" +
 	"\x14AcsReplicationStatus\x12\x7f\n" +
 	"\n" +
 	"parameters\x18\x01 \x01(\v2_.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParametersR\n" +
@@ -1226,11 +1286,13 @@ const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_prot
 	"\fnot_proposed\x18\x02 \x01(\v2[.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementNotProposedH\x00R\vnotProposed\x12v\n" +
 	"\bproposed\x18\x03 \x01(\v2X.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposedH\x00R\bproposed\x12p\n" +
 	"\x06exists\x18\x04 \x01(\v2V.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementExistsH\x00R\x06exists\x12v\n" +
-	"\barchived\x18\x05 \x01(\v2X.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementArchivedH\x00R\barchived\x12\xa6\x01\n" +
-	"\x18ptp_topology_transaction\x18\x06 \x01(\v2l.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.PartyToParticipantTopologyTransactionR\x16ptpTopologyTransaction\x12\x7f\n" +
-	"\vreplication\x18\a \x01(\v2].com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgressR\vreplication\x12#\n" +
-	"\rhas_completed\x18\b \x01(\bR\fhasCompleted\x12\x7f\n" +
-	"\rerror_message\x18\t \x01(\v2Z.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationErrorR\ferrorMessage\x1a\xf7\x05\n" +
+	"\barchived\x18\x05 \x01(\v2X.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementArchivedH\x00R\barchived\x12\x83\x01\n" +
+	"\rproposal_sent\x18\x06 \x01(\v2\\.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposalSentH\x00R\fproposalSent\x12\xa6\x01\n" +
+	"\x18ptp_topology_transaction\x18\a \x01(\v2l.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.PartyToParticipantTopologyTransactionR\x16ptpTopologyTransaction\x12\x7f\n" +
+	"\vreplication\x18\b \x01(\v2].com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgressR\vreplication\x12#\n" +
+	"\rhas_completed\x18\t \x01(\bR\fhasCompleted\x12\x7f\n" +
+	"\rerror_message\x18\n" +
+	" \x01(\v2Z.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationErrorR\ferrorMessage\x1a\xf7\x05\n" +
 	"\x18AcsReplicationParameters\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x19\n" +
@@ -1247,8 +1309,11 @@ const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_prot
 	")ACS_REPLICATION_DESTINATION_OUTPUT_STREAM\x10\x02B\f\n" +
 	"\n" +
 	"_timestamp\x1a\x16\n" +
-	"\x14AgreementNotProposed\x1a\x13\n" +
-	"\x11AgreementProposed\x1a\x87\x01\n" +
+	"\x14AgreementNotProposed\x1a\x17\n" +
+	"\x15AgreementProposalSent\x1a4\n" +
+	"\x11AgreementProposed\x12\x1f\n" +
+	"\vcontract_id\x18\x01 \x01(\tR\n" +
+	"contractId\x1a\x87\x01\n" +
 	"\x0fAgreementExists\x12\x1f\n" +
 	"\vcontract_id\x18\x01 \x01(\tR\n" +
 	"contractId\x12 \n" +
@@ -1328,7 +1393,7 @@ func file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto
 }
 
 var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_goTypes = []any{
 	(AcsReplicationStatus_AcsReplicationParameters_AcsReplicationDestination)(0), // 0: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination
 	(AcsReplicationStatus_AcsReplicationError_ErrorType)(0),                      // 1: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.ErrorType
@@ -1339,44 +1404,46 @@ var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_
 	(*GetAcsArguments)(nil), // 6: com.digitalasset.canton.participant.protocol.v30.GetAcsArguments
 	(*AcsReplicationStatus_AcsReplicationParameters)(nil),              // 7: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters
 	(*AcsReplicationStatus_AgreementNotProposed)(nil),                  // 8: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementNotProposed
-	(*AcsReplicationStatus_AgreementProposed)(nil),                     // 9: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposed
-	(*AcsReplicationStatus_AgreementExists)(nil),                       // 10: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementExists
-	(*AcsReplicationStatus_AgreementArchived)(nil),                     // 11: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementArchived
-	(*AcsReplicationStatus_AcsReplicationProgress)(nil),                // 12: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgress
-	(*AcsReplicationStatus_AcsReplicationError)(nil),                   // 13: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError
-	(*AcsReplicationStatus_PartyToParticipantTopologyTransaction)(nil), // 14: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction
-	(*AcsReplicationTargetParticipantMessage_Initialize)(nil),          // 15: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.Initialize
-	(*AcsReplicationTargetParticipantMessage_SendAcsUpTo)(nil),         // 16: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.SendAcsUpTo
-	(*AcsReplicationSourceParticipantMessage_AcsBatch)(nil),            // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch
-	(*AcsReplicationSourceParticipantMessage_EndOfAcs)(nil),            // 18: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs
-	(v30.Enums_ParticipantPermission)(0),                               // 19: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	(*v301.ActiveContract)(nil),                                        // 20: com.digitalasset.canton.admin.participant.v30.ActiveContract
-	(*v302.Signature)(nil),                                             // 21: com.digitalasset.canton.crypto.v30.Signature
+	(*AcsReplicationStatus_AgreementProposalSent)(nil),                 // 9: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposalSent
+	(*AcsReplicationStatus_AgreementProposed)(nil),                     // 10: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposed
+	(*AcsReplicationStatus_AgreementExists)(nil),                       // 11: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementExists
+	(*AcsReplicationStatus_AgreementArchived)(nil),                     // 12: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementArchived
+	(*AcsReplicationStatus_AcsReplicationProgress)(nil),                // 13: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgress
+	(*AcsReplicationStatus_AcsReplicationError)(nil),                   // 14: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError
+	(*AcsReplicationStatus_PartyToParticipantTopologyTransaction)(nil), // 15: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction
+	(*AcsReplicationTargetParticipantMessage_Initialize)(nil),          // 16: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.Initialize
+	(*AcsReplicationTargetParticipantMessage_SendAcsUpTo)(nil),         // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.SendAcsUpTo
+	(*AcsReplicationSourceParticipantMessage_AcsBatch)(nil),            // 18: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch
+	(*AcsReplicationSourceParticipantMessage_EndOfAcs)(nil),            // 19: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs
+	(v30.Enums_ParticipantPermission)(0),                               // 20: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	(*v301.ActiveContract)(nil),                                        // 21: com.digitalasset.canton.admin.participant.v30.ActiveContract
+	(*v302.Signature)(nil),                                             // 22: com.digitalasset.canton.crypto.v30.Signature
 }
 var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_depIdxs = []int32{
 	7,  // 0: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.parameters:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters
 	8,  // 1: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.not_proposed:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementNotProposed
-	9,  // 2: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.proposed:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposed
-	10, // 3: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.exists:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementExists
-	11, // 4: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.archived:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementArchived
-	14, // 5: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.ptp_topology_transaction:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction
-	12, // 6: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.replication:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgress
-	13, // 7: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.error_message:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError
-	15, // 8: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.initialize:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.Initialize
-	16, // 9: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.send_acs_up_to:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.SendAcsUpTo
-	17, // 10: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.acs_batch:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch
-	18, // 11: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.end_of_acs:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs
-	6,  // 12: com.digitalasset.canton.participant.protocol.v30.AcsDigest.get_acs_args:type_name -> com.digitalasset.canton.participant.protocol.v30.GetAcsArguments
-	19, // 13: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.participant_permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	0,  // 14: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.acs_replication_destination:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination
-	1,  // 15: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.error_type:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.ErrorType
-	20, // 16: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ActiveContract
-	21, // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs.signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	10, // 2: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.proposed:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposed
+	11, // 3: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.exists:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementExists
+	12, // 4: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.archived:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementArchived
+	9,  // 5: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.proposal_sent:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AgreementProposalSent
+	15, // 6: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.ptp_topology_transaction:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.PartyToParticipantTopologyTransaction
+	13, // 7: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.replication:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgress
+	14, // 8: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.error_message:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError
+	16, // 9: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.initialize:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.Initialize
+	17, // 10: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.send_acs_up_to:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.SendAcsUpTo
+	18, // 11: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.acs_batch:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch
+	19, // 12: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.end_of_acs:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs
+	6,  // 13: com.digitalasset.canton.participant.protocol.v30.AcsDigest.get_acs_args:type_name -> com.digitalasset.canton.participant.protocol.v30.GetAcsArguments
+	20, // 14: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.participant_permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
+	0,  // 15: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.acs_replication_destination:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination
+	1,  // 16: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.error_type:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.ErrorType
+	21, // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ActiveContract
+	22, // 18: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs.signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_init() }
@@ -1389,6 +1456,7 @@ func file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto
 		(*AcsReplicationStatus_Proposed)(nil),
 		(*AcsReplicationStatus_Exists)(nil),
 		(*AcsReplicationStatus_Archived)(nil),
+		(*AcsReplicationStatus_ProposalSent)(nil),
 	}
 	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[1].OneofWrappers = []any{
 		(*AcsReplicationTargetParticipantMessage_Initialize_)(nil),
@@ -1401,16 +1469,16 @@ func file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto
 	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[3].OneofWrappers = []any{}
 	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[4].OneofWrappers = []any{}
 	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[5].OneofWrappers = []any{}
-	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[8].OneofWrappers = []any{}
-	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[10].OneofWrappers = []any{}
-	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[12].OneofWrappers = []any{}
+	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[9].OneofWrappers = []any{}
+	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[11].OneofWrappers = []any{}
+	file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_msgTypes[13].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDesc), len(file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   17,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
