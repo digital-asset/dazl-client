@@ -32,6 +32,7 @@ class ForceFlag(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE: _ClassVar[ForceFlag]
     FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET: _ClassVar[ForceFlag]
+    FORCE_FLAG_ALLOW_V30_PARTY_TO_PARTICIPANT_AFTER_HOSTING_STATES: _ClassVar[ForceFlag]
 FORCE_FLAG_UNSPECIFIED: ForceFlag
 FORCE_FLAG_ALIEN_MEMBER: ForceFlag
 FORCE_FLAG_LEDGER_TIME_RECORD_TIME_TOLERANCE_INCREASE: ForceFlag
@@ -45,6 +46,7 @@ FORCE_FLAG_ALLOW_INSUFFICIENT_SIGNATORY_ASSIGNING_PARTICIPANTS_FOR_PARTY: ForceF
 FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES: ForceFlag
 FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE: ForceFlag
 FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET: ForceFlag
+FORCE_FLAG_ALLOW_V30_PARTY_TO_PARTICIPANT_AFTER_HOSTING_STATES: ForceFlag
 
 class BaseWriteRequest(_message.Message):
     __slots__ = ("client_version",)
@@ -89,16 +91,18 @@ class GenerateTransactionsResponse(_message.Message):
 class AuthorizeRequest(_message.Message):
     __slots__ = ("proposal", "transaction_hash", "must_fully_authorize", "force_changes", "signed_by", "store", "wait_to_become_effective")
     class Proposal(_message.Message):
-        __slots__ = ("change", "serial", "v30", "v31")
+        __slots__ = ("change", "serial", "v30", "v31", "protocol_version")
         CHANGE_FIELD_NUMBER: _ClassVar[int]
         SERIAL_FIELD_NUMBER: _ClassVar[int]
         V30_FIELD_NUMBER: _ClassVar[int]
         V31_FIELD_NUMBER: _ClassVar[int]
+        PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
         change: _topology_pb2.Enums.TopologyChangeOp
         serial: int
         v30: _topology_pb2.TopologyMapping
         v31: _topology_pb2_1.TopologyMapping
-        def __init__(self, change: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., serial: _Optional[int] = ..., v30: _Optional[_Union[_topology_pb2.TopologyMapping, _Mapping]] = ..., v31: _Optional[_Union[_topology_pb2_1.TopologyMapping, _Mapping]] = ...) -> None: ...
+        protocol_version: int
+        def __init__(self, change: _Optional[_Union[_topology_pb2.Enums.TopologyChangeOp, str]] = ..., serial: _Optional[int] = ..., v30: _Optional[_Union[_topology_pb2.TopologyMapping, _Mapping]] = ..., v31: _Optional[_Union[_topology_pb2_1.TopologyMapping, _Mapping]] = ..., protocol_version: _Optional[int] = ...) -> None: ...
     PROPOSAL_FIELD_NUMBER: _ClassVar[int]
     TRANSACTION_HASH_FIELD_NUMBER: _ClassVar[int]
     MUST_FULLY_AUTHORIZE_FIELD_NUMBER: _ClassVar[int]

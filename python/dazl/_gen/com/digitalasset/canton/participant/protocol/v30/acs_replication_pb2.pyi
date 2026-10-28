@@ -15,7 +15,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AcsReplicationStatus(_message.Message):
-    __slots__ = ("parameters", "not_proposed", "proposed", "exists", "archived", "ptp_topology_transaction", "replication", "has_completed", "error_message")
+    __slots__ = ("parameters", "not_proposed", "proposed", "exists", "archived", "proposal_sent", "ptp_topology_transaction", "replication", "has_completed", "error_message")
     class AcsReplicationParameters(_message.Message):
         __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "timestamp", "participant_permission", "acs_replication_destination")
         class AcsReplicationDestination(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -46,9 +46,14 @@ class AcsReplicationStatus(_message.Message):
     class AgreementNotProposed(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
-    class AgreementProposed(_message.Message):
+    class AgreementProposalSent(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
+    class AgreementProposed(_message.Message):
+        __slots__ = ("contract_id",)
+        CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
+        contract_id: str
+        def __init__(self, contract_id: _Optional[str] = ...) -> None: ...
     class AgreementExists(_message.Message):
         __slots__ = ("contract_id", "agreed_at", "sequencer_uid")
         CONTRACT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -101,6 +106,7 @@ class AcsReplicationStatus(_message.Message):
     PROPOSED_FIELD_NUMBER: _ClassVar[int]
     EXISTS_FIELD_NUMBER: _ClassVar[int]
     ARCHIVED_FIELD_NUMBER: _ClassVar[int]
+    PROPOSAL_SENT_FIELD_NUMBER: _ClassVar[int]
     PTP_TOPOLOGY_TRANSACTION_FIELD_NUMBER: _ClassVar[int]
     REPLICATION_FIELD_NUMBER: _ClassVar[int]
     HAS_COMPLETED_FIELD_NUMBER: _ClassVar[int]
@@ -110,11 +116,12 @@ class AcsReplicationStatus(_message.Message):
     proposed: AcsReplicationStatus.AgreementProposed
     exists: AcsReplicationStatus.AgreementExists
     archived: AcsReplicationStatus.AgreementArchived
+    proposal_sent: AcsReplicationStatus.AgreementProposalSent
     ptp_topology_transaction: AcsReplicationStatus.PartyToParticipantTopologyTransaction
     replication: AcsReplicationStatus.AcsReplicationProgress
     has_completed: bool
     error_message: AcsReplicationStatus.AcsReplicationError
-    def __init__(self, parameters: _Optional[_Union[AcsReplicationStatus.AcsReplicationParameters, _Mapping]] = ..., not_proposed: _Optional[_Union[AcsReplicationStatus.AgreementNotProposed, _Mapping]] = ..., proposed: _Optional[_Union[AcsReplicationStatus.AgreementProposed, _Mapping]] = ..., exists: _Optional[_Union[AcsReplicationStatus.AgreementExists, _Mapping]] = ..., archived: _Optional[_Union[AcsReplicationStatus.AgreementArchived, _Mapping]] = ..., ptp_topology_transaction: _Optional[_Union[AcsReplicationStatus.PartyToParticipantTopologyTransaction, _Mapping]] = ..., replication: _Optional[_Union[AcsReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[AcsReplicationStatus.AcsReplicationError, _Mapping]] = ...) -> None: ...
+    def __init__(self, parameters: _Optional[_Union[AcsReplicationStatus.AcsReplicationParameters, _Mapping]] = ..., not_proposed: _Optional[_Union[AcsReplicationStatus.AgreementNotProposed, _Mapping]] = ..., proposed: _Optional[_Union[AcsReplicationStatus.AgreementProposed, _Mapping]] = ..., exists: _Optional[_Union[AcsReplicationStatus.AgreementExists, _Mapping]] = ..., archived: _Optional[_Union[AcsReplicationStatus.AgreementArchived, _Mapping]] = ..., proposal_sent: _Optional[_Union[AcsReplicationStatus.AgreementProposalSent, _Mapping]] = ..., ptp_topology_transaction: _Optional[_Union[AcsReplicationStatus.PartyToParticipantTopologyTransaction, _Mapping]] = ..., replication: _Optional[_Union[AcsReplicationStatus.AcsReplicationProgress, _Mapping]] = ..., has_completed: _Optional[bool] = ..., error_message: _Optional[_Union[AcsReplicationStatus.AcsReplicationError, _Mapping]] = ...) -> None: ...
 
 class AcsReplicationTargetParticipantMessage(_message.Message):
     __slots__ = ("initialize", "send_acs_up_to")

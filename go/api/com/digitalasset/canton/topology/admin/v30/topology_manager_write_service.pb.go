@@ -42,6 +42,7 @@ const (
 	ForceFlag_FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES                               ForceFlag = 12
 	ForceFlag_FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE                                     ForceFlag = 13
 	ForceFlag_FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET                      ForceFlag = 14
+	ForceFlag_FORCE_FLAG_ALLOW_V30_PARTY_TO_PARTICIPANT_AFTER_HOSTING_STATES           ForceFlag = 15
 )
 
 // Enum value maps for ForceFlag.
@@ -60,6 +61,7 @@ var (
 		12: "FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES",
 		13: "FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE",
 		14: "FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET",
+		15: "FORCE_FLAG_ALLOW_V30_PARTY_TO_PARTICIPANT_AFTER_HOSTING_STATES",
 	}
 	ForceFlag_value = map[string]int32{
 		"FORCE_FLAG_UNSPECIFIED":                                                   0,
@@ -75,6 +77,7 @@ var (
 		"FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES":                               12,
 		"FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE":                                     13,
 		"FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET":                      14,
+		"FORCE_FLAG_ALLOW_V30_PARTY_TO_PARTICIPANT_AFTER_HOSTING_STATES":           15,
 	}
 )
 
@@ -1161,9 +1164,10 @@ type AuthorizeRequest_Proposal struct {
 	//
 	//	*AuthorizeRequest_Proposal_V30
 	//	*AuthorizeRequest_Proposal_V31
-	Mapping       isAuthorizeRequest_Proposal_Mapping `protobuf_oneof:"mapping"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Mapping         isAuthorizeRequest_Proposal_Mapping `protobuf_oneof:"mapping"`
+	ProtocolVersion *uint32                             `protobuf:"varint,5,opt,name=protocol_version,json=protocolVersion,proto3,oneof" json:"protocol_version,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AuthorizeRequest_Proposal) Reset() {
@@ -1235,6 +1239,13 @@ func (x *AuthorizeRequest_Proposal) GetV31() *v31.TopologyMapping {
 	return nil
 }
 
+func (x *AuthorizeRequest_Proposal) GetProtocolVersion() uint32 {
+	if x != nil && x.ProtocolVersion != nil {
+		return *x.ProtocolVersion
+	}
+	return 0
+}
+
 type isAuthorizeRequest_Proposal_Mapping interface {
 	isAuthorizeRequest_Proposal_Mapping()
 }
@@ -1274,7 +1285,7 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_ser
 	"\x16generated_transactions\x18\x01 \x03(\v2].com.digitalasset.canton.topology.admin.v30.GenerateTransactionsResponse.GeneratedTransactionR\x15generatedTransactions\x1ax\n" +
 	"\x14GeneratedTransaction\x125\n" +
 	"\x16serialized_transaction\x18\x01 \x01(\fR\x15serializedTransaction\x12)\n" +
-	"\x10transaction_hash\x18\x02 \x01(\fR\x0ftransactionHash\"\x92\x06\n" +
+	"\x10transaction_hash\x18\x02 \x01(\fR\x0ftransactionHash\"\xd7\x06\n" +
 	"\x10AuthorizeRequest\x12c\n" +
 	"\bproposal\x18\x01 \x01(\v2E.com.digitalasset.canton.topology.admin.v30.AuthorizeRequest.ProposalH\x00R\bproposal\x12+\n" +
 	"\x10transaction_hash\x18\x02 \x01(\tH\x00R\x0ftransactionHash\x120\n" +
@@ -1282,13 +1293,15 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_ser
 	"\rforce_changes\x18\x04 \x03(\x0e25.com.digitalasset.canton.topology.admin.v30.ForceFlagR\fforceChanges\x12\x1b\n" +
 	"\tsigned_by\x18\x05 \x03(\tR\bsignedBy\x12I\n" +
 	"\x05store\x18\x06 \x01(\v23.com.digitalasset.canton.topology.admin.v30.StoreIdR\x05store\x12R\n" +
-	"\x18wait_to_become_effective\x18\a \x01(\v2\x19.google.protobuf.DurationR\x15waitToBecomeEffective\x1a\x99\x02\n" +
+	"\x18wait_to_become_effective\x18\a \x01(\v2\x19.google.protobuf.DurationR\x15waitToBecomeEffective\x1a\xde\x02\n" +
 	"\bProposal\x12T\n" +
 	"\x06change\x18\x01 \x01(\x0e2<.com.digitalasset.canton.protocol.v30.Enums.TopologyChangeOpR\x06change\x12\x16\n" +
 	"\x06serial\x18\x02 \x01(\rR\x06serial\x12I\n" +
 	"\x03v30\x18\x03 \x01(\v25.com.digitalasset.canton.protocol.v30.TopologyMappingH\x00R\x03v30\x12I\n" +
-	"\x03v31\x18\x04 \x01(\v25.com.digitalasset.canton.protocol.v31.TopologyMappingH\x00R\x03v31B\t\n" +
-	"\amappingB\x06\n" +
+	"\x03v31\x18\x04 \x01(\v25.com.digitalasset.canton.protocol.v31.TopologyMappingH\x00R\x03v31\x12.\n" +
+	"\x10protocol_version\x18\x05 \x01(\rH\x01R\x0fprotocolVersion\x88\x01\x01B\t\n" +
+	"\amappingB\x13\n" +
+	"\x11_protocol_versionB\x06\n" +
 	"\x04type\"v\n" +
 	"\x11AuthorizeResponse\x12a\n" +
 	"\vtransaction\x18\x01 \x01(\v2?.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionR\vtransaction\"\xf8\x02\n" +
@@ -1323,7 +1336,7 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_ser
 	"\bstore_id\x18\x01 \x01(\v2=.com.digitalasset.canton.topology.admin.v30.StoreId.TemporaryR\astoreId\"}\n" +
 	"!DropTemporaryTopologyStoreRequest\x12X\n" +
 	"\bstore_id\x18\x01 \x01(\v2=.com.digitalasset.canton.topology.admin.v30.StoreId.TemporaryR\astoreId\"$\n" +
-	"\"DropTemporaryTopologyStoreResponse*\x85\x06\n" +
+	"\"DropTemporaryTopologyStoreResponse*\xc9\x06\n" +
 	"\tForceFlag\x12\x1a\n" +
 	"\x16FORCE_FLAG_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17FORCE_FLAG_ALIEN_MEMBER\x10\x01\x129\n" +
@@ -1338,7 +1351,8 @@ const file_com_digitalasset_canton_topology_admin_v30_topology_manager_write_ser
 	"HFORCE_FLAG_ALLOW_INSUFFICIENT_SIGNATORY_ASSIGNING_PARTICIPANTS_FOR_PARTY\x10\v\x12.\n" +
 	"*FORCE_FLAG_ALLOW_VET_INCOMPATIBLE_UPGRADES\x10\f\x12(\n" +
 	"$FORCE_FLAG_ALLOW_OUT_OF_BOUNDS_VALUE\x10\r\x127\n" +
-	"3FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET\x10\x0e\"\x04\b\x03\x10\x03\"\x04\b\b\x10\b*\x1eFORCE_FLAG_ALLOW_UNVET_PACKAGE*4FORCE_FLAG_ALLOW_UNVET_PACKAGE_WITH_ACTIVE_CONTRACTS2\x86\v\n" +
+	"3FORCE_FLAG_ALLOW_CONFIRMING_THRESHOLD_CANNOT_BE_MET\x10\x0e\x12B\n" +
+	">FORCE_FLAG_ALLOW_V30_PARTY_TO_PARTICIPANT_AFTER_HOSTING_STATES\x10\x0f\"\x04\b\x03\x10\x03\"\x04\b\b\x10\b*\x1eFORCE_FLAG_ALLOW_UNVET_PACKAGE*4FORCE_FLAG_ALLOW_UNVET_PACKAGE_WITH_ACTIVE_CONTRACTS2\x86\v\n" +
 	"\x1bTopologyManagerWriteService\x12\x88\x01\n" +
 	"\tAuthorize\x12<.com.digitalasset.canton.topology.admin.v30.AuthorizeRequest\x1a=.com.digitalasset.canton.topology.admin.v30.AuthorizeResponse\x12\x9a\x01\n" +
 	"\x0fAddTransactions\x12B.com.digitalasset.canton.topology.admin.v30.AddTransactionsRequest\x1aC.com.digitalasset.canton.topology.admin.v30.AddTransactionsResponse\x12\xb6\x01\n" +
