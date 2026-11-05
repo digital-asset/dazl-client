@@ -383,6 +383,7 @@ class PrimType(_IntEnum):
     BIGNUMERIC = 21
     ROUNDING_MODE = 22
     ANY_EXCEPTION = 23
+    FAILURE_CATEGORY = 24
 
 
 # noinspection PyShadowingBuiltins
