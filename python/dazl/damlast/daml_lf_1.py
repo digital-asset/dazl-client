@@ -2486,6 +2486,22 @@ class DefTemplate:
             else:
                 return None
 
+    @dataclass(frozen=True)
+    class InterfaceInstanceMethod:
+        method_name: str
+        value: Expr
+
+    @dataclass(frozen=True)
+    class InterfaceInstanceBody:
+        methods: Sequence[DefTemplate.InterfaceInstanceMethod]
+        view: Expr
+
+    @dataclass(frozen=True)
+    class Implements:
+        interface: TypeConName
+        body: DefTemplate.InterfaceInstanceBody
+        location: Location
+
     # The type constructor for the template, acting as both
     # the name of the template and the type of the template argument.
     tycon: DottedName
@@ -2516,6 +2532,8 @@ class DefTemplate:
 
     # The key definition for the template, if present
     key: Optional[DefKey]
+
+    implements: Sequence[Implements] = ()
 
     @property
     def name(self) -> DottedName:

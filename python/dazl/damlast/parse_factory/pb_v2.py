@@ -845,6 +845,7 @@ class ProtobufParser21(ProtobufParserBase):
             observers=self.parse_Expr(pb.observers) if pb.HasField("observers") else None,
             location=self.parse_Location(pb.location),
             key=self.parse_DefTemplate_DefKey(pb.key) if pb.HasField("key") else None,
+            implements=tuple(self.parse_DefTemplate_Implements(impl) for impl in pb.implements),
         )
 
     def parse_DefTemplate_DefKey(self, pb: pblf.DefTemplate.DefKey) -> lf.DefTemplate.DefKey:
@@ -854,14 +855,30 @@ class ProtobufParser21(ProtobufParserBase):
             maintainers=self.parse_Expr(pb.maintainers),
         )
 
-    def parse_DefTemplate_Implements(self):
-        pass 
+    def parse_DefTemplate_Implements(
+        self, pb: pblf.DefTemplate.Implements
+    ) -> lf.DefTemplate.Implements:
+        return lf.DefTemplate.Implements(
+            interface=self.parse_TypeConName(pb.interface),
+            body=self.parse_InterfaceInstanceBody(pb.body),
+            location=self.parse_Location(pb.location),
+        )
 
-    def parse_InterfaceInstanceMethod(self):
-        pass
+    def parse_InterfaceInstanceBody(
+        self, pb: pblf.InterfaceInstanceBody
+    ) -> lf.DefTemplate.InterfaceInstanceBody:
+        return lf.DefTemplate.InterfaceInstanceBody(
+            methods=tuple(self.parse_InterfaceInstanceMethod(method) for method in pb.methods),
+            view=self.parse_Expr(pb.view),
+        )
 
-    def parse_InterfaceInstanceBody(self):
-        pass
+    def parse_InterfaceInstanceMethod(
+        self, pb: pblf.InterfaceInstanceBody.InterfaceInstanceMethod
+    ) -> lf.DefTemplate.InterfaceInstanceMethod:
+        return lf.DefTemplate.InterfaceInstanceMethod(
+            method_name=self.interned_strings[pb.method_interned_name],
+            value=self.parse_Expr(pb.value),
+        )
 
     def parse_DefDataType(self, pb: pblf.DefDataType) -> lf.DefDataType:
         name = lf.DottedName(self.interned_dotted_names[pb.name_interned_dname])
