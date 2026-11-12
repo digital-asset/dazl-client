@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "canton-open-source";
-  version = "3.7.3-snapshot.20261111.20904.0.vbe797d9d";
+  version = "3.7.3";
 
   src = builtins.fetchurl {
     url =
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
       # stable versions from github OSS canton releases
       else "https://github.com/digital-asset/canton/releases/download/v${version}/canton-open-source-${version}.tar.gz";
 
-    sha256 = "sha256:1npi8dqan2mkd1m414cjjymybns13azl0xldrmz2331gzg96x07s";
+    sha256 = "sha256:0bk2zlngd8kd7d4n11mdsylxkwkgqq8swjxy1rlxqvh9azgpfqin";
   };
 
   installPhase = ''
