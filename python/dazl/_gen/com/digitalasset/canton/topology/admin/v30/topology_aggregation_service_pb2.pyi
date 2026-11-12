@@ -15,6 +15,12 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class BaseAggregationRequest(_message.Message):
+    __slots__ = ("client_version",)
+    CLIENT_VERSION_FIELD_NUMBER: _ClassVar[int]
+    client_version: str
+    def __init__(self, client_version: _Optional[str] = ...) -> None: ...
+
 class ListPartiesRequest(_message.Message):
     __slots__ = ("as_of", "limit", "synchronizer_ids", "filter_party", "filter_participant")
     AS_OF_FIELD_NUMBER: _ClassVar[int]
@@ -59,34 +65,36 @@ class ListPartiesResponse(_message.Message):
     def __init__(self, results: _Optional[_Iterable[_Union[ListPartiesResponse.Result, _Mapping]]] = ...) -> None: ...
 
 class ListKeyOwnersRequest(_message.Message):
-    __slots__ = ("as_of", "limit", "synchronizer_ids", "filter_key_owner_type", "filter_key_owner_uid")
+    __slots__ = ("as_of", "limit", "synchronizer_ids", "filter_key_owner_type", "filter_key_owner_uid", "base_aggregation_request")
     AS_OF_FIELD_NUMBER: _ClassVar[int]
     LIMIT_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_IDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_KEY_OWNER_TYPE_FIELD_NUMBER: _ClassVar[int]
     FILTER_KEY_OWNER_UID_FIELD_NUMBER: _ClassVar[int]
+    BASE_AGGREGATION_REQUEST_FIELD_NUMBER: _ClassVar[int]
     as_of: _timestamp_pb2.Timestamp
     limit: int
     synchronizer_ids: _containers.RepeatedScalarFieldContainer[str]
     filter_key_owner_type: str
     filter_key_owner_uid: str
-    def __init__(self, as_of: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., synchronizer_ids: _Optional[_Iterable[str]] = ..., filter_key_owner_type: _Optional[str] = ..., filter_key_owner_uid: _Optional[str] = ...) -> None: ...
+    base_aggregation_request: BaseAggregationRequest
+    def __init__(self, as_of: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., limit: _Optional[int] = ..., synchronizer_ids: _Optional[_Iterable[str]] = ..., filter_key_owner_type: _Optional[str] = ..., filter_key_owner_uid: _Optional[str] = ..., base_aggregation_request: _Optional[_Union[BaseAggregationRequest, _Mapping]] = ...) -> None: ...
 
 class ListKeyOwnersResponse(_message.Message):
     __slots__ = ("results",)
     class Result(_message.Message):
-        __slots__ = ("synchronizer_id", "key_owner", "signing_keys", "encryption_keys", "physical_synchronizer_id")
+        __slots__ = ("synchronizer_id", "key_owner", "signing_keys_v30", "encryption_keys", "physical_synchronizer_id")
         SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         KEY_OWNER_FIELD_NUMBER: _ClassVar[int]
-        SIGNING_KEYS_FIELD_NUMBER: _ClassVar[int]
+        SIGNING_KEYS_V30_FIELD_NUMBER: _ClassVar[int]
         ENCRYPTION_KEYS_FIELD_NUMBER: _ClassVar[int]
         PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         synchronizer_id: str
         key_owner: str
-        signing_keys: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.SigningPublicKey]
+        signing_keys_v30: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.SigningPublicKey]
         encryption_keys: _containers.RepeatedCompositeFieldContainer[_crypto_pb2.EncryptionPublicKey]
         physical_synchronizer_id: str
-        def __init__(self, synchronizer_id: _Optional[str] = ..., key_owner: _Optional[str] = ..., signing_keys: _Optional[_Iterable[_Union[_crypto_pb2.SigningPublicKey, _Mapping]]] = ..., encryption_keys: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionPublicKey, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
+        def __init__(self, synchronizer_id: _Optional[str] = ..., key_owner: _Optional[str] = ..., signing_keys_v30: _Optional[_Iterable[_Union[_crypto_pb2.SigningPublicKey, _Mapping]]] = ..., encryption_keys: _Optional[_Iterable[_Union[_crypto_pb2.EncryptionPublicKey, _Mapping]]] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
     RESULTS_FIELD_NUMBER: _ClassVar[int]
     results: _containers.RepeatedCompositeFieldContainer[ListKeyOwnersResponse.Result]
     def __init__(self, results: _Optional[_Iterable[_Union[ListKeyOwnersResponse.Result, _Mapping]]] = ...) -> None: ...

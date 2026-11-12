@@ -47,18 +47,20 @@ class SequencerConnection(_message.Message):
     def __init__(self, grpc: _Optional[_Union[SequencerConnection.Grpc, _Mapping]] = ..., alias: _Optional[str] = ..., sequencer_id: _Optional[str] = ...) -> None: ...
 
 class SequencerConnections(_message.Message):
-    __slots__ = ("sequencer_connections", "sequencer_trust_threshold", "submission_request_amplification", "sequencer_liveness_margin", "sequencer_connection_pool_delays")
+    __slots__ = ("sequencer_connections", "sequencer_trust_threshold", "submission_request_amplification", "sequencer_liveness_margin", "sequencer_connection_pool_delays", "subscription_liveness_limits")
     SEQUENCER_CONNECTIONS_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_TRUST_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
     SUBMISSION_REQUEST_AMPLIFICATION_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_LIVENESS_MARGIN_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_CONNECTION_POOL_DELAYS_FIELD_NUMBER: _ClassVar[int]
+    SUBSCRIPTION_LIVENESS_LIMITS_FIELD_NUMBER: _ClassVar[int]
     sequencer_connections: _containers.RepeatedCompositeFieldContainer[SequencerConnection]
     sequencer_trust_threshold: int
     submission_request_amplification: SubmissionRequestAmplification
     sequencer_liveness_margin: int
     sequencer_connection_pool_delays: SequencerConnectionPoolDelays
-    def __init__(self, sequencer_connections: _Optional[_Iterable[_Union[SequencerConnection, _Mapping]]] = ..., sequencer_trust_threshold: _Optional[int] = ..., submission_request_amplification: _Optional[_Union[SubmissionRequestAmplification, _Mapping]] = ..., sequencer_liveness_margin: _Optional[int] = ..., sequencer_connection_pool_delays: _Optional[_Union[SequencerConnectionPoolDelays, _Mapping]] = ...) -> None: ...
+    subscription_liveness_limits: SubscriptionLivenessLimits
+    def __init__(self, sequencer_connections: _Optional[_Iterable[_Union[SequencerConnection, _Mapping]]] = ..., sequencer_trust_threshold: _Optional[int] = ..., submission_request_amplification: _Optional[_Union[SubmissionRequestAmplification, _Mapping]] = ..., sequencer_liveness_margin: _Optional[int] = ..., sequencer_connection_pool_delays: _Optional[_Union[SequencerConnectionPoolDelays, _Mapping]] = ..., subscription_liveness_limits: _Optional[_Union[SubscriptionLivenessLimits, _Mapping]] = ...) -> None: ...
 
 class SubmissionRequestAmplification(_message.Message):
     __slots__ = ("factor", "patience", "confirmation_response_factor", "confirmation_response_patience")
@@ -83,3 +85,11 @@ class SequencerConnectionPoolDelays(_message.Message):
     subscription_request_delay: _duration_pb2.Duration
     warn_validation_delay: _duration_pb2.Duration
     def __init__(self, min_restart_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_restart_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., subscription_request_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., warn_validation_delay: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+
+class SubscriptionLivenessLimits(_message.Message):
+    __slots__ = ("max_timestamp_delta", "max_ordinal_delta")
+    MAX_TIMESTAMP_DELTA_FIELD_NUMBER: _ClassVar[int]
+    MAX_ORDINAL_DELTA_FIELD_NUMBER: _ClassVar[int]
+    max_timestamp_delta: _duration_pb2.Duration
+    max_ordinal_delta: int
+    def __init__(self, max_timestamp_delta: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., max_ordinal_delta: _Optional[int] = ...) -> None: ...

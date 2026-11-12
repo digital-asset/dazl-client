@@ -21,29 +21,30 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TopologyManagerReadService_ListNamespaceDelegation_FullMethodName               = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListNamespaceDelegation"
-	TopologyManagerReadService_ListDecentralizedNamespaceDefinition_FullMethodName  = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListDecentralizedNamespaceDefinition"
-	TopologyManagerReadService_ListOwnerToKeyMapping_FullMethodName                 = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListOwnerToKeyMapping"
-	TopologyManagerReadService_ListPartyToKeyMapping_FullMethodName                 = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyToKeyMapping"
-	TopologyManagerReadService_ListSynchronizerTrustCertificate_FullMethodName      = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerTrustCertificate"
-	TopologyManagerReadService_ListParticipantSynchronizerPermission_FullMethodName = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListParticipantSynchronizerPermission"
-	TopologyManagerReadService_ListPartyHostingLimits_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyHostingLimits"
-	TopologyManagerReadService_ListVettedPackages_FullMethodName                    = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListVettedPackages"
-	TopologyManagerReadService_ListPartyToParticipant_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyToParticipant"
-	TopologyManagerReadService_ListSynchronizerParametersState_FullMethodName       = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerParametersState"
-	TopologyManagerReadService_ListSequencingParametersState_FullMethodName         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencingParametersState"
-	TopologyManagerReadService_ListMediatorSynchronizerState_FullMethodName         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListMediatorSynchronizerState"
-	TopologyManagerReadService_ListSequencerSynchronizerState_FullMethodName        = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerSynchronizerState"
-	TopologyManagerReadService_ListLsuAnnouncement_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuAnnouncement"
-	TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_FullMethodName   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuSequencerConnectionSuccessor"
-	TopologyManagerReadService_ListAvailableStores_FullMethodName                   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAvailableStores"
-	TopologyManagerReadService_ListAll_FullMethodName                               = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAll"
-	TopologyManagerReadService_ListAllV2_FullMethodName                             = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAllV2"
-	TopologyManagerReadService_ExportTopologySnapshot_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshot"
-	TopologyManagerReadService_ExportTopologySnapshotV2_FullMethodName              = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshotV2"
-	TopologyManagerReadService_GenesisState_FullMethodName                          = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisState"
-	TopologyManagerReadService_GenesisStateV2_FullMethodName                        = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisStateV2"
-	TopologyManagerReadService_SequencerLsuState_FullMethodName                     = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/SequencerLsuState"
+	TopologyManagerReadService_ListNamespaceDelegation_FullMethodName                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListNamespaceDelegation"
+	TopologyManagerReadService_ListDecentralizedNamespaceDefinition_FullMethodName   = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListDecentralizedNamespaceDefinition"
+	TopologyManagerReadService_ListOwnerToKeyMapping_FullMethodName                  = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListOwnerToKeyMapping"
+	TopologyManagerReadService_ListPartyToKeyMapping_FullMethodName                  = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyToKeyMapping"
+	TopologyManagerReadService_ListSynchronizerTrustCertificate_FullMethodName       = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerTrustCertificate"
+	TopologyManagerReadService_ListParticipantSynchronizerPermission_FullMethodName  = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListParticipantSynchronizerPermission"
+	TopologyManagerReadService_ListPartyHostingLimits_FullMethodName                 = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyHostingLimits"
+	TopologyManagerReadService_ListVettedPackages_FullMethodName                     = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListVettedPackages"
+	TopologyManagerReadService_ListPartyToParticipant_FullMethodName                 = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListPartyToParticipant"
+	TopologyManagerReadService_ListSynchronizerParametersState_FullMethodName        = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSynchronizerParametersState"
+	TopologyManagerReadService_ListSequencingParametersState_FullMethodName          = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencingParametersState"
+	TopologyManagerReadService_ListMediatorSynchronizerState_FullMethodName          = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListMediatorSynchronizerState"
+	TopologyManagerReadService_ListSequencerSynchronizerState_FullMethodName         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListSequencerSynchronizerState"
+	TopologyManagerReadService_ListLsuAnnouncement_FullMethodName                    = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuAnnouncement"
+	TopologyManagerReadService_ListLsuSequencerConnectionSuccessor_FullMethodName    = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListLsuSequencerConnectionSuccessor"
+	TopologyManagerReadService_ListAvailableStores_FullMethodName                    = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAvailableStores"
+	TopologyManagerReadService_ListAll_FullMethodName                                = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAll"
+	TopologyManagerReadService_ListAllV2_FullMethodName                              = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ListAllV2"
+	TopologyManagerReadService_ExportTopologySnapshot_FullMethodName                 = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshot"
+	TopologyManagerReadService_ExportTopologySnapshotV2_FullMethodName               = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/ExportTopologySnapshotV2"
+	TopologyManagerReadService_GenesisState_FullMethodName                           = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisState"
+	TopologyManagerReadService_GenesisStateV2_FullMethodName                         = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenesisStateV2"
+	TopologyManagerReadService_SequencerLsuState_FullMethodName                      = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/SequencerLsuState"
+	TopologyManagerReadService_GenerateOnboardingTopologyTransactions_FullMethodName = "/com.digitalasset.canton.topology.admin.v30.TopologyManagerReadService/GenerateOnboardingTopologyTransactions"
 )
 
 // TopologyManagerReadServiceClient is the client API for TopologyManagerReadService service.
@@ -76,6 +77,7 @@ type TopologyManagerReadServiceClient interface {
 	GenesisState(ctx context.Context, in *GenesisStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateResponse], error)
 	GenesisStateV2(ctx context.Context, in *GenesisStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GenesisStateV2Response], error)
 	SequencerLsuState(ctx context.Context, in *SequencerLsuStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[SequencerLsuStateResponse], error)
+	GenerateOnboardingTopologyTransactions(ctx context.Context, in *GenerateOnboardingTopologyTransactionsRequest, opts ...grpc.CallOption) (*GenerateOnboardingTopologyTransactionsResponse, error)
 }
 
 type topologyManagerReadServiceClient struct {
@@ -364,6 +366,16 @@ func (c *topologyManagerReadServiceClient) SequencerLsuState(ctx context.Context
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type TopologyManagerReadService_SequencerLsuStateClient = grpc.ServerStreamingClient[SequencerLsuStateResponse]
 
+func (c *topologyManagerReadServiceClient) GenerateOnboardingTopologyTransactions(ctx context.Context, in *GenerateOnboardingTopologyTransactionsRequest, opts ...grpc.CallOption) (*GenerateOnboardingTopologyTransactionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GenerateOnboardingTopologyTransactionsResponse)
+	err := c.cc.Invoke(ctx, TopologyManagerReadService_GenerateOnboardingTopologyTransactions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TopologyManagerReadServiceServer is the server API for TopologyManagerReadService service.
 // All implementations must embed UnimplementedTopologyManagerReadServiceServer
 // for forward compatibility.
@@ -394,6 +406,7 @@ type TopologyManagerReadServiceServer interface {
 	GenesisState(*GenesisStateRequest, grpc.ServerStreamingServer[GenesisStateResponse]) error
 	GenesisStateV2(*GenesisStateV2Request, grpc.ServerStreamingServer[GenesisStateV2Response]) error
 	SequencerLsuState(*SequencerLsuStateRequest, grpc.ServerStreamingServer[SequencerLsuStateResponse]) error
+	GenerateOnboardingTopologyTransactions(context.Context, *GenerateOnboardingTopologyTransactionsRequest) (*GenerateOnboardingTopologyTransactionsResponse, error)
 	mustEmbedUnimplementedTopologyManagerReadServiceServer()
 }
 
@@ -472,6 +485,9 @@ func (UnimplementedTopologyManagerReadServiceServer) GenesisStateV2(*GenesisStat
 }
 func (UnimplementedTopologyManagerReadServiceServer) SequencerLsuState(*SequencerLsuStateRequest, grpc.ServerStreamingServer[SequencerLsuStateResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method SequencerLsuState not implemented")
+}
+func (UnimplementedTopologyManagerReadServiceServer) GenerateOnboardingTopologyTransactions(context.Context, *GenerateOnboardingTopologyTransactionsRequest) (*GenerateOnboardingTopologyTransactionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateOnboardingTopologyTransactions not implemented")
 }
 func (UnimplementedTopologyManagerReadServiceServer) mustEmbedUnimplementedTopologyManagerReadServiceServer() {
 }
@@ -874,6 +890,24 @@ func _TopologyManagerReadService_SequencerLsuState_Handler(srv interface{}, stre
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type TopologyManagerReadService_SequencerLsuStateServer = grpc.ServerStreamingServer[SequencerLsuStateResponse]
 
+func _TopologyManagerReadService_GenerateOnboardingTopologyTransactions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateOnboardingTopologyTransactionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TopologyManagerReadServiceServer).GenerateOnboardingTopologyTransactions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TopologyManagerReadService_GenerateOnboardingTopologyTransactions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TopologyManagerReadServiceServer).GenerateOnboardingTopologyTransactions(ctx, req.(*GenerateOnboardingTopologyTransactionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TopologyManagerReadService_ServiceDesc is the grpc.ServiceDesc for TopologyManagerReadService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -952,6 +986,10 @@ var TopologyManagerReadService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAllV2",
 			Handler:    _TopologyManagerReadService_ListAllV2_Handler,
+		},
+		{
+			MethodName: "GenerateOnboardingTopologyTransactions",
+			Handler:    _TopologyManagerReadService_GenerateOnboardingTopologyTransactions_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

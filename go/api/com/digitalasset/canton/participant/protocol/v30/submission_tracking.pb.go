@@ -216,6 +216,7 @@ type TransactionSubmissionTrackingData struct {
 	CompletionInfo         *CompletionInfo                                   `protobuf:"bytes,1,opt,name=completion_info,json=completionInfo,proto3" json:"completion_info,omitempty"`
 	RejectionCause         *TransactionSubmissionTrackingData_RejectionCause `protobuf:"bytes,2,opt,name=rejection_cause,json=rejectionCause,proto3" json:"rejection_cause,omitempty"`
 	PhysicalSynchronizerId string                                            `protobuf:"bytes,3,opt,name=physical_synchronizer_id,json=physicalSynchronizerId,proto3" json:"physical_synchronizer_id,omitempty"`
+	TransactionHash        []byte                                            `protobuf:"bytes,4,opt,name=transaction_hash,json=transactionHash,proto3" json:"transaction_hash,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -269,6 +270,13 @@ func (x *TransactionSubmissionTrackingData) GetPhysicalSynchronizerId() string {
 		return x.PhysicalSynchronizerId
 	}
 	return ""
+}
+
+func (x *TransactionSubmissionTrackingData) GetTransactionHash() []byte {
+	if x != nil {
+		return x.TransactionHash
+	}
+	return nil
 }
 
 type CommandRejected_GrpcRejectionReasonTemplate struct {
@@ -418,11 +426,12 @@ const file_com_digitalasset_canton_participant_protocol_v30_submission_tracking_
 	"\x16SubmissionTrackingData\x12w\n" +
 	"\vtransaction\x18\x01 \x01(\v2S.com.digitalasset.canton.participant.protocol.v30.TransactionSubmissionTrackingDataH\x00R\vtransactionB\n" +
 	"\n" +
-	"\btracking\"\xc4\x04\n" +
+	"\btracking\"\xef\x04\n" +
 	"!TransactionSubmissionTrackingData\x12i\n" +
 	"\x0fcompletion_info\x18\x01 \x01(\v2@.com.digitalasset.canton.participant.protocol.v30.CompletionInfoR\x0ecompletionInfo\x12\x8b\x01\n" +
 	"\x0frejection_cause\x18\x02 \x01(\v2b.com.digitalasset.canton.participant.protocol.v30.TransactionSubmissionTrackingData.RejectionCauseR\x0erejectionCause\x128\n" +
-	"\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\x1a\xeb\x01\n" +
+	"\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\x12)\n" +
+	"\x10transaction_hash\x18\x04 \x01(\fR\x0ftransactionHash\x1a\xeb\x01\n" +
 	"\x0eRejectionCause\x122\n" +
 	"\atimeout\x18\x01 \x01(\v2\x16.google.protobuf.EmptyH\x00R\atimeout\x12\x9b\x01\n" +
 	"\x19rejection_reason_template\x18\x02 \x01(\v2].com.digitalasset.canton.participant.protocol.v30.CommandRejected.GrpcRejectionReasonTemplateH\x00R\x17rejectionReasonTemplateB\a\n" +

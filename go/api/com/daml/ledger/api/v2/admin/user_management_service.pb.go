@@ -119,6 +119,7 @@ type Right struct {
 	//	*Right_CanReadAsAnyParty_
 	//	*Right_CanExecuteAs_
 	//	*Right_CanExecuteAsAnyParty_
+	//	*Right_CanActAsAnyParty_
 	Kind          isRight_Kind `protobuf_oneof:"kind"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -224,6 +225,15 @@ func (x *Right) GetCanExecuteAsAnyParty() *Right_CanExecuteAsAnyParty {
 	return nil
 }
 
+func (x *Right) GetCanActAsAnyParty() *Right_CanActAsAnyParty {
+	if x != nil {
+		if x, ok := x.Kind.(*Right_CanActAsAnyParty_); ok {
+			return x.CanActAsAnyParty
+		}
+	}
+	return nil
+}
+
 type isRight_Kind interface {
 	isRight_Kind()
 }
@@ -256,6 +266,10 @@ type Right_CanExecuteAsAnyParty_ struct {
 	CanExecuteAsAnyParty *Right_CanExecuteAsAnyParty `protobuf:"bytes,7,opt,name=can_execute_as_any_party,json=canExecuteAsAnyParty,proto3,oneof"`
 }
 
+type Right_CanActAsAnyParty_ struct {
+	CanActAsAnyParty *Right_CanActAsAnyParty `protobuf:"bytes,8,opt,name=can_act_as_any_party,json=canActAsAnyParty,proto3,oneof"`
+}
+
 func (*Right_ParticipantAdmin_) isRight_Kind() {}
 
 func (*Right_CanActAs_) isRight_Kind() {}
@@ -269,6 +283,8 @@ func (*Right_CanReadAsAnyParty_) isRight_Kind() {}
 func (*Right_CanExecuteAs_) isRight_Kind() {}
 
 func (*Right_CanExecuteAsAnyParty_) isRight_Kind() {}
+
+func (*Right_CanActAsAnyParty_) isRight_Kind() {}
 
 type CreateUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1434,6 +1450,42 @@ func (*Right_CanExecuteAsAnyParty) Descriptor() ([]byte, []int) {
 	return file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDescGZIP(), []int{1, 6}
 }
 
+type Right_CanActAsAnyParty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Right_CanActAsAnyParty) Reset() {
+	*x = Right_CanActAsAnyParty{}
+	mi := &file_com_daml_ledger_api_v2_admin_user_management_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Right_CanActAsAnyParty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Right_CanActAsAnyParty) ProtoMessage() {}
+
+func (x *Right_CanActAsAnyParty) ProtoReflect() protoreflect.Message {
+	mi := &file_com_daml_ledger_api_v2_admin_user_management_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Right_CanActAsAnyParty.ProtoReflect.Descriptor instead.
+func (*Right_CanActAsAnyParty) Descriptor() ([]byte, []int) {
+	return file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDescGZIP(), []int{1, 7}
+}
+
 var File_com_daml_ledger_api_v2_admin_user_management_service_proto protoreflect.FileDescriptor
 
 const file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc = "" +
@@ -1445,7 +1497,7 @@ const file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc = 
 	"\x0eis_deactivated\x18\x03 \x01(\bR\risDeactivated\x12D\n" +
 	"\bmetadata\x18\x04 \x01(\v2(.com.daml.ledger.api.v2.admin.ObjectMetaR\bmetadata\x120\n" +
 	"\x14identity_provider_id\x18\x05 \x01(\tR\x12identityProviderId\x12@\n" +
-	"\x1cprimary_party_authentication\x18\x06 \x01(\bR\x1aprimaryPartyAuthentication\"\x86\a\n" +
+	"\x1cprimary_party_authentication\x18\x06 \x01(\bR\x1aprimaryPartyAuthentication\"\x82\b\n" +
 	"\x05Right\x12c\n" +
 	"\x11participant_admin\x18\x01 \x01(\v24.com.daml.ledger.api.v2.admin.Right.ParticipantAdminH\x00R\x10participantAdmin\x12L\n" +
 	"\n" +
@@ -1454,7 +1506,8 @@ const file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc = 
 	"\x17identity_provider_admin\x18\x04 \x01(\v29.com.daml.ledger.api.v2.admin.Right.IdentityProviderAdminH\x00R\x15identityProviderAdmin\x12i\n" +
 	"\x15can_read_as_any_party\x18\x05 \x01(\v25.com.daml.ledger.api.v2.admin.Right.CanReadAsAnyPartyH\x00R\x11canReadAsAnyParty\x12X\n" +
 	"\x0ecan_execute_as\x18\x06 \x01(\v20.com.daml.ledger.api.v2.admin.Right.CanExecuteAsH\x00R\fcanExecuteAs\x12r\n" +
-	"\x18can_execute_as_any_party\x18\a \x01(\v28.com.daml.ledger.api.v2.admin.Right.CanExecuteAsAnyPartyH\x00R\x14canExecuteAsAnyParty\x1a\x12\n" +
+	"\x18can_execute_as_any_party\x18\a \x01(\v28.com.daml.ledger.api.v2.admin.Right.CanExecuteAsAnyPartyH\x00R\x14canExecuteAsAnyParty\x12f\n" +
+	"\x14can_act_as_any_party\x18\b \x01(\v24.com.daml.ledger.api.v2.admin.Right.CanActAsAnyPartyH\x00R\x10canActAsAnyParty\x1a\x12\n" +
 	"\x10ParticipantAdmin\x1a \n" +
 	"\bCanActAs\x12\x14\n" +
 	"\x05party\x18\x01 \x01(\tR\x05party\x1a!\n" +
@@ -1464,7 +1517,8 @@ const file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc = 
 	"\x05party\x18\x01 \x01(\tR\x05party\x1a\x17\n" +
 	"\x15IdentityProviderAdmin\x1a\x13\n" +
 	"\x11CanReadAsAnyParty\x1a\x16\n" +
-	"\x14CanExecuteAsAnyPartyB\x06\n" +
+	"\x14CanExecuteAsAnyParty\x1a\x12\n" +
+	"\x10CanActAsAnyPartyB\x06\n" +
 	"\x04kind\"\x88\x01\n" +
 	"\x11CreateUserRequest\x126\n" +
 	"\x04user\x18\x01 \x01(\v2\".com.daml.ledger.api.v2.admin.UserR\x04user\x12;\n" +
@@ -1543,7 +1597,7 @@ func file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDescGZIP
 	return file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDescData
 }
 
-var file_com_daml_ledger_api_v2_admin_user_management_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_com_daml_ledger_api_v2_admin_user_management_service_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_com_daml_ledger_api_v2_admin_user_management_service_proto_goTypes = []any{
 	(*User)(nil),                                 // 0: com.daml.ledger.api.v2.admin.User
 	(*Right)(nil),                                // 1: com.daml.ledger.api.v2.admin.Right
@@ -1572,11 +1626,12 @@ var file_com_daml_ledger_api_v2_admin_user_management_service_proto_goTypes = []
 	(*Right_IdentityProviderAdmin)(nil),          // 24: com.daml.ledger.api.v2.admin.Right.IdentityProviderAdmin
 	(*Right_CanReadAsAnyParty)(nil),              // 25: com.daml.ledger.api.v2.admin.Right.CanReadAsAnyParty
 	(*Right_CanExecuteAsAnyParty)(nil),           // 26: com.daml.ledger.api.v2.admin.Right.CanExecuteAsAnyParty
-	(*ObjectMeta)(nil),                           // 27: com.daml.ledger.api.v2.admin.ObjectMeta
-	(*fieldmaskpb.FieldMask)(nil),                // 28: google.protobuf.FieldMask
+	(*Right_CanActAsAnyParty)(nil),               // 27: com.daml.ledger.api.v2.admin.Right.CanActAsAnyParty
+	(*ObjectMeta)(nil),                           // 28: com.daml.ledger.api.v2.admin.ObjectMeta
+	(*fieldmaskpb.FieldMask)(nil),                // 29: google.protobuf.FieldMask
 }
 var file_com_daml_ledger_api_v2_admin_user_management_service_proto_depIdxs = []int32{
-	27, // 0: com.daml.ledger.api.v2.admin.User.metadata:type_name -> com.daml.ledger.api.v2.admin.ObjectMeta
+	28, // 0: com.daml.ledger.api.v2.admin.User.metadata:type_name -> com.daml.ledger.api.v2.admin.ObjectMeta
 	20, // 1: com.daml.ledger.api.v2.admin.Right.participant_admin:type_name -> com.daml.ledger.api.v2.admin.Right.ParticipantAdmin
 	21, // 2: com.daml.ledger.api.v2.admin.Right.can_act_as:type_name -> com.daml.ledger.api.v2.admin.Right.CanActAs
 	22, // 3: com.daml.ledger.api.v2.admin.Right.can_read_as:type_name -> com.daml.ledger.api.v2.admin.Right.CanReadAs
@@ -1584,42 +1639,43 @@ var file_com_daml_ledger_api_v2_admin_user_management_service_proto_depIdxs = []
 	25, // 5: com.daml.ledger.api.v2.admin.Right.can_read_as_any_party:type_name -> com.daml.ledger.api.v2.admin.Right.CanReadAsAnyParty
 	23, // 6: com.daml.ledger.api.v2.admin.Right.can_execute_as:type_name -> com.daml.ledger.api.v2.admin.Right.CanExecuteAs
 	26, // 7: com.daml.ledger.api.v2.admin.Right.can_execute_as_any_party:type_name -> com.daml.ledger.api.v2.admin.Right.CanExecuteAsAnyParty
-	0,  // 8: com.daml.ledger.api.v2.admin.CreateUserRequest.user:type_name -> com.daml.ledger.api.v2.admin.User
-	1,  // 9: com.daml.ledger.api.v2.admin.CreateUserRequest.rights:type_name -> com.daml.ledger.api.v2.admin.Right
-	0,  // 10: com.daml.ledger.api.v2.admin.CreateUserResponse.user:type_name -> com.daml.ledger.api.v2.admin.User
-	0,  // 11: com.daml.ledger.api.v2.admin.GetUserResponse.user:type_name -> com.daml.ledger.api.v2.admin.User
-	0,  // 12: com.daml.ledger.api.v2.admin.UpdateUserRequest.user:type_name -> com.daml.ledger.api.v2.admin.User
-	28, // 13: com.daml.ledger.api.v2.admin.UpdateUserRequest.update_mask:type_name -> google.protobuf.FieldMask
-	0,  // 14: com.daml.ledger.api.v2.admin.UpdateUserResponse.user:type_name -> com.daml.ledger.api.v2.admin.User
-	0,  // 15: com.daml.ledger.api.v2.admin.ListUsersResponse.users:type_name -> com.daml.ledger.api.v2.admin.User
-	1,  // 16: com.daml.ledger.api.v2.admin.GrantUserRightsRequest.rights:type_name -> com.daml.ledger.api.v2.admin.Right
-	1,  // 17: com.daml.ledger.api.v2.admin.GrantUserRightsResponse.newly_granted_rights:type_name -> com.daml.ledger.api.v2.admin.Right
-	1,  // 18: com.daml.ledger.api.v2.admin.RevokeUserRightsRequest.rights:type_name -> com.daml.ledger.api.v2.admin.Right
-	1,  // 19: com.daml.ledger.api.v2.admin.RevokeUserRightsResponse.newly_revoked_rights:type_name -> com.daml.ledger.api.v2.admin.Right
-	1,  // 20: com.daml.ledger.api.v2.admin.ListUserRightsResponse.rights:type_name -> com.daml.ledger.api.v2.admin.Right
-	2,  // 21: com.daml.ledger.api.v2.admin.UserManagementService.CreateUser:input_type -> com.daml.ledger.api.v2.admin.CreateUserRequest
-	4,  // 22: com.daml.ledger.api.v2.admin.UserManagementService.GetUser:input_type -> com.daml.ledger.api.v2.admin.GetUserRequest
-	6,  // 23: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUser:input_type -> com.daml.ledger.api.v2.admin.UpdateUserRequest
-	8,  // 24: com.daml.ledger.api.v2.admin.UserManagementService.DeleteUser:input_type -> com.daml.ledger.api.v2.admin.DeleteUserRequest
-	10, // 25: com.daml.ledger.api.v2.admin.UserManagementService.ListUsers:input_type -> com.daml.ledger.api.v2.admin.ListUsersRequest
-	12, // 26: com.daml.ledger.api.v2.admin.UserManagementService.GrantUserRights:input_type -> com.daml.ledger.api.v2.admin.GrantUserRightsRequest
-	14, // 27: com.daml.ledger.api.v2.admin.UserManagementService.RevokeUserRights:input_type -> com.daml.ledger.api.v2.admin.RevokeUserRightsRequest
-	16, // 28: com.daml.ledger.api.v2.admin.UserManagementService.ListUserRights:input_type -> com.daml.ledger.api.v2.admin.ListUserRightsRequest
-	18, // 29: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUserIdentityProviderId:input_type -> com.daml.ledger.api.v2.admin.UpdateUserIdentityProviderIdRequest
-	3,  // 30: com.daml.ledger.api.v2.admin.UserManagementService.CreateUser:output_type -> com.daml.ledger.api.v2.admin.CreateUserResponse
-	5,  // 31: com.daml.ledger.api.v2.admin.UserManagementService.GetUser:output_type -> com.daml.ledger.api.v2.admin.GetUserResponse
-	7,  // 32: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUser:output_type -> com.daml.ledger.api.v2.admin.UpdateUserResponse
-	9,  // 33: com.daml.ledger.api.v2.admin.UserManagementService.DeleteUser:output_type -> com.daml.ledger.api.v2.admin.DeleteUserResponse
-	11, // 34: com.daml.ledger.api.v2.admin.UserManagementService.ListUsers:output_type -> com.daml.ledger.api.v2.admin.ListUsersResponse
-	13, // 35: com.daml.ledger.api.v2.admin.UserManagementService.GrantUserRights:output_type -> com.daml.ledger.api.v2.admin.GrantUserRightsResponse
-	15, // 36: com.daml.ledger.api.v2.admin.UserManagementService.RevokeUserRights:output_type -> com.daml.ledger.api.v2.admin.RevokeUserRightsResponse
-	17, // 37: com.daml.ledger.api.v2.admin.UserManagementService.ListUserRights:output_type -> com.daml.ledger.api.v2.admin.ListUserRightsResponse
-	19, // 38: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUserIdentityProviderId:output_type -> com.daml.ledger.api.v2.admin.UpdateUserIdentityProviderIdResponse
-	30, // [30:39] is the sub-list for method output_type
-	21, // [21:30] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	27, // 8: com.daml.ledger.api.v2.admin.Right.can_act_as_any_party:type_name -> com.daml.ledger.api.v2.admin.Right.CanActAsAnyParty
+	0,  // 9: com.daml.ledger.api.v2.admin.CreateUserRequest.user:type_name -> com.daml.ledger.api.v2.admin.User
+	1,  // 10: com.daml.ledger.api.v2.admin.CreateUserRequest.rights:type_name -> com.daml.ledger.api.v2.admin.Right
+	0,  // 11: com.daml.ledger.api.v2.admin.CreateUserResponse.user:type_name -> com.daml.ledger.api.v2.admin.User
+	0,  // 12: com.daml.ledger.api.v2.admin.GetUserResponse.user:type_name -> com.daml.ledger.api.v2.admin.User
+	0,  // 13: com.daml.ledger.api.v2.admin.UpdateUserRequest.user:type_name -> com.daml.ledger.api.v2.admin.User
+	29, // 14: com.daml.ledger.api.v2.admin.UpdateUserRequest.update_mask:type_name -> google.protobuf.FieldMask
+	0,  // 15: com.daml.ledger.api.v2.admin.UpdateUserResponse.user:type_name -> com.daml.ledger.api.v2.admin.User
+	0,  // 16: com.daml.ledger.api.v2.admin.ListUsersResponse.users:type_name -> com.daml.ledger.api.v2.admin.User
+	1,  // 17: com.daml.ledger.api.v2.admin.GrantUserRightsRequest.rights:type_name -> com.daml.ledger.api.v2.admin.Right
+	1,  // 18: com.daml.ledger.api.v2.admin.GrantUserRightsResponse.newly_granted_rights:type_name -> com.daml.ledger.api.v2.admin.Right
+	1,  // 19: com.daml.ledger.api.v2.admin.RevokeUserRightsRequest.rights:type_name -> com.daml.ledger.api.v2.admin.Right
+	1,  // 20: com.daml.ledger.api.v2.admin.RevokeUserRightsResponse.newly_revoked_rights:type_name -> com.daml.ledger.api.v2.admin.Right
+	1,  // 21: com.daml.ledger.api.v2.admin.ListUserRightsResponse.rights:type_name -> com.daml.ledger.api.v2.admin.Right
+	2,  // 22: com.daml.ledger.api.v2.admin.UserManagementService.CreateUser:input_type -> com.daml.ledger.api.v2.admin.CreateUserRequest
+	4,  // 23: com.daml.ledger.api.v2.admin.UserManagementService.GetUser:input_type -> com.daml.ledger.api.v2.admin.GetUserRequest
+	6,  // 24: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUser:input_type -> com.daml.ledger.api.v2.admin.UpdateUserRequest
+	8,  // 25: com.daml.ledger.api.v2.admin.UserManagementService.DeleteUser:input_type -> com.daml.ledger.api.v2.admin.DeleteUserRequest
+	10, // 26: com.daml.ledger.api.v2.admin.UserManagementService.ListUsers:input_type -> com.daml.ledger.api.v2.admin.ListUsersRequest
+	12, // 27: com.daml.ledger.api.v2.admin.UserManagementService.GrantUserRights:input_type -> com.daml.ledger.api.v2.admin.GrantUserRightsRequest
+	14, // 28: com.daml.ledger.api.v2.admin.UserManagementService.RevokeUserRights:input_type -> com.daml.ledger.api.v2.admin.RevokeUserRightsRequest
+	16, // 29: com.daml.ledger.api.v2.admin.UserManagementService.ListUserRights:input_type -> com.daml.ledger.api.v2.admin.ListUserRightsRequest
+	18, // 30: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUserIdentityProviderId:input_type -> com.daml.ledger.api.v2.admin.UpdateUserIdentityProviderIdRequest
+	3,  // 31: com.daml.ledger.api.v2.admin.UserManagementService.CreateUser:output_type -> com.daml.ledger.api.v2.admin.CreateUserResponse
+	5,  // 32: com.daml.ledger.api.v2.admin.UserManagementService.GetUser:output_type -> com.daml.ledger.api.v2.admin.GetUserResponse
+	7,  // 33: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUser:output_type -> com.daml.ledger.api.v2.admin.UpdateUserResponse
+	9,  // 34: com.daml.ledger.api.v2.admin.UserManagementService.DeleteUser:output_type -> com.daml.ledger.api.v2.admin.DeleteUserResponse
+	11, // 35: com.daml.ledger.api.v2.admin.UserManagementService.ListUsers:output_type -> com.daml.ledger.api.v2.admin.ListUsersResponse
+	13, // 36: com.daml.ledger.api.v2.admin.UserManagementService.GrantUserRights:output_type -> com.daml.ledger.api.v2.admin.GrantUserRightsResponse
+	15, // 37: com.daml.ledger.api.v2.admin.UserManagementService.RevokeUserRights:output_type -> com.daml.ledger.api.v2.admin.RevokeUserRightsResponse
+	17, // 38: com.daml.ledger.api.v2.admin.UserManagementService.ListUserRights:output_type -> com.daml.ledger.api.v2.admin.ListUserRightsResponse
+	19, // 39: com.daml.ledger.api.v2.admin.UserManagementService.UpdateUserIdentityProviderId:output_type -> com.daml.ledger.api.v2.admin.UpdateUserIdentityProviderIdResponse
+	31, // [31:40] is the sub-list for method output_type
+	22, // [22:31] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_com_daml_ledger_api_v2_admin_user_management_service_proto_init() }
@@ -1636,6 +1692,7 @@ func file_com_daml_ledger_api_v2_admin_user_management_service_proto_init() {
 		(*Right_CanReadAsAnyParty_)(nil),
 		(*Right_CanExecuteAs_)(nil),
 		(*Right_CanExecuteAsAnyParty_)(nil),
+		(*Right_CanActAsAnyParty_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1643,7 +1700,7 @@ func file_com_daml_ledger_api_v2_admin_user_management_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc), len(file_com_daml_ledger_api_v2_admin_user_management_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

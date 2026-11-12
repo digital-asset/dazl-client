@@ -51,7 +51,7 @@ class ReconnectSynchronizersResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class RegisterSynchronizerRequest(_message.Message):
-    __slots__ = ("config", "synchronizer_connection", "sequencer_connection_validation")
+    __slots__ = ("config", "synchronizer_connection", "sequencer_connection_validation", "onboarding_transactions")
     class SynchronizerConnection(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         SYNCHRONIZER_CONNECTION_UNSPECIFIED: _ClassVar[RegisterSynchronizerRequest.SynchronizerConnection]
@@ -63,10 +63,12 @@ class RegisterSynchronizerRequest(_message.Message):
     CONFIG_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_CONNECTION_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_CONNECTION_VALIDATION_FIELD_NUMBER: _ClassVar[int]
+    ONBOARDING_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
     config: SynchronizerConnectionConfig
     synchronizer_connection: RegisterSynchronizerRequest.SynchronizerConnection
     sequencer_connection_validation: _sequencer_connection_pb2.SequencerConnectionValidation
-    def __init__(self, config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ..., synchronizer_connection: _Optional[_Union[RegisterSynchronizerRequest.SynchronizerConnection, str]] = ..., sequencer_connection_validation: _Optional[_Union[_sequencer_connection_pb2.SequencerConnectionValidation, str]] = ...) -> None: ...
+    onboarding_transactions: _containers.RepeatedScalarFieldContainer[bytes]
+    def __init__(self, config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ..., synchronizer_connection: _Optional[_Union[RegisterSynchronizerRequest.SynchronizerConnection, str]] = ..., sequencer_connection_validation: _Optional[_Union[_sequencer_connection_pb2.SequencerConnectionValidation, str]] = ..., onboarding_transactions: _Optional[_Iterable[bytes]] = ...) -> None: ...
 
 class RegisterSynchronizerResponse(_message.Message):
     __slots__ = ()
@@ -142,12 +144,14 @@ class ReconnectSynchronizerResponse(_message.Message):
     def __init__(self, connected_successfully: _Optional[bool] = ...) -> None: ...
 
 class ConnectSynchronizerRequest(_message.Message):
-    __slots__ = ("config", "sequencer_connection_validation")
+    __slots__ = ("config", "sequencer_connection_validation", "onboarding_transactions")
     CONFIG_FIELD_NUMBER: _ClassVar[int]
     SEQUENCER_CONNECTION_VALIDATION_FIELD_NUMBER: _ClassVar[int]
+    ONBOARDING_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
     config: SynchronizerConnectionConfig
     sequencer_connection_validation: _sequencer_connection_pb2.SequencerConnectionValidation
-    def __init__(self, config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ..., sequencer_connection_validation: _Optional[_Union[_sequencer_connection_pb2.SequencerConnectionValidation, str]] = ...) -> None: ...
+    onboarding_transactions: _containers.RepeatedScalarFieldContainer[bytes]
+    def __init__(self, config: _Optional[_Union[SynchronizerConnectionConfig, _Mapping]] = ..., sequencer_connection_validation: _Optional[_Union[_sequencer_connection_pb2.SequencerConnectionValidation, str]] = ..., onboarding_transactions: _Optional[_Iterable[bytes]] = ...) -> None: ...
 
 class ConnectSynchronizerResponse(_message.Message):
     __slots__ = ("connected_successfully",)

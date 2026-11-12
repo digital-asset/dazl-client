@@ -31,6 +31,7 @@ const (
 	SigningKeySpec_SIGNING_KEY_SPEC_EC_P256       SigningKeySpec = 2
 	SigningKeySpec_SIGNING_KEY_SPEC_EC_P384       SigningKeySpec = 3
 	SigningKeySpec_SIGNING_KEY_SPEC_EC_SECP256K1  SigningKeySpec = 4
+	SigningKeySpec_SIGNING_KEY_SPEC_ML_DSA_65     SigningKeySpec = 5
 )
 
 // Enum value maps for SigningKeySpec.
@@ -41,6 +42,7 @@ var (
 		2: "SIGNING_KEY_SPEC_EC_P256",
 		3: "SIGNING_KEY_SPEC_EC_P384",
 		4: "SIGNING_KEY_SPEC_EC_SECP256K1",
+		5: "SIGNING_KEY_SPEC_ML_DSA_65",
 	}
 	SigningKeySpec_value = map[string]int32{
 		"SIGNING_KEY_SPEC_UNSPECIFIED":   0,
@@ -48,6 +50,7 @@ var (
 		"SIGNING_KEY_SPEC_EC_P256":       2,
 		"SIGNING_KEY_SPEC_EC_P384":       3,
 		"SIGNING_KEY_SPEC_EC_SECP256K1":  4,
+		"SIGNING_KEY_SPEC_ML_DSA_65":     5,
 	}
 )
 
@@ -137,6 +140,7 @@ const (
 	SigningAlgorithmSpec_SIGNING_ALGORITHM_SPEC_ED25519        SigningAlgorithmSpec = 1
 	SigningAlgorithmSpec_SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256 SigningAlgorithmSpec = 2
 	SigningAlgorithmSpec_SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384 SigningAlgorithmSpec = 3
+	SigningAlgorithmSpec_SIGNING_ALGORITHM_SPEC_ML_DSA_65      SigningAlgorithmSpec = 4
 )
 
 // Enum value maps for SigningAlgorithmSpec.
@@ -146,12 +150,14 @@ var (
 		1: "SIGNING_ALGORITHM_SPEC_ED25519",
 		2: "SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256",
 		3: "SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384",
+		4: "SIGNING_ALGORITHM_SPEC_ML_DSA_65",
 	}
 	SigningAlgorithmSpec_value = map[string]int32{
 		"SIGNING_ALGORITHM_SPEC_UNSPECIFIED":    0,
 		"SIGNING_ALGORITHM_SPEC_ED25519":        1,
 		"SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256": 2,
 		"SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384": 3,
+		"SIGNING_ALGORITHM_SPEC_ML_DSA_65":      4,
 	}
 )
 
@@ -378,23 +384,25 @@ const file_com_daml_ledger_api_v2_crypto_proto_rawDesc = "" +
 	"\x06format\x18\x01 \x01(\x0e2'.com.daml.ledger.api.v2.SignatureFormatR\x06format\x12\x1c\n" +
 	"\tsignature\x18\x02 \x01(\fR\tsignature\x12\x1b\n" +
 	"\tsigned_by\x18\x03 \x01(\tR\bsignedBy\x12b\n" +
-	"\x16signing_algorithm_spec\x18\x04 \x01(\x0e2,.com.daml.ledger.api.v2.SigningAlgorithmSpecR\x14signingAlgorithmSpec*\xb5\x01\n" +
+	"\x16signing_algorithm_spec\x18\x04 \x01(\x0e2,.com.daml.ledger.api.v2.SigningAlgorithmSpecR\x14signingAlgorithmSpec*\xd5\x01\n" +
 	"\x0eSigningKeySpec\x12 \n" +
 	"\x1cSIGNING_KEY_SPEC_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eSIGNING_KEY_SPEC_EC_CURVE25519\x10\x01\x12\x1c\n" +
 	"\x18SIGNING_KEY_SPEC_EC_P256\x10\x02\x12\x1c\n" +
 	"\x18SIGNING_KEY_SPEC_EC_P384\x10\x03\x12!\n" +
-	"\x1dSIGNING_KEY_SPEC_EC_SECP256K1\x10\x04*\xaa\x01\n" +
+	"\x1dSIGNING_KEY_SPEC_EC_SECP256K1\x10\x04\x12\x1e\n" +
+	"\x1aSIGNING_KEY_SPEC_ML_DSA_65\x10\x05*\xaa\x01\n" +
 	"\x0fCryptoKeyFormat\x12!\n" +
 	"\x1dCRYPTO_KEY_FORMAT_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15CRYPTO_KEY_FORMAT_DER\x10\x01\x12\x19\n" +
 	"\x15CRYPTO_KEY_FORMAT_RAW\x10\x02\x126\n" +
-	"2CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO\x10\x03\"\x06\b\x90N\x10\x90N*\xb8\x01\n" +
+	"2CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO\x10\x03\"\x06\b\x90N\x10\x90N*\xde\x01\n" +
 	"\x14SigningAlgorithmSpec\x12&\n" +
 	"\"SIGNING_ALGORITHM_SPEC_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eSIGNING_ALGORITHM_SPEC_ED25519\x10\x01\x12)\n" +
 	"%SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256\x10\x02\x12)\n" +
-	"%SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384\x10\x03*\xa4\x01\n" +
+	"%SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384\x10\x03\x12$\n" +
+	" SIGNING_ALGORITHM_SPEC_ML_DSA_65\x10\x04*\xa4\x01\n" +
 	"\x0fSignatureFormat\x12 \n" +
 	"\x1cSIGNATURE_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14SIGNATURE_FORMAT_RAW\x10\x01\x12\x18\n" +

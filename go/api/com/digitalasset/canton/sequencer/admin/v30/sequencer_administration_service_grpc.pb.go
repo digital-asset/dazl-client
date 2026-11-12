@@ -29,7 +29,6 @@ const (
 	SequencerAdministrationService_SetThroughputCap_FullMethodName            = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/SetThroughputCap"
 	SequencerAdministrationService_GetThroughputCap_FullMethodName            = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GetThroughputCap"
 	SequencerAdministrationService_Snapshot_FullMethodName                    = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/Snapshot"
-	SequencerAdministrationService_OnboardingState_FullMethodName             = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingState"
 	SequencerAdministrationService_OnboardingStateV2_FullMethodName           = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/OnboardingStateV2"
 	SequencerAdministrationService_DisableMember_FullMethodName               = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/DisableMember"
 	SequencerAdministrationService_GenerateAuthenticationToken_FullMethodName = "/com.digitalasset.canton.sequencer.admin.v30.SequencerAdministrationService/GenerateAuthenticationToken"
@@ -48,8 +47,6 @@ type SequencerAdministrationServiceClient interface {
 	SetThroughputCap(ctx context.Context, in *SetThroughputCapRequest, opts ...grpc.CallOption) (*SetThroughputCapResponse, error)
 	GetThroughputCap(ctx context.Context, in *GetThroughputCapRequest, opts ...grpc.CallOption) (*GetThroughputCapResponse, error)
 	Snapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error)
-	// Deprecated: Do not use.
-	OnboardingState(ctx context.Context, in *OnboardingStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateResponse], error)
 	OnboardingStateV2(ctx context.Context, in *OnboardingStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateV2Response], error)
 	DisableMember(ctx context.Context, in *DisableMemberRequest, opts ...grpc.CallOption) (*DisableMemberResponse, error)
 	GenerateAuthenticationToken(ctx context.Context, in *GenerateAuthenticationTokenRequest, opts ...grpc.CallOption) (*GenerateAuthenticationTokenResponse, error)
@@ -144,29 +141,9 @@ func (c *sequencerAdministrationServiceClient) Snapshot(ctx context.Context, in 
 	return out, nil
 }
 
-// Deprecated: Do not use.
-func (c *sequencerAdministrationServiceClient) OnboardingState(ctx context.Context, in *OnboardingStateRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SequencerAdministrationService_ServiceDesc.Streams[0], SequencerAdministrationService_OnboardingState_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[OnboardingStateRequest, OnboardingStateResponse]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SequencerAdministrationService_OnboardingStateClient = grpc.ServerStreamingClient[OnboardingStateResponse]
-
 func (c *sequencerAdministrationServiceClient) OnboardingStateV2(ctx context.Context, in *OnboardingStateV2Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OnboardingStateV2Response], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SequencerAdministrationService_ServiceDesc.Streams[1], SequencerAdministrationService_OnboardingStateV2_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SequencerAdministrationService_ServiceDesc.Streams[0], SequencerAdministrationService_OnboardingStateV2_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -225,8 +202,6 @@ type SequencerAdministrationServiceServer interface {
 	SetThroughputCap(context.Context, *SetThroughputCapRequest) (*SetThroughputCapResponse, error)
 	GetThroughputCap(context.Context, *GetThroughputCapRequest) (*GetThroughputCapResponse, error)
 	Snapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error)
-	// Deprecated: Do not use.
-	OnboardingState(*OnboardingStateRequest, grpc.ServerStreamingServer[OnboardingStateResponse]) error
 	OnboardingStateV2(*OnboardingStateV2Request, grpc.ServerStreamingServer[OnboardingStateV2Response]) error
 	DisableMember(context.Context, *DisableMemberRequest) (*DisableMemberResponse, error)
 	GenerateAuthenticationToken(context.Context, *GenerateAuthenticationTokenRequest) (*GenerateAuthenticationTokenResponse, error)
@@ -264,9 +239,6 @@ func (UnimplementedSequencerAdministrationServiceServer) GetThroughputCap(contex
 }
 func (UnimplementedSequencerAdministrationServiceServer) Snapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Snapshot not implemented")
-}
-func (UnimplementedSequencerAdministrationServiceServer) OnboardingState(*OnboardingStateRequest, grpc.ServerStreamingServer[OnboardingStateResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method OnboardingState not implemented")
 }
 func (UnimplementedSequencerAdministrationServiceServer) OnboardingStateV2(*OnboardingStateV2Request, grpc.ServerStreamingServer[OnboardingStateV2Response]) error {
 	return status.Errorf(codes.Unimplemented, "method OnboardingStateV2 not implemented")
@@ -446,17 +418,6 @@ func _SequencerAdministrationService_Snapshot_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SequencerAdministrationService_OnboardingState_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(OnboardingStateRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(SequencerAdministrationServiceServer).OnboardingState(m, &grpc.GenericServerStream[OnboardingStateRequest, OnboardingStateResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SequencerAdministrationService_OnboardingStateServer = grpc.ServerStreamingServer[OnboardingStateResponse]
-
 func _SequencerAdministrationService_OnboardingStateV2_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(OnboardingStateV2Request)
 	if err := stream.RecvMsg(m); err != nil {
@@ -575,11 +536,6 @@ var SequencerAdministrationService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "OnboardingState",
-			Handler:       _SequencerAdministrationService_OnboardingState_Handler,
-			ServerStreams: true,
-		},
 		{
 			StreamName:    "OnboardingStateV2",
 			Handler:       _SequencerAdministrationService_OnboardingStateV2_Handler,

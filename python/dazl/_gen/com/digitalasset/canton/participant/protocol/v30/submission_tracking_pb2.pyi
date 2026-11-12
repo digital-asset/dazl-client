@@ -44,7 +44,7 @@ class SubmissionTrackingData(_message.Message):
     def __init__(self, transaction: _Optional[_Union[TransactionSubmissionTrackingData, _Mapping]] = ...) -> None: ...
 
 class TransactionSubmissionTrackingData(_message.Message):
-    __slots__ = ("completion_info", "rejection_cause", "physical_synchronizer_id")
+    __slots__ = ("completion_info", "rejection_cause", "physical_synchronizer_id", "transaction_hash")
     class RejectionCause(_message.Message):
         __slots__ = ("timeout", "rejection_reason_template")
         TIMEOUT_FIELD_NUMBER: _ClassVar[int]
@@ -55,7 +55,9 @@ class TransactionSubmissionTrackingData(_message.Message):
     COMPLETION_INFO_FIELD_NUMBER: _ClassVar[int]
     REJECTION_CAUSE_FIELD_NUMBER: _ClassVar[int]
     PHYSICAL_SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSACTION_HASH_FIELD_NUMBER: _ClassVar[int]
     completion_info: CompletionInfo
     rejection_cause: TransactionSubmissionTrackingData.RejectionCause
     physical_synchronizer_id: str
-    def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., rejection_cause: _Optional[_Union[TransactionSubmissionTrackingData.RejectionCause, _Mapping]] = ..., physical_synchronizer_id: _Optional[str] = ...) -> None: ...
+    transaction_hash: bytes
+    def __init__(self, completion_info: _Optional[_Union[CompletionInfo, _Mapping]] = ..., rejection_cause: _Optional[_Union[TransactionSubmissionTrackingData.RejectionCause, _Mapping]] = ..., physical_synchronizer_id: _Optional[str] = ..., transaction_hash: _Optional[bytes] = ...) -> None: ...

@@ -675,7 +675,7 @@ class ProtobufParser21(ProtobufParserBase):
             case "get_time":
                 return lf.Update(get_time=self.parse_Unit(pb.get_time))
             case "lookup_by_key":
-                return lf.Update(lookup_by_key=self.parse_Update_RetrieveByKey(pb.lookup_by_key))
+                raise ValueError(f"unsupported Sum value: {sum_name!r}")
             case "fetch_by_key":
                 return lf.Update(fetch_by_key=self.parse_Update_RetrieveByKey(pb.fetch_by_key))
             case "embed_expr":
