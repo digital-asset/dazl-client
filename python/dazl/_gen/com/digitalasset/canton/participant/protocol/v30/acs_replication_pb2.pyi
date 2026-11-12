@@ -4,7 +4,6 @@
 # isort: skip_file
 from ....admin.participant.v30 import active_contract_pb2 as _active_contract_pb2
 from ....crypto.v30 import crypto_pb2 as _crypto_pb2
-from ....protocol.v30 import topology_pb2 as _topology_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -17,7 +16,7 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class AcsReplicationStatus(_message.Message):
     __slots__ = ("parameters", "not_proposed", "proposed", "exists", "archived", "proposal_sent", "ptp_topology_transaction", "replication", "has_completed", "error_message")
     class AcsReplicationParameters(_message.Message):
-        __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "timestamp", "participant_permission", "acs_replication_destination")
+        __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "timestamp", "acs_replication_destination")
         class AcsReplicationDestination(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             ACS_REPLICATION_DESTINATION_UNSPECIFIED: _ClassVar[AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination]
@@ -32,7 +31,6 @@ class AcsReplicationStatus(_message.Message):
         SOURCE_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
         TARGET_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
         TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
-        PARTICIPANT_PERMISSION_FIELD_NUMBER: _ClassVar[int]
         ACS_REPLICATION_DESTINATION_FIELD_NUMBER: _ClassVar[int]
         request_id: str
         party_id: str
@@ -40,9 +38,8 @@ class AcsReplicationStatus(_message.Message):
         source_participant_uid: str
         target_participant_uid: str
         timestamp: int
-        participant_permission: _topology_pb2.Enums.ParticipantPermission
         acs_replication_destination: AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination
-        def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., timestamp: _Optional[int] = ..., participant_permission: _Optional[_Union[_topology_pb2.Enums.ParticipantPermission, str]] = ..., acs_replication_destination: _Optional[_Union[AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination, str]] = ...) -> None: ...
+        def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., timestamp: _Optional[int] = ..., acs_replication_destination: _Optional[_Union[AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination, str]] = ...) -> None: ...
     class AgreementNotProposed(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
@@ -93,14 +90,12 @@ class AcsReplicationStatus(_message.Message):
         error_message: str
         def __init__(self, error_type: _Optional[_Union[AcsReplicationStatus.AcsReplicationError.ErrorType, str]] = ..., error_message: _Optional[str] = ...) -> None: ...
     class PartyToParticipantTopologyTransaction(_message.Message):
-        __slots__ = ("valid_from", "is_onboarding", "topology_serial")
+        __slots__ = ("valid_from", "is_onboarding")
         VALID_FROM_FIELD_NUMBER: _ClassVar[int]
         IS_ONBOARDING_FIELD_NUMBER: _ClassVar[int]
-        TOPOLOGY_SERIAL_FIELD_NUMBER: _ClassVar[int]
         valid_from: int
         is_onboarding: bool
-        topology_serial: int
-        def __init__(self, valid_from: _Optional[int] = ..., is_onboarding: _Optional[bool] = ..., topology_serial: _Optional[int] = ...) -> None: ...
+        def __init__(self, valid_from: _Optional[int] = ..., is_onboarding: _Optional[bool] = ...) -> None: ...
     PARAMETERS_FIELD_NUMBER: _ClassVar[int]
     NOT_PROPOSED_FIELD_NUMBER: _ClassVar[int]
     PROPOSED_FIELD_NUMBER: _ClassVar[int]

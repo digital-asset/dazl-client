@@ -29,6 +29,8 @@ const (
 	PartyManagementService_ImportPartyAcs_FullMethodName              = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ImportPartyAcs"
 	PartyManagementService_GetHighestOffsetByTimestamp_FullMethodName = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetHighestOffsetByTimestamp"
 	PartyManagementService_ClearPartyOnboardingFlag_FullMethodName    = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/ClearPartyOnboardingFlag"
+	PartyManagementService_GetRemoteAcs_FullMethodName                = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetRemoteAcs"
+	PartyManagementService_GetPartyFreezingTime_FullMethodName        = "/com.digitalasset.canton.admin.participant.v30.PartyManagementService/GetPartyFreezingTime"
 )
 
 // PartyManagementServiceClient is the client API for PartyManagementService service.
@@ -43,6 +45,8 @@ type PartyManagementServiceClient interface {
 	ImportPartyAcs(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ImportPartyAcsRequest, ImportPartyAcsResponse], error)
 	GetHighestOffsetByTimestamp(ctx context.Context, in *GetHighestOffsetByTimestampRequest, opts ...grpc.CallOption) (*GetHighestOffsetByTimestampResponse, error)
 	ClearPartyOnboardingFlag(ctx context.Context, in *ClearPartyOnboardingFlagRequest, opts ...grpc.CallOption) (*ClearPartyOnboardingFlagResponse, error)
+	GetRemoteAcs(ctx context.Context, in *GetRemoteAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetRemoteAcsResponse], error)
+	GetPartyFreezingTime(ctx context.Context, in *GetPartyFreezingTimeRequest, opts ...grpc.CallOption) (*GetPartyFreezingTimeResponse, error)
 }
 
 type partyManagementServiceClient struct {
@@ -148,6 +152,35 @@ func (c *partyManagementServiceClient) ClearPartyOnboardingFlag(ctx context.Cont
 	return out, nil
 }
 
+func (c *partyManagementServiceClient) GetRemoteAcs(ctx context.Context, in *GetRemoteAcsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetRemoteAcsResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &PartyManagementService_ServiceDesc.Streams[3], PartyManagementService_GetRemoteAcs_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[GetRemoteAcsRequest, GetRemoteAcsResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type PartyManagementService_GetRemoteAcsClient = grpc.ServerStreamingClient[GetRemoteAcsResponse]
+
+func (c *partyManagementServiceClient) GetPartyFreezingTime(ctx context.Context, in *GetPartyFreezingTimeRequest, opts ...grpc.CallOption) (*GetPartyFreezingTimeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPartyFreezingTimeResponse)
+	err := c.cc.Invoke(ctx, PartyManagementService_GetPartyFreezingTime_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PartyManagementServiceServer is the server API for PartyManagementService service.
 // All implementations must embed UnimplementedPartyManagementServiceServer
 // for forward compatibility.
@@ -160,6 +193,8 @@ type PartyManagementServiceServer interface {
 	ImportPartyAcs(grpc.ClientStreamingServer[ImportPartyAcsRequest, ImportPartyAcsResponse]) error
 	GetHighestOffsetByTimestamp(context.Context, *GetHighestOffsetByTimestampRequest) (*GetHighestOffsetByTimestampResponse, error)
 	ClearPartyOnboardingFlag(context.Context, *ClearPartyOnboardingFlagRequest) (*ClearPartyOnboardingFlagResponse, error)
+	GetRemoteAcs(*GetRemoteAcsRequest, grpc.ServerStreamingServer[GetRemoteAcsResponse]) error
+	GetPartyFreezingTime(context.Context, *GetPartyFreezingTimeRequest) (*GetPartyFreezingTimeResponse, error)
 	mustEmbedUnimplementedPartyManagementServiceServer()
 }
 
@@ -193,6 +228,12 @@ func (UnimplementedPartyManagementServiceServer) GetHighestOffsetByTimestamp(con
 }
 func (UnimplementedPartyManagementServiceServer) ClearPartyOnboardingFlag(context.Context, *ClearPartyOnboardingFlagRequest) (*ClearPartyOnboardingFlagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ClearPartyOnboardingFlag not implemented")
+}
+func (UnimplementedPartyManagementServiceServer) GetRemoteAcs(*GetRemoteAcsRequest, grpc.ServerStreamingServer[GetRemoteAcsResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method GetRemoteAcs not implemented")
+}
+func (UnimplementedPartyManagementServiceServer) GetPartyFreezingTime(context.Context, *GetPartyFreezingTimeRequest) (*GetPartyFreezingTimeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPartyFreezingTime not implemented")
 }
 func (UnimplementedPartyManagementServiceServer) mustEmbedUnimplementedPartyManagementServiceServer() {
 }
@@ -331,6 +372,35 @@ func _PartyManagementService_ClearPartyOnboardingFlag_Handler(srv interface{}, c
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyManagementService_GetRemoteAcs_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetRemoteAcsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(PartyManagementServiceServer).GetRemoteAcs(m, &grpc.GenericServerStream[GetRemoteAcsRequest, GetRemoteAcsResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type PartyManagementService_GetRemoteAcsServer = grpc.ServerStreamingServer[GetRemoteAcsResponse]
+
+func _PartyManagementService_GetPartyFreezingTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPartyFreezingTimeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyManagementServiceServer).GetPartyFreezingTime(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PartyManagementService_GetPartyFreezingTime_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyManagementServiceServer).GetPartyFreezingTime(ctx, req.(*GetPartyFreezingTimeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PartyManagementService_ServiceDesc is the grpc.ServiceDesc for PartyManagementService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -358,6 +428,10 @@ var PartyManagementService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "ClearPartyOnboardingFlag",
 			Handler:    _PartyManagementService_ClearPartyOnboardingFlag_Handler,
 		},
+		{
+			MethodName: "GetPartyFreezingTime",
+			Handler:    _PartyManagementService_GetPartyFreezingTime_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -374,6 +448,11 @@ var PartyManagementService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "ImportPartyAcs",
 			Handler:       _PartyManagementService_ImportPartyAcs_Handler,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "GetRemoteAcs",
+			Handler:       _PartyManagementService_GetRemoteAcs_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "com/digitalasset/canton/admin/participant/v30/party_management_service.proto",

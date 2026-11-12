@@ -9,9 +9,8 @@
 package v30
 
 import (
-	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30"
-	v302 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v30"
-	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30"
+	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/participant/v30"
+	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/crypto/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -606,8 +605,7 @@ type AcsReplicationStatus_AcsReplicationParameters struct {
 	SourceParticipantUid      string                                                                  `protobuf:"bytes,4,opt,name=source_participant_uid,json=sourceParticipantUid,proto3" json:"source_participant_uid,omitempty"`
 	TargetParticipantUid      string                                                                  `protobuf:"bytes,5,opt,name=target_participant_uid,json=targetParticipantUid,proto3" json:"target_participant_uid,omitempty"`
 	Timestamp                 *uint64                                                                 `protobuf:"varint,6,opt,name=timestamp,proto3,oneof" json:"timestamp,omitempty"`
-	ParticipantPermission     v30.Enums_ParticipantPermission                                         `protobuf:"varint,7,opt,name=participant_permission,json=participantPermission,proto3,enum=com.digitalasset.canton.protocol.v30.Enums_ParticipantPermission" json:"participant_permission,omitempty"`
-	AcsReplicationDestination AcsReplicationStatus_AcsReplicationParameters_AcsReplicationDestination `protobuf:"varint,8,opt,name=acs_replication_destination,json=acsReplicationDestination,proto3,enum=com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus_AcsReplicationParameters_AcsReplicationDestination" json:"acs_replication_destination,omitempty"`
+	AcsReplicationDestination AcsReplicationStatus_AcsReplicationParameters_AcsReplicationDestination `protobuf:"varint,7,opt,name=acs_replication_destination,json=acsReplicationDestination,proto3,enum=com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus_AcsReplicationParameters_AcsReplicationDestination" json:"acs_replication_destination,omitempty"`
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -682,13 +680,6 @@ func (x *AcsReplicationStatus_AcsReplicationParameters) GetTimestamp() uint64 {
 		return *x.Timestamp
 	}
 	return 0
-}
-
-func (x *AcsReplicationStatus_AcsReplicationParameters) GetParticipantPermission() v30.Enums_ParticipantPermission {
-	if x != nil {
-		return x.ParticipantPermission
-	}
-	return v30.Enums_ParticipantPermission(0)
 }
 
 func (x *AcsReplicationStatus_AcsReplicationParameters) GetAcsReplicationDestination() AcsReplicationStatus_AcsReplicationParameters_AcsReplicationDestination {
@@ -1031,12 +1022,11 @@ func (x *AcsReplicationStatus_AcsReplicationError) GetErrorMessage() string {
 }
 
 type AcsReplicationStatus_PartyToParticipantTopologyTransaction struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ValidFrom      *uint64                `protobuf:"varint,1,opt,name=valid_from,json=validFrom,proto3,oneof" json:"valid_from,omitempty"`
-	IsOnboarding   bool                   `protobuf:"varint,2,opt,name=is_onboarding,json=isOnboarding,proto3" json:"is_onboarding,omitempty"`
-	TopologySerial uint32                 `protobuf:"varint,3,opt,name=topology_serial,json=topologySerial,proto3" json:"topology_serial,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ValidFrom     *uint64                `protobuf:"varint,1,opt,name=valid_from,json=validFrom,proto3,oneof" json:"valid_from,omitempty"`
+	IsOnboarding  bool                   `protobuf:"varint,2,opt,name=is_onboarding,json=isOnboarding,proto3" json:"is_onboarding,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) Reset() {
@@ -1081,13 +1071,6 @@ func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) GetIsOnboar
 		return x.IsOnboarding
 	}
 	return false
-}
-
-func (x *AcsReplicationStatus_PartyToParticipantTopologyTransaction) GetTopologySerial() uint32 {
-	if x != nil {
-		return x.TopologySerial
-	}
-	return 0
 }
 
 type AcsReplicationTargetParticipantMessage_Initialize struct {
@@ -1180,7 +1163,7 @@ func (x *AcsReplicationTargetParticipantMessage_SendAcsUpTo) GetMaxContractOrdin
 
 type AcsReplicationSourceParticipantMessage_AcsBatch struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Contracts     []*v301.ActiveContract `protobuf:"bytes,1,rep,name=contracts,proto3" json:"contracts,omitempty"`
+	Contracts     []*v30.ActiveContract  `protobuf:"bytes,1,rep,name=contracts,proto3" json:"contracts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1215,7 +1198,7 @@ func (*AcsReplicationSourceParticipantMessage_AcsBatch) Descriptor() ([]byte, []
 	return file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDescGZIP(), []int{2, 0}
 }
 
-func (x *AcsReplicationSourceParticipantMessage_AcsBatch) GetContracts() []*v301.ActiveContract {
+func (x *AcsReplicationSourceParticipantMessage_AcsBatch) GetContracts() []*v30.ActiveContract {
 	if x != nil {
 		return x.Contracts
 	}
@@ -1225,7 +1208,7 @@ func (x *AcsReplicationSourceParticipantMessage_AcsBatch) GetContracts() []*v301
 type AcsReplicationSourceParticipantMessage_EndOfAcs struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AcsDigest     []byte                 `protobuf:"bytes,1,opt,name=acs_digest,json=acsDigest,proto3" json:"acs_digest,omitempty"`
-	Signature     *v302.Signature        `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
+	Signature     *v301.Signature        `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1267,7 +1250,7 @@ func (x *AcsReplicationSourceParticipantMessage_EndOfAcs) GetAcsDigest() []byte 
 	return nil
 }
 
-func (x *AcsReplicationSourceParticipantMessage_EndOfAcs) GetSignature() *v302.Signature {
+func (x *AcsReplicationSourceParticipantMessage_EndOfAcs) GetSignature() *v301.Signature {
 	if x != nil {
 		return x.Signature
 	}
@@ -1278,7 +1261,7 @@ var File_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto 
 
 const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_rawDesc = "" +
 	"\n" +
-	"Fcom/digitalasset/canton/participant/protocol/v30/acs_replication.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aCcom/digitalasset/canton/admin/participant/v30/active_contract.proto\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a3com/digitalasset/canton/protocol/v30/topology.proto\"\x9d\x17\n" +
+	"Fcom/digitalasset/canton/participant/protocol/v30/acs_replication.proto\x120com.digitalasset.canton.participant.protocol.v30\x1aCcom/digitalasset/canton/admin/participant/v30/active_contract.proto\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\"\xf9\x15\n" +
 	"\x14AcsReplicationStatus\x12\x7f\n" +
 	"\n" +
 	"parameters\x18\x01 \x01(\v2_.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParametersR\n" +
@@ -1292,7 +1275,7 @@ const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_prot
 	"\vreplication\x18\b \x01(\v2].com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationProgressR\vreplication\x12#\n" +
 	"\rhas_completed\x18\t \x01(\bR\fhasCompleted\x12\x7f\n" +
 	"\rerror_message\x18\n" +
-	" \x01(\v2Z.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationErrorR\ferrorMessage\x1a\xf7\x05\n" +
+	" \x01(\v2Z.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationErrorR\ferrorMessage\x1a\xfd\x04\n" +
 	"\x18AcsReplicationParameters\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x19\n" +
@@ -1300,9 +1283,8 @@ const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_prot
 	"\x0fsynchronizer_id\x18\x03 \x01(\tR\x0esynchronizerId\x124\n" +
 	"\x16source_participant_uid\x18\x04 \x01(\tR\x14sourceParticipantUid\x124\n" +
 	"\x16target_participant_uid\x18\x05 \x01(\tR\x14targetParticipantUid\x12!\n" +
-	"\ttimestamp\x18\x06 \x01(\x04H\x00R\ttimestamp\x88\x01\x01\x12x\n" +
-	"\x16participant_permission\x18\a \x01(\x0e2A.com.digitalasset.canton.protocol.v30.Enums.ParticipantPermissionR\x15participantPermission\x12\xb9\x01\n" +
-	"\x1bacs_replication_destination\x18\b \x01(\x0e2y.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestinationR\x19acsReplicationDestination\"\xa4\x01\n" +
+	"\ttimestamp\x18\x06 \x01(\x04H\x00R\ttimestamp\x88\x01\x01\x12\xb9\x01\n" +
+	"\x1bacs_replication_destination\x18\a \x01(\x0e2y.com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestinationR\x19acsReplicationDestination\"\xa4\x01\n" +
 	"\x19AcsReplicationDestination\x12+\n" +
 	"'ACS_REPLICATION_DESTINATION_UNSPECIFIED\x10\x00\x12+\n" +
 	"'ACS_REPLICATION_DESTINATION_PERSISTENCE\x10\x01\x12-\n" +
@@ -1335,12 +1317,11 @@ const file_com_digitalasset_canton_participant_protocol_v30_acs_replication_prot
 	"\tErrorType\x12\x1a\n" +
 	"\x16ERROR_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11ERROR_TYPE_FAILED\x10\x02\x12\x1b\n" +
-	"\x17ERROR_TYPE_DISCONNECTED\x10\x03\x1a\xa8\x01\n" +
+	"\x17ERROR_TYPE_DISCONNECTED\x10\x03\x1a\x7f\n" +
 	"%PartyToParticipantTopologyTransaction\x12\"\n" +
 	"\n" +
 	"valid_from\x18\x01 \x01(\x04H\x00R\tvalidFrom\x88\x01\x01\x12#\n" +
-	"\ris_onboarding\x18\x02 \x01(\bR\fisOnboarding\x12'\n" +
-	"\x0ftopology_serial\x18\x03 \x01(\rR\x0etopologySerialB\r\n" +
+	"\ris_onboarding\x18\x02 \x01(\bR\fisOnboardingB\r\n" +
 	"\v_valid_fromB\x12\n" +
 	"\x10agreement_status\"\xfc\x03\n" +
 	"&AcsReplicationTargetParticipantMessage\x12\x85\x01\n" +
@@ -1415,9 +1396,8 @@ var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_
 	(*AcsReplicationTargetParticipantMessage_SendAcsUpTo)(nil),         // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationTargetParticipantMessage.SendAcsUpTo
 	(*AcsReplicationSourceParticipantMessage_AcsBatch)(nil),            // 18: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch
 	(*AcsReplicationSourceParticipantMessage_EndOfAcs)(nil),            // 19: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs
-	(v30.Enums_ParticipantPermission)(0),                               // 20: com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	(*v301.ActiveContract)(nil),                                        // 21: com.digitalasset.canton.admin.participant.v30.ActiveContract
-	(*v302.Signature)(nil),                                             // 22: com.digitalasset.canton.crypto.v30.Signature
+	(*v30.ActiveContract)(nil),                                         // 20: com.digitalasset.canton.admin.participant.v30.ActiveContract
+	(*v301.Signature)(nil),                                             // 21: com.digitalasset.canton.crypto.v30.Signature
 }
 var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_depIdxs = []int32{
 	7,  // 0: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.parameters:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters
@@ -1434,16 +1414,15 @@ var file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_
 	18, // 11: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.acs_batch:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch
 	19, // 12: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.end_of_acs:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs
 	6,  // 13: com.digitalasset.canton.participant.protocol.v30.AcsDigest.get_acs_args:type_name -> com.digitalasset.canton.participant.protocol.v30.GetAcsArguments
-	20, // 14: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.participant_permission:type_name -> com.digitalasset.canton.protocol.v30.Enums.ParticipantPermission
-	0,  // 15: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.acs_replication_destination:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination
-	1,  // 16: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.error_type:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.ErrorType
-	21, // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ActiveContract
-	22, // 18: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs.signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	0,  // 14: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.acs_replication_destination:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationParameters.AcsReplicationDestination
+	1,  // 15: com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.error_type:type_name -> com.digitalasset.canton.participant.protocol.v30.AcsReplicationStatus.AcsReplicationError.ErrorType
+	20, // 16: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.AcsBatch.contracts:type_name -> com.digitalasset.canton.admin.participant.v30.ActiveContract
+	21, // 17: com.digitalasset.canton.participant.protocol.v30.AcsReplicationSourceParticipantMessage.EndOfAcs.signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_participant_protocol_v30_acs_replication_proto_init() }

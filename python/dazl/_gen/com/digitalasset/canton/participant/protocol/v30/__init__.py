@@ -3,6 +3,7 @@
 # fmt: off
 # isort: skip_file
 
+from .freezing_to_onboarding_pb2 import FreezingToOnboardingOperation
 from .submission_tracking_pb2 import CommandRejected, CompletionInfo, SubmissionTrackingData, TransactionSubmissionTrackingData
 from .acs_replication_pb2 import AcsDigest, AcsReplicationSourceParticipantMessage, AcsReplicationStatus, AcsReplicationTargetParticipantMessage, GetAcsArguments
 from .party_replication_pb2 import PartyReplicationStatus
@@ -17,6 +18,7 @@ __all__ = [
     "AcsReplicationTargetParticipantMessage",
     "CommandRejected",
     "CompletionInfo",
+    "FreezingToOnboardingOperation",
     "GetAcsArguments",
     "OnboardingClearanceOperation",
     "PartyReplicationStatus",

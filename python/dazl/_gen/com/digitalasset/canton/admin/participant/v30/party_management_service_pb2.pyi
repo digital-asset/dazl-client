@@ -7,10 +7,11 @@ import datetime
 from . import acs_import_pb2 as _acs_import_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from collections.abc import Mapping as _Mapping
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -21,10 +22,17 @@ class ParticipantPermission(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     PARTICIPANT_PERMISSION_SUBMISSION: _ClassVar[ParticipantPermission]
     PARTICIPANT_PERMISSION_CONFIRMATION: _ClassVar[ParticipantPermission]
     PARTICIPANT_PERMISSION_OBSERVATION: _ClassVar[ParticipantPermission]
+
+class ImportPartyAcsForceFlag(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    IMPORT_PARTY_ACS_FORCE_FLAG_UNSPECIFIED: _ClassVar[ImportPartyAcsForceFlag]
+    IMPORT_PARTY_ACS_FORCE_FLAG_ALLOW_IMPORT_AFTER_ACTIVATION: _ClassVar[ImportPartyAcsForceFlag]
 PARTICIPANT_PERMISSION_UNSPECIFIED: ParticipantPermission
 PARTICIPANT_PERMISSION_SUBMISSION: ParticipantPermission
 PARTICIPANT_PERMISSION_CONFIRMATION: ParticipantPermission
 PARTICIPANT_PERMISSION_OBSERVATION: ParticipantPermission
+IMPORT_PARTY_ACS_FORCE_FLAG_UNSPECIFIED: ImportPartyAcsForceFlag
+IMPORT_PARTY_ACS_FORCE_FLAG_ALLOW_IMPORT_AFTER_ACTIVATION: ImportPartyAcsForceFlag
 
 class AddPartyAsyncRequest(_message.Message):
     __slots__ = ("arguments",)
@@ -101,20 +109,18 @@ class PartyReplicationStatus(_message.Message):
     REPLICATION_MODE_FILE: PartyReplicationStatus.ReplicationMode
     REPLICATION_MODE_SEQUENCER_CHANNEL: PartyReplicationStatus.ReplicationMode
     class ReplicationParameters(_message.Message):
-        __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid", "topology_serial")
+        __slots__ = ("request_id", "party_id", "synchronizer_id", "source_participant_uid", "target_participant_uid")
         REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
         PARTY_ID_FIELD_NUMBER: _ClassVar[int]
         SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
         SOURCE_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
         TARGET_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
-        TOPOLOGY_SERIAL_FIELD_NUMBER: _ClassVar[int]
         request_id: str
         party_id: str
         synchronizer_id: str
         source_participant_uid: str
         target_participant_uid: str
-        topology_serial: int
-        def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ..., topology_serial: _Optional[int] = ...) -> None: ...
+        def __init__(self, request_id: _Optional[str] = ..., party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., target_participant_uid: _Optional[str] = ...) -> None: ...
     class PartyReplicationAuthorization(_message.Message):
         __slots__ = ("onboarding_at", "is_onboarding_flag_cleared")
         ONBOARDING_AT_FIELD_NUMBER: _ClassVar[int]
@@ -231,20 +237,22 @@ class ExportPartyAcsResponse(_message.Message):
     def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
 
 class ImportPartyAcsRequest(_message.Message):
-    __slots__ = ("acs_snapshot", "synchronizer_id", "workflow_id_prefix", "contract_import_mode", "representative_package_id_override", "party_id")
+    __slots__ = ("acs_snapshot", "synchronizer_id", "workflow_id_prefix", "contract_import_mode", "representative_package_id_override", "party_id", "force_flags")
     ACS_SNAPSHOT_FIELD_NUMBER: _ClassVar[int]
     SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
     WORKFLOW_ID_PREFIX_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_IMPORT_MODE_FIELD_NUMBER: _ClassVar[int]
     REPRESENTATIVE_PACKAGE_ID_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
     PARTY_ID_FIELD_NUMBER: _ClassVar[int]
+    FORCE_FLAGS_FIELD_NUMBER: _ClassVar[int]
     acs_snapshot: bytes
     synchronizer_id: str
     workflow_id_prefix: str
     contract_import_mode: _acs_import_pb2.ContractImportMode
     representative_package_id_override: _acs_import_pb2.RepresentativePackageIdOverride
     party_id: str
-    def __init__(self, acs_snapshot: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ..., party_id: _Optional[str] = ...) -> None: ...
+    force_flags: _containers.RepeatedScalarFieldContainer[ImportPartyAcsForceFlag]
+    def __init__(self, acs_snapshot: _Optional[bytes] = ..., synchronizer_id: _Optional[str] = ..., workflow_id_prefix: _Optional[str] = ..., contract_import_mode: _Optional[_Union[_acs_import_pb2.ContractImportMode, str]] = ..., representative_package_id_override: _Optional[_Union[_acs_import_pb2.RepresentativePackageIdOverride, _Mapping]] = ..., party_id: _Optional[str] = ..., force_flags: _Optional[_Iterable[_Union[ImportPartyAcsForceFlag, str]]] = ...) -> None: ...
 
 class ImportPartyAcsResponse(_message.Message):
     __slots__ = ()
@@ -285,3 +293,35 @@ class ClearPartyOnboardingFlagResponse(_message.Message):
     onboarded: bool
     earliest_retry_timestamp: _timestamp_pb2.Timestamp
     def __init__(self, onboarded: _Optional[bool] = ..., earliest_retry_timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class GetRemoteAcsRequest(_message.Message):
+    __slots__ = ("party_ids", "synchronizer_id", "source_participant_uid", "as_of")
+    PARTY_IDS_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_PARTICIPANT_UID_FIELD_NUMBER: _ClassVar[int]
+    AS_OF_FIELD_NUMBER: _ClassVar[int]
+    party_ids: _containers.RepeatedScalarFieldContainer[str]
+    synchronizer_id: str
+    source_participant_uid: str
+    as_of: _timestamp_pb2.Timestamp
+    def __init__(self, party_ids: _Optional[_Iterable[str]] = ..., synchronizer_id: _Optional[str] = ..., source_participant_uid: _Optional[str] = ..., as_of: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class GetRemoteAcsResponse(_message.Message):
+    __slots__ = ("chunk",)
+    CHUNK_FIELD_NUMBER: _ClassVar[int]
+    chunk: bytes
+    def __init__(self, chunk: _Optional[bytes] = ...) -> None: ...
+
+class GetPartyFreezingTimeRequest(_message.Message):
+    __slots__ = ("party_id", "synchronizer_id")
+    PARTY_ID_FIELD_NUMBER: _ClassVar[int]
+    SYNCHRONIZER_ID_FIELD_NUMBER: _ClassVar[int]
+    party_id: str
+    synchronizer_id: str
+    def __init__(self, party_id: _Optional[str] = ..., synchronizer_id: _Optional[str] = ...) -> None: ...
+
+class GetPartyFreezingTimeResponse(_message.Message):
+    __slots__ = ("timestamp",)
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    timestamp: _timestamp_pb2.Timestamp
+    def __init__(self, timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
