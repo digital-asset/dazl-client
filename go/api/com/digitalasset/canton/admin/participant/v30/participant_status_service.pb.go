@@ -9,7 +9,8 @@
 package v30
 
 import (
-	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/health/v30"
+	v301 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/health/v30"
+	v30 "github.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -74,9 +75,10 @@ func (ConnectedSynchronizer_Health) EnumDescriptor() ([]byte, []int) {
 }
 
 type ParticipantStatusRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	SynchronizerId *v30.Synchronizer      `protobuf:"bytes,1,opt,name=synchronizer_id,json=synchronizerId,proto3,oneof" json:"synchronizer_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ParticipantStatusRequest) Reset() {
@@ -107,6 +109,13 @@ func (x *ParticipantStatusRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ParticipantStatusRequest.ProtoReflect.Descriptor instead.
 func (*ParticipantStatusRequest) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ParticipantStatusRequest) GetSynchronizerId() *v30.Synchronizer {
+	if x != nil {
+		return x.SynchronizerId
+	}
+	return nil
 }
 
 type ConnectedSynchronizer struct {
@@ -218,7 +227,7 @@ func (x *ParticipantStatusResponse) GetStatus() *ParticipantStatusResponse_Parti
 	return nil
 }
 
-func (x *ParticipantStatusResponse) GetNotInitialized() *v30.NotInitialized {
+func (x *ParticipantStatusResponse) GetNotInitialized() *v301.NotInitialized {
 	if x != nil {
 		if x, ok := x.Kind.(*ParticipantStatusResponse_NotInitialized); ok {
 			return x.NotInitialized
@@ -236,7 +245,7 @@ type ParticipantStatusResponse_Status struct {
 }
 
 type ParticipantStatusResponse_NotInitialized struct {
-	NotInitialized *v30.NotInitialized `protobuf:"bytes,2,opt,name=not_initialized,json=notInitialized,proto3,oneof"`
+	NotInitialized *v301.NotInitialized `protobuf:"bytes,2,opt,name=not_initialized,json=notInitialized,proto3,oneof"`
 }
 
 func (*ParticipantStatusResponse_Status) isParticipantStatusResponse_Kind() {}
@@ -245,7 +254,7 @@ func (*ParticipantStatusResponse_NotInitialized) isParticipantStatusResponse_Kin
 
 type ParticipantStatusResponse_ParticipantStatusResponseStatus struct {
 	state                     protoimpl.MessageState   `protogen:"open.v1"`
-	CommonStatus              *v30.Status              `protobuf:"bytes,1,opt,name=common_status,json=commonStatus,proto3" json:"common_status,omitempty"`
+	CommonStatus              *v301.Status             `protobuf:"bytes,1,opt,name=common_status,json=commonStatus,proto3" json:"common_status,omitempty"`
 	ConnectedSynchronizers    []*ConnectedSynchronizer `protobuf:"bytes,2,rep,name=connected_synchronizers,json=connectedSynchronizers,proto3" json:"connected_synchronizers,omitempty"`
 	Active                    bool                     `protobuf:"varint,3,opt,name=active,proto3" json:"active,omitempty"`
 	SupportedProtocolVersions []int32                  `protobuf:"varint,4,rep,packed,name=supported_protocol_versions,json=supportedProtocolVersions,proto3" json:"supported_protocol_versions,omitempty"`
@@ -283,7 +292,7 @@ func (*ParticipantStatusResponse_ParticipantStatusResponseStatus) Descriptor() (
 	return file_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto_rawDescGZIP(), []int{2, 0}
 }
 
-func (x *ParticipantStatusResponse_ParticipantStatusResponseStatus) GetCommonStatus() *v30.Status {
+func (x *ParticipantStatusResponse_ParticipantStatusResponseStatus) GetCommonStatus() *v301.Status {
 	if x != nil {
 		return x.CommonStatus
 	}
@@ -315,8 +324,10 @@ var File_com_digitalasset_canton_admin_participant_v30_participant_status_servic
 
 const file_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto_rawDesc = "" +
 	"\n" +
-	"Ncom/digitalasset/canton/admin/participant/v30/participant_status_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a=com/digitalasset/canton/admin/health/v30/status_service.proto\"\x1a\n" +
-	"\x18ParticipantStatusRequest\"\x82\x02\n" +
+	"Ncom/digitalasset/canton/admin/participant/v30/participant_status_service.proto\x12-com.digitalasset.canton.admin.participant.v30\x1a=com/digitalasset/canton/admin/health/v30/status_service.proto\x1a7com/digitalasset/canton/topology/admin/v30/common.proto\"\x96\x01\n" +
+	"\x18ParticipantStatusRequest\x12f\n" +
+	"\x0fsynchronizer_id\x18\x01 \x01(\v28.com.digitalasset.canton.topology.admin.v30.SynchronizerH\x00R\x0esynchronizerId\x88\x01\x01B\x12\n" +
+	"\x10_synchronizer_id\"\x82\x02\n" +
 	"\x15ConnectedSynchronizer\x128\n" +
 	"\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12c\n" +
 	"\x06health\x18\x02 \x01(\x0e2K.com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer.HealthR\x06health\"J\n" +
@@ -356,22 +367,24 @@ var file_com_digitalasset_canton_admin_participant_v30_participant_status_servic
 	(*ConnectedSynchronizer)(nil),                                     // 2: com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer
 	(*ParticipantStatusResponse)(nil),                                 // 3: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse
 	(*ParticipantStatusResponse_ParticipantStatusResponseStatus)(nil), // 4: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus
-	(*v30.NotInitialized)(nil),                                        // 5: com.digitalasset.canton.admin.health.v30.NotInitialized
-	(*v30.Status)(nil),                                                // 6: com.digitalasset.canton.admin.health.v30.Status
+	(*v30.Synchronizer)(nil),                                          // 5: com.digitalasset.canton.topology.admin.v30.Synchronizer
+	(*v301.NotInitialized)(nil),                                       // 6: com.digitalasset.canton.admin.health.v30.NotInitialized
+	(*v301.Status)(nil),                                               // 7: com.digitalasset.canton.admin.health.v30.Status
 }
 var file_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto_depIdxs = []int32{
-	0, // 0: com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer.health:type_name -> com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer.Health
-	4, // 1: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.status:type_name -> com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus
-	5, // 2: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.not_initialized:type_name -> com.digitalasset.canton.admin.health.v30.NotInitialized
-	6, // 3: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus.common_status:type_name -> com.digitalasset.canton.admin.health.v30.Status
-	2, // 4: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus.connected_synchronizers:type_name -> com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer
-	1, // 5: com.digitalasset.canton.admin.participant.v30.ParticipantStatusService.ParticipantStatus:input_type -> com.digitalasset.canton.admin.participant.v30.ParticipantStatusRequest
-	3, // 6: com.digitalasset.canton.admin.participant.v30.ParticipantStatusService.ParticipantStatus:output_type -> com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse
-	6, // [6:7] is the sub-list for method output_type
-	5, // [5:6] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	5, // 0: com.digitalasset.canton.admin.participant.v30.ParticipantStatusRequest.synchronizer_id:type_name -> com.digitalasset.canton.topology.admin.v30.Synchronizer
+	0, // 1: com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer.health:type_name -> com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer.Health
+	4, // 2: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.status:type_name -> com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus
+	6, // 3: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.not_initialized:type_name -> com.digitalasset.canton.admin.health.v30.NotInitialized
+	7, // 4: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus.common_status:type_name -> com.digitalasset.canton.admin.health.v30.Status
+	2, // 5: com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse.ParticipantStatusResponseStatus.connected_synchronizers:type_name -> com.digitalasset.canton.admin.participant.v30.ConnectedSynchronizer
+	1, // 6: com.digitalasset.canton.admin.participant.v30.ParticipantStatusService.ParticipantStatus:input_type -> com.digitalasset.canton.admin.participant.v30.ParticipantStatusRequest
+	3, // 7: com.digitalasset.canton.admin.participant.v30.ParticipantStatusService.ParticipantStatus:output_type -> com.digitalasset.canton.admin.participant.v30.ParticipantStatusResponse
+	7, // [7:8] is the sub-list for method output_type
+	6, // [6:7] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() {
@@ -381,6 +394,7 @@ func file_com_digitalasset_canton_admin_participant_v30_participant_status_servi
 	if File_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto != nil {
 		return
 	}
+	file_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto_msgTypes[0].OneofWrappers = []any{}
 	file_com_digitalasset_canton_admin_participant_v30_participant_status_service_proto_msgTypes[2].OneofWrappers = []any{
 		(*ParticipantStatusResponse_Status)(nil),
 		(*ParticipantStatusResponse_NotInitialized)(nil),

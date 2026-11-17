@@ -14,6 +14,8 @@ from .party_management_service_pb2 import AllocateExternalPartyRequest, Allocate
 from .party_management_service_pb2_grpc import PartyManagementServiceStub
 from .identity_provider_config_service_pb2 import CreateIdentityProviderConfigRequest, CreateIdentityProviderConfigResponse, DeleteIdentityProviderConfigRequest, DeleteIdentityProviderConfigResponse, GetIdentityProviderConfigRequest, GetIdentityProviderConfigResponse, IdentityProviderConfig, ListIdentityProviderConfigsRequest, ListIdentityProviderConfigsResponse, UpdateIdentityProviderConfigRequest, UpdateIdentityProviderConfigResponse
 from .identity_provider_config_service_pb2_grpc import IdentityProviderConfigServiceStub
+from .party_management_alpha_service_pb2 import AuthorizePartyUpdateRequest, AuthorizePartyUpdateResponse, GeneratePartyTopologyUpdateRequest, GeneratePartyTopologyUpdateResponse, GetAddPartyStatusRequest, GetAddPartyStatusResponse, PartyReplicationStatus
+from .party_management_alpha_service_pb2_grpc import PartyManagementAlphaServiceStub
 from .command_inspection_service_pb2 import CommandState, CommandStatus, CommandUpdates, Contract, GetCommandStatusRequest, GetCommandStatusResponse, RequestStatistics, Timing
 from .command_inspection_service_pb2_grpc import CommandInspectionServiceStub
 
@@ -22,6 +24,8 @@ __all__ = [
     "AllocateExternalPartyResponse",
     "AllocatePartyRequest",
     "AllocatePartyResponse",
+    "AuthorizePartyUpdateRequest",
+    "AuthorizePartyUpdateResponse",
     "CommandInspectionServiceStub",
     "CommandState",
     "CommandStatus",
@@ -37,6 +41,10 @@ __all__ = [
     "DeleteUserResponse",
     "GenerateExternalPartyTopologyRequest",
     "GenerateExternalPartyTopologyResponse",
+    "GeneratePartyTopologyUpdateRequest",
+    "GeneratePartyTopologyUpdateResponse",
+    "GetAddPartyStatusRequest",
+    "GetAddPartyStatusResponse",
     "GetCommandStatusRequest",
     "GetCommandStatusResponse",
     "GetIdentityProviderConfigRequest",
@@ -66,7 +74,9 @@ __all__ = [
     "PackageManagementServiceStub",
     "ParticipantPruningServiceStub",
     "PartyDetails",
+    "PartyManagementAlphaServiceStub",
     "PartyManagementServiceStub",
+    "PartyReplicationStatus",
     "PruneRequest",
     "PruneResponse",
     "RequestStatistics",

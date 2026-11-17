@@ -1747,10 +1747,10 @@ func (x *SignedTopologyTransaction) GetMultiTransactionSignatures() []*MultiTran
 }
 
 type SignedTopologyTransactions struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	SignedTransaction [][]byte               `protobuf:"bytes,1,rep,name=signed_transaction,json=signedTransaction,proto3" json:"signed_transaction,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	SignedTransactions [][]byte               `protobuf:"bytes,1,rep,name=signed_transactions,json=signedTransactions,proto3" json:"signed_transactions,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *SignedTopologyTransactions) Reset() {
@@ -1783,9 +1783,9 @@ func (*SignedTopologyTransactions) Descriptor() ([]byte, []int) {
 	return file_com_digitalasset_canton_protocol_v30_topology_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *SignedTopologyTransactions) GetSignedTransaction() [][]byte {
+func (x *SignedTopologyTransactions) GetSignedTransactions() [][]byte {
 	if x != nil {
-		return x.SignedTransaction
+		return x.SignedTransactions
 	}
 	return nil
 }
@@ -2336,9 +2336,9 @@ const file_com_digitalasset_canton_protocol_v30_topology_proto_rawDesc = "" +
 	"signatures\x18\x02 \x03(\v2-.com.digitalasset.canton.crypto.v30.SignatureR\n" +
 	"signatures\x12\x1a\n" +
 	"\bproposal\x18\x03 \x01(\bR\bproposal\x12\x82\x01\n" +
-	"\x1cmulti_transaction_signatures\x18\x04 \x03(\v2@.com.digitalasset.canton.protocol.v30.MultiTransactionSignaturesR\x1amultiTransactionSignatures\"K\n" +
-	"\x1aSignedTopologyTransactions\x12-\n" +
-	"\x12signed_transaction\x18\x01 \x03(\fR\x11signedTransaction\"\xcc\x01\n" +
+	"\x1cmulti_transaction_signatures\x18\x04 \x03(\v2@.com.digitalasset.canton.protocol.v30.MultiTransactionSignaturesR\x1amultiTransactionSignatures\"M\n" +
+	"\x1aSignedTopologyTransactions\x12/\n" +
+	"\x13signed_transactions\x18\x01 \x03(\fR\x12signedTransactions\"\xcc\x01\n" +
 	"\x1dTopologyTransactionsBroadcast\x128\n" +
 	"\x18physical_synchronizer_id\x18\x01 \x01(\tR\x16physicalSynchronizerId\x12q\n" +
 	"\x13signed_transactions\x18\x02 \x01(\v2@.com.digitalasset.canton.protocol.v30.SignedTopologyTransactionsR\x12signedTransactionsBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3"

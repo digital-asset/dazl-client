@@ -343,10 +343,10 @@ class SignedTopologyTransaction(_message.Message):
     def __init__(self, transaction: _Optional[bytes] = ..., signatures: _Optional[_Iterable[_Union[_crypto_pb2.Signature, _Mapping]]] = ..., proposal: _Optional[bool] = ..., multi_transaction_signatures: _Optional[_Iterable[_Union[MultiTransactionSignatures, _Mapping]]] = ...) -> None: ...
 
 class SignedTopologyTransactions(_message.Message):
-    __slots__ = ("signed_transaction",)
-    SIGNED_TRANSACTION_FIELD_NUMBER: _ClassVar[int]
-    signed_transaction: _containers.RepeatedScalarFieldContainer[bytes]
-    def __init__(self, signed_transaction: _Optional[_Iterable[bytes]] = ...) -> None: ...
+    __slots__ = ("signed_transactions",)
+    SIGNED_TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
+    signed_transactions: _containers.RepeatedScalarFieldContainer[bytes]
+    def __init__(self, signed_transactions: _Optional[_Iterable[bytes]] = ...) -> None: ...
 
 class TopologyTransactionsBroadcast(_message.Message):
     __slots__ = ("physical_synchronizer_id", "signed_transactions")

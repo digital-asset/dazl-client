@@ -146,6 +146,7 @@ type ComponentStatus struct {
 	//	*ComponentStatus_Failed
 	//	*ComponentStatus_Fatal
 	Status        isComponentStatus_Status `protobuf_oneof:"status"`
+	Labels        map[string]string        `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -226,6 +227,13 @@ func (x *ComponentStatus) GetFatal() *ComponentStatus_StatusData {
 		if x, ok := x.Status.(*ComponentStatus_Fatal); ok {
 			return x.Fatal
 		}
+	}
+	return nil
+}
+
+func (x *ComponentStatus) GetLabels() map[string]string {
+	if x != nil {
+		return x.Labels
 	}
 	return nil
 }
@@ -632,17 +640,21 @@ const file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDesc
 	"\n" +
 	"dispatcher\x18\x02 \x01(\rR\n" +
 	"dispatcher\x12\x18\n" +
-	"\aclients\x18\x03 \x01(\rR\aclients\"\xee\x03\n" +
+	"\aclients\x18\x03 \x01(\rR\aclients\"\x88\x05\n" +
 	"\x0fComponentStatus\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12V\n" +
 	"\x02ok\x18\x02 \x01(\v2D.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x02ok\x12b\n" +
 	"\bdegraded\x18\x03 \x01(\v2D.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\bdegraded\x12^\n" +
 	"\x06failed\x18\x04 \x01(\v2D.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x06failed\x12\\\n" +
-	"\x05fatal\x18\x05 \x01(\v2D.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x05fatal\x1aC\n" +
+	"\x05fatal\x18\x05 \x01(\v2D.com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusDataH\x00R\x05fatal\x12]\n" +
+	"\x06labels\x18\x06 \x03(\v2E.com.digitalasset.canton.admin.health.v30.ComponentStatus.LabelsEntryR\x06labels\x1aC\n" +
 	"\n" +
 	"StatusData\x12%\n" +
 	"\vdescription\x18\x01 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
-	"\f_descriptionB\b\n" +
+	"\f_description\x1a9\n" +
+	"\vLabelsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\b\n" +
 	"\x06status\"\x9a\x03\n" +
 	"\x0eNotInitialized\x12\x16\n" +
 	"\x06active\x18\x01 \x01(\bR\x06active\x12\x8d\x01\n" +
@@ -694,7 +706,7 @@ func file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDescG
 }
 
 var file_com_digitalasset_canton_admin_health_v30_status_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_com_digitalasset_canton_admin_health_v30_status_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_com_digitalasset_canton_admin_health_v30_status_service_proto_goTypes = []any{
 	(NotInitialized_WaitingForExternalInput)(0), // 0: com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInput
 	(*TopologyQueueStatus)(nil),                 // 1: com.digitalasset.canton.admin.health.v30.TopologyQueueStatus
@@ -706,28 +718,30 @@ var file_com_digitalasset_canton_admin_health_v30_status_service_proto_goTypes =
 	(*SetLogLevelRequest)(nil),                  // 7: com.digitalasset.canton.admin.health.v30.SetLogLevelRequest
 	(*SetLogLevelResponse)(nil),                 // 8: com.digitalasset.canton.admin.health.v30.SetLogLevelResponse
 	(*ComponentStatus_StatusData)(nil),          // 9: com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
-	nil,                                         // 10: com.digitalasset.canton.admin.health.v30.Status.PortsEntry
-	(*durationpb.Duration)(nil),                 // 11: google.protobuf.Duration
+	nil,                                         // 10: com.digitalasset.canton.admin.health.v30.ComponentStatus.LabelsEntry
+	nil,                                         // 11: com.digitalasset.canton.admin.health.v30.Status.PortsEntry
+	(*durationpb.Duration)(nil),                 // 12: google.protobuf.Duration
 }
 var file_com_digitalasset_canton_admin_health_v30_status_service_proto_depIdxs = []int32{
 	9,  // 0: com.digitalasset.canton.admin.health.v30.ComponentStatus.ok:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
 	9,  // 1: com.digitalasset.canton.admin.health.v30.ComponentStatus.degraded:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
 	9,  // 2: com.digitalasset.canton.admin.health.v30.ComponentStatus.failed:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
 	9,  // 3: com.digitalasset.canton.admin.health.v30.ComponentStatus.fatal:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.StatusData
-	0,  // 4: com.digitalasset.canton.admin.health.v30.NotInitialized.waiting_for_external_input:type_name -> com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInput
-	11, // 5: com.digitalasset.canton.admin.health.v30.Status.uptime:type_name -> google.protobuf.Duration
-	10, // 6: com.digitalasset.canton.admin.health.v30.Status.ports:type_name -> com.digitalasset.canton.admin.health.v30.Status.PortsEntry
-	1,  // 7: com.digitalasset.canton.admin.health.v30.Status.topology_queues:type_name -> com.digitalasset.canton.admin.health.v30.TopologyQueueStatus
-	2,  // 8: com.digitalasset.canton.admin.health.v30.Status.components:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus
-	5,  // 9: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:input_type -> com.digitalasset.canton.admin.health.v30.HealthDumpRequest
-	7,  // 10: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:input_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelRequest
-	6,  // 11: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:output_type -> com.digitalasset.canton.admin.health.v30.HealthDumpResponse
-	8,  // 12: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:output_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelResponse
-	11, // [11:13] is the sub-list for method output_type
-	9,  // [9:11] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	10, // 4: com.digitalasset.canton.admin.health.v30.ComponentStatus.labels:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus.LabelsEntry
+	0,  // 5: com.digitalasset.canton.admin.health.v30.NotInitialized.waiting_for_external_input:type_name -> com.digitalasset.canton.admin.health.v30.NotInitialized.WaitingForExternalInput
+	12, // 6: com.digitalasset.canton.admin.health.v30.Status.uptime:type_name -> google.protobuf.Duration
+	11, // 7: com.digitalasset.canton.admin.health.v30.Status.ports:type_name -> com.digitalasset.canton.admin.health.v30.Status.PortsEntry
+	1,  // 8: com.digitalasset.canton.admin.health.v30.Status.topology_queues:type_name -> com.digitalasset.canton.admin.health.v30.TopologyQueueStatus
+	2,  // 9: com.digitalasset.canton.admin.health.v30.Status.components:type_name -> com.digitalasset.canton.admin.health.v30.ComponentStatus
+	5,  // 10: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:input_type -> com.digitalasset.canton.admin.health.v30.HealthDumpRequest
+	7,  // 11: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:input_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelRequest
+	6,  // 12: com.digitalasset.canton.admin.health.v30.StatusService.HealthDump:output_type -> com.digitalasset.canton.admin.health.v30.HealthDumpResponse
+	8,  // 13: com.digitalasset.canton.admin.health.v30.StatusService.SetLogLevel:output_type -> com.digitalasset.canton.admin.health.v30.SetLogLevelResponse
+	12, // [12:14] is the sub-list for method output_type
+	10, // [10:12] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_admin_health_v30_status_service_proto_init() }
@@ -749,7 +763,7 @@ func file_com_digitalasset_canton_admin_health_v30_status_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDesc), len(file_com_digitalasset_canton_admin_health_v30_status_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

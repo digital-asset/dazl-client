@@ -147,7 +147,7 @@ class UpdatePartyIdentityProviderIdResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class GenerateExternalPartyTopologyRequest(_message.Message):
-    __slots__ = ("synchronizer", "party_hint", "public_key", "local_participant_observation_only", "other_confirming_participant_uids", "confirmation_threshold", "observing_participant_uids")
+    __slots__ = ("synchronizer", "party_hint", "public_key", "local_participant_observation_only", "other_confirming_participant_uids", "confirmation_threshold", "observing_participant_uids", "protocol_version")
     SYNCHRONIZER_FIELD_NUMBER: _ClassVar[int]
     PARTY_HINT_FIELD_NUMBER: _ClassVar[int]
     PUBLIC_KEY_FIELD_NUMBER: _ClassVar[int]
@@ -155,6 +155,7 @@ class GenerateExternalPartyTopologyRequest(_message.Message):
     OTHER_CONFIRMING_PARTICIPANT_UIDS_FIELD_NUMBER: _ClassVar[int]
     CONFIRMATION_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
     OBSERVING_PARTICIPANT_UIDS_FIELD_NUMBER: _ClassVar[int]
+    PROTOCOL_VERSION_FIELD_NUMBER: _ClassVar[int]
     synchronizer: str
     party_hint: str
     public_key: _crypto_pb2.SigningPublicKey
@@ -162,7 +163,8 @@ class GenerateExternalPartyTopologyRequest(_message.Message):
     other_confirming_participant_uids: _containers.RepeatedScalarFieldContainer[str]
     confirmation_threshold: int
     observing_participant_uids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, synchronizer: _Optional[str] = ..., party_hint: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., local_participant_observation_only: _Optional[bool] = ..., other_confirming_participant_uids: _Optional[_Iterable[str]] = ..., confirmation_threshold: _Optional[int] = ..., observing_participant_uids: _Optional[_Iterable[str]] = ...) -> None: ...
+    protocol_version: int
+    def __init__(self, synchronizer: _Optional[str] = ..., party_hint: _Optional[str] = ..., public_key: _Optional[_Union[_crypto_pb2.SigningPublicKey, _Mapping]] = ..., local_participant_observation_only: _Optional[bool] = ..., other_confirming_participant_uids: _Optional[_Iterable[str]] = ..., confirmation_threshold: _Optional[int] = ..., observing_participant_uids: _Optional[_Iterable[str]] = ..., protocol_version: _Optional[int] = ...) -> None: ...
 
 class GenerateExternalPartyTopologyResponse(_message.Message):
     __slots__ = ("party_id", "public_key_fingerprint", "topology_transactions", "multi_hash")

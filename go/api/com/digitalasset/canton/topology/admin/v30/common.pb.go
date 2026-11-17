@@ -248,66 +248,6 @@ func (*StoreId_Synchronizer) isStoreId_Store() {}
 
 func (*StoreId_Temporary_) isStoreId_Store() {}
 
-type SynchronizerPredecessor struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	PredecessorPhysicalId string                 `protobuf:"bytes,1,opt,name=predecessor_physical_id,json=predecessorPhysicalId,proto3" json:"predecessor_physical_id,omitempty"`
-	UpgradeTime           *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=upgrade_time,json=upgradeTime,proto3" json:"upgrade_time,omitempty"`
-	IsLateUpgrade         bool                   `protobuf:"varint,3,opt,name=is_late_upgrade,json=isLateUpgrade,proto3" json:"is_late_upgrade,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *SynchronizerPredecessor) Reset() {
-	*x = SynchronizerPredecessor{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SynchronizerPredecessor) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SynchronizerPredecessor) ProtoMessage() {}
-
-func (x *SynchronizerPredecessor) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SynchronizerPredecessor.ProtoReflect.Descriptor instead.
-func (*SynchronizerPredecessor) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *SynchronizerPredecessor) GetPredecessorPhysicalId() string {
-	if x != nil {
-		return x.PredecessorPhysicalId
-	}
-	return ""
-}
-
-func (x *SynchronizerPredecessor) GetUpgradeTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpgradeTime
-	}
-	return nil
-}
-
-func (x *SynchronizerPredecessor) GetIsLateUpgrade() bool {
-	if x != nil {
-		return x.IsLateUpgrade
-	}
-	return false
-}
-
 type TopologyTransactions_Item struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Sequenced       *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=sequenced,proto3" json:"sequenced,omitempty"`
@@ -321,7 +261,7 @@ type TopologyTransactions_Item struct {
 
 func (x *TopologyTransactions_Item) Reset() {
 	*x = TopologyTransactions_Item{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -333,7 +273,7 @@ func (x *TopologyTransactions_Item) String() string {
 func (*TopologyTransactions_Item) ProtoMessage() {}
 
 func (x *TopologyTransactions_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[4]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +332,7 @@ type StoreId_Authorized struct {
 
 func (x *StoreId_Authorized) Reset() {
 	*x = StoreId_Authorized{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -404,7 +344,7 @@ func (x *StoreId_Authorized) String() string {
 func (*StoreId_Authorized) ProtoMessage() {}
 
 func (x *StoreId_Authorized) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[5]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +369,7 @@ type StoreId_Temporary struct {
 
 func (x *StoreId_Temporary) Reset() {
 	*x = StoreId_Temporary{}
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -441,7 +381,7 @@ func (x *StoreId_Temporary) String() string {
 func (*StoreId_Temporary) ProtoMessage() {}
 
 func (x *StoreId_Temporary) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[6]
+	mi := &file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -495,11 +435,7 @@ const file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDesc = "" 
 	"Authorized\x1a\x1f\n" +
 	"\tTemporary\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04nameB\a\n" +
-	"\x05store\"\xb8\x01\n" +
-	"\x17SynchronizerPredecessor\x126\n" +
-	"\x17predecessor_physical_id\x18\x01 \x01(\tR\x15predecessorPhysicalId\x12=\n" +
-	"\fupgrade_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vupgradeTime\x12&\n" +
-	"\x0fis_late_upgrade\x18\x03 \x01(\bR\risLateUpgradeB[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30b\x06proto3"
+	"\x05storeB[ZYgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/topology/admin/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDescOnce sync.Once
@@ -513,31 +449,29 @@ func file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDescGZIP() 
 	return file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_com_digitalasset_canton_topology_admin_v30_common_proto_goTypes = []any{
 	(*TopologyTransactions)(nil),      // 0: com.digitalasset.canton.topology.admin.v30.TopologyTransactions
 	(*Synchronizer)(nil),              // 1: com.digitalasset.canton.topology.admin.v30.Synchronizer
 	(*StoreId)(nil),                   // 2: com.digitalasset.canton.topology.admin.v30.StoreId
-	(*SynchronizerPredecessor)(nil),   // 3: com.digitalasset.canton.topology.admin.v30.SynchronizerPredecessor
-	(*TopologyTransactions_Item)(nil), // 4: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item
-	(*StoreId_Authorized)(nil),        // 5: com.digitalasset.canton.topology.admin.v30.StoreId.Authorized
-	(*StoreId_Temporary)(nil),         // 6: com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
-	(*timestamppb.Timestamp)(nil),     // 7: google.protobuf.Timestamp
+	(*TopologyTransactions_Item)(nil), // 3: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item
+	(*StoreId_Authorized)(nil),        // 4: com.digitalasset.canton.topology.admin.v30.StoreId.Authorized
+	(*StoreId_Temporary)(nil),         // 5: com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	(*timestamppb.Timestamp)(nil),     // 6: google.protobuf.Timestamp
 }
 var file_com_digitalasset_canton_topology_admin_v30_common_proto_depIdxs = []int32{
-	4, // 0: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.items:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item
-	5, // 1: com.digitalasset.canton.topology.admin.v30.StoreId.authorized:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Authorized
+	3, // 0: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.items:type_name -> com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item
+	4, // 1: com.digitalasset.canton.topology.admin.v30.StoreId.authorized:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Authorized
 	1, // 2: com.digitalasset.canton.topology.admin.v30.StoreId.synchronizer:type_name -> com.digitalasset.canton.topology.admin.v30.Synchronizer
-	6, // 3: com.digitalasset.canton.topology.admin.v30.StoreId.temporary:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
-	7, // 4: com.digitalasset.canton.topology.admin.v30.SynchronizerPredecessor.upgrade_time:type_name -> google.protobuf.Timestamp
-	7, // 5: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item.sequenced:type_name -> google.protobuf.Timestamp
-	7, // 6: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item.valid_from:type_name -> google.protobuf.Timestamp
-	7, // 7: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item.valid_until:type_name -> google.protobuf.Timestamp
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	5, // 3: com.digitalasset.canton.topology.admin.v30.StoreId.temporary:type_name -> com.digitalasset.canton.topology.admin.v30.StoreId.Temporary
+	6, // 4: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item.sequenced:type_name -> google.protobuf.Timestamp
+	6, // 5: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item.valid_from:type_name -> google.protobuf.Timestamp
+	6, // 6: com.digitalasset.canton.topology.admin.v30.TopologyTransactions.Item.valid_until:type_name -> google.protobuf.Timestamp
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_topology_admin_v30_common_proto_init() }
@@ -554,14 +488,14 @@ func file_com_digitalasset_canton_topology_admin_v30_common_proto_init() {
 		(*StoreId_Synchronizer)(nil),
 		(*StoreId_Temporary_)(nil),
 	}
-	file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[4].OneofWrappers = []any{}
+	file_com_digitalasset_canton_topology_admin_v30_common_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDesc), len(file_com_digitalasset_canton_topology_admin_v30_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

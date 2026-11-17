@@ -25,52 +25,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ExternalAuthorization_HashingSchemeVersion int32
-
-const (
-	ExternalAuthorization_HASHING_SCHEME_VERSION_UNSPECIFIED ExternalAuthorization_HashingSchemeVersion = 0
-	ExternalAuthorization_HASHING_SCHEME_VERSION_V2          ExternalAuthorization_HashingSchemeVersion = 2
-)
-
-// Enum value maps for ExternalAuthorization_HashingSchemeVersion.
-var (
-	ExternalAuthorization_HashingSchemeVersion_name = map[int32]string{
-		0: "HASHING_SCHEME_VERSION_UNSPECIFIED",
-		2: "HASHING_SCHEME_VERSION_V2",
-	}
-	ExternalAuthorization_HashingSchemeVersion_value = map[string]int32{
-		"HASHING_SCHEME_VERSION_UNSPECIFIED": 0,
-		"HASHING_SCHEME_VERSION_V2":          2,
-	}
-)
-
-func (x ExternalAuthorization_HashingSchemeVersion) Enum() *ExternalAuthorization_HashingSchemeVersion {
-	p := new(ExternalAuthorization_HashingSchemeVersion)
-	*p = x
-	return p
-}
-
-func (x ExternalAuthorization_HashingSchemeVersion) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ExternalAuthorization_HashingSchemeVersion) Descriptor() protoreflect.EnumDescriptor {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_enumTypes[0].Descriptor()
-}
-
-func (ExternalAuthorization_HashingSchemeVersion) Type() protoreflect.EnumType {
-	return &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_enumTypes[0]
-}
-
-func (x ExternalAuthorization_HashingSchemeVersion) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ExternalAuthorization_HashingSchemeVersion.Descriptor instead.
-func (ExternalAuthorization_HashingSchemeVersion) EnumDescriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{19, 0}
-}
-
 type DeduplicationPeriod struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Period:
@@ -886,222 +840,15 @@ func (x *CommonMetadata) GetMediatorGroup() int32 {
 	return 0
 }
 
-type SubmitterMetadata struct {
-	state                    protoimpl.MessageState `protogen:"open.v1"`
-	Salt                     *v30.Salt              `protobuf:"bytes,1,opt,name=salt,proto3" json:"salt,omitempty"`
-	ActAs                    []string               `protobuf:"bytes,2,rep,name=act_as,json=actAs,proto3" json:"act_as,omitempty"`
-	UserId                   string                 `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	CommandId                string                 `protobuf:"bytes,4,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
-	SubmittingParticipantUid string                 `protobuf:"bytes,5,opt,name=submitting_participant_uid,json=submittingParticipantUid,proto3" json:"submitting_participant_uid,omitempty"`
-	SubmissionId             string                 `protobuf:"bytes,6,opt,name=submission_id,json=submissionId,proto3" json:"submission_id,omitempty"`
-	DedupPeriod              *DeduplicationPeriod   `protobuf:"bytes,7,opt,name=dedup_period,json=dedupPeriod,proto3" json:"dedup_period,omitempty"`
-	MaxSequencingTime        int64                  `protobuf:"varint,8,opt,name=max_sequencing_time,json=maxSequencingTime,proto3" json:"max_sequencing_time,omitempty"`
-	ExternalAuthorization    *ExternalAuthorization `protobuf:"bytes,9,opt,name=external_authorization,json=externalAuthorization,proto3" json:"external_authorization,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
-}
-
-func (x *SubmitterMetadata) Reset() {
-	*x = SubmitterMetadata{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubmitterMetadata) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubmitterMetadata) ProtoMessage() {}
-
-func (x *SubmitterMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubmitterMetadata.ProtoReflect.Descriptor instead.
-func (*SubmitterMetadata) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *SubmitterMetadata) GetSalt() *v30.Salt {
-	if x != nil {
-		return x.Salt
-	}
-	return nil
-}
-
-func (x *SubmitterMetadata) GetActAs() []string {
-	if x != nil {
-		return x.ActAs
-	}
-	return nil
-}
-
-func (x *SubmitterMetadata) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *SubmitterMetadata) GetCommandId() string {
-	if x != nil {
-		return x.CommandId
-	}
-	return ""
-}
-
-func (x *SubmitterMetadata) GetSubmittingParticipantUid() string {
-	if x != nil {
-		return x.SubmittingParticipantUid
-	}
-	return ""
-}
-
-func (x *SubmitterMetadata) GetSubmissionId() string {
-	if x != nil {
-		return x.SubmissionId
-	}
-	return ""
-}
-
-func (x *SubmitterMetadata) GetDedupPeriod() *DeduplicationPeriod {
-	if x != nil {
-		return x.DedupPeriod
-	}
-	return nil
-}
-
-func (x *SubmitterMetadata) GetMaxSequencingTime() int64 {
-	if x != nil {
-		return x.MaxSequencingTime
-	}
-	return 0
-}
-
-func (x *SubmitterMetadata) GetExternalAuthorization() *ExternalAuthorization {
-	if x != nil {
-		return x.ExternalAuthorization
-	}
-	return nil
-}
-
-type EncryptedViewMessage struct {
-	state                          protoimpl.MessageState     `protogen:"open.v1"`
-	ViewTree                       []byte                     `protobuf:"bytes,1,opt,name=view_tree,json=viewTree,proto3" json:"view_tree,omitempty"`
-	EncryptionScheme               v30.SymmetricKeyScheme     `protobuf:"varint,2,opt,name=encryption_scheme,json=encryptionScheme,proto3,enum=com.digitalasset.canton.crypto.v30.SymmetricKeyScheme" json:"encryption_scheme,omitempty"`
-	SubmittingParticipantSignature *v30.Signature             `protobuf:"bytes,3,opt,name=submitting_participant_signature,json=submittingParticipantSignature,proto3" json:"submitting_participant_signature,omitempty"`
-	ViewHash                       []byte                     `protobuf:"bytes,4,opt,name=view_hash,json=viewHash,proto3" json:"view_hash,omitempty"`
-	SessionKeyLookup               []*v30.AsymmetricEncrypted `protobuf:"bytes,5,rep,name=session_key_lookup,json=sessionKeyLookup,proto3" json:"session_key_lookup,omitempty"`
-	PhysicalSynchronizerId         string                     `protobuf:"bytes,6,opt,name=physical_synchronizer_id,json=physicalSynchronizerId,proto3" json:"physical_synchronizer_id,omitempty"`
-	ViewType                       ViewType                   `protobuf:"varint,7,opt,name=view_type,json=viewType,proto3,enum=com.digitalasset.canton.protocol.v30.ViewType" json:"view_type,omitempty"`
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
-}
-
-func (x *EncryptedViewMessage) Reset() {
-	*x = EncryptedViewMessage{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *EncryptedViewMessage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*EncryptedViewMessage) ProtoMessage() {}
-
-func (x *EncryptedViewMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use EncryptedViewMessage.ProtoReflect.Descriptor instead.
-func (*EncryptedViewMessage) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *EncryptedViewMessage) GetViewTree() []byte {
-	if x != nil {
-		return x.ViewTree
-	}
-	return nil
-}
-
-func (x *EncryptedViewMessage) GetEncryptionScheme() v30.SymmetricKeyScheme {
-	if x != nil {
-		return x.EncryptionScheme
-	}
-	return v30.SymmetricKeyScheme(0)
-}
-
-func (x *EncryptedViewMessage) GetSubmittingParticipantSignature() *v30.Signature {
-	if x != nil {
-		return x.SubmittingParticipantSignature
-	}
-	return nil
-}
-
-func (x *EncryptedViewMessage) GetViewHash() []byte {
-	if x != nil {
-		return x.ViewHash
-	}
-	return nil
-}
-
-func (x *EncryptedViewMessage) GetSessionKeyLookup() []*v30.AsymmetricEncrypted {
-	if x != nil {
-		return x.SessionKeyLookup
-	}
-	return nil
-}
-
-func (x *EncryptedViewMessage) GetPhysicalSynchronizerId() string {
-	if x != nil {
-		return x.PhysicalSynchronizerId
-	}
-	return ""
-}
-
-func (x *EncryptedViewMessage) GetViewType() ViewType {
-	if x != nil {
-		return x.ViewType
-	}
-	return ViewType_VIEW_TYPE_UNSPECIFIED
-}
-
 type ActionDescription struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Description:
-	//
-	//	*ActionDescription_Create
-	//	*ActionDescription_Exercise
-	//	*ActionDescription_Fetch
-	//	*ActionDescription_LookupByKey
-	Description   isActionDescription_Description `protobuf_oneof:"description"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ActionDescription) Reset() {
 	*x = ActionDescription{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1113,7 +860,7 @@ func (x *ActionDescription) String() string {
 func (*ActionDescription) ProtoMessage() {}
 
 func (x *ActionDescription) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[16]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1126,96 +873,18 @@ func (x *ActionDescription) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActionDescription.ProtoReflect.Descriptor instead.
 func (*ActionDescription) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{16}
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{14}
 }
-
-func (x *ActionDescription) GetDescription() isActionDescription_Description {
-	if x != nil {
-		return x.Description
-	}
-	return nil
-}
-
-func (x *ActionDescription) GetCreate() *ActionDescription_CreateActionDescription {
-	if x != nil {
-		if x, ok := x.Description.(*ActionDescription_Create); ok {
-			return x.Create
-		}
-	}
-	return nil
-}
-
-func (x *ActionDescription) GetExercise() *ActionDescription_ExerciseActionDescription {
-	if x != nil {
-		if x, ok := x.Description.(*ActionDescription_Exercise); ok {
-			return x.Exercise
-		}
-	}
-	return nil
-}
-
-func (x *ActionDescription) GetFetch() *ActionDescription_FetchActionDescription {
-	if x != nil {
-		if x, ok := x.Description.(*ActionDescription_Fetch); ok {
-			return x.Fetch
-		}
-	}
-	return nil
-}
-
-func (x *ActionDescription) GetLookupByKey() *ActionDescription_LookupByKeyActionDescription {
-	if x != nil {
-		if x, ok := x.Description.(*ActionDescription_LookupByKey); ok {
-			return x.LookupByKey
-		}
-	}
-	return nil
-}
-
-type isActionDescription_Description interface {
-	isActionDescription_Description()
-}
-
-type ActionDescription_Create struct {
-	Create *ActionDescription_CreateActionDescription `protobuf:"bytes,1,opt,name=create,proto3,oneof"`
-}
-
-type ActionDescription_Exercise struct {
-	Exercise *ActionDescription_ExerciseActionDescription `protobuf:"bytes,2,opt,name=exercise,proto3,oneof"`
-}
-
-type ActionDescription_Fetch struct {
-	Fetch *ActionDescription_FetchActionDescription `protobuf:"bytes,3,opt,name=fetch,proto3,oneof"`
-}
-
-type ActionDescription_LookupByKey struct {
-	LookupByKey *ActionDescription_LookupByKeyActionDescription `protobuf:"bytes,4,opt,name=lookup_by_key,json=lookupByKey,proto3,oneof"`
-}
-
-func (*ActionDescription_Create) isActionDescription_Description() {}
-
-func (*ActionDescription_Exercise) isActionDescription_Description() {}
-
-func (*ActionDescription_Fetch) isActionDescription_Description() {}
-
-func (*ActionDescription_LookupByKey) isActionDescription_Description() {}
 
 type ViewParticipantData struct {
-	state                          protoimpl.MessageState               `protogen:"open.v1"`
-	Salt                           *v30.Salt                            `protobuf:"bytes,1,opt,name=salt,proto3" json:"salt,omitempty"`
-	CoreInputs                     []*InputContract                     `protobuf:"bytes,2,rep,name=core_inputs,json=coreInputs,proto3" json:"core_inputs,omitempty"`
-	CreatedCore                    []*CreatedContract                   `protobuf:"bytes,3,rep,name=created_core,json=createdCore,proto3" json:"created_core,omitempty"`
-	CreatedInSubviewArchivedInCore []string                             `protobuf:"bytes,4,rep,name=created_in_subview_archived_in_core,json=createdInSubviewArchivedInCore,proto3" json:"created_in_subview_archived_in_core,omitempty"`
-	ResolvedKeys                   []*ViewParticipantData_ResolvedKey   `protobuf:"bytes,5,rep,name=resolved_keys,json=resolvedKeys,proto3" json:"resolved_keys,omitempty"`
-	ActionDescription              *ActionDescription                   `protobuf:"bytes,6,opt,name=action_description,json=actionDescription,proto3" json:"action_description,omitempty"`
-	RollbackContext                *ViewParticipantData_RollbackContext `protobuf:"bytes,7,opt,name=rollback_context,json=rollbackContext,proto3" json:"rollback_context,omitempty"`
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ViewParticipantData) Reset() {
 	*x = ViewParticipantData{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1227,7 +896,7 @@ func (x *ViewParticipantData) String() string {
 func (*ViewParticipantData) ProtoMessage() {}
 
 func (x *ViewParticipantData) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[17]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1240,56 +909,7 @@ func (x *ViewParticipantData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ViewParticipantData.ProtoReflect.Descriptor instead.
 func (*ViewParticipantData) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *ViewParticipantData) GetSalt() *v30.Salt {
-	if x != nil {
-		return x.Salt
-	}
-	return nil
-}
-
-func (x *ViewParticipantData) GetCoreInputs() []*InputContract {
-	if x != nil {
-		return x.CoreInputs
-	}
-	return nil
-}
-
-func (x *ViewParticipantData) GetCreatedCore() []*CreatedContract {
-	if x != nil {
-		return x.CreatedCore
-	}
-	return nil
-}
-
-func (x *ViewParticipantData) GetCreatedInSubviewArchivedInCore() []string {
-	if x != nil {
-		return x.CreatedInSubviewArchivedInCore
-	}
-	return nil
-}
-
-func (x *ViewParticipantData) GetResolvedKeys() []*ViewParticipantData_ResolvedKey {
-	if x != nil {
-		return x.ResolvedKeys
-	}
-	return nil
-}
-
-func (x *ViewParticipantData) GetActionDescription() *ActionDescription {
-	if x != nil {
-		return x.ActionDescription
-	}
-	return nil
-}
-
-func (x *ViewParticipantData) GetRollbackContext() *ViewParticipantData_RollbackContext {
-	if x != nil {
-		return x.RollbackContext
-	}
-	return nil
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{15}
 }
 
 type ExternalPartyAuthorization struct {
@@ -1302,7 +922,7 @@ type ExternalPartyAuthorization struct {
 
 func (x *ExternalPartyAuthorization) Reset() {
 	*x = ExternalPartyAuthorization{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1314,7 +934,7 @@ func (x *ExternalPartyAuthorization) String() string {
 func (*ExternalPartyAuthorization) ProtoMessage() {}
 
 func (x *ExternalPartyAuthorization) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[18]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1327,7 +947,7 @@ func (x *ExternalPartyAuthorization) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExternalPartyAuthorization.ProtoReflect.Descriptor instead.
 func (*ExternalPartyAuthorization) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{18}
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ExternalPartyAuthorization) GetParty() string {
@@ -1344,58 +964,6 @@ func (x *ExternalPartyAuthorization) GetSignatures() []*v30.Signature {
 	return nil
 }
 
-type ExternalAuthorization struct {
-	state                protoimpl.MessageState                     `protogen:"open.v1"`
-	Authentications      []*ExternalPartyAuthorization              `protobuf:"bytes,1,rep,name=authentications,proto3" json:"authentications,omitempty"`
-	HashingSchemeVersion ExternalAuthorization_HashingSchemeVersion `protobuf:"varint,2,opt,name=hashing_scheme_version,json=hashingSchemeVersion,proto3,enum=com.digitalasset.canton.protocol.v30.ExternalAuthorization_HashingSchemeVersion" json:"hashing_scheme_version,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *ExternalAuthorization) Reset() {
-	*x = ExternalAuthorization{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExternalAuthorization) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExternalAuthorization) ProtoMessage() {}
-
-func (x *ExternalAuthorization) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExternalAuthorization.ProtoReflect.Descriptor instead.
-func (*ExternalAuthorization) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *ExternalAuthorization) GetAuthentications() []*ExternalPartyAuthorization {
-	if x != nil {
-		return x.Authentications
-	}
-	return nil
-}
-
-func (x *ExternalAuthorization) GetHashingSchemeVersion() ExternalAuthorization_HashingSchemeVersion {
-	if x != nil {
-		return x.HashingSchemeVersion
-	}
-	return ExternalAuthorization_HASHING_SCHEME_VERSION_UNSPECIFIED
-}
-
 type ActionDescription_CreateActionDescription struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContractId    string                 `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
@@ -1406,7 +974,7 @@ type ActionDescription_CreateActionDescription struct {
 
 func (x *ActionDescription_CreateActionDescription) Reset() {
 	*x = ActionDescription_CreateActionDescription{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1418,7 +986,7 @@ func (x *ActionDescription_CreateActionDescription) String() string {
 func (*ActionDescription_CreateActionDescription) ProtoMessage() {}
 
 func (x *ActionDescription_CreateActionDescription) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[20]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1431,7 +999,7 @@ func (x *ActionDescription_CreateActionDescription) ProtoReflect() protoreflect.
 
 // Deprecated: Use ActionDescription_CreateActionDescription.ProtoReflect.Descriptor instead.
 func (*ActionDescription_CreateActionDescription) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{16, 0}
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{14, 0}
 }
 
 func (x *ActionDescription_CreateActionDescription) GetContractId() string {
@@ -1466,7 +1034,7 @@ type ActionDescription_ExerciseActionDescription struct {
 
 func (x *ActionDescription_ExerciseActionDescription) Reset() {
 	*x = ActionDescription_ExerciseActionDescription{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1478,7 +1046,7 @@ func (x *ActionDescription_ExerciseActionDescription) String() string {
 func (*ActionDescription_ExerciseActionDescription) ProtoMessage() {}
 
 func (x *ActionDescription_ExerciseActionDescription) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[21]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1491,7 +1059,7 @@ func (x *ActionDescription_ExerciseActionDescription) ProtoReflect() protoreflec
 
 // Deprecated: Use ActionDescription_ExerciseActionDescription.ProtoReflect.Descriptor instead.
 func (*ActionDescription_ExerciseActionDescription) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{16, 1}
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{14, 1}
 }
 
 func (x *ActionDescription_ExerciseActionDescription) GetInputContractId() string {
@@ -1577,7 +1145,7 @@ type ActionDescription_FetchActionDescription struct {
 
 func (x *ActionDescription_FetchActionDescription) Reset() {
 	*x = ActionDescription_FetchActionDescription{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1589,7 +1157,7 @@ func (x *ActionDescription_FetchActionDescription) String() string {
 func (*ActionDescription_FetchActionDescription) ProtoMessage() {}
 
 func (x *ActionDescription_FetchActionDescription) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[22]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1602,7 +1170,7 @@ func (x *ActionDescription_FetchActionDescription) ProtoReflect() protoreflect.M
 
 // Deprecated: Use ActionDescription_FetchActionDescription.ProtoReflect.Descriptor instead.
 func (*ActionDescription_FetchActionDescription) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{16, 2}
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{14, 2}
 }
 
 func (x *ActionDescription_FetchActionDescription) GetInputContractId() string {
@@ -1640,184 +1208,6 @@ func (x *ActionDescription_FetchActionDescription) GetInterfaceId() string {
 	return ""
 }
 
-type ActionDescription_LookupByKeyActionDescription struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Key           *GlobalKey             `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ActionDescription_LookupByKeyActionDescription) Reset() {
-	*x = ActionDescription_LookupByKeyActionDescription{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ActionDescription_LookupByKeyActionDescription) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ActionDescription_LookupByKeyActionDescription) ProtoMessage() {}
-
-func (x *ActionDescription_LookupByKeyActionDescription) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ActionDescription_LookupByKeyActionDescription.ProtoReflect.Descriptor instead.
-func (*ActionDescription_LookupByKeyActionDescription) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{16, 3}
-}
-
-func (x *ActionDescription_LookupByKeyActionDescription) GetKey() *GlobalKey {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
-
-type ViewParticipantData_FreeKey struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Maintainers   []string               `protobuf:"bytes,1,rep,name=maintainers,proto3" json:"maintainers,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ViewParticipantData_FreeKey) Reset() {
-	*x = ViewParticipantData_FreeKey{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ViewParticipantData_FreeKey) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ViewParticipantData_FreeKey) ProtoMessage() {}
-
-func (x *ViewParticipantData_FreeKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ViewParticipantData_FreeKey.ProtoReflect.Descriptor instead.
-func (*ViewParticipantData_FreeKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{17, 0}
-}
-
-func (x *ViewParticipantData_FreeKey) GetMaintainers() []string {
-	if x != nil {
-		return x.Maintainers
-	}
-	return nil
-}
-
-type ViewParticipantData_ResolvedKey struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	Key   *GlobalKey             `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	// Types that are valid to be assigned to Resolution:
-	//
-	//	*ViewParticipantData_ResolvedKey_ContractId
-	//	*ViewParticipantData_ResolvedKey_Free
-	Resolution    isViewParticipantData_ResolvedKey_Resolution `protobuf_oneof:"resolution"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ViewParticipantData_ResolvedKey) Reset() {
-	*x = ViewParticipantData_ResolvedKey{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ViewParticipantData_ResolvedKey) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ViewParticipantData_ResolvedKey) ProtoMessage() {}
-
-func (x *ViewParticipantData_ResolvedKey) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ViewParticipantData_ResolvedKey.ProtoReflect.Descriptor instead.
-func (*ViewParticipantData_ResolvedKey) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{17, 1}
-}
-
-func (x *ViewParticipantData_ResolvedKey) GetKey() *GlobalKey {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
-
-func (x *ViewParticipantData_ResolvedKey) GetResolution() isViewParticipantData_ResolvedKey_Resolution {
-	if x != nil {
-		return x.Resolution
-	}
-	return nil
-}
-
-func (x *ViewParticipantData_ResolvedKey) GetContractId() string {
-	if x != nil {
-		if x, ok := x.Resolution.(*ViewParticipantData_ResolvedKey_ContractId); ok {
-			return x.ContractId
-		}
-	}
-	return ""
-}
-
-func (x *ViewParticipantData_ResolvedKey) GetFree() *ViewParticipantData_FreeKey {
-	if x != nil {
-		if x, ok := x.Resolution.(*ViewParticipantData_ResolvedKey_Free); ok {
-			return x.Free
-		}
-	}
-	return nil
-}
-
-type isViewParticipantData_ResolvedKey_Resolution interface {
-	isViewParticipantData_ResolvedKey_Resolution()
-}
-
-type ViewParticipantData_ResolvedKey_ContractId struct {
-	ContractId string `protobuf:"bytes,2,opt,name=contract_id,json=contractId,proto3,oneof"`
-}
-
-type ViewParticipantData_ResolvedKey_Free struct {
-	Free *ViewParticipantData_FreeKey `protobuf:"bytes,3,opt,name=free,proto3,oneof"`
-}
-
-func (*ViewParticipantData_ResolvedKey_ContractId) isViewParticipantData_ResolvedKey_Resolution() {}
-
-func (*ViewParticipantData_ResolvedKey_Free) isViewParticipantData_ResolvedKey_Resolution() {}
-
 type ViewParticipantData_RollbackContext struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RollbackScope []int32                `protobuf:"varint,1,rep,packed,name=rollback_scope,json=rollbackScope,proto3" json:"rollback_scope,omitempty"`
@@ -1828,7 +1218,7 @@ type ViewParticipantData_RollbackContext struct {
 
 func (x *ViewParticipantData_RollbackContext) Reset() {
 	*x = ViewParticipantData_RollbackContext{}
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1840,7 +1230,7 @@ func (x *ViewParticipantData_RollbackContext) String() string {
 func (*ViewParticipantData_RollbackContext) ProtoMessage() {}
 
 func (x *ViewParticipantData_RollbackContext) ProtoReflect() protoreflect.Message {
-	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[26]
+	mi := &file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1853,7 +1243,7 @@ func (x *ViewParticipantData_RollbackContext) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ViewParticipantData_RollbackContext.ProtoReflect.Descriptor instead.
 func (*ViewParticipantData_RollbackContext) Descriptor() ([]byte, []int) {
-	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{17, 2}
+	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescGZIP(), []int{15, 0}
 }
 
 func (x *ViewParticipantData_RollbackContext) GetRollbackScope() []int32 {
@@ -1874,7 +1264,7 @@ var File_com_digitalasset_canton_protocol_v30_participant_transaction_proto prot
 
 const file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDesc = "" +
 	"\n" +
-	"Bcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a1com/digitalasset/canton/protocol/v30/common.proto\x1a8com/digitalasset/canton/protocol/v30/common_stable.proto\x1a1com/digitalasset/canton/protocol/v30/merkle.proto\x1a1com/digitalasset/canton/protocol/v30/quorum.proto\x1a\x1egoogle/protobuf/duration.proto\"r\n" +
+	"Bcom/digitalasset/canton/protocol/v30/participant_transaction.proto\x12$com.digitalasset.canton.protocol.v30\x1a/com/digitalasset/canton/crypto/v30/crypto.proto\x1a1com/digitalasset/canton/protocol/v30/common.proto\x1a1com/digitalasset/canton/protocol/v30/merkle.proto\x1a1com/digitalasset/canton/protocol/v30/quorum.proto\x1a\x1egoogle/protobuf/duration.proto\"r\n" +
 	"\x13DeduplicationPeriod\x127\n" +
 	"\bduration\x18\x01 \x01(\v2\x19.google.protobuf.DurationH\x00R\bduration\x12\x18\n" +
 	"\x06offset\x18\x02 \x01(\x03H\x00R\x06offsetB\b\n" +
@@ -1927,31 +1317,8 @@ const file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_ra
 	"\x04salt\x18\x01 \x01(\v2(.com.digitalasset.canton.crypto.v30.SaltR\x04salt\x128\n" +
 	"\x18physical_synchronizer_id\x18\x03 \x01(\tR\x16physicalSynchronizerId\x12\x12\n" +
 	"\x04uuid\x18\x04 \x01(\tR\x04uuid\x12%\n" +
-	"\x0emediator_group\x18\x05 \x01(\x05R\rmediatorGroupJ\x04\b\x02\x10\x03\"\x85\x04\n" +
-	"\x11SubmitterMetadata\x12<\n" +
-	"\x04salt\x18\x01 \x01(\v2(.com.digitalasset.canton.crypto.v30.SaltR\x04salt\x12\x15\n" +
-	"\x06act_as\x18\x02 \x03(\tR\x05actAs\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\tR\x06userId\x12\x1d\n" +
-	"\n" +
-	"command_id\x18\x04 \x01(\tR\tcommandId\x12<\n" +
-	"\x1asubmitting_participant_uid\x18\x05 \x01(\tR\x18submittingParticipantUid\x12#\n" +
-	"\rsubmission_id\x18\x06 \x01(\tR\fsubmissionId\x12\\\n" +
-	"\fdedup_period\x18\a \x01(\v29.com.digitalasset.canton.protocol.v30.DeduplicationPeriodR\vdedupPeriod\x12.\n" +
-	"\x13max_sequencing_time\x18\b \x01(\x03R\x11maxSequencingTime\x12r\n" +
-	"\x16external_authorization\x18\t \x01(\v2;.com.digitalasset.canton.protocol.v30.ExternalAuthorizationR\x15externalAuthorization\"\x9c\x04\n" +
-	"\x14EncryptedViewMessage\x12\x1b\n" +
-	"\tview_tree\x18\x01 \x01(\fR\bviewTree\x12c\n" +
-	"\x11encryption_scheme\x18\x02 \x01(\x0e26.com.digitalasset.canton.crypto.v30.SymmetricKeySchemeR\x10encryptionScheme\x12w\n" +
-	" submitting_participant_signature\x18\x03 \x01(\v2-.com.digitalasset.canton.crypto.v30.SignatureR\x1esubmittingParticipantSignature\x12\x1b\n" +
-	"\tview_hash\x18\x04 \x01(\fR\bviewHash\x12e\n" +
-	"\x12session_key_lookup\x18\x05 \x03(\v27.com.digitalasset.canton.crypto.v30.AsymmetricEncryptedR\x10sessionKeyLookup\x128\n" +
-	"\x18physical_synchronizer_id\x18\x06 \x01(\tR\x16physicalSynchronizerId\x12K\n" +
-	"\tview_type\x18\a \x01(\x0e2..com.digitalasset.canton.protocol.v30.ViewTypeR\bviewType\"\xe0\t\n" +
-	"\x11ActionDescription\x12i\n" +
-	"\x06create\x18\x01 \x01(\v2O.com.digitalasset.canton.protocol.v30.ActionDescription.CreateActionDescriptionH\x00R\x06create\x12o\n" +
-	"\bexercise\x18\x02 \x01(\v2Q.com.digitalasset.canton.protocol.v30.ActionDescription.ExerciseActionDescriptionH\x00R\bexercise\x12f\n" +
-	"\x05fetch\x18\x03 \x01(\v2N.com.digitalasset.canton.protocol.v30.ActionDescription.FetchActionDescriptionH\x00R\x05fetch\x12z\n" +
-	"\rlookup_by_key\x18\x04 \x01(\v2T.com.digitalasset.canton.protocol.v30.ActionDescription.LookupByKeyActionDescriptionH\x00R\vlookupByKey\x1aW\n" +
+	"\x0emediator_group\x18\x05 \x01(\x05R\rmediatorGroupJ\x04\b\x02\x10\x03\"\xae\x05\n" +
+	"\x11ActionDescription\x1aW\n" +
 	"\x17CreateActionDescription\x12\x1f\n" +
 	"\vcontract_id\x18\x01 \x01(\tR\n" +
 	"contractId\x12\x1b\n" +
@@ -1977,28 +1344,8 @@ const file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_ra
 	"\vtemplate_id\x18\x04 \x01(\tR\n" +
 	"templateId\x12&\n" +
 	"\finterface_id\x18\x05 \x01(\tH\x00R\vinterfaceId\x88\x01\x01B\x0f\n" +
-	"\r_interface_id\x1aa\n" +
-	"\x1cLookupByKeyActionDescription\x12A\n" +
-	"\x03key\x18\x01 \x01(\v2/.com.digitalasset.canton.protocol.v30.GlobalKeyR\x03keyB\r\n" +
-	"\vdescription\"\xfd\a\n" +
-	"\x13ViewParticipantData\x12<\n" +
-	"\x04salt\x18\x01 \x01(\v2(.com.digitalasset.canton.crypto.v30.SaltR\x04salt\x12T\n" +
-	"\vcore_inputs\x18\x02 \x03(\v23.com.digitalasset.canton.protocol.v30.InputContractR\n" +
-	"coreInputs\x12X\n" +
-	"\fcreated_core\x18\x03 \x03(\v25.com.digitalasset.canton.protocol.v30.CreatedContractR\vcreatedCore\x12K\n" +
-	"#created_in_subview_archived_in_core\x18\x04 \x03(\tR\x1ecreatedInSubviewArchivedInCore\x12j\n" +
-	"\rresolved_keys\x18\x05 \x03(\v2E.com.digitalasset.canton.protocol.v30.ViewParticipantData.ResolvedKeyR\fresolvedKeys\x12f\n" +
-	"\x12action_description\x18\x06 \x01(\v27.com.digitalasset.canton.protocol.v30.ActionDescriptionR\x11actionDescription\x12t\n" +
-	"\x10rollback_context\x18\a \x01(\v2I.com.digitalasset.canton.protocol.v30.ViewParticipantData.RollbackContextR\x0frollbackContext\x1a+\n" +
-	"\aFreeKey\x12 \n" +
-	"\vmaintainers\x18\x01 \x03(\tR\vmaintainers\x1a\xda\x01\n" +
-	"\vResolvedKey\x12A\n" +
-	"\x03key\x18\x01 \x01(\v2/.com.digitalasset.canton.protocol.v30.GlobalKeyR\x03key\x12!\n" +
-	"\vcontract_id\x18\x02 \x01(\tH\x00R\n" +
-	"contractId\x12W\n" +
-	"\x04free\x18\x03 \x01(\v2A.com.digitalasset.canton.protocol.v30.ViewParticipantData.FreeKeyH\x00R\x04freeB\f\n" +
-	"\n" +
-	"resolution\x1aW\n" +
+	"\r_interface_id\"n\n" +
+	"\x13ViewParticipantData\x1aW\n" +
 	"\x0fRollbackContext\x12%\n" +
 	"\x0erollback_scope\x18\x01 \x03(\x05R\rrollbackScope\x12\x1d\n" +
 	"\n" +
@@ -2007,13 +1354,7 @@ const file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_ra
 	"\x05party\x18\x01 \x01(\tR\x05party\x12M\n" +
 	"\n" +
 	"signatures\x18\x02 \x03(\v2-.com.digitalasset.canton.crypto.v30.SignatureR\n" +
-	"signatures\"\xf1\x02\n" +
-	"\x15ExternalAuthorization\x12j\n" +
-	"\x0fauthentications\x18\x01 \x03(\v2@.com.digitalasset.canton.protocol.v30.ExternalPartyAuthorizationR\x0fauthentications\x12\x86\x01\n" +
-	"\x16hashing_scheme_version\x18\x02 \x01(\x0e2P.com.digitalasset.canton.protocol.v30.ExternalAuthorization.HashingSchemeVersionR\x14hashingSchemeVersion\"c\n" +
-	"\x14HashingSchemeVersion\x12&\n" +
-	"\"HASHING_SCHEME_VERSION_UNSPECIFIED\x10\x00\x12\x1d\n" +
-	"\x19HASHING_SCHEME_VERSION_V2\x10\x02\"\x04\b\x01\x10\x01BUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3"
+	"signaturesBUZSgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/protocol/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescOnce sync.Once
@@ -2027,92 +1368,59 @@ func file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_raw
 	return file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_goTypes = []any{
-	(ExternalAuthorization_HashingSchemeVersion)(0),        // 0: com.digitalasset.canton.protocol.v30.ExternalAuthorization.HashingSchemeVersion
-	(*DeduplicationPeriod)(nil),                            // 1: com.digitalasset.canton.protocol.v30.DeduplicationPeriod
-	(*ParticipantMetadata)(nil),                            // 2: com.digitalasset.canton.protocol.v30.ParticipantMetadata
-	(*RootHashMessage)(nil),                                // 3: com.digitalasset.canton.protocol.v30.RootHashMessage
-	(*ViewNode)(nil),                                       // 4: com.digitalasset.canton.protocol.v30.ViewNode
-	(*ViewCommonData)(nil),                                 // 5: com.digitalasset.canton.protocol.v30.ViewCommonData
-	(*Informee)(nil),                                       // 6: com.digitalasset.canton.protocol.v30.Informee
-	(*ViewParticipantMessage)(nil),                         // 7: com.digitalasset.canton.protocol.v30.ViewParticipantMessage
-	(*InformeeMessage)(nil),                                // 8: com.digitalasset.canton.protocol.v30.InformeeMessage
-	(*LightTransactionViewTree)(nil),                       // 9: com.digitalasset.canton.protocol.v30.LightTransactionViewTree
-	(*ViewHashAndKey)(nil),                                 // 10: com.digitalasset.canton.protocol.v30.ViewHashAndKey
-	(*FullInformeeTree)(nil),                               // 11: com.digitalasset.canton.protocol.v30.FullInformeeTree
-	(*CreatedContract)(nil),                                // 12: com.digitalasset.canton.protocol.v30.CreatedContract
-	(*InputContract)(nil),                                  // 13: com.digitalasset.canton.protocol.v30.InputContract
-	(*CommonMetadata)(nil),                                 // 14: com.digitalasset.canton.protocol.v30.CommonMetadata
-	(*SubmitterMetadata)(nil),                              // 15: com.digitalasset.canton.protocol.v30.SubmitterMetadata
-	(*EncryptedViewMessage)(nil),                           // 16: com.digitalasset.canton.protocol.v30.EncryptedViewMessage
-	(*ActionDescription)(nil),                              // 17: com.digitalasset.canton.protocol.v30.ActionDescription
-	(*ViewParticipantData)(nil),                            // 18: com.digitalasset.canton.protocol.v30.ViewParticipantData
-	(*ExternalPartyAuthorization)(nil),                     // 19: com.digitalasset.canton.protocol.v30.ExternalPartyAuthorization
-	(*ExternalAuthorization)(nil),                          // 20: com.digitalasset.canton.protocol.v30.ExternalAuthorization
-	(*ActionDescription_CreateActionDescription)(nil),      // 21: com.digitalasset.canton.protocol.v30.ActionDescription.CreateActionDescription
-	(*ActionDescription_ExerciseActionDescription)(nil),    // 22: com.digitalasset.canton.protocol.v30.ActionDescription.ExerciseActionDescription
-	(*ActionDescription_FetchActionDescription)(nil),       // 23: com.digitalasset.canton.protocol.v30.ActionDescription.FetchActionDescription
-	(*ActionDescription_LookupByKeyActionDescription)(nil), // 24: com.digitalasset.canton.protocol.v30.ActionDescription.LookupByKeyActionDescription
-	(*ViewParticipantData_FreeKey)(nil),                    // 25: com.digitalasset.canton.protocol.v30.ViewParticipantData.FreeKey
-	(*ViewParticipantData_ResolvedKey)(nil),                // 26: com.digitalasset.canton.protocol.v30.ViewParticipantData.ResolvedKey
-	(*ViewParticipantData_RollbackContext)(nil),            // 27: com.digitalasset.canton.protocol.v30.ViewParticipantData.RollbackContext
-	(*durationpb.Duration)(nil),                            // 28: google.protobuf.Duration
-	(*v30.Salt)(nil),                                       // 29: com.digitalasset.canton.crypto.v30.Salt
-	(ViewType)(0),                                          // 30: com.digitalasset.canton.protocol.v30.ViewType
-	(*BlindableNode)(nil),                                  // 31: com.digitalasset.canton.protocol.v30.BlindableNode
-	(*MerkleSeq)(nil),                                      // 32: com.digitalasset.canton.protocol.v30.MerkleSeq
-	(*Quorum)(nil),                                         // 33: com.digitalasset.canton.protocol.v30.Quorum
-	(*v30.Signature)(nil),                                  // 34: com.digitalasset.canton.crypto.v30.Signature
-	(*GenTransactionTree)(nil),                             // 35: com.digitalasset.canton.protocol.v30.GenTransactionTree
-	(v30.SymmetricKeyScheme)(0),                            // 36: com.digitalasset.canton.crypto.v30.SymmetricKeyScheme
-	(*v30.AsymmetricEncrypted)(nil),                        // 37: com.digitalasset.canton.crypto.v30.AsymmetricEncrypted
-	(*GlobalKey)(nil),                                      // 38: com.digitalasset.canton.protocol.v30.GlobalKey
+	(*DeduplicationPeriod)(nil),                         // 0: com.digitalasset.canton.protocol.v30.DeduplicationPeriod
+	(*ParticipantMetadata)(nil),                         // 1: com.digitalasset.canton.protocol.v30.ParticipantMetadata
+	(*RootHashMessage)(nil),                             // 2: com.digitalasset.canton.protocol.v30.RootHashMessage
+	(*ViewNode)(nil),                                    // 3: com.digitalasset.canton.protocol.v30.ViewNode
+	(*ViewCommonData)(nil),                              // 4: com.digitalasset.canton.protocol.v30.ViewCommonData
+	(*Informee)(nil),                                    // 5: com.digitalasset.canton.protocol.v30.Informee
+	(*ViewParticipantMessage)(nil),                      // 6: com.digitalasset.canton.protocol.v30.ViewParticipantMessage
+	(*InformeeMessage)(nil),                             // 7: com.digitalasset.canton.protocol.v30.InformeeMessage
+	(*LightTransactionViewTree)(nil),                    // 8: com.digitalasset.canton.protocol.v30.LightTransactionViewTree
+	(*ViewHashAndKey)(nil),                              // 9: com.digitalasset.canton.protocol.v30.ViewHashAndKey
+	(*FullInformeeTree)(nil),                            // 10: com.digitalasset.canton.protocol.v30.FullInformeeTree
+	(*CreatedContract)(nil),                             // 11: com.digitalasset.canton.protocol.v30.CreatedContract
+	(*InputContract)(nil),                               // 12: com.digitalasset.canton.protocol.v30.InputContract
+	(*CommonMetadata)(nil),                              // 13: com.digitalasset.canton.protocol.v30.CommonMetadata
+	(*ActionDescription)(nil),                           // 14: com.digitalasset.canton.protocol.v30.ActionDescription
+	(*ViewParticipantData)(nil),                         // 15: com.digitalasset.canton.protocol.v30.ViewParticipantData
+	(*ExternalPartyAuthorization)(nil),                  // 16: com.digitalasset.canton.protocol.v30.ExternalPartyAuthorization
+	(*ActionDescription_CreateActionDescription)(nil),   // 17: com.digitalasset.canton.protocol.v30.ActionDescription.CreateActionDescription
+	(*ActionDescription_ExerciseActionDescription)(nil), // 18: com.digitalasset.canton.protocol.v30.ActionDescription.ExerciseActionDescription
+	(*ActionDescription_FetchActionDescription)(nil),    // 19: com.digitalasset.canton.protocol.v30.ActionDescription.FetchActionDescription
+	(*ViewParticipantData_RollbackContext)(nil),         // 20: com.digitalasset.canton.protocol.v30.ViewParticipantData.RollbackContext
+	(*durationpb.Duration)(nil),                         // 21: google.protobuf.Duration
+	(*v30.Salt)(nil),                                    // 22: com.digitalasset.canton.crypto.v30.Salt
+	(ViewType)(0),                                       // 23: com.digitalasset.canton.protocol.v30.ViewType
+	(*BlindableNode)(nil),                               // 24: com.digitalasset.canton.protocol.v30.BlindableNode
+	(*MerkleSeq)(nil),                                   // 25: com.digitalasset.canton.protocol.v30.MerkleSeq
+	(*Quorum)(nil),                                      // 26: com.digitalasset.canton.protocol.v30.Quorum
+	(*v30.Signature)(nil),                               // 27: com.digitalasset.canton.crypto.v30.Signature
+	(*GenTransactionTree)(nil),                          // 28: com.digitalasset.canton.protocol.v30.GenTransactionTree
 }
 var file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_depIdxs = []int32{
-	28, // 0: com.digitalasset.canton.protocol.v30.DeduplicationPeriod.duration:type_name -> google.protobuf.Duration
-	29, // 1: com.digitalasset.canton.protocol.v30.ParticipantMetadata.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
-	30, // 2: com.digitalasset.canton.protocol.v30.RootHashMessage.view_type:type_name -> com.digitalasset.canton.protocol.v30.ViewType
-	31, // 3: com.digitalasset.canton.protocol.v30.ViewNode.view_common_data:type_name -> com.digitalasset.canton.protocol.v30.BlindableNode
-	31, // 4: com.digitalasset.canton.protocol.v30.ViewNode.view_participant_data:type_name -> com.digitalasset.canton.protocol.v30.BlindableNode
-	32, // 5: com.digitalasset.canton.protocol.v30.ViewNode.subviews:type_name -> com.digitalasset.canton.protocol.v30.MerkleSeq
-	29, // 6: com.digitalasset.canton.protocol.v30.ViewCommonData.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
-	33, // 7: com.digitalasset.canton.protocol.v30.ViewCommonData.quorums:type_name -> com.digitalasset.canton.protocol.v30.Quorum
-	11, // 8: com.digitalasset.canton.protocol.v30.InformeeMessage.full_informee_tree:type_name -> com.digitalasset.canton.protocol.v30.FullInformeeTree
-	34, // 9: com.digitalasset.canton.protocol.v30.InformeeMessage.submitting_participant_signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	35, // 10: com.digitalasset.canton.protocol.v30.LightTransactionViewTree.tree:type_name -> com.digitalasset.canton.protocol.v30.GenTransactionTree
-	10, // 11: com.digitalasset.canton.protocol.v30.LightTransactionViewTree.subview_hashes_and_keys:type_name -> com.digitalasset.canton.protocol.v30.ViewHashAndKey
-	35, // 12: com.digitalasset.canton.protocol.v30.FullInformeeTree.tree:type_name -> com.digitalasset.canton.protocol.v30.GenTransactionTree
-	29, // 13: com.digitalasset.canton.protocol.v30.CommonMetadata.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
-	29, // 14: com.digitalasset.canton.protocol.v30.SubmitterMetadata.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
-	1,  // 15: com.digitalasset.canton.protocol.v30.SubmitterMetadata.dedup_period:type_name -> com.digitalasset.canton.protocol.v30.DeduplicationPeriod
-	20, // 16: com.digitalasset.canton.protocol.v30.SubmitterMetadata.external_authorization:type_name -> com.digitalasset.canton.protocol.v30.ExternalAuthorization
-	36, // 17: com.digitalasset.canton.protocol.v30.EncryptedViewMessage.encryption_scheme:type_name -> com.digitalasset.canton.crypto.v30.SymmetricKeyScheme
-	34, // 18: com.digitalasset.canton.protocol.v30.EncryptedViewMessage.submitting_participant_signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	37, // 19: com.digitalasset.canton.protocol.v30.EncryptedViewMessage.session_key_lookup:type_name -> com.digitalasset.canton.crypto.v30.AsymmetricEncrypted
-	30, // 20: com.digitalasset.canton.protocol.v30.EncryptedViewMessage.view_type:type_name -> com.digitalasset.canton.protocol.v30.ViewType
-	21, // 21: com.digitalasset.canton.protocol.v30.ActionDescription.create:type_name -> com.digitalasset.canton.protocol.v30.ActionDescription.CreateActionDescription
-	22, // 22: com.digitalasset.canton.protocol.v30.ActionDescription.exercise:type_name -> com.digitalasset.canton.protocol.v30.ActionDescription.ExerciseActionDescription
-	23, // 23: com.digitalasset.canton.protocol.v30.ActionDescription.fetch:type_name -> com.digitalasset.canton.protocol.v30.ActionDescription.FetchActionDescription
-	24, // 24: com.digitalasset.canton.protocol.v30.ActionDescription.lookup_by_key:type_name -> com.digitalasset.canton.protocol.v30.ActionDescription.LookupByKeyActionDescription
-	29, // 25: com.digitalasset.canton.protocol.v30.ViewParticipantData.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
-	13, // 26: com.digitalasset.canton.protocol.v30.ViewParticipantData.core_inputs:type_name -> com.digitalasset.canton.protocol.v30.InputContract
-	12, // 27: com.digitalasset.canton.protocol.v30.ViewParticipantData.created_core:type_name -> com.digitalasset.canton.protocol.v30.CreatedContract
-	26, // 28: com.digitalasset.canton.protocol.v30.ViewParticipantData.resolved_keys:type_name -> com.digitalasset.canton.protocol.v30.ViewParticipantData.ResolvedKey
-	17, // 29: com.digitalasset.canton.protocol.v30.ViewParticipantData.action_description:type_name -> com.digitalasset.canton.protocol.v30.ActionDescription
-	27, // 30: com.digitalasset.canton.protocol.v30.ViewParticipantData.rollback_context:type_name -> com.digitalasset.canton.protocol.v30.ViewParticipantData.RollbackContext
-	34, // 31: com.digitalasset.canton.protocol.v30.ExternalPartyAuthorization.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
-	19, // 32: com.digitalasset.canton.protocol.v30.ExternalAuthorization.authentications:type_name -> com.digitalasset.canton.protocol.v30.ExternalPartyAuthorization
-	0,  // 33: com.digitalasset.canton.protocol.v30.ExternalAuthorization.hashing_scheme_version:type_name -> com.digitalasset.canton.protocol.v30.ExternalAuthorization.HashingSchemeVersion
-	38, // 34: com.digitalasset.canton.protocol.v30.ActionDescription.LookupByKeyActionDescription.key:type_name -> com.digitalasset.canton.protocol.v30.GlobalKey
-	38, // 35: com.digitalasset.canton.protocol.v30.ViewParticipantData.ResolvedKey.key:type_name -> com.digitalasset.canton.protocol.v30.GlobalKey
-	25, // 36: com.digitalasset.canton.protocol.v30.ViewParticipantData.ResolvedKey.free:type_name -> com.digitalasset.canton.protocol.v30.ViewParticipantData.FreeKey
-	37, // [37:37] is the sub-list for method output_type
-	37, // [37:37] is the sub-list for method input_type
-	37, // [37:37] is the sub-list for extension type_name
-	37, // [37:37] is the sub-list for extension extendee
-	0,  // [0:37] is the sub-list for field type_name
+	21, // 0: com.digitalasset.canton.protocol.v30.DeduplicationPeriod.duration:type_name -> google.protobuf.Duration
+	22, // 1: com.digitalasset.canton.protocol.v30.ParticipantMetadata.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
+	23, // 2: com.digitalasset.canton.protocol.v30.RootHashMessage.view_type:type_name -> com.digitalasset.canton.protocol.v30.ViewType
+	24, // 3: com.digitalasset.canton.protocol.v30.ViewNode.view_common_data:type_name -> com.digitalasset.canton.protocol.v30.BlindableNode
+	24, // 4: com.digitalasset.canton.protocol.v30.ViewNode.view_participant_data:type_name -> com.digitalasset.canton.protocol.v30.BlindableNode
+	25, // 5: com.digitalasset.canton.protocol.v30.ViewNode.subviews:type_name -> com.digitalasset.canton.protocol.v30.MerkleSeq
+	22, // 6: com.digitalasset.canton.protocol.v30.ViewCommonData.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
+	26, // 7: com.digitalasset.canton.protocol.v30.ViewCommonData.quorums:type_name -> com.digitalasset.canton.protocol.v30.Quorum
+	10, // 8: com.digitalasset.canton.protocol.v30.InformeeMessage.full_informee_tree:type_name -> com.digitalasset.canton.protocol.v30.FullInformeeTree
+	27, // 9: com.digitalasset.canton.protocol.v30.InformeeMessage.submitting_participant_signature:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	28, // 10: com.digitalasset.canton.protocol.v30.LightTransactionViewTree.tree:type_name -> com.digitalasset.canton.protocol.v30.GenTransactionTree
+	9,  // 11: com.digitalasset.canton.protocol.v30.LightTransactionViewTree.subview_hashes_and_keys:type_name -> com.digitalasset.canton.protocol.v30.ViewHashAndKey
+	28, // 12: com.digitalasset.canton.protocol.v30.FullInformeeTree.tree:type_name -> com.digitalasset.canton.protocol.v30.GenTransactionTree
+	22, // 13: com.digitalasset.canton.protocol.v30.CommonMetadata.salt:type_name -> com.digitalasset.canton.crypto.v30.Salt
+	27, // 14: com.digitalasset.canton.protocol.v30.ExternalPartyAuthorization.signatures:type_name -> com.digitalasset.canton.crypto.v30.Signature
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_init() }
@@ -2121,38 +1429,26 @@ func file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_ini
 		return
 	}
 	file_com_digitalasset_canton_protocol_v30_common_proto_init()
-	file_com_digitalasset_canton_protocol_v30_common_stable_proto_init()
 	file_com_digitalasset_canton_protocol_v30_merkle_proto_init()
 	file_com_digitalasset_canton_protocol_v30_quorum_proto_init()
 	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[0].OneofWrappers = []any{
 		(*DeduplicationPeriod_Duration)(nil),
 		(*DeduplicationPeriod_Offset)(nil),
 	}
-	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[16].OneofWrappers = []any{
-		(*ActionDescription_Create)(nil),
-		(*ActionDescription_Exercise)(nil),
-		(*ActionDescription_Fetch)(nil),
-		(*ActionDescription_LookupByKey)(nil),
-	}
-	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[21].OneofWrappers = []any{}
-	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[22].OneofWrappers = []any{}
-	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[25].OneofWrappers = []any{
-		(*ViewParticipantData_ResolvedKey_ContractId)(nil),
-		(*ViewParticipantData_ResolvedKey_Free)(nil),
-	}
+	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[18].OneofWrappers = []any{}
+	file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes[19].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDesc), len(file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   27,
+			NumEnums:      0,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_goTypes,
 		DependencyIndexes: file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_depIdxs,
-		EnumInfos:         file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_enumTypes,
 		MessageInfos:      file_com_digitalasset_canton_protocol_v30_participant_transaction_proto_msgTypes,
 	}.Build()
 	File_com_digitalasset_canton_protocol_v30_participant_transaction_proto = out.File

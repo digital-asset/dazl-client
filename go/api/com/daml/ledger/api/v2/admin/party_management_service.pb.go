@@ -838,6 +838,7 @@ type GenerateExternalPartyTopologyRequest struct {
 	OtherConfirmingParticipantUids  []string               `protobuf:"bytes,5,rep,name=other_confirming_participant_uids,json=otherConfirmingParticipantUids,proto3" json:"other_confirming_participant_uids,omitempty"`
 	ConfirmationThreshold           uint32                 `protobuf:"varint,6,opt,name=confirmation_threshold,json=confirmationThreshold,proto3" json:"confirmation_threshold,omitempty"`
 	ObservingParticipantUids        []string               `protobuf:"bytes,7,rep,name=observing_participant_uids,json=observingParticipantUids,proto3" json:"observing_participant_uids,omitempty"`
+	ProtocolVersion                 *uint32                `protobuf:"varint,8,opt,name=protocol_version,json=protocolVersion,proto3,oneof" json:"protocol_version,omitempty"`
 	unknownFields                   protoimpl.UnknownFields
 	sizeCache                       protoimpl.SizeCache
 }
@@ -919,6 +920,13 @@ func (x *GenerateExternalPartyTopologyRequest) GetObservingParticipantUids() []s
 		return x.ObservingParticipantUids
 	}
 	return nil
+}
+
+func (x *GenerateExternalPartyTopologyRequest) GetProtocolVersion() uint32 {
+	if x != nil && x.ProtocolVersion != nil {
+		return *x.ProtocolVersion
+	}
+	return 0
 }
 
 type GenerateExternalPartyTopologyResponse struct {
@@ -1101,7 +1109,7 @@ const file_com_daml_ledger_api_v2_admin_party_management_service_proto_rawDesc =
 	"\x05party\x18\x01 \x01(\tR\x05party\x12=\n" +
 	"\x1bsource_identity_provider_id\x18\x02 \x01(\tR\x18sourceIdentityProviderId\x12=\n" +
 	"\x1btarget_identity_provider_id\x18\x03 \x01(\tR\x18targetIdentityProviderId\"'\n" +
-	"%UpdatePartyIdentityProviderIdResponse\"\xbf\x03\n" +
+	"%UpdatePartyIdentityProviderIdResponse\"\x84\x04\n" +
 	"$GenerateExternalPartyTopologyRequest\x12\"\n" +
 	"\fsynchronizer\x18\x01 \x01(\tR\fsynchronizer\x12\x1d\n" +
 	"\n" +
@@ -1111,7 +1119,9 @@ const file_com_daml_ledger_api_v2_admin_party_management_service_proto_rawDesc =
 	"\"local_participant_observation_only\x18\x04 \x01(\bR\x1flocalParticipantObservationOnly\x12I\n" +
 	"!other_confirming_participant_uids\x18\x05 \x03(\tR\x1eotherConfirmingParticipantUids\x125\n" +
 	"\x16confirmation_threshold\x18\x06 \x01(\rR\x15confirmationThreshold\x12<\n" +
-	"\x1aobserving_participant_uids\x18\a \x03(\tR\x18observingParticipantUids\"\xcc\x01\n" +
+	"\x1aobserving_participant_uids\x18\a \x03(\tR\x18observingParticipantUids\x12.\n" +
+	"\x10protocol_version\x18\b \x01(\rH\x00R\x0fprotocolVersion\x88\x01\x01B\x13\n" +
+	"\x11_protocol_version\"\xcc\x01\n" +
 	"%GenerateExternalPartyTopologyResponse\x12\x19\n" +
 	"\bparty_id\x18\x01 \x01(\tR\apartyId\x124\n" +
 	"\x16public_key_fingerprint\x18\x02 \x01(\tR\x14publicKeyFingerprint\x123\n" +
@@ -1210,6 +1220,7 @@ func file_com_daml_ledger_api_v2_admin_party_management_service_proto_init() {
 	}
 	file_com_daml_ledger_api_v2_admin_object_meta_proto_init()
 	file_com_daml_ledger_api_v2_admin_party_management_service_proto_msgTypes[8].OneofWrappers = []any{}
+	file_com_daml_ledger_api_v2_admin_party_management_service_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

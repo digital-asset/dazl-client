@@ -42,6 +42,7 @@ class SigningKeySpec(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SIGNING_KEY_SPEC_EC_P256: _ClassVar[SigningKeySpec]
     SIGNING_KEY_SPEC_EC_P384: _ClassVar[SigningKeySpec]
     SIGNING_KEY_SPEC_EC_SECP256K1: _ClassVar[SigningKeySpec]
+    SIGNING_KEY_SPEC_ML_DSA_65: _ClassVar[SigningKeySpec]
 
 class KeyPurpose(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -64,6 +65,7 @@ class SigningAlgorithmSpec(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SIGNING_ALGORITHM_SPEC_ED25519: _ClassVar[SigningAlgorithmSpec]
     SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256: _ClassVar[SigningAlgorithmSpec]
     SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384: _ClassVar[SigningAlgorithmSpec]
+    SIGNING_ALGORITHM_SPEC_ML_DSA_65: _ClassVar[SigningAlgorithmSpec]
 
 class SigningKeyScheme(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -120,6 +122,7 @@ SIGNING_KEY_SPEC_EC_CURVE25519: SigningKeySpec
 SIGNING_KEY_SPEC_EC_P256: SigningKeySpec
 SIGNING_KEY_SPEC_EC_P384: SigningKeySpec
 SIGNING_KEY_SPEC_EC_SECP256K1: SigningKeySpec
+SIGNING_KEY_SPEC_ML_DSA_65: SigningKeySpec
 KEY_PURPOSE_UNSPECIFIED: KeyPurpose
 KEY_PURPOSE_SIGNING: KeyPurpose
 KEY_PURPOSE_ENCRYPTION: KeyPurpose
@@ -133,6 +136,7 @@ SIGNING_ALGORITHM_SPEC_UNSPECIFIED: SigningAlgorithmSpec
 SIGNING_ALGORITHM_SPEC_ED25519: SigningAlgorithmSpec
 SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_256: SigningAlgorithmSpec
 SIGNING_ALGORITHM_SPEC_EC_DSA_SHA_384: SigningAlgorithmSpec
+SIGNING_ALGORITHM_SPEC_ML_DSA_65: SigningAlgorithmSpec
 SIGNING_KEY_SCHEME_UNSPECIFIED: SigningKeyScheme
 SIGNING_KEY_SCHEME_ED25519: SigningKeyScheme
 SIGNING_KEY_SCHEME_EC_DSA_P256: SigningKeyScheme

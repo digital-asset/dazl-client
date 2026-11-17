@@ -21,17 +21,24 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ParticipantRepairService_ExportAcs_FullMethodName                    = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcs"
-	ParticipantRepairService_ImportAcs_FullMethodName                    = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcs"
-	ParticipantRepairService_PurgeContracts_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PurgeContracts"
-	ParticipantRepairService_MigrateSynchronizer_FullMethodName          = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/MigrateSynchronizer"
-	ParticipantRepairService_ChangeAssignation_FullMethodName            = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ChangeAssignation"
-	ParticipantRepairService_PurgeDeactivatedSynchronizer_FullMethodName = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PurgeDeactivatedSynchronizer"
-	ParticipantRepairService_IgnoreEvents_FullMethodName                 = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/IgnoreEvents"
-	ParticipantRepairService_UnignoreEvents_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/UnignoreEvents"
-	ParticipantRepairService_RollbackUnassignment_FullMethodName         = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RollbackUnassignment"
-	ParticipantRepairService_RepairCommitmentsUsingAcs_FullMethodName    = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RepairCommitmentsUsingAcs"
-	ParticipantRepairService_PerformLateLsu_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PerformLateLsu"
+	ParticipantRepairService_ExportAcs_FullMethodName                           = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ExportAcs"
+	ParticipantRepairService_ImportAcs_FullMethodName                           = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ImportAcs"
+	ParticipantRepairService_PurgeContracts_FullMethodName                      = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PurgeContracts"
+	ParticipantRepairService_MigrateSynchronizer_FullMethodName                 = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/MigrateSynchronizer"
+	ParticipantRepairService_ChangeAssignation_FullMethodName                   = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ChangeAssignation"
+	ParticipantRepairService_PurgeDeactivatedSynchronizer_FullMethodName        = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PurgeDeactivatedSynchronizer"
+	ParticipantRepairService_IgnoreEvents_FullMethodName                        = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/IgnoreEvents"
+	ParticipantRepairService_UnignoreEvents_FullMethodName                      = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/UnignoreEvents"
+	ParticipantRepairService_RollbackUnassignment_FullMethodName                = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RollbackUnassignment"
+	ParticipantRepairService_RepairCommitmentsUsingAcs_FullMethodName           = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RepairCommitmentsUsingAcs"
+	ParticipantRepairService_PerformLateLsu_FullMethodName                      = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/PerformLateLsu"
+	ParticipantRepairService_DeleteSynchronizerConnectionConfig_FullMethodName  = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DeleteSynchronizerConnectionConfig"
+	ParticipantRepairService_ListPendingOperations_FullMethodName               = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ListPendingOperations"
+	ParticipantRepairService_DeletePendingOperation_FullMethodName              = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DeletePendingOperation"
+	ParticipantRepairService_ReinitializeDigestCommitments_FullMethodName       = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ReinitializeDigestCommitments"
+	ParticipantRepairService_ReinitializeDigestCommitmentsStatus_FullMethodName = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/ReinitializeDigestCommitmentsStatus"
+	ParticipantRepairService_RunDigestConsistencyCheck_FullMethodName           = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/RunDigestConsistencyCheck"
+	ParticipantRepairService_DigestConsistencyCheckStatus_FullMethodName        = "/com.digitalasset.canton.admin.participant.v30.ParticipantRepairService/DigestConsistencyCheckStatus"
 )
 
 // ParticipantRepairServiceClient is the client API for ParticipantRepairService service.
@@ -49,6 +56,13 @@ type ParticipantRepairServiceClient interface {
 	RollbackUnassignment(ctx context.Context, in *RollbackUnassignmentRequest, opts ...grpc.CallOption) (*RollbackUnassignmentResponse, error)
 	RepairCommitmentsUsingAcs(ctx context.Context, in *RepairCommitmentsUsingAcsRequest, opts ...grpc.CallOption) (*RepairCommitmentsUsingAcsResponse, error)
 	PerformLateLsu(ctx context.Context, in *PerformLateLsuRequest, opts ...grpc.CallOption) (*PerformLateLsuResponse, error)
+	DeleteSynchronizerConnectionConfig(ctx context.Context, in *DeleteSynchronizerConnectionConfigRequest, opts ...grpc.CallOption) (*DeleteSynchronizerConnectionConfigResponse, error)
+	ListPendingOperations(ctx context.Context, in *ListPendingOperationsRequest, opts ...grpc.CallOption) (*ListPendingOperationsResponse, error)
+	DeletePendingOperation(ctx context.Context, in *DeletePendingOperationRequest, opts ...grpc.CallOption) (*DeletePendingOperationResponse, error)
+	ReinitializeDigestCommitments(ctx context.Context, in *ReinitializeDigestCommitmentsRequest, opts ...grpc.CallOption) (*ReinitializeDigestCommitmentsResponse, error)
+	ReinitializeDigestCommitmentsStatus(ctx context.Context, in *ReinitializeDigestCommitmentsStatusRequest, opts ...grpc.CallOption) (*ReinitializeDigestCommitmentsStatusResponse, error)
+	RunDigestConsistencyCheck(ctx context.Context, in *RunDigestConsistencyCheckRequest, opts ...grpc.CallOption) (*RunDigestConsistencyCheckResponse, error)
+	DigestConsistencyCheckStatus(ctx context.Context, in *DigestConsistencyCheckStatusRequest, opts ...grpc.CallOption) (*DigestConsistencyCheckStatusResponse, error)
 }
 
 type participantRepairServiceClient struct {
@@ -181,6 +195,76 @@ func (c *participantRepairServiceClient) PerformLateLsu(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *participantRepairServiceClient) DeleteSynchronizerConnectionConfig(ctx context.Context, in *DeleteSynchronizerConnectionConfigRequest, opts ...grpc.CallOption) (*DeleteSynchronizerConnectionConfigResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteSynchronizerConnectionConfigResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_DeleteSynchronizerConnectionConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *participantRepairServiceClient) ListPendingOperations(ctx context.Context, in *ListPendingOperationsRequest, opts ...grpc.CallOption) (*ListPendingOperationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPendingOperationsResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_ListPendingOperations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *participantRepairServiceClient) DeletePendingOperation(ctx context.Context, in *DeletePendingOperationRequest, opts ...grpc.CallOption) (*DeletePendingOperationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeletePendingOperationResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_DeletePendingOperation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *participantRepairServiceClient) ReinitializeDigestCommitments(ctx context.Context, in *ReinitializeDigestCommitmentsRequest, opts ...grpc.CallOption) (*ReinitializeDigestCommitmentsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReinitializeDigestCommitmentsResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_ReinitializeDigestCommitments_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *participantRepairServiceClient) ReinitializeDigestCommitmentsStatus(ctx context.Context, in *ReinitializeDigestCommitmentsStatusRequest, opts ...grpc.CallOption) (*ReinitializeDigestCommitmentsStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReinitializeDigestCommitmentsStatusResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_ReinitializeDigestCommitmentsStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *participantRepairServiceClient) RunDigestConsistencyCheck(ctx context.Context, in *RunDigestConsistencyCheckRequest, opts ...grpc.CallOption) (*RunDigestConsistencyCheckResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RunDigestConsistencyCheckResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_RunDigestConsistencyCheck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *participantRepairServiceClient) DigestConsistencyCheckStatus(ctx context.Context, in *DigestConsistencyCheckStatusRequest, opts ...grpc.CallOption) (*DigestConsistencyCheckStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DigestConsistencyCheckStatusResponse)
+	err := c.cc.Invoke(ctx, ParticipantRepairService_DigestConsistencyCheckStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ParticipantRepairServiceServer is the server API for ParticipantRepairService service.
 // All implementations must embed UnimplementedParticipantRepairServiceServer
 // for forward compatibility.
@@ -196,6 +280,13 @@ type ParticipantRepairServiceServer interface {
 	RollbackUnassignment(context.Context, *RollbackUnassignmentRequest) (*RollbackUnassignmentResponse, error)
 	RepairCommitmentsUsingAcs(context.Context, *RepairCommitmentsUsingAcsRequest) (*RepairCommitmentsUsingAcsResponse, error)
 	PerformLateLsu(context.Context, *PerformLateLsuRequest) (*PerformLateLsuResponse, error)
+	DeleteSynchronizerConnectionConfig(context.Context, *DeleteSynchronizerConnectionConfigRequest) (*DeleteSynchronizerConnectionConfigResponse, error)
+	ListPendingOperations(context.Context, *ListPendingOperationsRequest) (*ListPendingOperationsResponse, error)
+	DeletePendingOperation(context.Context, *DeletePendingOperationRequest) (*DeletePendingOperationResponse, error)
+	ReinitializeDigestCommitments(context.Context, *ReinitializeDigestCommitmentsRequest) (*ReinitializeDigestCommitmentsResponse, error)
+	ReinitializeDigestCommitmentsStatus(context.Context, *ReinitializeDigestCommitmentsStatusRequest) (*ReinitializeDigestCommitmentsStatusResponse, error)
+	RunDigestConsistencyCheck(context.Context, *RunDigestConsistencyCheckRequest) (*RunDigestConsistencyCheckResponse, error)
+	DigestConsistencyCheckStatus(context.Context, *DigestConsistencyCheckStatusRequest) (*DigestConsistencyCheckStatusResponse, error)
 	mustEmbedUnimplementedParticipantRepairServiceServer()
 }
 
@@ -238,6 +329,27 @@ func (UnimplementedParticipantRepairServiceServer) RepairCommitmentsUsingAcs(con
 }
 func (UnimplementedParticipantRepairServiceServer) PerformLateLsu(context.Context, *PerformLateLsuRequest) (*PerformLateLsuResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PerformLateLsu not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) DeleteSynchronizerConnectionConfig(context.Context, *DeleteSynchronizerConnectionConfigRequest) (*DeleteSynchronizerConnectionConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSynchronizerConnectionConfig not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) ListPendingOperations(context.Context, *ListPendingOperationsRequest) (*ListPendingOperationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPendingOperations not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) DeletePendingOperation(context.Context, *DeletePendingOperationRequest) (*DeletePendingOperationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePendingOperation not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) ReinitializeDigestCommitments(context.Context, *ReinitializeDigestCommitmentsRequest) (*ReinitializeDigestCommitmentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReinitializeDigestCommitments not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) ReinitializeDigestCommitmentsStatus(context.Context, *ReinitializeDigestCommitmentsStatusRequest) (*ReinitializeDigestCommitmentsStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReinitializeDigestCommitmentsStatus not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) RunDigestConsistencyCheck(context.Context, *RunDigestConsistencyCheckRequest) (*RunDigestConsistencyCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RunDigestConsistencyCheck not implemented")
+}
+func (UnimplementedParticipantRepairServiceServer) DigestConsistencyCheckStatus(context.Context, *DigestConsistencyCheckStatusRequest) (*DigestConsistencyCheckStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DigestConsistencyCheckStatus not implemented")
 }
 func (UnimplementedParticipantRepairServiceServer) mustEmbedUnimplementedParticipantRepairServiceServer() {
 }
@@ -441,6 +553,132 @@ func _ParticipantRepairService_PerformLateLsu_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ParticipantRepairService_DeleteSynchronizerConnectionConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSynchronizerConnectionConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).DeleteSynchronizerConnectionConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_DeleteSynchronizerConnectionConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).DeleteSynchronizerConnectionConfig(ctx, req.(*DeleteSynchronizerConnectionConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ParticipantRepairService_ListPendingOperations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPendingOperationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).ListPendingOperations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_ListPendingOperations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).ListPendingOperations(ctx, req.(*ListPendingOperationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ParticipantRepairService_DeletePendingOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePendingOperationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).DeletePendingOperation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_DeletePendingOperation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).DeletePendingOperation(ctx, req.(*DeletePendingOperationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ParticipantRepairService_ReinitializeDigestCommitments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReinitializeDigestCommitmentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).ReinitializeDigestCommitments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_ReinitializeDigestCommitments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).ReinitializeDigestCommitments(ctx, req.(*ReinitializeDigestCommitmentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ParticipantRepairService_ReinitializeDigestCommitmentsStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReinitializeDigestCommitmentsStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).ReinitializeDigestCommitmentsStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_ReinitializeDigestCommitmentsStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).ReinitializeDigestCommitmentsStatus(ctx, req.(*ReinitializeDigestCommitmentsStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ParticipantRepairService_RunDigestConsistencyCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RunDigestConsistencyCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).RunDigestConsistencyCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_RunDigestConsistencyCheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).RunDigestConsistencyCheck(ctx, req.(*RunDigestConsistencyCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ParticipantRepairService_DigestConsistencyCheckStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DigestConsistencyCheckStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParticipantRepairServiceServer).DigestConsistencyCheckStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ParticipantRepairService_DigestConsistencyCheckStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParticipantRepairServiceServer).DigestConsistencyCheckStatus(ctx, req.(*DigestConsistencyCheckStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ParticipantRepairService_ServiceDesc is the grpc.ServiceDesc for ParticipantRepairService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -483,6 +721,34 @@ var ParticipantRepairService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PerformLateLsu",
 			Handler:    _ParticipantRepairService_PerformLateLsu_Handler,
+		},
+		{
+			MethodName: "DeleteSynchronizerConnectionConfig",
+			Handler:    _ParticipantRepairService_DeleteSynchronizerConnectionConfig_Handler,
+		},
+		{
+			MethodName: "ListPendingOperations",
+			Handler:    _ParticipantRepairService_ListPendingOperations_Handler,
+		},
+		{
+			MethodName: "DeletePendingOperation",
+			Handler:    _ParticipantRepairService_DeletePendingOperation_Handler,
+		},
+		{
+			MethodName: "ReinitializeDigestCommitments",
+			Handler:    _ParticipantRepairService_ReinitializeDigestCommitments_Handler,
+		},
+		{
+			MethodName: "ReinitializeDigestCommitmentsStatus",
+			Handler:    _ParticipantRepairService_ReinitializeDigestCommitmentsStatus_Handler,
+		},
+		{
+			MethodName: "RunDigestConsistencyCheck",
+			Handler:    _ParticipantRepairService_RunDigestConsistencyCheck_Handler,
+		},
+		{
+			MethodName: "DigestConsistencyCheckStatus",
+			Handler:    _ParticipantRepairService_DigestConsistencyCheckStatus_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -29,7 +29,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/digitalasset/canton/admin/time/v30/time_tracker_config.proto\x12&com.digitalasset.canton.admin.time.v30\x1a\x1egoogle/protobuf/duration.proto\"\xf3\x01\n\x16TimeProofRequestConfig\x12I\n\x13initial_retry_delay\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationR\x11initialRetryDelay\x12\x41\n\x0fmax_retry_delay\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\rmaxRetryDelay\x12K\n\x14max_sequencing_delay\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationR\x12maxSequencingDelay\"\xf6\x02\n\x1dSynchronizerTimeTrackerConfig\x12J\n\x13observation_latency\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationR\x12observationLatency\x12\x46\n\x11patience_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\x10patienceDuration\x12S\n\x18min_observation_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationR\x16minObservationDuration\x12l\n\x12time_proof_request\x18\x04 \x01(\x0b\x32>.com.digitalasset.canton.admin.time.v30.TimeProofRequestConfigR\x10timeProofRequestBWZUgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/time/v30b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n@com/digitalasset/canton/admin/time/v30/time_tracker_config.proto\x12&com.digitalasset.canton.admin.time.v30\x1a\x1egoogle/protobuf/duration.proto\"\xb7\x02\n\x16TimeProofRequestConfig\x12I\n\x13initial_retry_delay\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationR\x11initialRetryDelay\x12\x41\n\x0fmax_retry_delay\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\rmaxRetryDelay\x12K\n\x14max_sequencing_delay\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationR\x12maxSequencingDelay\x12\x42\n\x0frequest_timeout\x18\x04 \x01(\x0b\x32\x19.google.protobuf.DurationR\x0erequestTimeout\"\xf6\x02\n\x1dSynchronizerTimeTrackerConfig\x12J\n\x13observation_latency\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationR\x12observationLatency\x12\x46\n\x11patience_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationR\x10patienceDuration\x12S\n\x18min_observation_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationR\x16minObservationDuration\x12l\n\x12time_proof_request\x18\x04 \x01(\x0b\x32>.com.digitalasset.canton.admin.time.v30.TimeProofRequestConfigR\x10timeProofRequestBWZUgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/time/v30b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,7 +38,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'ZUgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/admin/time/v30'
   _globals['_TIMEPROOFREQUESTCONFIG']._serialized_start=141
-  _globals['_TIMEPROOFREQUESTCONFIG']._serialized_end=384
-  _globals['_SYNCHRONIZERTIMETRACKERCONFIG']._serialized_start=387
-  _globals['_SYNCHRONIZERTIMETRACKERCONFIG']._serialized_end=761
+  _globals['_TIMEPROOFREQUESTCONFIG']._serialized_end=452
+  _globals['_SYNCHRONIZERTIMETRACKERCONFIG']._serialized_start=455
+  _globals['_SYNCHRONIZERTIMETRACKERCONFIG']._serialized_end=829
 # @@protoc_insertion_point(module_scope)

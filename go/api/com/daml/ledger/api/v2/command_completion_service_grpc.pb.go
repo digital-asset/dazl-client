@@ -21,8 +21,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CommandCompletionService_CompletionStream_FullMethodName = "/com.daml.ledger.api.v2.CommandCompletionService/CompletionStream"
-	CommandCompletionService_GetCompletions_FullMethodName   = "/com.daml.ledger.api.v2.CommandCompletionService/GetCompletions"
+	CommandCompletionService_CompletionStream_FullMethodName    = "/com.daml.ledger.api.v2.CommandCompletionService/CompletionStream"
+	CommandCompletionService_GetCompletions_FullMethodName      = "/com.daml.ledger.api.v2.CommandCompletionService/GetCompletions"
+	CommandCompletionService_GetCompletionByHash_FullMethodName = "/com.daml.ledger.api.v2.CommandCompletionService/GetCompletionByHash"
 )
 
 // CommandCompletionServiceClient is the client API for CommandCompletionService service.
@@ -31,6 +32,7 @@ const (
 type CommandCompletionServiceClient interface {
 	CompletionStream(ctx context.Context, in *CompletionStreamRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[CompletionStreamResponse], error)
 	GetCompletions(ctx context.Context, in *GetCompletionsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[CompletionStreamResponse], error)
+	GetCompletionByHash(ctx context.Context, in *GetCompletionByHashRequest, opts ...grpc.CallOption) (*GetCompletionByHashResponse, error)
 }
 
 type commandCompletionServiceClient struct {
@@ -79,12 +81,23 @@ func (c *commandCompletionServiceClient) GetCompletions(ctx context.Context, in 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type CommandCompletionService_GetCompletionsClient = grpc.ServerStreamingClient[CompletionStreamResponse]
 
+func (c *commandCompletionServiceClient) GetCompletionByHash(ctx context.Context, in *GetCompletionByHashRequest, opts ...grpc.CallOption) (*GetCompletionByHashResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCompletionByHashResponse)
+	err := c.cc.Invoke(ctx, CommandCompletionService_GetCompletionByHash_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommandCompletionServiceServer is the server API for CommandCompletionService service.
 // All implementations must embed UnimplementedCommandCompletionServiceServer
 // for forward compatibility.
 type CommandCompletionServiceServer interface {
 	CompletionStream(*CompletionStreamRequest, grpc.ServerStreamingServer[CompletionStreamResponse]) error
 	GetCompletions(*GetCompletionsRequest, grpc.ServerStreamingServer[CompletionStreamResponse]) error
+	GetCompletionByHash(context.Context, *GetCompletionByHashRequest) (*GetCompletionByHashResponse, error)
 	mustEmbedUnimplementedCommandCompletionServiceServer()
 }
 
@@ -100,6 +113,9 @@ func (UnimplementedCommandCompletionServiceServer) CompletionStream(*CompletionS
 }
 func (UnimplementedCommandCompletionServiceServer) GetCompletions(*GetCompletionsRequest, grpc.ServerStreamingServer[CompletionStreamResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetCompletions not implemented")
+}
+func (UnimplementedCommandCompletionServiceServer) GetCompletionByHash(context.Context, *GetCompletionByHashRequest) (*GetCompletionByHashResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCompletionByHash not implemented")
 }
 func (UnimplementedCommandCompletionServiceServer) mustEmbedUnimplementedCommandCompletionServiceServer() {
 }
@@ -145,13 +161,36 @@ func _CommandCompletionService_GetCompletions_Handler(srv interface{}, stream gr
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type CommandCompletionService_GetCompletionsServer = grpc.ServerStreamingServer[CompletionStreamResponse]
 
+func _CommandCompletionService_GetCompletionByHash_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCompletionByHashRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommandCompletionServiceServer).GetCompletionByHash(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CommandCompletionService_GetCompletionByHash_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommandCompletionServiceServer).GetCompletionByHash(ctx, req.(*GetCompletionByHashRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CommandCompletionService_ServiceDesc is the grpc.ServiceDesc for CommandCompletionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CommandCompletionService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "com.daml.ledger.api.v2.CommandCompletionService",
 	HandlerType: (*CommandCompletionServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetCompletionByHash",
+			Handler:    _CommandCompletionService_GetCompletionByHash_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "CompletionStream",

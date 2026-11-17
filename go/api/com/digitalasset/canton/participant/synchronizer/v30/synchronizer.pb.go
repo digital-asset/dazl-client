@@ -67,13 +67,59 @@ func (x *PendingLsuOperation) GetSuccessorPhysicalSynchronizerId() string {
 	return ""
 }
 
+type PendingOnboardingTransactions struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transactions  [][]byte               `protobuf:"bytes,1,rep,name=transactions,proto3" json:"transactions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PendingOnboardingTransactions) Reset() {
+	*x = PendingOnboardingTransactions{}
+	mi := &file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PendingOnboardingTransactions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PendingOnboardingTransactions) ProtoMessage() {}
+
+func (x *PendingOnboardingTransactions) ProtoReflect() protoreflect.Message {
+	mi := &file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PendingOnboardingTransactions.ProtoReflect.Descriptor instead.
+func (*PendingOnboardingTransactions) Descriptor() ([]byte, []int) {
+	return file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *PendingOnboardingTransactions) GetTransactions() [][]byte {
+	if x != nil {
+		return x.Transactions
+	}
+	return nil
+}
+
 var File_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto protoreflect.FileDescriptor
 
 const file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_rawDesc = "" +
 	"\n" +
 	"Gcom/digitalasset/canton/participant/synchronizer/v30/synchronizer.proto\x124com.digitalasset.canton.participant.synchronizer.v30\"b\n" +
 	"\x13PendingLsuOperation\x12K\n" +
-	"\"successor_physical_synchronizer_id\x18\x01 \x01(\tR\x1fsuccessorPhysicalSynchronizerIdBeZcgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/synchronizer/v30b\x06proto3"
+	"\"successor_physical_synchronizer_id\x18\x01 \x01(\tR\x1fsuccessorPhysicalSynchronizerId\"C\n" +
+	"\x1dPendingOnboardingTransactions\x12\"\n" +
+	"\ftransactions\x18\x01 \x03(\fR\ftransactionsBeZcgithub.com/digital-asset/dazl-client/v8/go/api/com/digitalasset/canton/participant/synchronizer/v30b\x06proto3"
 
 var (
 	file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_rawDescOnce sync.Once
@@ -87,9 +133,10 @@ func file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_prot
 	return file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_rawDescData
 }
 
-var file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_goTypes = []any{
-	(*PendingLsuOperation)(nil), // 0: com.digitalasset.canton.participant.synchronizer.v30.PendingLsuOperation
+	(*PendingLsuOperation)(nil),           // 0: com.digitalasset.canton.participant.synchronizer.v30.PendingLsuOperation
+	(*PendingOnboardingTransactions)(nil), // 1: com.digitalasset.canton.participant.synchronizer.v30.PendingOnboardingTransactions
 }
 var file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -110,7 +157,7 @@ func file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_rawDesc), len(file_com_digitalasset_canton_participant_synchronizer_v30_synchronizer_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
