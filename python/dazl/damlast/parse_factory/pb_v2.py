@@ -21,6 +21,10 @@ class ProtobufParser21(ProtobufParserBase):
         self.interned_dotted_names = list[Sequence[str]]()
         self.interned_types = list[lf.Type]()
 
+        self.interned_kinds = list[lf.Kind]()
+        self.imported_packages = list[str]()
+        self.interned_exprs: Sequence[pblf.Expr] = ()
+
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb: pblf.Unit) -> lf.Unit:
         return lf.UNIT
@@ -39,6 +43,11 @@ class ProtobufParser21(ProtobufParserBase):
                     lf.PackageRef(
                         self.interned_strings[pb.package_id.imported_package_id_interned_str]
                     ),
+                    module_name,
+                )
+            case "package_import_id":
+                return lf.ModuleRef(
+                    lf.PackageRef(self.imported_packages[pb.package_id.package_import_id]),
                     module_name,
                 )
             case _:
@@ -103,6 +112,8 @@ class ProtobufParser21(ProtobufParserBase):
                 return lf.Kind(arrow=self.parse_Kind_Arrow(pb.arrow))
             case "nat":
                 return lf.Kind(nat=self.parse_Unit(pb.nat))
+            case "interned_kind":
+                return self.interned_kinds[pb.interned_kind]
             case _:
                 raise ValueError(f"unknown sum type value: {sum_name!r}")
 
@@ -112,11 +123,33 @@ class ProtobufParser21(ProtobufParserBase):
         )
 
     def parse_BuiltinType(self, pb: pblf.BuiltinType) -> lf.PrimType:
-        return lf.PrimType(pb)
+        name = pblf.BuiltinType.Name(pb)
+        try:
+            return lf.PrimType[name]
+        except KeyError:
+            raise ValueError(f"unsupported Daml-LF builtin type: {name}") from None
+
+    def parse_Type_TApp(self, pb: pblf.Type.TApp) -> lf.Type:
+        head = self.parse_Type(pb.lhs)
+        arg = self.parse_Type(pb.rhs)
+        if head.var is not None:
+            return lf.Type(var=lf.Type.Var(head.var.var, tuple(head.var.args) + (arg,)))
+        elif head.con is not None:
+            return lf.Type(con=lf.Type.Con(head.con.tycon, tuple(head.con.args) + (arg,)))
+        elif head.prim is not None:
+            return lf.Type(prim=lf.Type.Prim(head.prim.prim, tuple(head.prim.args) + (arg,)))
+        elif head.syn is not None:
+            # damlc emits synonyms fully applied, so this is not reached today; the AST has no
+            # TApp node, so the argument is folded into the synonym's args.
+            return lf.Type(syn=lf.Type.Syn(head.syn.tysyn, tuple(head.syn.args) + (arg,)))
+        else:
+            raise ValueError(f"invalid TApp head: {head!r}")
 
     def parse_Type(self, pb: pblf.Type) -> lf.Type:
         sum_name = pb.WhichOneof("Sum")
         match sum_name:
+            case "tapp":
+                return self.parse_Type_TApp(pb.tapp)
             case "var":
                 return self.parse_Type_Var(pb.var)
             case "con":
@@ -372,6 +405,12 @@ class ProtobufParser21(ProtobufParserBase):
                     choice_observer=self.parse_Expr_ChoiceObserver(pb.choice_observer),
                     location=location,
                 )
+            case "interned_expr":
+                expr = self.parse_Expr(self.interned_exprs[pb.interned_expr])
+                if location is None:
+                    return expr
+                # the location is on the reference, not on the interned expression
+                return lf.Expr(**{expr._Sum_name: expr._Sum_value}, location=location)
             case _:
                 raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
@@ -808,6 +847,7 @@ class ProtobufParser21(ProtobufParserBase):
             observers=self.parse_Expr(pb.observers) if pb.HasField("observers") else None,
             location=self.parse_Location(pb.location),
             key=self.parse_DefTemplate_DefKey(pb.key) if pb.HasField("key") else None,
+            implements=tuple(self.parse_DefTemplate_Implements(impl) for impl in pb.implements),
         )
 
     def parse_DefTemplate_DefKey(self, pb: pblf.DefTemplate.DefKey) -> lf.DefTemplate.DefKey:
@@ -815,6 +855,31 @@ class ProtobufParser21(ProtobufParserBase):
             type=self.parse_Type(pb.type),
             complex_key=self.parse_Expr(pb.key_expr),
             maintainers=self.parse_Expr(pb.maintainers),
+        )
+
+    def parse_DefTemplate_Implements(
+        self, pb: pblf.DefTemplate.Implements
+    ) -> lf.DefTemplate.Implements:
+        return lf.DefTemplate.Implements(
+            interface=self.parse_TypeConName(pb.interface),
+            body=self.parse_InterfaceInstanceBody(pb.body),
+            location=self.parse_Location(pb.location),
+        )
+
+    def parse_InterfaceInstanceBody(
+        self, pb: pblf.InterfaceInstanceBody
+    ) -> lf.DefTemplate.InterfaceInstanceBody:
+        return lf.DefTemplate.InterfaceInstanceBody(
+            methods=tuple(self.parse_InterfaceInstanceMethod(method) for method in pb.methods),
+            view=self.parse_Expr(pb.view),
+        )
+
+    def parse_InterfaceInstanceMethod(
+        self, pb: pblf.InterfaceInstanceBody.InterfaceInstanceMethod
+    ) -> lf.DefTemplate.InterfaceInstanceMethod:
+        return lf.DefTemplate.InterfaceInstanceMethod(
+            method_name=self.interned_strings[pb.method_interned_name],
+            value=self.parse_Expr(pb.value),
         )
 
     def parse_DefDataType(self, pb: pblf.DefDataType) -> lf.DefDataType:
@@ -958,6 +1023,12 @@ class ProtobufParser21(ProtobufParserBase):
 
         self.interned_dotted_names.extend(indices)
 
+        self.imported_packages.extend(pb.package_imports.imported_packages)
+
+        for kind in pb.interned_kinds:
+            self.interned_kinds.append(self.parse_Kind(kind))
+
+        self.interned_exprs = pb.interned_exprs
         # types in the type intern table are allowed to refer to previously interned types, so we
         # must parse, then add each type individually
         for type_pb in pb.interned_types:
@@ -992,4 +1063,8 @@ class ProtobufParser21(ProtobufParserBase):
         p.interned_strings = self.interned_strings
         p.interned_dotted_names = self.interned_dotted_names
         p.interned_types = self.interned_types
+
+        p.interned_kinds = self.interned_kinds
+        p.imported_packages = self.imported_packages
+        p.interned_exprs = self.interned_exprs
         return p
