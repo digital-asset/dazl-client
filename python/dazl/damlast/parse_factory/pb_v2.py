@@ -24,7 +24,6 @@ class ProtobufParser21(ProtobufParserBase):
         self.interned_kinds = list[lf.Kind]()
         self.imported_packages = list[str]()
         self.interned_exprs: Sequence[pblf.Expr] = ()
-        self.expr_cache = dict[int, lf.Expr]()
 
     # noinspection PyUnusedLocal
     def parse_Unit(self, pb: pblf.Unit) -> lf.Unit:
@@ -125,7 +124,10 @@ class ProtobufParser21(ProtobufParserBase):
 
     def parse_BuiltinType(self, pb: pblf.BuiltinType) -> lf.PrimType:
         name = pblf.BuiltinType.Name(pb)
-        return lf.PrimType[name]
+        try:
+            return lf.PrimType[name]
+        except KeyError:
+            raise ValueError(f"unsupported Daml-LF builtin type: {name}") from None
 
     def parse_Type_TApp(self, pb: pblf.Type.TApp) -> lf.Type:
         head = self.parse_Type(pb.lhs)
@@ -137,6 +139,8 @@ class ProtobufParser21(ProtobufParserBase):
         elif head.prim is not None:
             return lf.Type(prim=lf.Type.Prim(head.prim.prim, tuple(head.prim.args) + (arg,)))
         elif head.syn is not None:
+            # damlc emits synonyms fully applied, so this is not reached today; the AST has no
+            # TApp node, so the argument is folded into the synonym's args.
             return lf.Type(syn=lf.Type.Syn(head.syn.tysyn, tuple(head.syn.args) + (arg,)))
         else:
             raise ValueError(f"invalid TApp head: {head!r}")
@@ -402,13 +406,11 @@ class ProtobufParser21(ProtobufParserBase):
                     location=location,
                 )
             case "interned_expr":
-                idx = pb.interned_expr
-                if idx in self.expr_cache:
-                    return self.expr_cache[idx]
-                else:
-                    new_Expr = self.parse_Expr(self.interned_exprs[idx])
-                    self.expr_cache[idx] = new_Expr
-                    return new_Expr
+                expr = self.parse_Expr(self.interned_exprs[pb.interned_expr])
+                if location is None:
+                    return expr
+                # the location is on the reference, not on the interned expression
+                return lf.Expr(**{expr._Sum_name: expr._Sum_value}, location=location)
             case _:
                 raise ValueError(f"Unknown type of Expr: {sum_name!r}")
 
