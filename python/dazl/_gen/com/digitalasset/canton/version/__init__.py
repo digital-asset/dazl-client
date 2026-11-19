@@ -3,8 +3,5 @@
 # fmt: off
 # isort: skip_file
 
-from .untyped_versioned_message_pb2 import UntypedVersionedMessage
 
-__all__ = [
-    "UntypedVersionedMessage",
-]
+__all__ = []  # type: ignore

@@ -3,9 +3,7 @@
 # This is a merge between the canton 2, canton 3, and daml 2 protos.
 
 {
-  canton-2,
   canton-3,
-  daml-protos-2,
   gawk,
   protobuf,
   rsync,
@@ -14,11 +12,9 @@
 
 stdenv.mkDerivation rec {
   name = "protopack";
-  buildInputs = [ daml-protos-2 canton-2 canton-3 gawk protobuf ];
+  buildInputs = [ canton-3 gawk protobuf ];
   src = ./.;
   installPhase = ''
-    ./copy-daml-protos.sh "${daml-protos-2.out}"
-    ./copy-canton-2-protos.sh "${canton-2.out}"
     ./copy-canton-3-protos.sh "${canton-3.out}"
     ./build.sh
   '';
